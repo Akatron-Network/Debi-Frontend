@@ -1,0 +1,72 @@
+/* .navbar {
+    padding: 0px;
+    height: 40px;
+    box-shadow: 0px 0px 10px 2px rgb(0 0 0 / 60%);
+    background-color: var(--black-light) !important;
+} */
+
+.navbar-brand {
+    padding: 0px;
+    margin: 0px;
+}
+
+.btn-check:focus+.btn-outline-dark, .btn-outline-dark:focus {
+    box-shadow: 0 0 0 0.25rem rgb(44 49 54 / 0%);
+}
+
+.h-btn {
+    height: 100%;
+    width: 100%;
+    color: var(--grayXgray);
+    border-right-color: var(--onyx);
+    border-left-color: var(--onyx);
+    border-radius: 0px;
+    border-top-width: 0px;
+    border-bottom-width: 0px;
+    background-color: var(--black-light) !important;
+    text-shadow: 2px 2px 5px rgb(0 0 0 / 38%);
+}
+
+.h-btn:hover {
+    color: var(--platinium);
+    border-right-color: var(--onyx);
+    border-left-color: var(--onyx);
+}
+
+.h-btn-col {
+    width: 60px;
+    max-width: 60px;
+}
+
+.h-row > * {
+    padding: 0px;
+}
+
+nav .btn:focus {
+   box-shadow: 0 0 0 2px rgba(116, 116, 116, 0);
+}
+
+.btn:focus {
+    box-shadow: 0 0 0 2px rgb(116 116 116 / 25%);
+}
+
+.btn-dropdown {
+    border-left-width: 0px;
+    text-align: left;
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+    height: 40px;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    /* padding-right: 40px; */
+}
+
+.ico-dropdown {
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 30px;
+    position: absolute;
+}
+

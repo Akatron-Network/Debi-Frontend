@@ -1,0 +1,31 @@
+:root {
+	/** MAIN GREENS */
+	--green-pantone: #14B85B;
+	--sea-green: #20834B;
+	--cadmium-green: #1A6C3D;
+    --shadow-green: #1A6C3D66;
+
+	/** DARK COLORS */
+    --black-light: #151515;
+    --side-black: #181818;
+	--earie-black: #1F1F1F;
+	--darkest-jet: #202020;
+	--darker-jet: #232323;
+	--jet: #292929;
+    --jet-shadow: #292929d4;
+    --jet-mid: #2E2E2E;
+	--jet-light: #333333;
+	--hr-gray: #495057;
+	--onyx: #3D3D3D;
+	--onyx-light: #767676;
+
+	/** LIGHT COLORS */
+    --graysix: #858585;
+	--grayXgray: #B9B9B9;
+	--platinium: #EBEBEB;
+	--cultured: #F5F5F5;
+
+    /** OTHER COLORS */
+    --danger: #631E24;
+    --danger-light: #861E27;
+}

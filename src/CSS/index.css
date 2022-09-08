@@ -1,0 +1,138 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    font-family: 'Cabin', sans-serif;
+    background-color: var(--darkest-jet) !important;
+  }
+
+  .nav-btn {
+    @apply
+      px-5
+      py-2
+      h-11
+      border-r
+      border-onyx
+      text-grayXgray
+      hover:text-platinium
+      transition duration-300
+      hover:bg-side_black
+  }
+
+  .new-elm {
+    @apply
+      w-full
+      h-12
+      border-none
+      text-grayXgray
+      hover:bg-jet
+      hover:text-platinium
+      !text-left
+      px-3
+      py-2
+  }
+
+  .open-tab {
+    @apply
+      text-xl
+      w-70px
+      h-70px
+      py-10px
+      px-15px
+      border-none
+      transition duration-300
+      rounded-br
+      rounded-tr
+      hover:text-platinium
+      hover:bg-side_black
+  }
+
+  .workspace-title {
+    @apply
+      pl-3
+      pb-3
+      transition duration-500
+      text-sea_green
+      -z-1
+      text-[17px]
+      inline-flex
+      font-righteous
+  }
+
+  .workspace-text {
+    @apply
+      truncate
+      overflow-hidden
+      whitespace-nowrap
+  }
+
+  .hrLine {
+    @apply
+      border-b
+      w-[90%]
+      border-sea_green
+      border-opacity-40
+  }
+  
+
+  .file-path-top-text {
+    @apply
+    font-righteous
+    text-grayXgray
+    border-transparent
+    rounded
+    transition duration-200
+    top-1/2
+    relative
+    -translate-y-1/2
+    px-[6px]
+    py-[1px]
+
+    hover:text-platinium
+    hover:bg-like_trans
+  }
+
+}
+
+/*! SPESIFIC CSS' */
+.tooltip:before{
+  background-color: #0b0b0b;
+}
+
+.tooltip-top:after{
+  border-color: transparent transparent #0b0b0b  transparent;
+}
+
+.tooltip-bottom:after{
+  border-color: transparent transparent #0b0b0b  transparent;
+}
+
+.tooltip-left:after{
+  border-color: transparent transparent #0b0b0b  transparent;
+}
+
+.tooltip-right:after{
+  border-color: transparent #0b0b0b transparent  transparent;
+}
+
+#nav-left .tooltip-bottom:before {
+    left: calc(50% + 18px);
+}
+#nav-right .tooltip-bottom:before {
+    left: 50%;
+}
+
+/*!-----------------------------------  */
+
+
+/* body {
+  background-color: var(--darkest-jet);
+  font-family: 'Cabin', sans-serif;
+} */
+
+/* code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+} */
