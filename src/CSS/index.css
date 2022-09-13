@@ -7,6 +7,9 @@
     font-family: 'Cabin', sans-serif;
     background-color: var(--darkest-jet) !important;
   }
+}
+
+@layer components {
 
   .nav-btn {
     @apply
@@ -94,45 +97,192 @@
     hover:bg-like_trans
   }
 
+  /*! LOGIN SCREEN ----------------------------------------- */
+  .social {
+    @apply
+    border
+    round
+    inline-flex
+    justify-center
+    items-center
+    my-0
+    mx-[5px]
+    h-10
+    w-10
+    transition duration-500
+    text-lg
+    hover:bg-cadmium_green
+    hover:text-platinium
+  }
+
+  .form {
+    @apply
+      bg-darker_jet
+      flex
+      items-center
+      justify-center
+      flex-col
+      py-0
+      px-[50px]
+      h-full
+      text-center
+      text-grayXgray
+  }
+
+  .logo {
+    @apply
+      drop-shadow-logo
+  }
+
+  .logo-text{
+    @apply
+      text-base
+      font-normal
+      leading-5
+      tracking-[3px]
+      mb-[30px]
+      font-righteous
+      text-grayXgray
+
+  }
+
+  .logo-title{
+    @apply
+      font-righteous
+      font-normal
+      text-jet_mid
+      drop-shadow-logo-title
+      tracking-[3px]
+      text-[2.5rem]
+      leading-tight
+      
+  }
+
+  .giris-a {
+    @apply
+      text-grayXgray
+      text-sm
+      no-underline
+      my-[15px]
+      mx-0
+      transition duration-300
+  }
+
+  .input {
+    @apply
+      bg-jet_mid
+      text-grayXgray
+      py-3
+      px-[15px]
+      my-2
+      mx-0
+      w-full
+      border-[1px]
+      border-transparent
+      rounded
+      focus:bg-onyx
+      focus:text-platinium
+      focus:border-onyx_light
+      focus:outline-none
+  }
+
+  .button {
+    @apply
+      rounded
+      bg-cadmium_green
+      text-platinium
+      text-xs
+      font-bold
+      py-3
+      px-[45px]
+      tracking-[1px]
+      uppercase
+      transition duration-300
+
+      hover:bg-sea_green
+      active:scale-95
+  }
+
+  .ghost {
+    @apply
+      bg-transparent
+      text-jet_mid
+      border border-jet_mid
+
+      hover:bg-jet_mid
+      hover:text-grayXgray
+  }
+
+  
+
+  .form-container {
+    @apply
+      absolute
+      top-0
+      h-full
+      transition-all duration-700 ease-in-out
+  }
+
+  .overlay-panel {
+    @apply
+      absolute
+      flex
+      items-center
+      justify-center
+      flex-col
+      py-0
+      px-10
+      text-center
+      top-0
+      h-full
+      w-1/2
+      translate-x-0
+      transition-transform duration-700
+  }
+
+  .signUp-right-panel-active {
+    @apply
+      !translate-x-[100%]
+      !opacity-100
+      !z-[5]
+
+  }
+  
+  /*!------------------------------------------------------------------- */
+
 }
 
-/*! SPESIFIC CSS' */
-.tooltip:before{
-  background-color: #0b0b0b;
-}
 
-.tooltip-top:after{
-  border-color: transparent transparent #0b0b0b  transparent;
-}
-
-.tooltip-bottom:after{
-  border-color: transparent transparent #0b0b0b  transparent;
-}
-
-.tooltip-left:after{
-  border-color: transparent transparent #0b0b0b  transparent;
-}
-
-.tooltip-right:after{
-  border-color: transparent #0b0b0b transparent  transparent;
-}
-
-#nav-left .tooltip-bottom:before {
+@layer utulities {
+  .tooltip:before{
+    background-color: #0b0b0b;
+  }
+  
+  .tooltip-top:after{
+    border-color: transparent transparent #0b0b0b  transparent;
+  }
+  
+  .tooltip-bottom:after{
+    border-color: transparent transparent #0b0b0b  transparent;
+  }
+  
+  .tooltip-left:after{
+    border-color: transparent transparent #0b0b0b  transparent;
+  }
+  
+  .tooltip-right:after{
+    border-color: transparent #0b0b0b transparent  transparent;
+  }
+  
+  #nav-left .tooltip-bottom:before {
     left: calc(50% + 18px);
-}
-#nav-right .tooltip-bottom:before {
+  }
+  #nav-right .tooltip-bottom:before {
     left: 50%;
+  }
+  
+  .round {
+    border-radius: 50%;
+  }
+
 }
-
-/*!-----------------------------------  */
-
-
-/* body {
-  background-color: var(--darkest-jet);
-  font-family: 'Cabin', sans-serif;
-} */
-
-/* code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
-} */

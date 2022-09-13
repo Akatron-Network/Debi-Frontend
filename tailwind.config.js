@@ -51,6 +51,12 @@ module.exports = {
         'openclosebtn': 'inset 5px 0px 10px -6px rgb(0 0 0 / 30%)',
         'openbtn' : 'rgb(0 0 0 / 30%) 0px -5px 10px 0px , rgb(0 0 0 / 30%) 0px 5px 10px 0px',
         'defaultbtn' : 'inset 10px 7px 15px -10px rgb(0 0 0 / 57%), 0px 15px 15px -10px rgb(0 0 0 / 30%)',
+        'loginContainer': ' 0 14px 40px rgb(0 0 0 / 60%) , 0 10px 10px rgb(0 0 0 / 0%)'
+      },
+
+      dropShadow: {
+        'logo': '7px 7px 7px #1F1F1F',
+        'logo-title': '1px 1px 3px #292929d4'
       },
 
       zIndex: {
