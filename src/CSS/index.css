@@ -7,6 +7,37 @@
     font-family: 'Cabin', sans-serif;
     background-color: var(--darkest-jet) !important;
   }
+  
+  .tooltip:before{
+    background-color: #0b0b0b !important;
+  }
+  
+  .tooltip-top:after{
+    border-color: transparent transparent #0b0b0b  transparent !important;
+  }
+  
+  .tooltip-bottom:after{
+    border-color: transparent transparent #0b0b0b  transparent !important;
+  }
+  
+  .tooltip-left:after{
+    border-color: transparent transparent #0b0b0b  transparent !important;
+  }
+  
+  .tooltip-right:after{
+    border-color: transparent #0b0b0b transparent  transparent !important;
+  }
+  
+  #nav-left .tooltip-bottom:before {
+    left: calc(50% + 18px) !important;
+  }
+  #nav-right .tooltip-bottom:before {
+    left: 50% !important;
+  }
+  
+  .round {
+    border-radius: 50% !important;
+  }
 }
 
 @layer components {
@@ -87,11 +118,8 @@
     border-transparent
     rounded
     transition duration-200
-    top-1/2
-    relative
-    -translate-y-1/2
     px-[6px]
-    py-[1px]
+    py-1
 
     hover:text-platinium
     hover:bg-like_trans
@@ -245,44 +273,150 @@
       !translate-x-[100%]
       !opacity-100
       !z-[5]
-
   }
-  
+
   /*!------------------------------------------------------------------- */
+
+  /*!Collections-------------------------------------------------------- */
+  .workspace-titles {
+    @apply
+      mb-0
+      mt-4
+      text-grayXgray
+      text-[2rem]
+      font-righteous
+      pl-[10px]
+  }
+
+  .card {
+    @apply
+      relative
+      h-60
+      rounded
+      transition duration-500
+      bg-black_light
+      cursor-pointer
+      overflow-hidden
+      shadow-card
+      hover:shadow-cardHover
+  }
+
+  .card-bg {
+    @apply
+      scale-110
+      transition duration-[800ms]
+      w-full
+      h-full
+      absolute
+      bg-[url('/src/img/card-wp6.png')]
+      bg-center
+      bg-cover
+      opacity-80
+      hover:scale-125
+      
+  }
+
+  .fold-bg {
+    @apply
+      !bg-[url('/src/img/fold-wp1.png')]
+  }
+
+  .file-bg {
+    @apply
+      !bg-[url('/src/img/file-wp1.png')]
+  }
+
+  .col-card {
+    @apply
+      max-w-[200px]
+      min-w-[150px]
+      mt-[25px]
+      px-3
+  }
+
+  .fold-card {
+    @apply
+      max-w-[200px]
+      min-w-[150px]
+      mt-[25px]
+      px-3
+  }
+
+  .fold-card .card {
+    @apply
+      h-[100px]
+  }
+
+  .col-content {
+    @apply
+      text-center
+      top-1/2
+      px-[5px]
+      py-[5px]
+      -translate-y-1/2
+      relative
+      text-[23px]
+      text-platinium
+      z-1
+      transition duration-500
+      font-righteous
+      break-all
+  }
+
+  .fold-content {
+    @apply
+      text-right
+      py-[5px]
+      text-xl
+      break-all
+  }
+
+  .add .card {
+    @apply
+      bg-shadow_green
+      opacity-60
+      transition duration-500
+      hover:opacity-100
+  }
+
+
+  .hrCols {
+    @apply
+      mt-[50px]
+      ml-2
+      border-hr_gray
+      opacity-25
+  }
+
+
+  .dlt-btn {
+    @apply
+      btn
+      btn-square
+      w-7
+      h-7
+      min-h-6
+      absolute
+      right-0
+      z-1
+      mt-1
+      mr-1
+      border-transparent
+      opacity-60
+      bg-danger
+      text-grayXgray
+      hover:bg-danger_light
+      hover:text-platinium
+      hover:border-onyx_light
+      hover:opacity-100
+      
+  }
+
+  /*!--------------------------------------------------------------  */
 
 }
 
 
 @layer utulities {
-  .tooltip:before{
-    background-color: #0b0b0b;
-  }
-  
-  .tooltip-top:after{
-    border-color: transparent transparent #0b0b0b  transparent;
-  }
-  
-  .tooltip-bottom:after{
-    border-color: transparent transparent #0b0b0b  transparent;
-  }
-  
-  .tooltip-left:after{
-    border-color: transparent transparent #0b0b0b  transparent;
-  }
-  
-  .tooltip-right:after{
-    border-color: transparent #0b0b0b transparent  transparent;
-  }
-  
-  #nav-left .tooltip-bottom:before {
-    left: calc(50% + 18px);
-  }
-  #nav-right .tooltip-bottom:before {
-    left: 50%;
-  }
-  
-  .round {
-    border-radius: 50%;
-  }
 
 }

@@ -31,7 +31,7 @@ export default function ParticlesComponent() {
                         value: 30,
                         density: {
                             enable: true,
-                            area: 400,
+                            area: 600,
                             factor: 1000
                         }
                     },

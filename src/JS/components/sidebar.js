@@ -52,53 +52,7 @@ export default function Sidebar() {
         </div>
 
     </div>
-
-	
     
-    {/*
-				<div class="workspace-title" id="workspace-title">
-					<span class="workspace-text">WörkŞpacE</span>
-				</div>
-
-				<hr class="hrLine">
-
-				<div id="col1" class="collection path-text col1" onclick="openPath('col1')">
-					<i id="c1_angle" class="fa-solid fa-angle-right" style="transition: .3s;"></i>
-					<button class="file-path-icons">
-						<i class="fas fa-folder-tree"></i>
-					</button>
-					<span class="path-text">Akatron Network</span>
-				</div>
-
-				<div id="col1_fold1" class="folder path-text col1 fold1" onclick="openPath('fold1')">
-					<i id="c1_f1_angle" class="fa-solid fa-angle-right" style="transition: .3s;"></i>
-					<button class="file-path-icons">
-						<i class="fas fa-folder-open"></i>
-					</button>
-					<span class="path-text">FrontEnd</span>
-				</div>
-
-				<div id="col1_fold1_file1" class="file path-text col1 fold1 file1">
-					<button class="file-path-icons">
-						<i class="fas fa-file-alt"></i>
-					</button>
-					<span class="path-text">madafaka.js</span>
-				</div>
-
-				<div id="col1_fold1_file2" class="file path-text col1 fold1 file2">
-					<button class="file-path-icons">
-						<i class="fas fa-file-alt"></i>
-					</button>
-					<span class="path-text">madafaka.js</span>
-				</div>
-
-				<div id="col2" class="collection path-text col2" onclick="openPath('col2')">
-					<i id="c2_angle" class="fa-solid fa-angle-right" style="transition: .3s;"></i>
-					<button class="file-path-icons">
-						<i class="fas fa-folder-tree"></i>
-					</button>
-					<span class="path-text">Akatron Network</span>
-				</div>*/}
     </>
   )
 }
@@ -112,12 +66,14 @@ const openCloseSideBar = () => {
     if(open_close_btn.style.transform === 'rotateZ(180deg)') {
 
         allsidepanel.style.transform = 'translateX(0px)';
+		allsidepanel.classList.remove("w-full" , "!bg-none_opacity");
         open_close_btn.style.transform = 'rotateZ(0deg)';
 
     }
 
     else {
         allsidepanel.style.transform = 'translateX(250px)';
+		allsidepanel.classList.add("w-full" , "!bg-none_opacity");
         open_close_btn.style.transform = 'rotateZ(180deg)';
     }
 }

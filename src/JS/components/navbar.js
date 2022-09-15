@@ -1,5 +1,6 @@
 import React from 'react'
 import debi_logo from '../../img/icon2.png';
+import { Button, Paper, Text, Group, CloseButton } from '@mantine/core';
 
 export default function Navbar() {
 
@@ -42,6 +43,22 @@ export default function Navbar() {
       <button className='new-elm'>&nbsp;<i className="fas fa-columns" aria-hidden="true"></i> &nbsp;Yeni Panel</button>
      </div>
 
+      <div id='menu_page' className="absolute top-11 w-48 bg-earie_black shadow-dropdown z-10 transition -translate-y-48 duration-300 right-0">
+        <button className="avatar new-elm flex items-center">
+          <div className="h-full mask mask-squircle">
+            <img src="https://placeimg.com/192/192/people" />
+          </div>
+          &nbsp; Hakan Temur
+        </button>
+        <label className="swap swap-rotate new-elm items-center justify-end flex transition duration-500">
+          <input type="checkbox" />
+          <i className="fa-solid fa-sun swap-on fill-current"></i>
+          <i className="fa-solid fa-moon swap-off fill-current"></i>
+          &nbsp; Tema Değiştir
+        </label>
+        <button className='new-elm'>&nbsp;<i className="fas fa-columns" aria-hidden="true"></i> &nbsp;Çıkış Yap</button>
+      </div>
+
    </>
 
   )
@@ -53,6 +70,12 @@ const newbtn = () => {
   new_elm_list.classList.toggle("-translate-y-0");
 };
 
+const menu_page = () => {
+  var menu_page = document.getElementById("menu_page");
+  menu_page.classList.toggle("-translate-y-0");
+    
+};
+
 const newbtn_act = () => {
   var new_elm_list = document.getElementById("new_elm_list");
 
@@ -62,9 +85,5 @@ const newbtn_act = () => {
 };
 
 const save_page = () => {
-    
-};
-
-const menu_page = () => {
     
 };

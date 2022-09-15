@@ -8,7 +8,7 @@ export default function LoginPage() {
       <ParticlesComponent />
 
       <div className='flex flex-col items-center justify-center bg-darkest_jet h-screen overflow-hidden'>
-        <div className="shadow-loginContainer rounded-lg relative overflow-hidden w-[768px] max-w-full min-h-[480px] bg-darker_jet" id="container">
+        <div className="shadow-loginContainer h-[60%] rounded-lg relative overflow-hidden w-[768px] max-w-full min-h-[480px] bg-darker_jet" id="container">
           <div className="form-container left-0 w-1/2 opacity-0 z-1" id='sign-up-container'>
             <form className='form' action="#">
               <h1 className='font-bold m-0 text-[2.5rem]'>Hesap Oluştur</h1>
@@ -18,6 +18,7 @@ export default function LoginPage() {
               <span className='text-xs'>ya da kayıt olmak için kendi email adresini kullanabilirsin</span>
               <input className='input' type="text" placeholder="Ad-Soyad" />
               <input className='input' type="email" placeholder="Email" />
+              <input className='input' type="tel" placeholder="Telefon" />
               <input className='input' type="password" placeholder="Şifre" />
               <button className='button' style={{marginTop: '8px'}}>Kayıt Ol</button>
             </form>
@@ -53,6 +54,7 @@ export default function LoginPage() {
           </div>
         </div>
       </div>
+      
     </>
     
   )

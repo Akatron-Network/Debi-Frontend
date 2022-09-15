@@ -40,6 +40,7 @@ module.exports = {
           danger: "#631E24",
           danger_light: "#861E27",
           like_trans: "#1b151545",
+          none_opacity: "#0000009e",
       },
 
       boxShadow: {
@@ -51,7 +52,9 @@ module.exports = {
         'openclosebtn': 'inset 5px 0px 10px -6px rgb(0 0 0 / 30%)',
         'openbtn' : 'rgb(0 0 0 / 30%) 0px -5px 10px 0px , rgb(0 0 0 / 30%) 0px 5px 10px 0px',
         'defaultbtn' : 'inset 10px 7px 15px -10px rgb(0 0 0 / 57%), 0px 15px 15px -10px rgb(0 0 0 / 30%)',
-        'loginContainer': ' 0 14px 40px rgb(0 0 0 / 60%) , 0 10px 10px rgb(0 0 0 / 0%)'
+        'loginContainer': ' 0 14px 40px rgb(0 0 0 / 60%) , 0 10px 10px rgb(0 0 0 / 0%)',
+        'card' : '5px 5px 5px rgb(0 0 0 / 20%), inset -5px -5px 15px rgb(0 0 0 / 10%), 5px 5px 15px rgb(0 0 0 / 55%), -5px -5px 15px rgb(255 255 255 / 0%);',
+        'cardHover' : '5px 5px 5px rgb(0 0 0 / 20%), inset -5px -5px 15px rgb(0 0 0 / 10%), 15px 15px 15px rgb(0 0 0 / 55%), -5px -5px 15px rgb(255 255 255 / 0%);'
       },
 
       dropShadow: {
@@ -74,6 +77,9 @@ module.exports = {
 
       fontFamily: {
         'righteous': ['Righteous' , 'cursive']
+      },
+
+      screens : {
       }
       
     },
