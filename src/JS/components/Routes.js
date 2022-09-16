@@ -1,16 +1,18 @@
 import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
-import Login from '../pages/LoginPage';
+import LoginPage from '../pages/LoginPage';
 import MainPage from '../pages/MainPage';
+import SettingsPage from '../pages/SettingsPage';
 
 export default function AllRoutes() {
   return (
   
     <BrowserRouter>
       <Routes>
-        <Route path="/giris" element={<Login />} />
+        <Route path="/giris" element={<LoginPage />} />
         <Route path="/" element={<MainPage />} />
+        <Route path="/ayarlar" element={<SettingsPage />} />
       </Routes>
     </BrowserRouter>
 

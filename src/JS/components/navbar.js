@@ -12,7 +12,7 @@ export default function Navbar() {
 
           <nav id='nav-left' className="col-span-2 flex items-center text-base">
             <div className="tooltip tooltip-bottom" data-tip="Öğe Oluştur">
-              <button onClick={newbtn} onBlur={newbtn_act} className="nav-btn"><i className="fas fa-plus" /></button>
+              <button id="new_btn" onClick={newbtn} className="nav-btn"><i className="fas fa-plus" /></button>
             </div>
 
             <button id="page-btn" className="nav-btn w-60 flex items-center justify-between">
@@ -31,7 +31,7 @@ export default function Navbar() {
               <button id="save-page-btn" onClick={save_page} className="nav-btn border-r-0 border-l"><i className="fa-solid fa-floppy-disk"></i></button>
             </div>
             <div className="tooltip tooltip-bottom" data-tip="Menü">
-              <button id="menu-btn" onClick={menu_page}  className="nav-btn border-r-0 border-l"><i className="fa-solid fa-bars"></i></button>
+              <button id="menu-btn" onClick={menu_page} className="nav-btn border-r-0 border-l"><i className="fa-solid fa-bars"></i></button>
             </div>
           </nav>
 
@@ -43,20 +43,23 @@ export default function Navbar() {
       <button className='new-elm'>&nbsp;<i className="fas fa-columns" aria-hidden="true"></i> &nbsp;Yeni Panel</button>
      </div>
 
-      <div id='menu_page' className="absolute top-11 w-48 bg-earie_black shadow-dropdown z-10 transition -translate-y-48 duration-300 right-0">
-        <button className="avatar new-elm flex items-center">
-          <div className="h-full mask mask-squircle">
+      <div id='menu_page' className="absolute top-11 w-64 bg-earie_black shadow-dropdown z-10 transition -translate-y-48 duration-300 right-0">
+        <button className="avatar new-elm flex items-center border-b border-solid border-hr_gray">
+          <div className="h-full mask mask-squircle w-1/5">
             <img src="https://placeimg.com/192/192/people" />
           </div>
-          &nbsp; Hakan Temur
+          <span className='w-4/5 truncate pl-2'>
+            Hakan Temur
+          </span>
         </button>
-        <label className="swap swap-rotate new-elm items-center justify-end flex transition duration-500">
+        <label className="swap swap-rotate new-elm items-center justify-start flex transition duration-500">
           <input type="checkbox" />
-          <i className="fa-solid fa-sun swap-on fill-current"></i>
-          <i className="fa-solid fa-moon swap-off fill-current"></i>
-          &nbsp; Tema Değiştir
+          <i className="fa-solid fa-sun swap-on fill-current w-1/5 text-center text-lg"></i>
+          <i className="fa-solid fa-moon swap-off fill-current absolute text-center translate-x-[15px] text-lg"></i>
+          <span className='w-4/5 pl-2'>Açık/Koyu Tema</span>
         </label>
-        <button className='new-elm'>&nbsp;<i className="fas fa-columns" aria-hidden="true"></i> &nbsp;Çıkış Yap</button>
+        <button className='new-elm'><i className="fa-solid fa-right-from-bracket w-1/5 text-center text-lg"></i><span className='w-4/5 pl-2'>Çıkış Yap</span></button>
+        
       </div>
 
    </>
@@ -76,14 +79,21 @@ const menu_page = () => {
     
 };
 
-const newbtn_act = () => {
-  var new_elm_list = document.getElementById("new_elm_list");
-
-  if(new_elm_list.classList.contains('-translate-y-0')) {
-    new_elm_list.classList.toggle("-translate-y-0");
-  }
-};
-
 const save_page = () => {
     
 };
+
+window.addEventListener('click', function(e){
+  var menu_page = document.getElementById("menu_page");
+  var menu_btn = document.getElementById("menu-btn");
+  var new_btn = document.getElementById("new_btn");
+  var new_elm_list = document.getElementById("new_elm_list");
+
+  if (!menu_page.contains(e.target) && !menu_btn.contains(e.target)){
+    menu_page.classList.remove("-translate-y-0");
+  }
+
+  if (!new_btn.contains(e.target)){
+    new_elm_list.classList.remove("-translate-y-0");
+  }
+});

@@ -58,7 +58,7 @@
   .new-elm {
     @apply
       w-full
-      h-12
+      min-h-12
       border-none
       text-grayXgray
       hover:bg-jet
@@ -111,7 +111,7 @@
   }
   
 
-  .file-path-top-text {
+  .file-path-top-text a {
     @apply
     font-righteous
     text-grayXgray
@@ -120,6 +120,7 @@
     transition duration-200
     px-[6px]
     py-1
+    !no-underline
 
     hover:text-platinium
     hover:bg-like_trans
@@ -385,7 +386,6 @@
       mt-[50px]
       ml-2
       border-hr_gray
-      opacity-25
   }
 
 

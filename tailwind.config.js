@@ -26,7 +26,7 @@ module.exports = {
           jet_shadow: "#292929d4",
           jet_mid: "#2E2E2E",
           jet_light: "#333333",
-          hr_gray: "#495057",
+          hr_gray: "#4950573d",
           onyx: "#3D3D3D",
           onyx_light: "#767676",
 

@@ -123,3 +123,6 @@ const openTabFor = (id) => {
 	tabs.classList.replace('hidden','block');
 
 }
+
+
+
