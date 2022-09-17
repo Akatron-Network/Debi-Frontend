@@ -16,10 +16,10 @@ export default function LoginPage() {
                 <a href="#" className="social giris-a"><i className="fab fa-google-plus-g" /></a>
               </div>
               <span className='text-xs'>ya da kayıt olmak için kendi email adresini kullanabilirsin</span>
-              <input className='input' type="text" placeholder="Ad-Soyad" />
-              <input className='input' type="email" placeholder="Email" />
-              <input className='input' type="tel" placeholder="Telefon" />
-              <input className='input' type="password" placeholder="Şifre" />
+              <input className='input placeholder:opacity-50' type="text" placeholder="Ad-Soyad" />
+              <input className='input placeholder:opacity-50' type="email" placeholder="Email" />
+              <input className='input placeholder:opacity-50' type="tel" placeholder="Telefon" />
+              <input className='input placeholder:opacity-50' type="password" placeholder="Şifre" />
               <button className='button' style={{marginTop: '8px'}}>Kayıt Ol</button>
             </form>
           </div>
@@ -30,8 +30,8 @@ export default function LoginPage() {
                 <a href="#" className="social giris-a"><i className="fab fa-google-plus-g" /></a>
               </div>
               <span className='text-xs'>ya da hesabını kullanabilirsin</span>
-              <input className='input' type="email" placeholder="Email" />
-              <input className='input' type="password" placeholder="Şifre" />
+              <input className='input placeholder:opacity-50' type="email" placeholder="Email" />
+              <input className='input placeholder:opacity-50' type="password" placeholder="Şifre" />
               <a className='giris-a hover:text-sea_green' href="#">Şifreni mi unuttun?</a>
               <button className='button'>GİRİŞ YAP</button>
             </form>
