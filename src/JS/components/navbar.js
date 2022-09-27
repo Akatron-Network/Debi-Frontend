@@ -1,6 +1,5 @@
 import React from 'react'
 import debi_logo from '../../img/icon2.png';
-import { Button, Paper, Text, Group, CloseButton } from '@mantine/core';
 
 export default function Navbar() {
 
@@ -23,7 +22,9 @@ export default function Navbar() {
 
 
           <div className="col-span-1 items-center flex justify-center">
-            <img className='h-11 max-h-11' src={debi_logo} alt='DeBI Logo' />
+            <button>
+              <a href="/"><img className='h-11 max-h-11' src={debi_logo} alt='DeBI Logo' /></a>
+            </button>
           </div>
 
           <nav id='nav-right' className="col-span-2 flex items-center text-base justify-end">
@@ -44,14 +45,14 @@ export default function Navbar() {
      </div>
 
       <div id='menu_page' className="absolute top-11 w-64 bg-earie_black shadow-dropdown z-10 transition -translate-y-48 duration-300 right-0">
-        <button className="avatar new-elm flex items-center border-b border-solid border-hr_gray">
+        <a className="avatar new-elm flex items-center border-b border-solid border-hr_gray" href="/ayarlar">
           <div className="h-full mask mask-squircle w-1/5">
             <img src="https://placeimg.com/192/192/people" />
           </div>
           <span className='w-4/5 truncate pl-2'>
             Hakan Temur
           </span>
-        </button>
+        </a>
         <label className="swap swap-rotate new-elm items-center justify-start flex transition duration-500">
           <input type="checkbox" />
           <i className="fa-solid fa-sun swap-on fill-current w-1/5 text-center text-lg"></i>
