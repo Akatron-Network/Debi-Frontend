@@ -1,4 +1,5 @@
 import React from "react";
+import Deneme from '../pages/Deneme'
 import { WidthProvider, Responsive } from "react-grid-layout";
 import '../../../node_modules/react-resizable/css/styles.css';
 import '../../../node_modules/react-grid-layout/css/styles.css';
@@ -49,19 +50,19 @@ export default class ResponsiveLocalStorageLayout extends React.PureComponent {
           isBounded={true}
           {...this.props}
         >
-          <div className="bg-gray-800" key="1" data-grid={{ w: 2, h: 3, x: 0, y: 0, minW: 2, minH: 3 }}>
-            <span className="text">1</span>
+          <div className="bg-gray-800" key="1" data-grid={{ w: 2, h: 3, x: 0, y: 0}}>
+            <span className="text"><Deneme /></span>
           </div>
-          <div className="bg-gray-800" key="2" data-grid={{ w: 2, h: 3, x: 2, y: 0, minW: 2, minH: 3 }}>
+          <div className="bg-gray-800" key="2" data-grid={{ w: 2, h: 3, x: 2, y: 0}}>
             <span className="text">2</span>
           </div>
-          <div className="bg-gray-800" key="3" data-grid={{ w: 2, h: 3, x: 4, y: 0, minW: 2, minH: 3 }}>
+          <div className="bg-gray-800" key="3" data-grid={{ w: 2, h: 3, x: 4, y: 0}}>
             <span className="text">3</span>
           </div>
-          <div className="bg-gray-800" key="4" data-grid={{ w: 2, h: 3, x: 6, y: 0, minW: 2, minH: 3 }}>
+          <div className="bg-gray-800" key="4" data-grid={{ w: 2, h: 3, x: 6, y: 0}}>
             <span className="text">4</span>
           </div>
-          <div className="bg-gray-800" key="5" data-grid={{ w: 2, h: 3, x: 8, y: 0, minW: 2, minH: 3 }}>
+          <div className="bg-gray-800" key="5" data-grid={{ w: 2, h: 3, x: 8, y: 0}}>
             <span className="text">5</span>
           </div>
         </ResponsiveReactGridLayout>

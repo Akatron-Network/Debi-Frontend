@@ -12,7 +12,6 @@ export default function MainPage() {
         <Sidebar />
         <Filepath />
         <Collections />
-        <DragResizePanels />
     </div>
   )
 }

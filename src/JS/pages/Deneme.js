@@ -1,67 +1,36 @@
-import React from 'react'
-import * as echarts from '../../../node_modules/echarts/core';
+import React from 'react';
+import ReactECharts from 'echarts-for-react';
 
-export default function Deneme() {
-  
-  return (
-    <div id="chart-container" className='relative h-screen overflow-hidden'>
-      <button className='btn' onClick={a}>BUTON</button>
-    </div>
-  )
+const Page: React.FC = () => {
+  const options = {
+    legend: {
+      orient: "vertical",
+      left: "left",
+      data: ["Apple", "Grapes", "Pineapples", "Oranges", "Bananas"]
+    },
+    series: [{
+      type: "pie",
+      roseType: false,
+      data: [{
+        value: 335,
+        name: "Apple"
+      }, {
+        value: 310,
+        name: "Grapes"
+      }, {
+        value: 234,
+        name: "Pineapples"
+      }, {
+        value: 135,
+        name: "Oranges"
+      }, {
+        value: 1548,
+        name: "Bananas"
+      }]
+    }]
+  };
 
-  function a() {
-    var dom = document.getElementById('chart-container');
-    var myChart = echarts.init(dom, 'dark', {
-      renderer: 'svg',
-      useDirtyRect: false
-    });
-    var app = {};
+  return <ReactECharts className='!h-full flex' option={options} />;
+};
 
-    var option;
-
-    option = {
-      tooltip: {
-        trigger: 'axis',
-        axisPointer: {
-          type: 'shadow'
-        }
-      },
-      grid: {
-        left: '3%',
-        right: '4%',
-        bottom: '3%',
-        containLabel: true
-      },
-      xAxis: [
-        {
-          type: 'category',
-          data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
-          axisTick: {
-            alignWithLabel: true
-          }
-        }
-      ],
-      yAxis: [
-        {
-          type: 'value'
-        }
-      ],
-      series: [
-        {
-          name: 'Direct',
-          type: 'bar',
-          barWidth: '60%',
-          data: [10, 52, 200, 334, 390, 330, 220]
-        }
-      ]
-    };
-
-
-    if (option && typeof option === 'object') {
-      myChart.setOption(option);
-    }
-
-    window.addEventListener('resize', myChart.resize);
-  }
-
-}
+export default Page;
