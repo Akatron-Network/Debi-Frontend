@@ -50,19 +50,19 @@ export default class ResponsiveLocalStorageLayout extends React.PureComponent {
           isBounded={true}
           {...this.props}
         >
-          <div className="bg-gray-800" key="1" data-grid={{ w: 2, h: 3, x: 0, y: 0}}>
+          <div className="panels" key="1" data-grid={{ w: 5, h: 8, x: 0, y: 0, minW: 5, minH: 8}}>
             <span className="text"><Deneme /></span>
           </div>
-          <div className="bg-gray-800" key="2" data-grid={{ w: 2, h: 3, x: 2, y: 0}}>
+          <div className="panels" key="2" data-grid={{ w: 2, h: 3, x: 2, y: 0, minW: 4, minH: 6}}>
             <span className="text">2</span>
           </div>
-          <div className="bg-gray-800" key="3" data-grid={{ w: 2, h: 3, x: 4, y: 0}}>
+          <div className="panels" key="3" data-grid={{ w: 2, h: 3, x: 4, y: 0, minW: 4, minH: 6}}>
             <span className="text">3</span>
           </div>
-          <div className="bg-gray-800" key="4" data-grid={{ w: 2, h: 3, x: 6, y: 0}}>
+          <div className="panels" key="4" data-grid={{ w: 2, h: 3, x: 6, y: 0, minW: 4, minH: 6}}>
             <span className="text">4</span>
           </div>
-          <div className="bg-gray-800" key="5" data-grid={{ w: 2, h: 3, x: 8, y: 0}}>
+          <div className="panels" key="5" data-grid={{ w: 2, h: 3, x: 8, y: 0, minW: 4, minH: 6}}>
             <span className="text">5</span>
           </div>
         </ResponsiveReactGridLayout>

@@ -22,9 +22,10 @@ module.exports = {
           earie_black: "#1F1F1F",
           darkest_jet: "#202020",
           darker_jet: "#232323",
-          jet: "#292929",
           jet_shadow: "#292929d4",
+          jet: "#292929",
           jet_mid: "#2E2E2E",
+          jet_glass: '#2E2E2E6B',
           jet_light: "#333333",
           hr_gray: "#4950573d",
           onyx: "#3D3D3D",
@@ -85,7 +86,11 @@ module.exports = {
     },
   },
 
-  plugins: [require("daisyui")],
+  plugins: [
+    require("daisyui"),
+    require('tailwindcss'),
+    require('autoprefixer'),
+  ],
   
 
 };

@@ -7,7 +7,10 @@
     font-family: 'Cabin', sans-serif;
     background-color: var(--darkest-jet) !important;
   }
-  
+}
+
+@layer components {
+
   .tooltip:before{
     background-color: #0b0b0b !important;
   }
@@ -38,9 +41,6 @@
   .round {
     border-radius: 50% !important;
   }
-}
-
-@layer components {
 
   .nav-btn {
     @apply
@@ -432,7 +432,11 @@
 
   .panels {
     @apply
-      bg-
+      bg-jet_glass
+      rounded-xl
+      backdrop-blur-[18px]
+      shadow-lg
+      /* -webkit-backdrop-filter: blur(18px); */
   }
   /*! -------------------------------------------------------------  */
 
