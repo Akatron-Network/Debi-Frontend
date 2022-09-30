@@ -3,7 +3,7 @@ import AllRoutes from './components/Routes';
 
 function App() {
   return (
-    <div className="App h-screen">
+    <div className="App">
       <AllRoutes />
     </div>
   );

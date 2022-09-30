@@ -1,5 +1,7 @@
 import React from "react";
-import Deneme from '../pages/Deneme'
+import PieChart from '../charts/PieChart'
+import BasicLineCharts from '../charts/BasicLineCharts'
+import StackedLineCharts from '../charts/StackedLineCharts'
 import { WidthProvider, Responsive } from "react-grid-layout";
 import '../../../node_modules/react-resizable/css/styles.css';
 import '../../../node_modules/react-grid-layout/css/styles.css';
@@ -50,20 +52,25 @@ export default class ResponsiveLocalStorageLayout extends React.PureComponent {
           isBounded={true}
           {...this.props}
         >
-          <div className="panels" key="1" data-grid={{ w: 5, h: 8, x: 0, y: 0, minW: 5, minH: 8}}>
-            <span className="text"><Deneme /></span>
+          <div className="panels" key="1" data-grid={{ w: 4, h: 10, x: 0, y: 0, minW: 4,  minH: 8}}>
+            <h1 className="panels-title">Pie Charts</h1>
+            <span><PieChart /></span>
           </div>
-          <div className="panels" key="2" data-grid={{ w: 2, h: 3, x: 2, y: 0, minW: 4, minH: 6}}>
-            <span className="text">2</span>
+          <div className="panels" key="2" data-grid={{ w: 4, h: 10, x: 4, y: 0, minW: 4,  minH: 8}}>
+            <h1 className="panels-title">Basic Line Charts</h1>
+            <span><BasicLineCharts /></span>
           </div>
-          <div className="panels" key="3" data-grid={{ w: 2, h: 3, x: 4, y: 0, minW: 4, minH: 6}}>
-            <span className="text">3</span>
+          <div className="panels" key="3" data-grid={{ w: 4, h: 10, x: 8, y: 0, minW: 4,  minH: 8}}>
+            <h1 className="panels-title">Stacked Line Charts</h1>
+            <span><StackedLineCharts /></span>
           </div>
-          <div className="panels" key="4" data-grid={{ w: 2, h: 3, x: 6, y: 0, minW: 4, minH: 6}}>
-            <span className="text">4</span>
+          <div className="panels" key="4" data-grid={{ w: 4, h: 10, x: 0, y: 0, minW: 4,  minH: 8}}>
+            <h1 className="panels-title">4. Numaralı Grafik</h1>
+            <span></span>
           </div>
-          <div className="panels" key="5" data-grid={{ w: 2, h: 3, x: 8, y: 0, minW: 4, minH: 6}}>
-            <span className="text">5</span>
+          <div className="panels" key="5" data-grid={{ w: 4, h: 10, x: 4, y: 0, minW: 4,  minH: 8}}>
+            <h1 className="panels-title">5. Numaralı Grafik</h1>
+            <span></span>
           </div>
         </ResponsiveReactGridLayout>
       </div>

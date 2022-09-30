@@ -438,6 +438,15 @@
       shadow-lg
       /* -webkit-backdrop-filter: blur(18px); */
   }
+
+  .panels-title {
+    @apply
+      pt-3
+      px-6
+      text-xl
+      absolute
+      text-cultured
+  }
   /*! -------------------------------------------------------------  */
 
 }
