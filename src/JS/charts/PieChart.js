@@ -25,15 +25,23 @@ const Page: React.FC = () => {
 
     tooltip: {
       show: true,
+      backgroundColor: "#B9B9B9",
+      borderColor: "#858585",
       textStyle: {
-        color: "#3D3D3D",
+        color: "#292929",
         fontFamily: "cabin",
         fontSize: 15,
-      }
+      },
+    },
+
+    grid: {
+      left: '4%',
+      right: '4%',
+      bottom: '4%',
+      containLabel: true
     },
 
     series: [{
-
       left: "0%",
       width: '88%',
       selectedMode: "multiple",

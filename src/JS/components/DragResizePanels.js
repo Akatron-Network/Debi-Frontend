@@ -1,7 +1,12 @@
 import React from "react";
+
 import PieChart from '../charts/PieChart'
 import BasicLineCharts from '../charts/BasicLineCharts'
+import AxisAlignWithTick from '../charts/AxisAlignWithTick'
 import StackedLineCharts from '../charts/StackedLineCharts'
+import TemperatureGauge from '../charts/TemperatureGauge'
+import BarLabelRotation from '../charts/BarLabelRotation'
+
 import { WidthProvider, Responsive } from "react-grid-layout";
 import '../../../node_modules/react-resizable/css/styles.css';
 import '../../../node_modules/react-grid-layout/css/styles.css';
@@ -65,13 +70,18 @@ export default class ResponsiveLocalStorageLayout extends React.PureComponent {
             <span><StackedLineCharts /></span>
           </div>
           <div className="panels" key="4" data-grid={{ w: 4, h: 10, x: 0, y: 0, minW: 4,  minH: 8}}>
-            <h1 className="panels-title">4. Numaralı Grafik</h1>
-            <span></span>
+            <h1 className="panels-title">Axis Align With Tick</h1>
+            <span><AxisAlignWithTick /></span>
           </div>
           <div className="panels" key="5" data-grid={{ w: 4, h: 10, x: 4, y: 0, minW: 4,  minH: 8}}>
-            <h1 className="panels-title">5. Numaralı Grafik</h1>
-            <span></span>
+            <h1 className="panels-title">Bar Label Rotation</h1>
+            <span><BarLabelRotation /></span>
           </div>
+          <div className="panels" key="6" data-grid={{ w: 4, h: 10, x: 8, y: 0, minW: 4,  minH: 8}}>
+            <h1 className="panels-title">Temperature Gauge</h1>
+            <span><TemperatureGauge /></span>
+          </div>
+          
         </ResponsiveReactGridLayout>
       </div>
     );
