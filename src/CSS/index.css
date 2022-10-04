@@ -432,11 +432,9 @@
 
   .panels {
     @apply
-      bg-jet_glass
-      rounded-xl
-      backdrop-blur-[18px]
-      shadow-lg
-      /* -webkit-backdrop-filter: blur(18px); */
+      rounded-[0.25rem]
+      bg-middle_black
+      shadow-md
   }
 
   .panels-title {

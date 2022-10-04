@@ -4,6 +4,25 @@ import ReactECharts from 'echarts-for-react';
 const Page: React.FC = () => {
   const options = {
 
+    tooltip: {
+      show: true,
+      backgroundColor: "#3D3D3D",
+      borderColor: "#333333",
+      textStyle: {
+        color: "#EBEBEB",
+        fontFamily: "cabin",
+        fontSize: 15,
+      },
+    },
+
+    grid: {
+      left: '4%',
+      right: '4%',
+      bottom: '4%',
+      top:'10%',
+      containLabel: true
+    },
+
     legend: {
       orient: "vertical",
       type: "scroll",
@@ -21,24 +40,6 @@ const Page: React.FC = () => {
         overflow: "truncate",
         fontSize: 13,
       }
-    },
-
-    tooltip: {
-      show: true,
-      backgroundColor: "#B9B9B9",
-      borderColor: "#858585",
-      textStyle: {
-        color: "#292929",
-        fontFamily: "cabin",
-        fontSize: 15,
-      },
-    },
-
-    grid: {
-      left: '4%',
-      right: '4%',
-      bottom: '4%',
-      containLabel: true
     },
 
     series: [{

@@ -57,27 +57,27 @@ export default class ResponsiveLocalStorageLayout extends React.PureComponent {
           isBounded={true}
           {...this.props}
         >
-          <div className="panels" key="1" data-grid={{ w: 4, h: 10, x: 0, y: 0, minW: 4,  minH: 8}}>
+          <div className="panels" key="1" data-grid={{ w: 4, h: 10, x: 0, y: 0, minW: 3,  minH: 7}}>
             <h1 className="panels-title">Pie Charts</h1>
             <span><PieChart /></span>
           </div>
-          <div className="panels" key="2" data-grid={{ w: 4, h: 10, x: 4, y: 0, minW: 4,  minH: 8}}>
+          <div className="panels" key="2" data-grid={{ w: 4, h: 10, x: 4, y: 0, minW: 2,  minH: 5}}>
             <h1 className="panels-title">Basic Line Charts</h1>
             <span><BasicLineCharts /></span>
           </div>
-          <div className="panels" key="3" data-grid={{ w: 4, h: 10, x: 8, y: 0, minW: 4,  minH: 8}}>
+          <div className="panels" key="3" data-grid={{ w: 4, h: 10, x: 8, y: 0, minW: 2,  minH: 7}}>
             <h1 className="panels-title">Stacked Line Charts</h1>
             <span><StackedLineCharts /></span>
           </div>
-          <div className="panels" key="4" data-grid={{ w: 4, h: 10, x: 0, y: 0, minW: 4,  minH: 8}}>
+          <div className="panels" key="4" data-grid={{ w: 4, h: 10, x: 0, y: 0, minW: 2,  minH: 5}}>
             <h1 className="panels-title">Axis Align With Tick</h1>
             <span><AxisAlignWithTick /></span>
           </div>
-          <div className="panels" key="5" data-grid={{ w: 4, h: 10, x: 4, y: 0, minW: 4,  minH: 8}}>
+          <div className="panels" key="5" data-grid={{ w: 4, h: 10, x: 4, y: 0, minW: 2,  minH: 7}}>
             <h1 className="panels-title">Bar Label Rotation</h1>
             <span><BarLabelRotation /></span>
           </div>
-          <div className="panels" key="6" data-grid={{ w: 4, h: 10, x: 8, y: 0, minW: 4,  minH: 8}}>
+          <div className="panels" key="6" data-grid={{ w: 4, h: 10, x: 8, y: 0, minW: 3,  minH: 8}}>
             <h1 className="panels-title">Temperature Gauge</h1>
             <span><TemperatureGauge /></span>
           </div>

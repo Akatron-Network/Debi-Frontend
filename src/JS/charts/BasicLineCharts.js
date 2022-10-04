@@ -4,6 +4,36 @@ import ReactECharts from 'echarts-for-react';
 const Page: React.FC = () => {
   const options = {
 
+    tooltip: {
+      show: true,
+      backgroundColor: "#3D3D3D",
+      borderColor: "#333333",
+      textStyle: {
+        color: "#EBEBEB",
+        fontFamily: "cabin",
+        fontSize: 15,
+      },
+      trigger: "axis",
+      axisPointer: {
+        type: "cross",
+        label: {
+          color: "#14B85B",
+          fontFamily: "cabin",
+          fontSize: 15,
+          fontWeight: "bold",
+          backgroundColor: "#333333"
+        }
+      },
+    },
+
+    grid: {
+      left: '4%',
+      right: '4%',
+      bottom: '4%',
+      top:'10%',
+      containLabel: true
+    },
+
     xAxis: {
       type: 'category',
       data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
@@ -46,35 +76,6 @@ const Page: React.FC = () => {
         fontWeight: "bold",
         fontSize: 14,
       }
-    },
-
-    grid: {
-      left: '4%',
-      right: '4%',
-      bottom: '4%',
-      containLabel: true
-    },
-
-    tooltip: {
-      show: true,
-      backgroundColor: "#B9B9B9",
-      borderColor: "#858585",
-      textStyle: {
-        color: "#292929",
-        fontFamily: "cabin",
-        fontSize: 15,
-      },
-      trigger: "axis",
-      axisPointer: {
-        type: "cross",
-        label: {
-          color: "#14B85B",
-          fontFamily: "cabin",
-          fontSize: 15,
-          fontWeight: "bold",
-          backgroundColor: "#333333"
-        }
-      },
     },
 
     series: [{

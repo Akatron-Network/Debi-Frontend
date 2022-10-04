@@ -17,8 +17,10 @@ module.exports = {
           shadow_green: "#1A6C3D66",
 
         //* DARK COLORS
+          modal_back: "#0C0C0CBF",
           black_light: "#151515",
           side_black: "#181818",
+          middle_black: "#1B1B1B",
           earie_black: "#1F1F1F",
           darkest_jet: "#202020",
           darker_jet: "#232323",
@@ -29,6 +31,7 @@ module.exports = {
           jet_light: "#333333",
           hr_gray: "#4950573d",
           onyx: "#3D3D3D",
+          onyx_middle: "#606060",
           onyx_light: "#767676",
 
         //* LIGHT COLORS

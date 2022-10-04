@@ -6,10 +6,10 @@ const Page: React.FC = () => {
 
     tooltip: {
       show: true,
-      backgroundColor: "#B9B9B9",
-      borderColor: "#858585",
+      backgroundColor: "#3D3D3D",
+      borderColor: "#333333",
       textStyle: {
-        color: "#292929",
+        color: "#EBEBEB",
         fontFamily: "cabin",
         fontSize: 15,
       },
@@ -24,6 +24,14 @@ const Page: React.FC = () => {
           backgroundColor: "#333333"
         }
       },
+    },
+
+    grid: {
+      left: '4%',
+      right: '4%',
+      bottom: '4%',
+      top:'14%',
+      containLabel: true
     },
 
     legend: {
@@ -41,13 +49,6 @@ const Page: React.FC = () => {
         overflow: "truncate",
         fontSize: 13,
       }
-    },
-
-    grid: {
-      left: '4%',
-      right: '4%',
-      bottom: '4%',
-      containLabel: true
     },
 
     xAxis: {

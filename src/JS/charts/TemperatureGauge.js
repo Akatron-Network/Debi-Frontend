@@ -3,7 +3,17 @@ import ReactECharts from 'echarts-for-react';
 
 const Page: React.FC = () => {
   const options = {
+  
+    grid: {
+      left: '4%',
+      right: '4%',
+      bottom: '4%',
+      top: '10%',
+      containLabel: true
+    },
+
     series: [
+      
       {
         type: 'gauge',
         center: ['50%', '60%'],
@@ -13,40 +23,42 @@ const Page: React.FC = () => {
         max: 60,
         splitNumber: 12,
         itemStyle: {
-          color: '#FFAB91'
+          color: '#20834B'
         },
         progress: {
           show: true,
-          width: 30
+          width: 25
         },
         pointer: {
           show: false
         },
         axisLine: {
           lineStyle: {
-            width: 30
+            width: 25,
+            color:[[1, '#858585']]
           }
         },
         axisTick: {
-          distance: -45,
+          distance: -38,
           splitNumber: 5,
           lineStyle: {
             width: 2,
-            color: '#999'
+            color: '#B9B9B9'
           }
         },
         splitLine: {
-          distance: -52,
+          distance: -45,
           length: 14,
           lineStyle: {
             width: 3,
-            color: '#999'
+            color: '#B9B9B9'
           }
         },
         axisLabel: {
           distance: -20,
-          color: '#999',
-          fontSize: 20
+          color: '#B9B9B9',
+          fontSize: 18,
+          fontFamily: "cabin",
         },
         anchor: {
           show: false
@@ -56,12 +68,12 @@ const Page: React.FC = () => {
         },
         detail: {
           valueAnimation: true,
-          width: '60%',
+          width: '70%',
           lineHeight: 40,
           borderRadius: 8,
           offsetCenter: [0, '-15%'],
-          fontSize: 60,
-          fontWeight: 'bolder',
+          fontSize: 50,
+          fontFamily: "cabin",
           formatter: '{value} °C',
           color: 'auto'
         },
@@ -71,6 +83,7 @@ const Page: React.FC = () => {
           }
         ]
       },
+
       {
         type: 'gauge',
         center: ['50%', '60%'],
@@ -79,7 +92,7 @@ const Page: React.FC = () => {
         min: 0,
         max: 60,
         itemStyle: {
-          color: '#FD7347'
+          color: '#1A6C3D'
         },
         progress: {
           show: true,
@@ -89,7 +102,10 @@ const Page: React.FC = () => {
           show: false
         },
         axisLine: {
-          show: false
+          lineStyle: {
+            width: 8,
+            color:[[1, '#606060']]
+          }
         },
         axisTick: {
           show: false
