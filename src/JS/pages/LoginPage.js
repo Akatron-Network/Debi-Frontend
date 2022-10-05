@@ -8,7 +8,7 @@ export default function LoginPage() {
       <ParticlesComponent />
 
       <div className='flex flex-col items-center justify-center bg-darkest_jet h-screen overflow-hidden'>
-        <div className="shadow-loginContainer h-[60%] rounded-lg relative overflow-hidden w-[768px] max-w-full min-h-[480px] bg-darker_jet" id="container">
+        <div className="shadow-loginContainer h-[60%] rounded relative overflow-hidden w-[768px] max-w-full min-h-[480px] bg-darker_jet" id="container">
           <div className="form-container left-0 w-1/2 opacity-0 z-1" id='sign-up-container'>
             <form className='form' action="#">
               <h1 className='font-bold m-0 text-[2.5rem]'>Hesap Oluştur</h1>

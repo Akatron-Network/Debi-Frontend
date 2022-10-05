@@ -42,26 +42,26 @@ export default function Navbar() {
     <div id='new_elm_list' className="absolute top-11 w-48 bg-earie_black shadow-dropdown z-10 -translate-y-48 transition duration-300">
       <button className='new-elm'>&nbsp;<i className="far fa-file-alt" aria-hidden="true"></i> &nbsp;Yeni Sayfa</button>
       <button className='new-elm'>&nbsp;<i className="fas fa-columns" aria-hidden="true"></i> &nbsp;Yeni Panel</button>
-     </div>
+    </div>
 
-      <div id='menu_page' className="absolute top-11 w-64 bg-earie_black shadow-dropdown z-10 transition -translate-y-48 duration-300 right-0">
-        <a className="avatar new-elm flex items-center border-b border-solid border-hr_gray" href="/ayarlar">
-          <div className="h-full mask mask-squircle w-1/5">
-            <img src="https://placeimg.com/192/192/people" />
-          </div>
-          <span className='w-4/5 truncate pl-2'>
-            Hakan Temur
-          </span>
-        </a>
-        <label className="swap swap-rotate new-elm items-center justify-start flex transition duration-500">
-          <input type="checkbox" />
-          <i className="fa-solid fa-sun swap-on fill-current w-1/5 text-center text-lg"></i>
-          <i className="fa-solid fa-moon swap-off fill-current absolute text-center translate-x-[15px] text-lg"></i>
-          <span className='w-4/5 pl-2'>Açık/Koyu Tema</span>
-        </label>
-        <button className='new-elm'><i className="fa-solid fa-right-from-bracket w-1/5 text-center text-lg"></i><span className='w-4/5 pl-2'>Çıkış Yap</span></button>
-        
-      </div>
+    <div id='menu_page' className="absolute top-11 w-64 bg-earie_black shadow-dropdown z-10 transition -translate-y-48 duration-300 right-0">
+      <a className="avatar new-elm flex items-center border-b border-solid border-hr_gray" href="/ayarlar">
+        <div className="h-full mask mask-squircle w-1/5">
+          <img src="https://placeimg.com/192/192/people" />
+        </div>
+        <span className='w-4/5 truncate pl-2'>
+          Hakan Temur
+        </span>
+      </a>
+      <label className="swap swap-rotate new-elm items-center justify-start flex transition duration-500">
+        <input type="checkbox" />
+        <i className="fa-solid fa-sun swap-on fill-current w-1/5 text-center text-lg"></i>
+        <i className="fa-solid fa-moon swap-off fill-current absolute text-center translate-x-[15px] text-lg"></i>
+        <span className='w-4/5 pl-2'>Açık/Koyu Tema</span>
+      </label>
+      <button className='new-elm'><i className="fa-solid fa-right-from-bracket w-1/5 text-center text-lg"></i><span className='w-4/5 pl-2'>Çıkış Yap</span></button>
+      
+    </div>
 
    </>
 

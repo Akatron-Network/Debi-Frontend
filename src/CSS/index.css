@@ -201,11 +201,9 @@
     @apply
       bg-jet_mid
       text-grayXgray
-      py-3
       px-[15px]
       my-2
       mx-0
-      w-full
       border-[1px]
       border-transparent
       rounded
@@ -213,6 +211,8 @@
       focus:text-platinium
       focus:border-onyx_light
       focus:outline-none
+      placeholder:opacity-50
+      h-10
   }
 
   .button {
@@ -432,7 +432,7 @@
 
   .panels {
     @apply
-      rounded-[0.25rem]
+      rounded
       bg-middle_black
       shadow-md
   }
@@ -447,9 +447,130 @@
   }
   /*! -------------------------------------------------------------  */
 
+  /*! MODAL CREATE-------------------------------------------------  */
+
+
+
+  /* TABLE------------------------------------- */
+  #source_table thead tr th {
+    @apply
+      bg-side_black
+      text-grayXgray
+      pt-[20px]
+      pb-[15px]
+  }
+
+  #source_table tbody tr{
+    @apply
+      bg-darkest_jet
+      text-grayXgray
+      transition
+      duration-300
+      hover:bg-jet
+      hover:text-platinium
+  }
+  
+  .table :where(tbody th, tbody td) {
+    @apply
+      bg-transparent
+  }
+  
+  .table :where(th, td) {
+    @apply
+      py-[6px]
+  }
+
+  :where(.table *:first-child) :where(*:first-child) :where(th, td):first-child {
+    @apply
+      rounded-tl-none
+  }
+  :where(.table *:first-child) :where(*:first-child) :where(th, td):last-child {
+    @apply
+      rounded-tr-none
+  }
+  :where(.table *:last-child) :where(*:last-child) :where(th, td):first-child {
+    @apply
+      rounded-bl-none
+  }
+  :where(.table *:last-child) :where(*:last-child) :where(th, td):last-child {
+    @apply
+      rounded-br-none
+  }
+  /* ------------------------------------------ */
+
+
+
+  /*! -------------------------------------------------------------  */
+  
+  
+  
+  
+  .green-btn {
+    @apply
+      btn
+      font-righteous
+      bg-cadmium_green
+      rounded
+      text-grayXgray
+      transition-all
+      duration-300
+      hover:bg-green_pantone
+      hover:text-platinium
+      normal-case
+      text-base
+      px-3
+      font-light
+      leading-none
+      h-10
+      min-h-[40px]
+      shadow-md
+  }
+
+  .gray-btn {
+    @apply
+      btn
+      font-righteous
+      bg-onyx
+      rounded
+      text-grayXgray
+      transition-all
+      duration-300
+      hover:bg-onyx_light
+      hover:text-platinium
+      normal-case
+      text-base
+      px-3
+      font-light
+      leading-none
+      h-10
+      min-h-[40px]
+      shadow-md
+  }
 }
 
 
 @layer utulities {
+  ::-webkit-scrollbar {
+    width: 12px;
+    height: 12px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: #292929;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background-color: #1B1B1B;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    background-clip: content-box;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background-color: #181818;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    background-clip: content-box;
+  }
 
 }
