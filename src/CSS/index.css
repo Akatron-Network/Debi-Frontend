@@ -468,6 +468,7 @@
       duration-300
       hover:bg-jet
       hover:text-platinium
+      cursor-pointer
   }
   
   .table :where(tbody th, tbody td) {
@@ -478,6 +479,7 @@
   .table :where(th, td) {
     @apply
       py-[6px]
+      border-side_black
   }
 
   :where(.table *:first-child) :where(*:first-child) :where(th, td):first-child {

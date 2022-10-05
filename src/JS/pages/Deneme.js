@@ -30,7 +30,7 @@ export default function Deneme() {
             </div>
             
 
-            <div id="source_table" className='max-h-[230px] overflow-auto z-1 left-3 right-3 mt-[-5px] w-[calc(100%_-_1.5rem)] bg-black_light shadow-md rounded absolute border border-jet_mid border-r-0 opacity-0 transition duration-300 -translate-y-10'>
+            <div id="source_table" className='max-h-[230px] overflow-auto z-1 left-3 right-3 mt-[-5px] w-[calc(100%_-_1.5rem)] bg-black_light shadow-lg rounded absolute border border-jet_mid border-r-0 opacity-0 transition duration-300 -translate-y-16 hidden'>
               <div className="overflow-x-auto rounded">
                 <table className="table w-full">
                   <thead>
@@ -101,6 +101,21 @@ export default function Deneme() {
               </div>
             </div>
 
+            <div className='w-full h-96 bg-darker_jet mt-2 rounded shadow-md relative grid grid-cols-6 gap-2 p-2 overflow-auto border border-jet_mid border-r-0'>
+
+              <div onMouseEnter={() => hey(1)} onMouseLeave={() => hey(1)} className="relative lg:col-span-2 md:col-span-3 col-span-2 bg-side_black rounded shadow-md h-32 ">
+                <div id="card_s_tbl_1" className='absolute bg-red-500 h-full w-full'></div>
+              </div>
+
+              <div id="card_s_tbl_2" className='lg:col-span-2 md:col-span-3 col-span-2 bg-side_black rounded shadow-md h-32'></div>
+              <div id="card_s_tbl_3" className='lg:col-span-2 md:col-span-3 col-span-2 bg-side_black rounded shadow-md h-32'></div>
+              <div id="card_s_tbl_4" className='lg:col-span-2 md:col-span-3 col-span-2 bg-side_black rounded shadow-md h-32'></div>
+              <div id="card_s_tbl_5" className='lg:col-span-2 md:col-span-3 col-span-2 bg-side_black rounded shadow-md h-32'></div>
+              <div id="card_s_tbl_6" className='lg:col-span-2 md:col-span-3 col-span-2 bg-side_black rounded shadow-md h-32'></div>
+              <div id="card_s_tbl_7" className='lg:col-span-2 md:col-span-3 col-span-2 bg-side_black rounded shadow-md h-32'></div>
+              <div id="card_s_tbl_8" className='lg:col-span-2 md:col-span-3 col-span-2 bg-side_black rounded shadow-md h-32'></div>
+            </div>
+
           </div>
 
           <div className="md:col-span-3 col-span-5 bg-middle_black p-3 rounded shadow-md relative h-full">
@@ -118,10 +133,43 @@ export default function Deneme() {
 
     </>
   )
+}
 
-  function source_table() {
+function hey(id) {
+    document.getElementById('card_s_tbl_' + id).classList.toggle('h-24')
+    document.getElementById('card_s_tbl_' + id).classList.toggle('w-24')
+  console.log("a")
+}
 
-      document.getElementById('source_table').classList.toggle('-translate-y-10')
-      document.getElementById('source_table').classList.toggle('opacity-0')
-  }
+function source_table() {
+
+  let source_table = document.getElementById('source_table');
+
+  if (source_table.classList.contains('opacity-0')) { open_s_tbl() } else { close_s_tbl() }
+}
+
+function open_s_tbl() {
+
+  let source_table = document.getElementById('source_table');
+
+  source_table.classList.toggle('hidden');
+
+  setTimeout(function(){
+    source_table.classList.toggle('-translate-y-16');
+    source_table.classList.toggle('opacity-0');
+  }, 1);
+
+}
+
+function close_s_tbl() {
+
+  let source_table = document.getElementById('source_table');
+
+  setTimeout(function(){
+    source_table.classList.toggle('hidden');
+  }, 300);
+  
+  source_table.classList.toggle('-translate-y-16');
+  source_table.classList.toggle('opacity-0');
+
 }
