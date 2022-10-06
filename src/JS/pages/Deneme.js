@@ -101,22 +101,21 @@ export default function Deneme() {
               </div>
             </div>
 
-            <div className='w-full h-96 bg-darker_jet mt-2 rounded shadow-md relative grid grid-cols-6 gap-2 p-2 overflow-auto border border-jet_mid border-r-0'>
+            <div className='w-full h-96 bg-darker_jet mt-2 rounded shadow-md relative grid grid-cols-6 grid-flow-row auto-rows-max gap-2 p-2 overflow-auto border border-jet_mid border-r-0'>
 
-              <div onMouseEnter={() => hey(1)} onMouseLeave={() => hey(1)} className="relative lg:col-span-2 md:col-span-3 col-span-2 bg-side_black rounded shadow-md h-32 ">
-                <div id="card_s_tbl_1" className='absolute bg-red-500 h-full w-full'></div>
-              </div>
+              <div onMouseEnter={() => hey(1)} id='card_elm_1' className="relative col-span-2 bg-side_black rounded shadow-md h-[70px]"></div>
+              <div onMouseEnter={() => hey(2)} id='card_elm_2' className="relative col-span-2 bg-side_black rounded shadow-md h-[70px]"></div>
+              <div onMouseEnter={() => hey(3)} id='card_elm_3' className="relative col-span-2 bg-side_black rounded shadow-md h-[70px]"></div>
+              <div onMouseEnter={() => hey(4)} id='card_elm_4' className="relative col-span-2 bg-side_black rounded shadow-md h-[70px]"></div>
+              <div onMouseEnter={() => hey(5)} id='card_elm_5' className="relative col-span-2 bg-side_black rounded shadow-md h-[70px]"></div>
+              <div onMouseEnter={() => hey(6)} id='card_elm_6' className="relative col-span-2 bg-side_black rounded shadow-md h-[70px]"></div>
+              <div onMouseEnter={() => hey(7)} id='card_elm_7' className="relative col-span-2 bg-side_black rounded shadow-md h-[70px]"></div>
+              <div onMouseEnter={() => hey(8)} id='card_elm_8' className="relative col-span-2 bg-side_black rounded shadow-md h-[70px]"></div>
 
-              <div id="card_s_tbl_2" className='lg:col-span-2 md:col-span-3 col-span-2 bg-side_black rounded shadow-md h-32'></div>
-              <div id="card_s_tbl_3" className='lg:col-span-2 md:col-span-3 col-span-2 bg-side_black rounded shadow-md h-32'></div>
-              <div id="card_s_tbl_4" className='lg:col-span-2 md:col-span-3 col-span-2 bg-side_black rounded shadow-md h-32'></div>
-              <div id="card_s_tbl_5" className='lg:col-span-2 md:col-span-3 col-span-2 bg-side_black rounded shadow-md h-32'></div>
-              <div id="card_s_tbl_6" className='lg:col-span-2 md:col-span-3 col-span-2 bg-side_black rounded shadow-md h-32'></div>
-              <div id="card_s_tbl_7" className='lg:col-span-2 md:col-span-3 col-span-2 bg-side_black rounded shadow-md h-32'></div>
-              <div id="card_s_tbl_8" className='lg:col-span-2 md:col-span-3 col-span-2 bg-side_black rounded shadow-md h-32'></div>
             </div>
 
           </div>
+          
 
           <div className="md:col-span-3 col-span-5 bg-middle_black p-3 rounded shadow-md relative h-full">
             <p className="">You've been selected for a chance to get one year of subscription to use Wikipedia for free!aaaaaaaaaaaaa aaaaaa</p>
@@ -125,6 +124,15 @@ export default function Deneme() {
               <button className='green-btn'>Kaydet</button>
             </div>
           </div>
+          
+          <div onMouseLeave={() => hey(1)} id="card_s_tbl_1" className='absolute bg-red-600 h-4 w-4 transition-all duration-500 rounded'></div>
+          <div onMouseLeave={() => hey(2)} id="card_s_tbl_2" className='absolute bg-red-600 h-4 w-4 transition-all duration-500 rounded'></div>
+          <div onMouseLeave={() => hey(3)} id="card_s_tbl_3" className='absolute bg-red-600 h-4 w-4 transition-all duration-500 rounded'></div>
+          <div onMouseLeave={() => hey(4)} id="card_s_tbl_4" className='absolute bg-red-600 h-4 w-4 transition-all duration-500 rounded'></div>
+          <div onMouseLeave={() => hey(5)} id="card_s_tbl_5" className='absolute bg-red-600 h-4 w-4 transition-all duration-500 rounded'></div>
+          <div onMouseLeave={() => hey(6)} id="card_s_tbl_6" className='absolute bg-red-600 h-4 w-4 transition-all duration-500 rounded'></div>
+          <div onMouseLeave={() => hey(7)} id="card_s_tbl_7" className='absolute bg-red-600 h-4 w-4 transition-all duration-500 rounded'></div>
+          <div onMouseLeave={() => hey(8)} id="card_s_tbl_8" className='absolute bg-red-600 h-4 w-4 transition-all duration-500 rounded'></div>
 
         </div>
       </div>
@@ -136,9 +144,34 @@ export default function Deneme() {
 }
 
 function hey(id) {
-    document.getElementById('card_s_tbl_' + id).classList.toggle('h-24')
-    document.getElementById('card_s_tbl_' + id).classList.toggle('w-24')
-  console.log("a")
+  var open_card = document.getElementById('card_s_tbl_' + id);
+  var card_elm = document.getElementById('card_elm_' + id).getBoundingClientRect();
+
+  console.log(open_card);
+  console.log(card_elm);
+
+  if(id !== 1) {
+
+    if(id % 3 === 1) {
+      open_card.style.left = '37px';
+    }
+    else if((id % 3 === 2)) {
+      open_card.style.left = ((1 * card_elm.width) + (1 * 8)) + 37 + 'px' ;
+    }
+    else if((id % 3 === 0)) {
+      open_card.style.left = ((2 * card_elm.width) + (2 * 8)) + 37 + 'px' ;
+    }
+    
+  }
+  else {
+
+    open_card.style.left = '37px';
+
+  }
+
+  open_card.style.top =  (card_elm.y - 40) + 'px';
+  open_card.classList.toggle('!h-[200px]');
+  open_card.classList.toggle('!w-[400px]');
 }
 
 function source_table() {

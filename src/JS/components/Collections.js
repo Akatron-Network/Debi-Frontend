@@ -6,8 +6,8 @@ export default function Collections() {
         <div className="py-[89px] pl-[100px] pr-[38px]">
           
           <h2 className="workspace-titles">Koleksiyonlar</h2>
-          <div className="flex flex-wrap flex-row">
-            <div className="col-card flex-1">
+          <div className="grid xl:grid-cols-8 grid-cols-2 grid-flow-col gap-2 ">
+            <div className="col-card md:col-span-1 col-span-2">
               <div className="card">
                 <button className="dlt-btn">
                   <i className="fa-solid fa-xmark"></i>
@@ -18,7 +18,7 @@ export default function Collections() {
                 </div>
               </div>
             </div>
-            <div className="col-card flex-1">
+            <div className="col-card md:col-span-1 col-span-2">
               <div className="card">
                 <button className="dlt-btn">
                   <i className="fa-solid fa-xmark"></i>
@@ -29,7 +29,7 @@ export default function Collections() {
                 </div>
               </div>
             </div>
-            <div className="col-card flex-1">
+            <div className="col-card md:col-span-1 col-span-2">
               <div className="card">
                 <button className="dlt-btn">
                   <i className="fa-solid fa-xmark"></i>
@@ -40,7 +40,7 @@ export default function Collections() {
                 </div>
               </div>
             </div>
-            <div id="addCollection" className="col-card add flex-1 xsm:grow-0">
+            <div id="addCollection" className="col-card add md:col-span-1 col-span-2 xsm:grow-0">
               <div className="card">
                 <div className="col-content">
                   <i className="fas fa-plus" style={{fontSize: '60px', color: 'var(--platinium)'}} />
