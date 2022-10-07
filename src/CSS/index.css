@@ -281,12 +281,13 @@
   /*!Collections-------------------------------------------------------- */
   .workspace-titles {
     @apply
-      mb-0
+      mb-5
       mt-4
       text-grayXgray
       text-[2rem]
       font-righteous
       pl-[10px]
+
   }
 
   .card {
@@ -327,7 +328,7 @@
       !bg-[url('/src/img/file-wp1.png')]
   }
 
-  .col-card {
+  /* .col-card {
     @apply
       max-w-[200px]
       min-w-[150px]
@@ -341,7 +342,7 @@
       min-w-[150px]
       mt-[25px]
       px-3
-  }
+  } */
 
   .fold-card .card {
     @apply
@@ -449,8 +450,6 @@
 
   /*! MODAL CREATE-------------------------------------------------  */
 
-
-
   /* TABLE------------------------------------- */
   #source_table thead tr th {
     @apply
@@ -469,6 +468,7 @@
       hover:bg-jet
       hover:text-platinium
       cursor-pointer
+      
   }
   
   .table :where(tbody th, tbody td) {
@@ -501,11 +501,68 @@
   /* ------------------------------------------ */
 
 
+  .modal {
+    @apply
+      duration-150
+  }
+
+  .elm_info_cards {
+    @apply
+      relative
+      col-span-2
+      bg-side_black
+      border border-jet_mid
+      hover:bg-middle_black
+      hover:border-onyx
+      rounded
+      shadow-md
+      h-[90px]
+      z-40
+      p-2
+      truncate
+      transition-all duration-150
+  }
+
+  .info_cards {
+    @apply
+      absolute
+      bg-side_black
+      shadow-md
+      border border-jet_mid
+      p-2
+      h-1
+      w-1
+      transition-all duration-500
+      rounded
+      overflow-hidden
+      z-1
+      truncate
+      opacity-0
+  }
+
+  .collapse_extra {
+    @apply
+    border
+    border-jet_mid
+    rounded
+    mb-2
+    bg-darker_jet
+    shadow-md
+    hover:bg-jet
+    transition-all
+    duration-300
+  }
+
+  .collapse-plus .collapse-title:after {
+    @apply
+      top-2
+  }
+
+  .collapse-open :where(.collapse-content), .collapse:focus:not(.collapse-close) :where(.collapse-content), .collapse:not(.collapse-close) :where(input[type="checkbox"]:checked ~ .collapse-content) {
+    padding-bottom: 0.5rem;
+  }
 
   /*! -------------------------------------------------------------  */
-  
-  
-  
   
   .green-btn {
     @apply
