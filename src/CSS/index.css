@@ -514,13 +514,16 @@
       border border-jet_mid
       hover:bg-middle_black
       hover:border-onyx
+      text-grayXgray
+      hover:text-platinium
       rounded
       shadow-md
-      h-[90px]
-      z-40
+      min-h-[90px]
+      z-10
       p-2
       truncate
       transition-all duration-150
+      cursor-pointer
   }
 
   .info_cards {
@@ -529,6 +532,9 @@
       bg-side_black
       shadow-md
       border border-jet_mid
+      hover:bg-middle_black
+      hover:border-onyx
+      text-platinium
       p-2
       h-1
       w-1
@@ -537,20 +543,28 @@
       overflow-hidden
       z-1
       truncate
-      opacity-0
+      hidden
+      cursor-pointer
+      /* opacity-0 */
+  }
+
+  .elm_info_cards:active , .info_cards:active {
+    @apply
+      scale-105
+      border-graysix
   }
 
   .collapse_extra {
     @apply
-    border
-    border-jet_mid
-    rounded
-    mb-2
-    bg-darker_jet
-    shadow-md
-    hover:bg-jet
-    transition-all
-    duration-300
+      border
+      border-jet_mid
+      rounded
+      mb-2
+      bg-darker_jet
+      shadow-md
+      hover:bg-jet
+      transition-all
+      duration-300
   }
 
   .collapse-plus .collapse-title:after {
@@ -560,6 +574,42 @@
 
   .collapse-open :where(.collapse-content), .collapse:focus:not(.collapse-close) :where(.collapse-content), .collapse:not(.collapse-close) :where(input[type="checkbox"]:checked ~ .collapse-content) {
     padding-bottom: 0.5rem;
+  }
+
+  .table_col_cards {
+    @apply
+      relative
+      col-span-2
+      bg-side_black
+      border border-jet_mid
+      hover:bg-middle_black
+      hover:border-onyx
+      text-grayXgray
+      hover:text-platinium
+      rounded
+      shadow-md
+      min-h-[55px]
+      z-10
+      p-2
+      truncate
+      transition-all duration-150
+      cursor-pointer
+      leading-4
+  }
+
+  .table_layout {
+    @apply
+      w-full
+      bg-darker_jet
+      mt-3
+      rounded
+      shadow-md
+      relative
+      grid grid-cols-6 grid-flow-row auto-rows-max gap-2
+      p-2
+      overflow-auto
+      border border-earie_black
+      mb-2
   }
 
   /*! -------------------------------------------------------------  */
