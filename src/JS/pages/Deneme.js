@@ -1,16 +1,17 @@
 import React from 'react'
 
 export default function Deneme() {
+  
   return (
     <>
     <div>
-      <label htmlFor="my-modal-5" onClick={resize} className="btn modal-button">open modal</label>
+      <label htmlFor="my-modal-5" onClick={() => {resize(); review()}} className="btn modal-button">open modal</label>
       
       <input type="checkbox" id="my-modal-5" className="modal-toggle" />
       <div className="modal bg-modal_back">
-        <div className="modal-box max-w-full h-screen p-4 grid grid-cols-5 gap-5 bg-darkest_jet">
+        <div className="modal-box max-w-full h-screen p-4 grid grid-cols-5 gap-5 bg-darkest_jet rounded">
           
-          <div className="md:col-span-2 col-span-5 bg-middle_black p-3 rounded shadow-md overflow-auto h-full relative">
+          <div className="md:col-span-2 col-span-5 bg-middle_black p-3 rounded shadow-md overflow-auto relative min-h-[570px] h-full">
             
             <div className="form-control">
               <div className="input-group shadow-md">
@@ -100,7 +101,7 @@ export default function Deneme() {
               </div>
             </div>
 
-            <div onScroll={wheelResize} className='w-full h-72 bg-darker_jet mt-3 rounded shadow-md relative grid grid-cols-6 grid-flow-row auto-rows-max gap-2 p-2 overflow-auto border border-jet_mid border-r-0'>
+            <div onScroll={wheelResize} className='w-full h-72 bg-darker_jet mt-3 rounded shadow-md relative grid grid-cols-12 grid-flow-row auto-rows-max gap-2 p-2 overflow-auto border border-jet_mid border-r-0'>
               <div onMouseEnter={() => show_info(1 , 'in')} onMouseLeave={() => clearTime(1)} onClick={() => addRelatedTable(1)} id='card_elm_1' className="elm_info_cards">
                 <h3 className='truncate'>AAAAAAAAAAAAAAAAAA</h3>
                 <h3 className='truncate'>BBBBBBBBBBBBBBBBBB</h3>
@@ -176,9 +177,16 @@ export default function Deneme() {
           </div>
           
 
-          <div className="md:col-span-3 col-span-5 bg-middle_black p-3 rounded shadow-md relative h-full">
-            <p className="">You've been selected for a chance to get one year of subscription to use Wikipedia for free!aaaaaaaaaaaaa aaaaaa</p>
-            <div className="bottom-3 right-3 absolute">
+          <div className="md:col-span-3 col-span-5 bg-middle_black p-3 rounded shadow-md relative min-h-[570px] h-full">
+            
+            <h1 className='text-2xl text-platinium mb-2 drop-shadow-lg pl-2'>Ön İzleme</h1>
+            <div id='review' className='w-full bg-darker_jet rounded shadow-md border border-jet_mid'>
+
+            </div>
+
+
+            
+            <div id='closeModalBtn' className="bottom-3 right-3 absolute">
               <label htmlFor="my-modal-5" className="gray-btn mr-2">Kapat</label>
               <button className='green-btn'>Kaydet</button>
             </div>
@@ -225,7 +233,7 @@ export default function Deneme() {
 }
 
 
-window.onresize = () => resize();
+window.onresize = () => {resize(); review();}
 
 function wheelResize() {
   resize();
@@ -236,23 +244,21 @@ function coordinates(id) {
   let card = document.getElementById('card_elm_' + id);
   let card_elm = card.getBoundingClientRect();
 
-  if(id !== 1) {
 
-    if(id % 3 === 1) {
-      open_card.style.left = '37px';
-    }
-    else if((id % 3 === 2)) {
-      open_card.style.left = ((1 * card_elm.width) + (1 * 8)) + 37 + 'px' ;
-    }
-    else if((id % 3 === 0)) {
-      open_card.style.left = ((2 * card_elm.width) + (2 * 8)) + 37 + 'px' ;
-    }
-    
+  if(id % 4 === 1) {
+    open_card.style.left = '37px';
   }
-  else { open_card.style.left = '37px' }
+  else if((id % 4 === 2)) {
+    open_card.style.left = ((1 * card_elm.width) + (1 * 8)) + 37 + 'px' ;
+  }
+  else if((id % 4 === 3)) {
+    open_card.style.left = ((2 * card_elm.width) + (2 * 8)) + 37 + 'px' ;
+  }
+  else if((id % 4 === 0)) {
+    open_card.style.left = ((3 * card_elm.width) + (3 * 8)) + 37 + 'px' ;
+  }
 
   open_card.style.top =  (card_elm.y - 40) + 'px';
-  
 }
 
 var timer = 0;
@@ -383,6 +389,25 @@ function checkbox(id) {
   else {
     collapse.classList.remove('!bg-jet');
   }
+}
+
+function review() { //!Review Resizing
+
+  let review_btn = document.getElementById('closeModalBtn');
+  let review = document.getElementById('review');
+
+  setTimeout(() => {
+  
+    let review_btn_crd = review_btn.getBoundingClientRect();
+    let review_crd = review.getBoundingClientRect();
+  
+    console.log(review_btn_crd);
+    console.log(review_crd);
+    
+    review.style.height = (review_btn_crd.top - review_crd.top - 8) +'px';
+
+  }, 200);
+
 }
 
 function addRelatedTable(id) {

@@ -436,6 +436,8 @@
       rounded
       bg-middle_black
       shadow-md
+      hover:bg-side_black
+      !transition !duration-300
   }
 
   .panels-title {
@@ -444,6 +446,7 @@
       px-6
       text-xl
       absolute
+      cursor-default
       text-cultured
   }
   /*! -------------------------------------------------------------  */
@@ -509,7 +512,7 @@
   .elm_info_cards {
     @apply
       relative
-      col-span-2
+      col-span-3
       bg-side_black
       border border-jet_mid
       hover:bg-middle_black
@@ -542,7 +545,6 @@
       rounded
       overflow-hidden
       z-1
-      truncate
       hidden
       cursor-pointer
       /* opacity-0 */
@@ -579,7 +581,7 @@
   .table_col_cards {
     @apply
       relative
-      col-span-2
+      col-span-3
       bg-side_black
       border border-jet_mid
       hover:bg-middle_black
@@ -605,7 +607,7 @@
       rounded
       shadow-md
       relative
-      grid grid-cols-6 grid-flow-row auto-rows-max gap-2
+      grid grid-cols-12 grid-flow-row auto-rows-max gap-2
       p-2
       overflow-auto
       border border-earie_black

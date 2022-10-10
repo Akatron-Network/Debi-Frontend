@@ -8,15 +8,11 @@ import TemperatureGauge from '../charts/TemperatureGauge'
 import BarLabelRotation from '../charts/BarLabelRotation'
 
 import { WidthProvider, Responsive } from "react-grid-layout";
-import '../../../node_modules/react-resizable/css/styles.css';
-import '../../../node_modules/react-grid-layout/css/styles.css';
+import 'react-resizable/css/styles.css';
+import 'react-grid-layout/css/styles.css';
 
 const ResponsiveReactGridLayout = WidthProvider(Responsive);
 const originalLayouts = getFromLS("layouts") || {};
-
-/**
- * This layout demonstrates how to sync multiple responsive layouts to localstorage.
- */
 export default class ResponsiveLocalStorageLayout extends React.PureComponent {
   constructor(props) {
     super(props);
@@ -45,7 +41,7 @@ export default class ResponsiveLocalStorageLayout extends React.PureComponent {
 
   render() {
     return (
-      <div className="mt-11 p-4">
+      <div className="mt-11 p-4 overflow-x-hidden">
         <button className="btn" onClick={() => this.resetLayout()}>Reset Layout</button>
 
         <ResponsiveReactGridLayout
@@ -54,8 +50,10 @@ export default class ResponsiveLocalStorageLayout extends React.PureComponent {
           rowHeight={30}
           layouts={this.state.layouts}
           onLayoutChange={(layout, layouts) => this.onLayoutChange(layout, layouts)}
-          isBounded={true}
+          resizeHandles={[ "ne", "se" ]}
+          autoSize={true}
           {...this.props}
+          // isBounded={true}
         >
           <div className="panels" key="1" data-grid={{ w: 4, h: 10, x: 0, y: 0, minW: 3,  minH: 7}}>
             <h1 className="panels-title">Pie Charts</h1>
