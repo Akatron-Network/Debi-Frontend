@@ -389,30 +389,6 @@
       border-hr_gray
   }
 
-
-  .dlt-btn {
-    @apply
-      btn
-      btn-square
-      w-7
-      h-7
-      min-h-6
-      absolute
-      right-0
-      z-1
-      mt-1
-      mr-1
-      border-transparent
-      opacity-60
-      bg-danger
-      text-grayXgray
-      hover:bg-danger_light
-      hover:text-platinium
-      hover:border-onyx_light
-      hover:opacity-100
-      
-  }
-
   /*!--------------------------------------------------------------  */
 
   /*! SETTINGS-----------------------------------------------------  */
@@ -594,7 +570,7 @@
       z-10
       p-2
       truncate
-      transition-all duration-150
+      transition-all duration-300
       cursor-pointer
       leading-4
   }
@@ -610,9 +586,100 @@
       grid grid-cols-12 grid-flow-row auto-rows-max gap-2
       p-2
       overflow-auto
-      border border-earie_black
+      border border-side_black
       mb-2
   }
+
+  .condition_row_cards {
+    @apply
+      relative
+      col-span-12
+      grid grid-cols-12 grid-flow-row auto-rows-max gap-2
+      bg-side_black
+      border border-jet_mid
+      text-grayXgray
+      rounded
+      shadow-md
+      z-10
+      p-2
+      transition-all duration-150
+      leading-4
+  }
+
+  .condition_select {
+    @apply
+      select
+      min-h-0
+      w-full
+      max-h-10
+      rounded
+      shadow-md
+      focus:outline-none
+      focus:border-onyx_light
+      focus:bg-onyx
+      bg-jet_mid
+      text-grayXgray
+      hover:text-platinium
+      col-span-12 lg:col-span-4
+      px-2
+      
+  }
+
+  .condition_input{
+    @apply
+      input
+      input-bordered
+      input-sm
+      w-full
+      shadow-md
+      m-0
+      col-span-12 lg:col-span-4 xl:col-span-5
+      px-2
+  }
+
+  .bounder {
+    @apply
+      bg-jet
+      border border-jet_light
+      hover:bg-jet_light
+      hover:border-onyx
+      w-24
+      h-10
+      absolute
+      shadow-md
+      rounded
+      z-50
+      left-1/2
+      -translate-x-1/2
+      -top-6
+      transition duration-300
+      truncate
+      px-1
+  }
+
+  .choose_color {
+    @apply
+      absolute
+      h-fit
+      w-fit
+      bg-jet
+      border border-jet_mid
+      right-4
+      top-4
+      p-2
+      rounded
+      shadow-md
+      z-50
+      min-w-[150px]
+  }
+
+  .group-btn {
+    @apply
+      leading-normal
+      text-grayXgray
+      hover:text-platinium
+  }
+
 
   /*! -------------------------------------------------------------  */
   
@@ -636,7 +703,7 @@
       min-h-[40px]
       shadow-md
   }
-
+  
   .gray-btn {
     @apply
       btn
@@ -655,6 +722,26 @@
       leading-none
       h-10
       min-h-[40px]
+      shadow-md
+  }
+  
+  .remove-btn {
+    @apply
+      btn
+      bg-danger
+      rounded
+      text-grayXgray
+      transition-all
+      duration-300
+      hover:bg-danger_light
+      hover:text-platinium
+      normal-case
+      text-base
+      px-3
+      font-light
+      leading-none
+      h-[29px]
+      min-h-[29px]
       shadow-md
   }
 }

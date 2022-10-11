@@ -101,7 +101,9 @@ export default function Deneme() {
               </div>
             </div>
 
-            <div onScroll={wheelResize} className='w-full h-72 bg-darker_jet mt-3 rounded shadow-md relative grid grid-cols-12 grid-flow-row auto-rows-max gap-2 p-2 overflow-auto border border-jet_mid border-r-0'>
+            <h1 className='text-lg text-platinium mt-3 mb-2 drop-shadow'>İlişkili Tablolar</h1>
+
+            <div onScroll={wheelResize} className='w-full h-72 bg-darker_jet rounded shadow-md relative grid grid-cols-12 grid-flow-row auto-rows-max gap-2 p-2 overflow-auto border border-jet_mid border-r-0'>
               <div onMouseEnter={() => show_info(1 , 'in')} onMouseLeave={() => clearTime(1)} onClick={() => addRelatedTable(1)} id='card_elm_1' className="elm_info_cards">
                 <h3 className='truncate'>AAAAAAAAAAAAAAAAAA</h3>
                 <h3 className='truncate'>BBBBBBBBBBBBBBBBBB</h3>
@@ -127,7 +129,7 @@ export default function Deneme() {
             
             <hr className='my-3 border-1 w-4/5 relative left-1/2 -translate-x-1/2 border-hr_gray'/>
 
-            <h1 className='text-xl text-platinium mb-2 drop-shadow-lg'>Seçilen Tablolar</h1>
+            <h1 className='text-lg text-platinium mb-2 drop-shadow-lg'>Seçilen Tablolar</h1>
 
             <div id="collapses">
               <div tabIndex={0} id='collapse_1' onClick={() => checkbox(1)} className="collapse collapse-plus collapse_extra">
@@ -138,6 +140,7 @@ export default function Deneme() {
                 </div>
                 
                 <div className="collapse-content text-graysix">
+
                   <div className='table_layout'>
                     <div id='card_elm_1' className="table_col_cards">
                       <h4 className='text-sm'>SUBE_KODU</h4>
@@ -148,8 +151,93 @@ export default function Deneme() {
                     <div id='card_elm_4' className="table_col_cards"></div>
                     <div id='card_elm_5' className="table_col_cards"></div>
                   </div>
-                </div>
 
+                
+                  <div className='table_layout mt-6'>
+
+                    <div id='tbl1_card1' className="condition_row_cards border-l-red-400">
+                      <div className='col-span-12 mb-3'>
+                        <span className='float-left text-platinium'>#1</span>
+                        <button className='float-right text-red-400'><i className="fa-solid fa-circle"></i></button>
+                      </div>
+                      <select className="condition_select xl:col-span-5">
+                        <option disabled selected>Small</option>
+                        <option>Small Apple</option>
+                        <option>Small Orange</option>
+                        <option>Small Tomato</option>
+                      </select>
+                      <select className="condition_select xl:col-span-2">
+                        <option disabled selected> {'=>'} </option>
+                        <option>Small Apple</option>
+                        <option>Small Orange</option>
+                        <option>Small Tomato</option>
+                      </select>
+                      <input type="text" placeholder="Type here" className="condition_input" />
+                      <div className='col-span-12'>
+                        <button className='float-right remove-btn'>Kaldır</button>
+                      </div>
+                    </div>
+                    
+                    
+                    
+                    <div id='tbl1_card2' className="condition_row_cards border-l-green-400">
+                    <button id='tbl1_bounder1' className='bounder' onClick={() => changeCondition(1 , 1)}>VEYA</button>
+                      <div className='col-span-12 mb-3'>
+                        <span className='float-left text-platinium'>#2</span>
+                        <button className='float-right text-green-400'><i className="fa-solid fa-circle"></i></button>
+                      </div>
+                      <select className="condition_select xl:col-span-5">
+                        <option disabled selected>Small</option>
+                        <option>Small Apple</option>
+                        <option>Small Orange</option>
+                        <option>Small Tomato</option>
+                      </select>
+                      <select className="condition_select xl:col-span-2">
+                        <option disabled selected> {'=>'} </option>
+                        <option>Small Apple</option>
+                        <option>Small Orange</option>
+                        <option>Small Tomato</option>
+                      </select>
+                      <input type="text" placeholder="Type here" className="condition_input" />
+                      <div className='col-span-12'>
+                        <button className='float-right remove-btn'>Kaldır</button>
+                      </div>
+                    </div>
+
+                    <div id='tbl1_card3' className="condition_row_cards border-l-blue-400">
+                    <button id='tbl1_bounder2' className='bounder' onClick={() => changeCondition(1 , 2)}>VEYA</button>
+                      <div className='col-span-12 mb-3'>
+                        <span className='float-left text-platinium'>#3</span>
+                        <button className='float-right text-blue-400'><i className="fa-solid fa-circle"></i></button>
+                        <div className="choose_color">
+                          <ul>
+                            <h1 className='pb-3 text-lg text-platinium'>Grupla</h1>
+                            <li><button className='group-btn'>Kolon-1</button></li>
+                            <li><button className='group-btn'>Kolon-2</button></li>
+                            <li><button className='group-btn'>Kolon-3</button></li>
+                          </ul>
+                        </div>
+                      </div>
+                      <select className="condition_select xl:col-span-5">
+                        <option disabled selected>Small</option>
+                        <option>Small Apple</option>
+                        <option>Small Orange</option>
+                        <option>Small Tomato</option>
+                      </select>
+                      <select className="condition_select xl:col-span-2">
+                        <option disabled selected> {'=>'} </option>
+                        <option>Small Apple</option>
+                        <option>Small Orange</option>
+                        <option>Small Tomato</option>
+                      </select>
+                      <input type="text" placeholder="Type here" className="condition_input" />
+                      <div className='col-span-12'>
+                        <button className='float-right remove-btn'>Kaldır</button>
+                      </div>
+                    </div>
+
+                  </div>
+                </div>
               </div>
 
               <div tabIndex={0} id='collapse_2' onClick={() => checkbox(2)} className="collapse collapse-plus collapse_extra">
@@ -179,7 +267,7 @@ export default function Deneme() {
 
           <div className="md:col-span-3 col-span-5 bg-middle_black p-3 rounded shadow-md relative min-h-[570px] h-full">
             
-            <h1 className='text-2xl text-platinium mb-2 drop-shadow-lg pl-2'>Ön İzleme</h1>
+            <h1 className='text-xl text-platinium mb-2 drop-shadow-lg pl-2'>Ön İzleme</h1>
             <div id='review' className='w-full bg-darker_jet rounded shadow-md border border-jet_mid'>
 
             </div>
@@ -342,7 +430,7 @@ function resize() {
 
         coordinates(id);
       }
-    },200)
+    },210)
 
 };
 
@@ -380,6 +468,7 @@ function close_s_tbl() {
 }
 
 function checkbox(id) {
+
   var checkbox = document.getElementById('checkbox_' + id)
   var collapse = document.getElementById('collapse_' + id)
 
@@ -400,17 +489,28 @@ function review() { //!Review Resizing
   
     let review_btn_crd = review_btn.getBoundingClientRect();
     let review_crd = review.getBoundingClientRect();
-  
-    console.log(review_btn_crd);
-    console.log(review_crd);
-    
+      
     review.style.height = (review_btn_crd.top - review_crd.top - 8) +'px';
 
-  }, 200);
+  }, 220);
 
 }
 
 function addRelatedTable(id) {
   let open_card = document.getElementById('card_s_tbl_' + id);
   let card = document.getElementById('card_elm_' + id);
+}
+
+
+function changeCondition(tbl , bound) {
+  let bounder = document.getElementById('tbl' + tbl + '_bounder' + bound);
+
+  if(bounder.innerHTML === 'VEYA') {
+    bounder.innerHTML = 'VE';
+  }
+  else {
+    bounder.innerHTML = 'VEYA';
+  }
+
+
 }
