@@ -1,4 +1,5 @@
 import React from 'react'
+import MyComponent from '../components/Table';
 
 export default function Deneme() {
   
@@ -158,7 +159,7 @@ export default function Deneme() {
                     <div id='tbl1_card1' className="condition_row_cards border-l-red-400">
                       <div className='col-span-12 mb-3'>
                         <span className='float-left text-platinium'>#1</span>
-                        <button className='float-right text-red-400'><i className="fa-solid fa-circle"></i></button>
+                        <button className='float-right text-red-400' onClick={() => chooseColor(1 , 1)}><i className="fa-solid fa-circle"></i></button>
                       </div>
                       <select className="condition_select xl:col-span-5">
                         <option disabled selected>Small</option>
@@ -174,17 +175,17 @@ export default function Deneme() {
                       </select>
                       <input type="text" placeholder="Type here" className="condition_input" />
                       <div className='col-span-12'>
-                        <button className='float-right remove-btn'>Kaldır</button>
+                        <button className='float-right remove-btn'><i className="fa-solid fa-trash-can"></i></button>
                       </div>
                     </div>
                     
                     
                     
                     <div id='tbl1_card2' className="condition_row_cards border-l-green-400">
-                    <button id='tbl1_bounder1' className='bounder' onClick={() => changeCondition(1 , 1)}>VEYA</button>
+                      <button id='tbl1_bounder1' className='bounder' onClick={() => changeCondition(1 , 1)}>VEYA</button>
                       <div className='col-span-12 mb-3'>
                         <span className='float-left text-platinium'>#2</span>
-                        <button className='float-right text-green-400'><i className="fa-solid fa-circle"></i></button>
+                        <button className='float-right text-green-400' onClick={() => chooseColor(1 , 2)}><i className="fa-solid fa-circle"></i></button>
                       </div>
                       <select className="condition_select xl:col-span-5">
                         <option disabled selected>Small</option>
@@ -200,23 +201,15 @@ export default function Deneme() {
                       </select>
                       <input type="text" placeholder="Type here" className="condition_input" />
                       <div className='col-span-12'>
-                        <button className='float-right remove-btn'>Kaldır</button>
+                        <button className='float-right remove-btn'><i className="fa-solid fa-trash-can"></i></button>
                       </div>
                     </div>
 
                     <div id='tbl1_card3' className="condition_row_cards border-l-blue-400">
-                    <button id='tbl1_bounder2' className='bounder' onClick={() => changeCondition(1 , 2)}>VEYA</button>
+                      <button id='tbl1_bounder2' className='bounder' onClick={() => changeCondition(1 , 2)}>VEYA</button>
                       <div className='col-span-12 mb-3'>
                         <span className='float-left text-platinium'>#3</span>
-                        <button className='float-right text-blue-400'><i className="fa-solid fa-circle"></i></button>
-                        <div className="choose_color">
-                          <ul>
-                            <h1 className='pb-3 text-lg text-platinium'>Grupla</h1>
-                            <li><button className='group-btn'>Kolon-1</button></li>
-                            <li><button className='group-btn'>Kolon-2</button></li>
-                            <li><button className='group-btn'>Kolon-3</button></li>
-                          </ul>
-                        </div>
+                        <button className='float-right text-blue-400' onClick={() => chooseColor(1 , 3)}><i className="fa-solid fa-circle"></i></button>
                       </div>
                       <select className="condition_select xl:col-span-5">
                         <option disabled selected>Small</option>
@@ -232,7 +225,7 @@ export default function Deneme() {
                       </select>
                       <input type="text" placeholder="Type here" className="condition_input" />
                       <div className='col-span-12'>
-                        <button className='float-right remove-btn'>Kaldır</button>
+                        <button className='float-right remove-btn'><i className="fa-solid fa-trash-can"></i></button>
                       </div>
                     </div>
 
@@ -269,7 +262,7 @@ export default function Deneme() {
             
             <h1 className='text-xl text-platinium mb-2 drop-shadow-lg pl-2'>Ön İzleme</h1>
             <div id='review' className='w-full bg-darker_jet rounded shadow-md border border-jet_mid'>
-
+              <MyComponent />
             </div>
 
 
@@ -513,4 +506,39 @@ function changeCondition(tbl , bound) {
   }
 
 
+}
+
+const chooseColor = (tbl , card) => {
+
+  let classLenght = document.getElementsByClassName('choose_color');
+  let query = document.querySelector('#chooseColor_t' + tbl + 'c'+ card);
+  let elm =  document.getElementById('tbl' + tbl + '_card' + card);
+
+  if(query !== null) { //! Burada ilk başta query ile böyle bir id var mı diye kontrol ettim eğer varsa(yani açık olanın üzerine tekrar tıklandıysa) direkt olarak silecek.
+                       //! Eğer bunlar olmazsa direkt olarak ilk başta tüm açık veya html e yazılmış gruplamaları silip tekrar baştan yazdırtacak.
+    query.remove();
+  }
+  else{
+  
+    for(let i = 0 ; classLenght.length > i ; i++) {
+      classLenght[i].remove();
+    }
+
+    let ht = '';
+      
+    ht += "<div id='chooseColor_t" + tbl + "c"+ card +"' class='choose_color'><ul>"
+    ht += "<h1 class='pb-1 pl-2 text-lg text-platinium'>Grupla</h1>"
+    ht += "<hr class='border-1 pb-1 w-4/5 relative left-1/2 -translate-x-1/2 border-hr_gray'/>"
+    ht += "<li class='group-btn'><button>Kolon-1</button></li>"
+    ht += "<li class='group-btn'><button>Kolon-2</button></li>"
+    ht += "<li class='group-btn'><button>Kolon-3</button></li></ul></div>"
+    
+    elm.insertAdjacentHTML('beforeend' , ht)
+  
+    setTimeout(() => {
+      let chooseColor = document.getElementById('chooseColor_t' + tbl + 'c' + card);
+      chooseColor.classList.toggle('active');
+    }, 10);
+
+  }
 }

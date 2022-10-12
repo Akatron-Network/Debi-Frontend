@@ -449,6 +449,25 @@
       cursor-pointer
       
   }
+
+  /*? Review Table  -----------------------*/
+  .table-wrapper {
+    @apply
+      p-0
+  }
+  
+  .table-wrapper tr:hover td {
+    @apply
+      !bg-jet
+      !text-platinium
+  }
+
+  .table-wrapper .gridjs-wrapper {
+    @apply
+      border-none
+  }
+
+  /*?--------------------------------------*/
   
   .table :where(tbody th, tbody td) {
     @apply
@@ -600,7 +619,6 @@
       text-grayXgray
       rounded
       shadow-md
-      z-10
       p-2
       transition-all duration-150
       leading-4
@@ -660,24 +678,39 @@
   .choose_color {
     @apply
       absolute
-      h-fit
-      w-fit
-      bg-jet
+      bg-darkest_jet
       border border-jet_mid
       right-4
       top-4
-      p-2
+      pt-2
       rounded
       shadow-md
       z-50
+      transition duration-300
+      h-fit
+      w-fit
       min-w-[150px]
+      opacity-0
+      cursor-default
+      overflow-x-hidden
+  }
+
+  .choose_color.active {
+    @apply
+      opacity-100
+      cursor-auto
+
   }
 
   .group-btn {
     @apply
-      leading-normal
+      leading-loose
       text-grayXgray
       hover:text-platinium
+      hover:bg-jet_light
+      px-2
+      cursor-pointer
+      transition duration-300
   }
 
 
@@ -702,6 +735,11 @@
       h-10
       min-h-[40px]
       shadow-md
+  }
+
+  .gridjs-wrapper {
+    @apply
+      rounded-none
   }
   
   .gray-btn {
@@ -728,21 +766,21 @@
   .remove-btn {
     @apply
       btn
-      bg-danger
       rounded
-      text-grayXgray
+      bg-transparent
+      text-danger_light
+      border-none
       transition-all
       duration-300
-      hover:bg-danger_light
-      hover:text-platinium
+      hover:text-onyx_light
+      hover:bg-transparent
       normal-case
       text-base
-      px-3
+      pr-[2px]
       font-light
       leading-none
       h-[29px]
       min-h-[29px]
-      shadow-md
   }
 }
 
