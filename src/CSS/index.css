@@ -449,25 +449,6 @@
       cursor-pointer
       
   }
-
-  /*? Review Table  -----------------------*/
-  .table-wrapper {
-    @apply
-      p-0
-  }
-  
-  .table-wrapper tr:hover td {
-    @apply
-      !bg-jet
-      !text-platinium
-  }
-
-  .table-wrapper .gridjs-wrapper {
-    @apply
-      border-none
-  }
-
-  /*?--------------------------------------*/
   
   .table :where(tbody th, tbody td) {
     @apply
@@ -497,6 +478,124 @@
       rounded-br-none
   }
   /* ------------------------------------------ */
+
+  /*? Review Table  -----------------------*/
+  .table-wrapper {
+    @apply
+      !p-0
+  }
+  
+  .table-wrapper tr:hover td {
+    @apply
+      !bg-jet
+      !text-platinium
+  }
+  
+  .table-wrapper thead tr th {
+    @apply
+      bg-side_black
+      text-grayXgray
+      pt-[14px]
+      pb-[14px]
+      text-xs
+      border-none
+  }
+
+  .table-wrapper tbody td {
+    @apply
+      !bg-darkest_jet
+      !text-grayXgray
+      transition
+      duration-300
+      hover:bg-jet
+      hover:text-platinium
+      py-[6px]
+      px-4
+      !border-none
+  }
+
+  .table-wrapper tbody tr {
+    @apply
+    border border-red-600
+  }
+
+  .table-wrapper .gridjs-wrapper {
+    @apply
+      !border-none
+      !rounded
+  }
+
+  .table-wrapper .gridjs-wrapper {
+    @apply
+      !border-none
+      !rounded
+  }
+
+  .table-wrapper .gridjs-tr {
+    @apply
+      border-solid
+      border-x-0
+      border-b-0
+      border-t-side_black
+  }
+
+  .table-wrapper thead .gridjs-tr {
+    @apply
+      border-none
+  }
+  
+  .table-wrapper button.gridjs-sort { /*! Sort butonu */
+    @apply
+      h-4
+  }
+
+  .table-wrapper th.gridjs-th-sort:hover {
+    @apply
+      transition duration-300
+      !bg-middle_black
+      !text-platinium
+  }
+
+  .table-wrapper th.gridjs-th-sort:focus {
+    @apply
+      border-solid
+      border-x-0
+      border-t-0
+      border-b-onyx_middle
+      !bg-middle_black
+      !text-platinium
+  }
+
+  .table-wrapper .gridjs-head {
+    @apply
+      p-0
+      m-0
+  }
+
+  .table-wrapper .gridjs-search {
+    @apply
+      text-center
+      float-none
+  }
+
+  .table-wrapper .gridjs-search-input {
+    @apply
+      bg-jet_mid
+      text-grayXgray
+      my-2
+      border-[1px]
+      border-transparent
+      rounded
+      shadow-md
+      focus:!bg-onyx
+      focus:!text-platinium
+      focus:!border-onyx_light
+      focus:!shadow-none
+      focus:!outline-none
+      placeholder:opacity-50
+      h-10
+  }
+  /*?--------------------------------------*/
 
 
   .modal {

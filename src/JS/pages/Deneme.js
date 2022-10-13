@@ -1,11 +1,10 @@
 import React from 'react'
-import MyComponent from '../components/Table';
+import Table from '../components/Table';
 
 export default function Deneme() {
   
   return (
     <>
-    <div>
       <label htmlFor="my-modal-5" onClick={() => {resize(); review()}} className="btn modal-button">open modal</label>
       
       <input type="checkbox" id="my-modal-5" className="modal-toggle" />
@@ -261,8 +260,10 @@ export default function Deneme() {
           <div className="md:col-span-3 col-span-5 bg-middle_black p-3 rounded shadow-md relative min-h-[570px] h-full">
             
             <h1 className='text-xl text-platinium mb-2 drop-shadow-lg pl-2'>Ön İzleme</h1>
-            <div id='review' className='w-full bg-darker_jet rounded shadow-md border border-jet_mid'>
-              <MyComponent />
+            <div id='review' className='w-full bg-darker_jet rounded shadow-md border border-jet_mid p-2'>
+              <div id='tableReview' className='w-full border border-onyx rounded shadow-md overflow-auto'>
+                <Table />
+              </div>
             </div>
 
 
@@ -306,10 +307,8 @@ export default function Deneme() {
 
         </div>
       </div>
-    </div>
-
-
     </>
+
   )
 }
 
@@ -477,6 +476,7 @@ function review() { //!Review Resizing
 
   let review_btn = document.getElementById('closeModalBtn');
   let review = document.getElementById('review');
+  let tblReview = document.getElementById('tableReview');
 
   setTimeout(() => {
   
@@ -484,8 +484,16 @@ function review() { //!Review Resizing
     let review_crd = review.getBoundingClientRect();
       
     review.style.height = (review_btn_crd.top - review_crd.top - 8) +'px';
+    changePlaceholder();
 
   }, 220);
+
+  setTimeout(() => {
+    
+    let review_crd = review.getBoundingClientRect();
+    tblReview.style.height = (review_crd.height - 16) + 'px';
+
+  }, 230);
 
 }
 
@@ -493,7 +501,6 @@ function addRelatedTable(id) {
   let open_card = document.getElementById('card_s_tbl_' + id);
   let card = document.getElementById('card_elm_' + id);
 }
-
 
 function changeCondition(tbl , bound) {
   let bounder = document.getElementById('tbl' + tbl + '_bounder' + bound);
@@ -541,4 +548,8 @@ const chooseColor = (tbl , card) => {
     }, 10);
 
   }
+}
+
+function changePlaceholder() { //? Change the placeholder of the table search input
+  document.getElementsByClassName('gridjs-search-input')[0].placeholder='Arama...';
 }
