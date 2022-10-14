@@ -1,4 +1,5 @@
 import React , { useRef } from 'react'
+import { useNavigate } from "react-router-dom";
 import ParticlesComponent from '../components/ParticlesComponent'
 import debi_logo from '../../img/ico.png';
 import axios from 'axios';
@@ -22,39 +23,60 @@ export default function LoginPage() {
     overlayRight.classList.toggle("translate-x-[20%]");
   }
 
-  const nicknameRef = useRef(null);
-  const emailRef = useRef(null);
-  const phoneRef = useRef(null);
-  const passRef = useRef(null);
-  const passAgainRef = useRef(null);
-  
+
+  const register_nicknameRef = useRef(null);
+  const register_emailRef = useRef(null);
+  const register_phoneRef = useRef(null);
+  const register_passRef = useRef(null);
+  const register_passAgainRef = useRef(null);
 
   const register = async () => {
-
-    console.log(nicknameRef.current.value)
-    console.log(emailRef.current.value)
-    console.log(phoneRef.current.value)
-    console.log(passRef.current.value)
-    console.log(passAgainRef.current.value)
-
     
-      // try {
-      //   let resp = await axios.post('http://93.180.133.185:8000/api/functions/service/register/',
-      //     {
-      //       username: "Hakan",
-      //       password: "123456",
-      //       details: { email: "hakantemur63@gmail.com" }
-      //     })
-      //   console.log(resp);
-      // }
-      // catch (err) {
-      //   console.log(err.response.data)
-      // }
-      
+    try {
+      let resp = await axios.post('http://93.180.133.185:8000/api/functions/service/register/',
+        {
+          username: register_nicknameRef.current.value,
+          password: register_passRef.current.value,
+          details:  {
+                      email: register_emailRef.current.value ,
+                      phone: register_phoneRef.current.value
+                    }
+        })
+      console.log(resp);
     }
+    catch (err) {
+      console.log(err.response.data)
+    }
+      
+  }
+
+  const login_nicknameRef = useRef(null);
+  const login_passRef = useRef(null);
+  let navigate = useNavigate();
 
   const login = async () => {
-    console.log('login')
+
+    try {
+      let resp = await axios.get('http://93.180.133.185:8000/api/functions/service/auth/',
+        {
+          params: {
+            username: login_nicknameRef.current.value,
+            password: login_passRef.current.value,
+          }
+        })
+      console.log(resp);
+
+      localStorage.setItem('Token' , resp.data.Token);
+      localStorage.setItem('RefreshToken' , resp.data.Data.refresh_token);
+
+      navigate("/");
+
+
+
+    } catch (err) {
+      console.log(err.response.data)
+    }
+    
 
   }
 
@@ -70,11 +92,11 @@ export default function LoginPage() {
               <h1 className='font-bold m-0 text-[2.5rem]'>Hesap Oluştur</h1>
               {/* <a href="#" className="social giris-a"><i className="fab fa-google-plus-g" /></a>
               <span className='text-xs'>ya da kayıt olmak için kendi email adresini kullanabilirsin</span> */}
-              <input className='input placeholder:opacity-50 w-3/4' type="text" placeholder="Kullanıcı Adı*" ref={nicknameRef} />
-              <input className='input placeholder:opacity-50 w-3/4' type="email" placeholder="Email*" ref={emailRef} />
-              <input className='input placeholder:opacity-50 w-3/4' type="tel" placeholder="Telefon (Zorunlu Değil)" ref={phoneRef} />
-              <input className='input placeholder:opacity-50 w-3/4' type="password" placeholder="Şifre*" ref={passRef} />
-              <input className='input placeholder:opacity-50 w-3/4' type="password" placeholder="Şifre Tekrar*" ref={passAgainRef} />
+              <input className='input placeholder:opacity-50 w-3/4' type="text" placeholder="Kullanıcı Adı*" ref={register_nicknameRef} />
+              <input className='input placeholder:opacity-50 w-3/4' type="email" placeholder="Email*" ref={register_emailRef} />
+              <input className='input placeholder:opacity-50 w-3/4' type="tel" placeholder="Telefon (Zorunlu Değil)" ref={register_phoneRef} />
+              <input className='input placeholder:opacity-50 w-3/4' type="password" placeholder="Şifre*" ref={register_passRef} />
+              <input className='input placeholder:opacity-50 w-3/4' type="password" placeholder="Şifre Tekrar*" ref={register_passAgainRef} />
               <button className='button mt-2' onClick={register}>Kayıt Ol</button>
             </form>
           </div>
@@ -83,8 +105,8 @@ export default function LoginPage() {
               <h1 className='font-bold m-0 text-[2.5rem]'>Giriş Yap</h1>
               {/* <a href="#" className="social giris-a"><i className="fab fa-google-plus-g" /></a> */}
               {/* <span className='text-xs'>ya da hesabını kullanabilirsin</span> */}
-              <input className='input placeholder:opacity-50 w-3/4' type="email" placeholder="Kullanıcı Adı" />
-              <input className='input placeholder:opacity-50 w-3/4' type="password" placeholder="Şifre" />
+              <input className='input placeholder:opacity-50 w-3/4' type="email" placeholder="Kullanıcı Adı" ref={login_nicknameRef} />
+              <input className='input placeholder:opacity-50 w-3/4' type="password" placeholder="Şifre" ref={login_passRef} />
               <a className='giris-a hover:text-sea_green' href="#">Şifreni mi unuttun?</a>
               <button className='button' onClick={login}>GİRİŞ YAP</button>
             </form>

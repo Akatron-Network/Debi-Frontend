@@ -15,14 +15,14 @@ export default function Navbar() {
     let new_elm_list = document.getElementById("new_elm_list");
     let menu_page = document.getElementById("menu_page");
     
-    new_elm_list.classList.remove("-translate-y-0");
-    menu_page.classList.remove("-translate-y-0");
+    new_elm_list.classList.remove("!-translate-y-0");
+    menu_page.classList.remove("!-translate-y-0");
 
     if(refNew.current.contains(e.target)) { //? Click inside
-      new_elm_list.classList.toggle("-translate-y-0");
+      new_elm_list.classList.toggle("!-translate-y-0");
     }
     else if(refMenu.current.contains(e.target)) { //? Click inside
-      menu_page.classList.toggle("-translate-y-0");
+      menu_page.classList.toggle("!-translate-y-0");
     }
   }
   
