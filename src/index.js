@@ -10,7 +10,7 @@ root.render(
 
   //* findDOMNode hatası bunun yüzünden veriyor (react strict mode) https://www.kindacode.com/article/react-warning-finddomnode-is-deprecated-in-strictmode/
 
-  <React.StrictMode>
+  // <React.StrictMode>
     <App />
-  </React.StrictMode>
+  // </React.StrictMode>
 );

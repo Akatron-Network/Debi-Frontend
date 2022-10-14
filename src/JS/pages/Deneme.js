@@ -484,7 +484,7 @@ function review() { //!Review Resizing
     let review_crd = review.getBoundingClientRect();
       
     review.style.height = (review_btn_crd.top - review_crd.top - 8) +'px';
-    changePlaceholder();
+    // changePlaceholder();
 
   }, 220);
 
@@ -550,6 +550,6 @@ const chooseColor = (tbl , card) => {
   }
 }
 
-function changePlaceholder() { //? Change the placeholder of the table search input
-  document.getElementsByClassName('gridjs-search-input')[0].placeholder='Arama...';
-}
+// function changePlaceholder() { //? Change the placeholder of the table search input
+//   document.getElementsByClassName('gridjs-search-input')[0].placeholder='Arama...';
+// }

@@ -1,7 +1,31 @@
-import React from 'react'
+import React , { useEffect , useRef } from 'react'
 import debi_logo from '../../img/icon2.png';
+import ChartChoose from './ChartChoose';
 
 export default function Navbar() {
+
+  useEffect(() => {
+    document.addEventListener('click' , clickOutside , true)
+  }, [])
+
+  const refNew = useRef(null);
+  const refMenu = useRef(null);
+
+  const clickOutside = (e) => {
+    let new_elm_list = document.getElementById("new_elm_list");
+    let menu_page = document.getElementById("menu_page");
+    
+    new_elm_list.classList.remove("-translate-y-0");
+    menu_page.classList.remove("-translate-y-0");
+
+    if(refNew.current.contains(e.target)) { //? Click inside
+      new_elm_list.classList.toggle("-translate-y-0");
+    }
+    else if(refMenu.current.contains(e.target)) { //? Click inside
+      menu_page.classList.toggle("-translate-y-0");
+    }
+  }
+  
 
   return (
     
@@ -11,7 +35,7 @@ export default function Navbar() {
 
           <nav id='nav-left' className="col-span-2 flex items-center text-base">
             <div className="tooltip tooltip-bottom" data-tip="Öğe Oluştur">
-              <button id="new_btn" onClick={newbtn} className="nav-btn"><i className="fas fa-plus" /></button>
+              <button id="new_btn" ref={refNew} className="nav-btn"><i className="fas fa-plus" /></button>
             </div>
 
             <button id="page-btn" className="nav-btn w-60 flex items-center justify-between">
@@ -29,10 +53,10 @@ export default function Navbar() {
 
           <nav id='nav-right' className="col-span-2 flex items-center text-base justify-end">
             <div className="tooltip tooltip-bottom" data-tip="Kaydet">
-              <button id="save-page-btn" onClick={save_page} className="nav-btn border-r-0 border-l"><i className="fa-solid fa-floppy-disk"></i></button>
+              <button id="save-page-btn" className="nav-btn border-r-0 border-l"><i className="fa-solid fa-floppy-disk"></i></button>
             </div>
             <div className="tooltip tooltip-bottom" data-tip="Menü">
-              <button id="menu-btn" onClick={menu_page} className="nav-btn border-r-0 border-l"><i className="fa-solid fa-bars"></i></button>
+              <button id="menu-btn" ref={refMenu} className="nav-btn border-r-0 border-l"><i className="fa-solid fa-bars"></i></button>
             </div>
           </nav>
 
@@ -41,8 +65,10 @@ export default function Navbar() {
 
     <div id='new_elm_list' className="absolute top-11 w-48 bg-earie_black shadow-dropdown z-10 -translate-y-48 transition duration-300">
       <button className='new-elm'>&nbsp;<i className="far fa-file-alt" aria-hidden="true"></i> &nbsp;Yeni Sayfa</button>
-      <button className='new-elm'>&nbsp;<i className="fas fa-columns" aria-hidden="true"></i> &nbsp;Yeni Panel</button>
+      <label className='new-elm items-center inline-flex cursor-pointer' htmlFor="my-modal-4">&nbsp;<i className="fas fa-columns" aria-hidden="true"></i>&nbsp;&nbsp;Yeni Panel</label>
     </div>
+
+    <ChartChoose />
 
     <div id='menu_page' className="absolute top-11 w-64 bg-earie_black shadow-dropdown z-10 transition -translate-y-48 duration-300 right-0">
       <a className="avatar new-elm flex items-center border-b border-solid border-hr_gray" href="/ayarlar">
@@ -67,34 +93,3 @@ export default function Navbar() {
 
   )
 }
-
-
-const newbtn = () => {
-  var new_elm_list = document.getElementById("new_elm_list");
-  new_elm_list.classList.toggle("-translate-y-0");
-};
-
-const menu_page = () => {
-  var menu_page = document.getElementById("menu_page");
-  menu_page.classList.toggle("-translate-y-0");
-    
-};
-
-const save_page = () => {
-    
-};
-
-window.addEventListener('click', function(e){
-  var menu_page = document.getElementById("menu_page");
-  var menu_btn = document.getElementById("menu-btn");
-  var new_btn = document.getElementById("new_btn");
-  var new_elm_list = document.getElementById("new_elm_list");
-
-  if (!menu_page.contains(e.target) && !menu_btn.contains(e.target)){
-    menu_page.classList.remove("-translate-y-0");
-  }
-
-  if (!new_btn.contains(e.target)){
-    new_elm_list.classList.remove("-translate-y-0");
-  }
-});

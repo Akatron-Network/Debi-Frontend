@@ -126,6 +126,23 @@
     hover:bg-like_trans
   }
 
+  .chart-type-cards {
+    @apply
+      col-span-2
+      bg-middle_black
+      p-3
+      pb-1
+      rounded
+      shadow-md
+      text-grayXgray
+      border border-transparent
+      hover:text-platinium
+      hover:bg-earie_black
+      hover:border-jet_mid
+      transition duration-300
+      cursor-pointer
+  }
+
   /*! LOGIN SCREEN ----------------------------------------- */
   .social {
     @apply
@@ -880,6 +897,21 @@
       leading-none
       h-[29px]
       min-h-[29px]
+  }
+
+  .dlt-btn {
+    @apply
+      absolute
+      right-0
+      leading-none
+      pr-2
+      pt-1
+      text-platinium
+      z-10
+      opacity-50
+      transition duration-300
+      hover:scale-125
+      hover:opacity-100
   }
 }
 
