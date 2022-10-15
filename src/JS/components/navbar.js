@@ -6,6 +6,10 @@ export default function Navbar() {
 
   useEffect(() => {
     document.addEventListener('click' , clickOutside , true)
+
+    return () => { //?Remove when component closed
+      document.removeEventListener('click' , clickOutside , true)
+    }
   }, [])
 
   const refNew = useRef(null);

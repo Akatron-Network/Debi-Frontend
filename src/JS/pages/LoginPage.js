@@ -2,11 +2,26 @@ import React , { useRef } from 'react'
 import { useNavigate } from "react-router-dom";
 import ParticlesComponent from '../components/ParticlesComponent'
 import debi_logo from '../../img/ico.png';
-import axios from 'axios';
+
+import Service from '../libraries/categories/Service';
 
 export default function LoginPage() {
 
+  const cheackWarn = () => {
+    
+    let warnArr = [1 , 2 , 3]
+    for(var id of warnArr) {
+
+      if(!(document.getElementById('warn_' + id).classList.contains('hidden'))){
+        document.getElementById('warn_' + id).classList.add('hidden');
+      }
+
+    }
+  }
+
   const change = () => { //? Login Page Style
+
+    cheackWarn();
     
     let signInContainer = document.getElementById('sign-in-container');
     let signUpContainer = document.getElementById('sign-up-container');
@@ -24,59 +39,54 @@ export default function LoginPage() {
   }
 
 
+  var navigate = useNavigate();
+  
   const register_nicknameRef = useRef(null);
   const register_emailRef = useRef(null);
   const register_phoneRef = useRef(null);
   const register_passRef = useRef(null);
   const register_passAgainRef = useRef(null);
-
+  
   const register = async () => {
-    
-    try {
-      let resp = await axios.post('http://93.180.133.185:8000/api/functions/service/register/',
-        {
-          username: register_nicknameRef.current.value,
-          password: register_passRef.current.value,
-          details:  {
-                      email: register_emailRef.current.value ,
-                      phone: register_phoneRef.current.value
-                    }
-        })
-      console.log(resp);
+
+    //* IF Control for empty inputs
+    if (register_nicknameRef.current.value === '' || register_emailRef.current.value === '' || register_passRef.current.value === '' || register_passAgainRef.current.value === '') {
+      
+      document.getElementById('warn_1').classList.remove('hidden');
     }
-    catch (err) {
-      console.log(err.response.data)
+    else {
+      await Service.register(register_nicknameRef.current.value , register_emailRef.current.value , register_phoneRef.current.value , register_passRef.current.value)
+      navigate("/");
     }
       
   }
 
+
   const login_nicknameRef = useRef(null);
   const login_passRef = useRef(null);
-  let navigate = useNavigate();
+  var navigate = useNavigate();
 
   const login = async () => {
 
-    try {
-      let resp = await axios.get('http://93.180.133.185:8000/api/functions/service/auth/',
-        {
-          params: {
-            username: login_nicknameRef.current.value,
-            password: login_passRef.current.value,
-          }
-        })
-      console.log(resp);
-
-      localStorage.setItem('Token' , resp.data.Token);
-      localStorage.setItem('RefreshToken' , resp.data.Data.refresh_token);
-
-      navigate("/");
-
-
-
-    } catch (err) {
-      console.log(err.response.data)
+    //* IF Control for empty inputs
+    if (login_nicknameRef.current.value === '' || login_passRef.current.value === '') {
+      document.getElementById('warn_2').classList.remove('hidden');
     }
-    
+    else {
+
+      let loginans = await Service.login(login_nicknameRef.current.value , login_passRef.current.value)
+
+      if (loginans === false) {
+        document.getElementById('warn_2').classList.add('hidden');
+        document.getElementById('warn_3').classList.remove('hidden');
+      }
+      else {
+        
+        navigate("/");
+
+      }
+
+    }
 
   }
 
@@ -97,6 +107,9 @@ export default function LoginPage() {
               <input className='input placeholder:opacity-50 w-3/4' type="tel" placeholder="Telefon (Zorunlu Değil)" ref={register_phoneRef} />
               <input className='input placeholder:opacity-50 w-3/4' type="password" placeholder="Şifre*" ref={register_passRef} />
               <input className='input placeholder:opacity-50 w-3/4' type="password" placeholder="Şifre Tekrar*" ref={register_passAgainRef} />
+              <div id='registerWarns'>
+                <span id='warn_1' className='text-sm text-red-600 hidden'>Lütfen tüm gerekli bilgileri doldurun!</span>
+              </div>
               <button className='button mt-2' onClick={register}>Kayıt Ol</button>
             </form>
           </div>
@@ -107,8 +120,12 @@ export default function LoginPage() {
               {/* <span className='text-xs'>ya da hesabını kullanabilirsin</span> */}
               <input className='input placeholder:opacity-50 w-3/4' type="email" placeholder="Kullanıcı Adı" ref={login_nicknameRef} />
               <input className='input placeholder:opacity-50 w-3/4' type="password" placeholder="Şifre" ref={login_passRef} />
-              <a className='giris-a hover:text-sea_green' href="#">Şifreni mi unuttun?</a>
-              <button className='button' onClick={login}>GİRİŞ YAP</button>
+              <div id='loginWarns'>
+                <span id='warn_2' className='text-sm text-red-600 hidden'>Lütfen tüm bilgileri doldurun!</span>
+                <span id='warn_3' className='text-sm text-red-600 hidden'>Kullanıcı adı ya da şifre yanlış!</span>
+              </div>
+              {/* <a className='giris-a hover:text-sea_green' href="#">Şifreni mi unuttun?</a> */}
+              <button className='button mt-2' onClick={login}>GİRİŞ YAP</button>
             </form>
           </div>
           <div className="absolute top-0 w-1/2 left-1/2 h-full overflow-hidden transition-transform ease-in-out duration-700 z-[100]" id='overlay-container'>
@@ -134,3 +151,4 @@ export default function LoginPage() {
     
   )
 }
+

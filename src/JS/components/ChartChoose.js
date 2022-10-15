@@ -12,7 +12,7 @@ export default function ChartChoose() {
   <>
     <input type="checkbox" id="my-modal-4" className="modal-toggle" />
     <label htmlFor="my-modal-4" className="modal bg-modal_back">
-        <div className="modal-box relative max-w-[35%] h-fit p-3 grid grid-cols-6 grid-flow-row auto-rows-max gap-3 bg-black_light rounded">
+        <div className="modal-box relative max-w-fit h-fit p-3 grid grid-cols-6 grid-flow-row auto-rows-max gap-3 bg-black_light rounded">
             <button className='chart-type-cards'>
                 <img src={chart_bar} alt="Bar Chart" />
                 <h1 className='text-center pt-1'>Bar Grafiği</h1>
