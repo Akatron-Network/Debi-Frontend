@@ -10,8 +10,8 @@ import chart_table from '../../img/chart-types/Chart Logos/calendar.png';
 export default function ChartChoose() {
   return (
   <>
-    <input type="checkbox" id="my-modal-4" className="modal-toggle" />
-    <label htmlFor="my-modal-4" className="modal bg-modal_back">
+    <input type="checkbox" id="chart_choose" className="modal-toggle" />
+    <label htmlFor="chart_choose" className="modal bg-modal_back">
         <div className="modal-box relative max-w-fit h-fit p-3 grid grid-cols-6 grid-flow-row auto-rows-max gap-3 bg-black_light rounded">
             <button className='chart-type-cards'>
                 <img src={chart_bar} alt="Bar Chart" />

@@ -2,7 +2,7 @@ import React from 'react'
 import Navbar from '../components/Navbar';
 import Sidebar from '../components/Sidebar';
 import Filepath from '../components/Filepath';
-import Collections from '../components/Collections';
+import Workspace from '../components/Workspace';
 import DragResizePanels from '../components/DragResizePanels'
 
 export default function MainPage() {
@@ -11,7 +11,7 @@ export default function MainPage() {
         <Navbar />
         <Sidebar />
         <Filepath />
-        <Collections />
+        <Workspace />
     </div>
   )
 }

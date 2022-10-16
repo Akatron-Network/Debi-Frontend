@@ -47,7 +47,8 @@ export default function LoginPage() {
   const register_passRef = useRef(null);
   const register_passAgainRef = useRef(null);
   
-  const register = async () => {
+  const register = async (e) => {
+    e.preventDefault();
 
     //* IF Control for empty inputs
     if (register_nicknameRef.current.value === '' || register_emailRef.current.value === '' || register_passRef.current.value === '' || register_passAgainRef.current.value === '') {
@@ -66,7 +67,9 @@ export default function LoginPage() {
   const login_passRef = useRef(null);
   var navigate = useNavigate();
 
-  const login = async () => {
+  const login = async (e) => {
+
+    e.preventDefault();
 
     //* IF Control for empty inputs
     if (login_nicknameRef.current.value === '' || login_passRef.current.value === '') {
@@ -121,7 +124,7 @@ export default function LoginPage() {
               <input className='input placeholder:opacity-50 w-3/4' type="email" placeholder="Kullanıcı Adı" ref={login_nicknameRef} />
               <input className='input placeholder:opacity-50 w-3/4' type="password" placeholder="Şifre" ref={login_passRef} />
               <div id='loginWarns'>
-                <span id='warn_2' className='text-sm text-red-600 hidden'>Lütfen tüm bilgileri doldurun!</span>
+                <span id='warn_2' className='text-sm text-red-600 hidden'>Lütfen tüm gerekli bilgileri doldurun!</span>
                 <span id='warn_3' className='text-sm text-red-600 hidden'>Kullanıcı adı ya da şifre yanlış!</span>
               </div>
               {/* <a className='giris-a hover:text-sea_green' href="#">Şifreni mi unuttun?</a> */}

@@ -13,13 +13,23 @@ class Requests {
 
     async get(data) {
 
-        let resp = await axios.get(this.url, data)
+        let resp = await axios({
+            method: 'get',
+            url: this.url,
+            params: data,
+            headers: {Token: localStorage.Token}
+        })
         return resp.data;
     }
 
     async post(data) {
 
-        let resp = await axios.post(this.url, data)
+        let resp = await axios({
+            method: 'post',
+            url: this.url,
+            data:data,
+            headers: {Token: localStorage.Token}
+        })
         console.log(resp)
         return resp.data;
 
