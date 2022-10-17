@@ -1,12 +1,13 @@
 import React from 'react'
 import Table from '../components/Table';
+import { Outlet, Link } from "react-router-dom";
 
 export default function Deneme() {
   
   return (
     <>
       <label htmlFor="my-modal-5" onClick={() => {resize(); review()}} className="btn modal-button">open modal</label>
-      
+          
       <input type="checkbox" id="my-modal-5" className="modal-toggle" />
       <div className="modal bg-modal_back">
         <div className="modal-box max-w-full h-screen p-4 grid grid-cols-5 gap-5 bg-darkest_jet rounded">

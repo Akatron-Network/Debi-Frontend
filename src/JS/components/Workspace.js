@@ -4,10 +4,11 @@ import Folders from './Folders'
 import Files from './Files'
 
 import WorkspaceAll from '../libraries/categories/Workspace';
+import { Outlet } from 'react-router-dom';
 
-export default function Workspace() {
+export default function Workspace({collections ,  setCollections }) {
 
-  const [collections, setCollections] = useState([]);
+  // const [collections, setCollections] = useState([]);
   const [folders, setFolders] = useState([]);
   const [files, setFiles] = useState([]);
 
@@ -63,8 +64,8 @@ export default function Workspace() {
   useEffect(() => {
   
     getColWorks();
-    getFolderWorks();
-    getFileWorks();
+    // getFolderWorks();
+    // getFileWorks();
   
   }, [])
 
@@ -73,6 +74,7 @@ export default function Workspace() {
 
   return (
     <>
+
         <div className="py-[89px] pl-[100px] pr-[38px]">
           
           <h2 className="workspace-titles">Koleksiyonlar</h2>
@@ -89,8 +91,6 @@ export default function Workspace() {
                 </div>
               </div>
             </label>
-
-
             
           </div>
 
@@ -137,8 +137,6 @@ export default function Workspace() {
             <button onClick={() => addWorksApply(type)} className='green-btn float-right mt-1'>Kaydet</button>
           </label>
         </label>
-    
-    
     </>
   )
 }
