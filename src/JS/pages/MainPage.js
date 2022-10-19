@@ -25,18 +25,12 @@ export default function MainPage() {
     let resp = await WorkspaceAll.getFolders();
     setFolders(resp.Data.owned_directories);
   }
+
   const getFileWorks = async () => {
     let resp = await WorkspaceAll.getFiles();
     setFiles(resp.Data.owned_pages);
   }
-  
-
-  useEffect(() => {
-    getColWorks();
-    getFolderWorks();
-    getFileWorks();
-  }, [])
-  
+    
   const worksNameRef = useRef(null);
 	const [type, setType] = useState('');
 
@@ -54,6 +48,7 @@ export default function MainPage() {
     addWorks,
     getColWorks,
     getFolderWorks,
+    getFileWorks,
   }
 
   return (

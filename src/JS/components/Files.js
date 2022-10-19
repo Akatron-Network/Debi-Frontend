@@ -1,4 +1,4 @@
-import React , { useContext } from 'react'
+import React , { useContext , useEffect } from 'react'
 import { Link , useParams } from "react-router-dom";
 import AddColFoldFile from './AddColFoldFile';
 
@@ -7,6 +7,10 @@ import { MainContext } from './context'
 export default function Files() {
 	
 	const { foldID } = useParams();
+
+	useEffect(() => {
+	  data.getFileWorks();
+	}, [])
 
 	const data = useContext(MainContext);
 

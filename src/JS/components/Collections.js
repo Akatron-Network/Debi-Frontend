@@ -1,4 +1,4 @@
-import React , { useContext } from 'react'
+import React , { useContext , useEffect } from 'react'
 import { Link } from "react-router-dom";
 import AddColFoldFile from './AddColFoldFile';
 
@@ -16,6 +16,10 @@ export default function Collections() {
 	// 	data.worksNameRef.current.value = "";
 	// 	setType(type);
 	// }
+
+  useEffect(() => {
+    data.getColWorks();
+  }, [])
 
   return (
 	<>
