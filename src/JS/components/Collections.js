@@ -1,24 +1,28 @@
-import React , { useState , useRef } from 'react'
+import React , { useContext } from 'react'
 import { Link } from "react-router-dom";
 import AddColFoldFile from './AddColFoldFile';
 
-export default function Collections({ collections , getColWorks }) {
+import { MainContext } from './context'
 
-	const worksNameRef = useRef(null);
+export default function Collections() {
 
-	const [type, setType] = useState('');
+	const data = useContext(MainContext);
 
-	const addWorks = (type) => {
-		worksNameRef.current.value = "";
-		setType(type);
-	}
-	
+	// const worksNameRef = useRef(null);
+
+	// const [type, setType] = useState('');
+
+	// const addWorks = (type) => {
+	// 	data.worksNameRef.current.value = "";
+	// 	setType(type);
+	// }
+
   return (
 	<>
 		<h2 className="workspace-titles">Koleksiyonlar</h2>
 		<div className="grid xl:grid-cols-8 sm:grid-cols-4 grid-cols-2 grid-flow-row auto-rows-max gap-4 pl-[10px]">
 
-			{collections.map((collection) => (
+			{data.collections.map((collection) => (
 
 				<Link key={collection.collection_id} to={collection.collection_name}>
 					<div id={collection.collection_id} className="col-card col-span-1">
@@ -35,7 +39,7 @@ export default function Collections({ collections , getColWorks }) {
 				</Link>
 			))}
 
-			<label htmlFor="addWorks" onClick={() => addWorks("koleksiyon")}>
+			<label htmlFor="addWorks" onClick={() => data.addWorks("koleksiyon")}>
 				<div className="col-card add col-span-1">
 					<div className="card">
 						<div className="col-content">
@@ -49,7 +53,7 @@ export default function Collections({ collections , getColWorks }) {
 	
 		<hr className="hrCols"></hr>
 
-		<AddColFoldFile type={type} worksNameRef={worksNameRef} getColWorks={getColWorks} />
+		<AddColFoldFile />
 	</>
   )
 }

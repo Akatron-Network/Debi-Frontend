@@ -3,7 +3,7 @@ import { Outlet, Link } from "react-router-dom";
 export default function RouterDeneme() {
 
   return (
-    <div>
+    <>
       <h1>Bookkeeper</h1>
       <nav
         style={{
@@ -15,6 +15,6 @@ export default function RouterDeneme() {
       </nav>
 
       <Outlet />
-    </div>
+    </>
   );
 }

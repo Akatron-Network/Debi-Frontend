@@ -1,23 +1,21 @@
-import React , { useState , useRef } from 'react'
+import React , { useContext } from 'react'
+import { Link , useParams } from "react-router-dom";
 import AddColFoldFile from './AddColFoldFile';
 
-export default function Files({ files , getFileWorks}) {
+import { MainContext } from './context'
 
-	const worksNameRef = useRef(null);
+export default function Files() {
+	
+	const { foldID } = useParams();
 
-	const [type, setType] = useState('');
-
-	const addWorks = (type) => {
-		worksNameRef.current.value = "";
-		setType(type);
-	}
+	const data = useContext(MainContext);
 
   return (
   <>
 		<h2 className="workspace-titles">Sayfalar</h2>
 		<div className="grid xl:grid-cols-8 sm:grid-cols-4 grid-cols-2 grid-flow-row auto-rows-max gap-4 pl-[10px]">
   
-		{files.map((file) => (
+		{data.files.map((file) => (
 
 			<Link key={file.file_id} to={file.file_name}>
 				<div id={file.file_id} className="fold-card  col-span-1">
@@ -35,7 +33,7 @@ export default function Files({ files , getFileWorks}) {
 
 		))}
 		
-			<label htmlFor="addWorks" onClick={() => addWorks("sayfa")} className="fold-card add col-span-1">
+			<label htmlFor="addWorks" onClick={() => data.addWorks("sayfa")} className="fold-card add col-span-1">
 				<div className="card">
 					<div className="col-content">
 						<i className="fas fa-plus" style={{fontSize: '60px', color: 'var(--platinium)'}} />
@@ -44,7 +42,7 @@ export default function Files({ files , getFileWorks}) {
 			</label>
 		</div>
 
-		<AddColFoldFile type={type} worksNameRef={worksNameRef} getFileWorks={getFileWorks} />
+		<AddColFoldFile />
 	</>
   )
 }

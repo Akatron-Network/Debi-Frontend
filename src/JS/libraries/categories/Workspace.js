@@ -56,16 +56,14 @@ class WorkspaceAll {
             
         }
     }
-    static async postFolders(name) {
+    static async postFolders(colID , name) {
         let postFolders_req = new Requests("workspace" , "directories");
 
         try {
             let resp = await postFolders_req.post({
-                directory_id: name,
-                // "collection_id": {{LastCollectionID}},
-                // "parent_directory": {{LastDirID}},
-                // "directory_name": "Test Directory",
-                // "directory_expl": "Directory for the test requests"
+                collection_id: colID,
+                directory_name: name,
+                directory_expl: "Directory for the test requests"
             });
 
             return resp;

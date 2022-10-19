@@ -1,4 +1,4 @@
-import React , {useState} from "react";
+import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import LoginPage from '../pages/LoginPage';
@@ -6,9 +6,9 @@ import MainPage from '../pages/MainPage';
 import SettingsPage from '../pages/SettingsPage';
 import Deneme from '../pages/Deneme';
 import PanelsPage from '../pages/PanelsPage';
-import ColSpace from "../components/ColSpace";
-import FoldSpace from "../components/FoldSpace";
-import FileSpace from "../components/FileSpace";
+import Collections from "./Collections";
+import Folders from "./Folders";
+import Files from "./Files";
 
 import RouterDeneme from '../deneme/router-deneme';
 import Users from '../deneme/Users';
@@ -22,18 +22,17 @@ export default function AllRoutes() {
     { id: '2', fullName: 'Sarah Finnley' },
   ];
 
+
   return (
   
     <BrowserRouter>
       <Routes>
         <Route path="/giris" element={<LoginPage />} />
-
         <Route path="/" element={<MainPage />}>
-          <Route index={true} element={<ColSpace />} />
-          <Route path=":colID" element={<FoldSpace />} />
-          <Route path=":foldID" element={<FileSpace />} />
+          <Route index={true} element={<Collections />} />
+          <Route path=":colID" element={<Folders />} />
+          <Route path=":colID/:foldID" element={<Files />} />
         </Route>
-
         <Route path="/ayarlar" element={<SettingsPage />} />
         <Route path="/grafik-tablo" element={<PanelsPage />} />
         <Route path="/deneme" element={<Deneme />} />
