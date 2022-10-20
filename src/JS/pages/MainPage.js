@@ -1,4 +1,4 @@
-import React , { useState , useEffect, useRef } from 'react'
+import React , { useState , useRef } from 'react'
 import { MainContext } from '../components/context'
 import WorkspaceAll from '../libraries/categories/Workspace';
 import { Outlet } from 'react-router-dom';
@@ -11,18 +11,19 @@ import DragResizePanels from '../components/DragResizePanels'
 
 export default function MainPage() {
 
-
   const [collections, setCollections] = useState([]);
   const [folders, setFolders] = useState([]);
   const [files, setFiles] = useState([]);
+  const [filepath, setFilePath] = useState([]);
 
-  const getColWorks = async () => {
-    let resp = await WorkspaceAll.getCollections();
+
+  const getColWorks = async (col_id = undefined) => {
+    let resp = await WorkspaceAll.getCollections(col_id);
     setCollections(resp.Data.owned_collections);
   }
   
-  const getFolderWorks = async () => {
-    let resp = await WorkspaceAll.getFolders();
+  const getFolderWorks = async (fold_id = undefined) => {
+    let resp = await WorkspaceAll.getFolders(fold_id);
     setFolders(resp.Data.owned_directories);
   }
 
@@ -45,6 +46,8 @@ export default function MainPage() {
     files,
     worksNameRef,
     type,
+    filepath,
+    setFilePath,
     addWorks,
     getColWorks,
     getFolderWorks,

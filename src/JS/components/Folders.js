@@ -1,28 +1,37 @@
-import React , { useContext , useEffect } from 'react'
+import React , { useContext , useEffect , useState} from 'react'
 import { Link , useParams } from "react-router-dom";
 import AddColFoldFile from './AddColFoldFile';
+import WorkspaceAll from '../libraries/categories/Workspace';
 
 import { MainContext } from './context'
 
 export default function Folders() {
+
+	const data = useContext(MainContext);
 	
 	const { colID } = useParams();
 
 	useEffect(() => {
-	  data.getFolderWorks();
+		getOwnCol(parseInt(colID));
+		data.setFilePath([parseInt(colID)]);
 	}, [])
 
-	const data = useContext(MainContext);
+	const [ownColID, setownColID] = useState([]) //* ColID 'ye sahip olan koleksiyonun içerisindeki dosyaları çekmek için bunu oluşturduk
+
+	const getOwnCol = async (col_id = undefined) => {
+    let resp = await WorkspaceAll.getCollections(col_id);
+		setownColID(resp.Data.directories)
+  }
 
   return (
 	<>
 		<h2 className="workspace-titles">Klasörler</h2>
 		<div className="grid xl:grid-cols-8 sm:grid-cols-4 grid-cols-2 grid-flow-row auto-rows-max gap-4 pl-[10px]">
 
-			{data.folders.map((folder) => (
+			{ownColID.map((folder) => (
 				
-				<Link key={folder.directory_id} to={folder.directory_name}>
-					<div id={folder.directory_id}  className="fold-card col-span-1">
+				<Link key={folder.directory_id} to={folder.directory_id.toString()}>
+					<div className="fold-card col-span-1">
 						<div className="card">
 							<button className="dlt-btn">
 									<i className="fa-solid fa-xmark"></i>

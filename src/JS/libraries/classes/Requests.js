@@ -17,7 +17,7 @@ class Requests {
             method: 'get',
             url: this.url,
             params: data,
-            headers: {Token: localStorage.Token}
+            headers: {Token: localStorage.Token, "Content-Type": "application/json"}
         })
         return resp.data;
     }
@@ -28,7 +28,7 @@ class Requests {
             method: 'post',
             url: this.url,
             data:data,
-            headers: {Token: localStorage.Token}
+            headers: {Token: localStorage.Token, "Content-Type": "application/json"}
         })
         console.log(resp)
         return resp.data;

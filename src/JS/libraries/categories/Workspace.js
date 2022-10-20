@@ -2,11 +2,13 @@ import Requests from '../classes/Requests';
 
 class WorkspaceAll {
 
-    static async getCollections() {
+    static async getCollections(id) {
         let getCollections_req = new Requests("workspace" , "collections");
 
         try {
-            let resp = await getCollections_req.get();
+            let resp = await getCollections_req.get({
+                collection_id: id
+            });
             console.log(resp)
             return resp;
         } catch (err) {
@@ -15,11 +17,13 @@ class WorkspaceAll {
         }
     }
 
-    static async getFolders() {
+    static async getFolders(id) {
         let getFolders_req = new Requests("workspace" , "directories");
 
         try {
-            let resp = await getFolders_req.get();
+            let resp = await getFolders_req.get({
+                directory_id: id
+            });
             console.log(resp)
             return resp;
         } catch (err) {

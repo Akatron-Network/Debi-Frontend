@@ -19,6 +19,7 @@ export default function Collections() {
 
   useEffect(() => {
     data.getColWorks();
+	data.setFilePath([]);
   }, [])
 
   return (
@@ -28,8 +29,8 @@ export default function Collections() {
 
 			{data.collections.map((collection) => (
 
-				<Link key={collection.collection_id} to={collection.collection_name}>
-					<div id={collection.collection_id} className="col-card col-span-1">
+				<Link key={collection.collection_id} to={collection.collection_id.toString()}>
+					<div className="col-card col-span-1">
 						<div className="card">
 							<button className="dlt-btn" id={collection.collection_id}>
 								<i className="fa-solid fa-xmark"></i>
