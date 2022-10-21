@@ -5,7 +5,6 @@ import { MainContext } from './context'
 
 export default function AddColFoldFile() {
 	const data = useContext(MainContext);
-  console.log(data);
 
 	const addWorksApply = async (type) => {
 
@@ -49,11 +48,11 @@ export default function AddColFoldFile() {
   return (
 	<>
 		<input type="checkbox" id="addWorks" className="modal-toggle" />
-		<label htmlFor="addWorks" className="modal cursor-pointer bg-modal_back">
-		<label className="modal-box relative max-w-fit h-fit p-3 bg-black_light rounded" htmlFor="">
+		<label htmlFor="addWorks" className="modal bg-modal_back">
+		<label className="modal-box relative max-w-[25%] h-fit p-3 bg-black_light rounded" htmlFor="">
 			<h3 className="text-lg">Lütfen bir <span className='font-bold text-sea_green'>{data.type}</span> adı girin.</h3>
 				<input className='input placeholder:opacity-50 w-full' type="text" placeholder="Buraya girin..." ref={data.worksNameRef} />
-				<button onClick={() => addWorksApply(data.type)} className='green-btn float-right mt-1'>Kaydet</button>
+				<button onClick={() => addWorksApply(data.type)} className='green-btn float-right mt-3'>Kaydet</button>
 			</label>
 		</label>
 	</>

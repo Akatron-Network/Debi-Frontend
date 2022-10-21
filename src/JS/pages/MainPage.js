@@ -16,6 +16,8 @@ export default function MainPage() {
   const [filesChildDirs, setFilesChildDirs] = useState({child_dirs: []});
   const [files, setFiles] = useState({pages: []});
   const [filepath, setFilePath] = useState([]);
+  const [deleteItemRef, setDeleteItemRef] = useState({});
+  const [deleteItemType, setDeleteItemType] = useState('');
 
 
   const getColWorks = async (col_id = undefined) => {
@@ -39,16 +41,21 @@ export default function MainPage() {
   const deleteItems = async (del_type , id) => {
     if(del_type === 'collection') {
       let resp = await WorkspaceAll.deleteCollections(id);
-      console.log(resp)
-      getColWorks();
+      await getColWorks();
     }
     else if(del_type === 'folder') {
       let resp = await WorkspaceAll.deleteFolders(id);
-      console.log(resp)
+
+      if(resp.Data.parent_directory === null) {
+        await getFolderWorks(resp.Data.collection_id);
+      }
+      else {
+        await getFileWorks(resp.Data.parent_directory);
+      }
     }
     else if(del_type === 'file') {
       let resp = await WorkspaceAll.deleteFiles(id);
-      console.log(resp)
+      await getFileWorks(resp.Data.directory_id);
     }
     
   }
@@ -69,6 +76,10 @@ export default function MainPage() {
     worksNameRef,
     type,
     filepath,
+    deleteItemRef,
+    deleteItemType,
+    setDeleteItemRef,
+    setDeleteItemType,
     setFilePath,
     addWorks,
     getColWorks,

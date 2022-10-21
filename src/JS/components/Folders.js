@@ -1,6 +1,7 @@
 import React , { useContext , useEffect , useState} from 'react'
 import { Link , useParams } from "react-router-dom";
 import AddColFoldFile from './AddColFoldFile';
+import DeleteApply from './DeleteApply';
 import { MainContext } from './context'
 
 export default function Folders() {
@@ -31,9 +32,9 @@ export default function Folders() {
 					
 						<div key={folder.directory_id} className="fold-card col-span-1">
 							<div className="card">
-								<button className="dlt-btn" onClick={() => data.deleteItems( "folder" , folder.directory_id)}>
+								<label htmlFor="dltWorks" className="dlt-btn cursor-pointer" onClick={() => {data.setDeleteItemRef(folder) ; data.setDeleteItemType("klasör")}}>
 									<i className="fa-solid fa-xmark"></i>
-								</button>
+								</label>
 								<Link className='link-title' to={folder.directory_id.toString()}>
 									<div className="col-content fold-content">
 										<h5>{folder.directory_name}</h5>
@@ -57,6 +58,7 @@ export default function Folders() {
 			<hr className="hrCols"></hr>
 
 			<AddColFoldFile />
+			<DeleteApply />
 		</>
   )
 }

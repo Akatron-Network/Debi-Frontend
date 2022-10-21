@@ -1,6 +1,7 @@
 import React , { useContext , useEffect , useState } from 'react'
 import { Link , useParams } from "react-router-dom";
 import AddColFoldFile from './AddColFoldFile';
+import DeleteApply from './DeleteApply';
 import { MainContext } from './context'
 
 export default function Files() {
@@ -33,9 +34,9 @@ export default function Files() {
 					
 						<div key={folder.directory_id} className="fold-card col-span-1">
 							<div className="card">
-								<button className="dlt-btn" onClick={() => data.deleteItems( "folder" , folder.directory_id)}>
+								<label htmlFor="dltWorks" className="dlt-btn cursor-pointer"  onClick={() => {data.setDeleteItemRef(folder) ; data.setDeleteItemType("klasör")}}>
 										<i className="fa-solid fa-xmark"></i>
-								</button>
+								</label>
 								<Link className='link-title' to={"/" + folder.collection_id.toString() + "/" + folder.directory_id.toString()}>
 									<div className="col-content fold-content">
 										<h5>{folder.directory_name}</h5>
@@ -65,9 +66,9 @@ export default function Files() {
 					
 						<div key={file.page_id} className="fold-card  col-span-1">
 							<div className="card">
-								<button className="dlt-btn" onClick={() => data.deleteItems( "file" , file.page_id)}>
+								<label htmlFor="dltWorks" className="dlt-btn cursor-pointer" onClick={() => {data.setDeleteItemRef(file) ; data.setDeleteItemType("sayfa")}}>
 										<i className="fa-solid fa-xmark"></i>
-								</button>
+								</label>
 								<div className="card-bg file-bg"></div>
 								<Link className='link-title' to={file.page_id.toString()}>
 									<div className="col-content fold-content">
@@ -90,6 +91,7 @@ export default function Files() {
 			<hr className="hrCols"></hr>
 
 			<AddColFoldFile />
+			<DeleteApply />
 		</>
   )
 }
