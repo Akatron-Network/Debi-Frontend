@@ -35,6 +35,19 @@ class Requests {
 
     }
 
+    async delete(data) {
+
+        let resp = await axios({
+            method: 'delete',
+            url: this.url,
+            data:data,
+            headers: {Token: localStorage.Token, "Content-Type": "application/json"}
+        })
+        console.log(resp)
+        return resp.data;
+
+    }
+
 }
 
 export default Requests;

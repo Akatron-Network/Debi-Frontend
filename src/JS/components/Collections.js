@@ -6,20 +6,11 @@ import { MainContext } from './context'
 
 export default function Collections() {
 
-	const data = useContext(MainContext);
-
-	// const worksNameRef = useRef(null);
-
-	// const [type, setType] = useState('');
-
-	// const addWorks = (type) => {
-	// 	data.worksNameRef.current.value = "";
-	// 	setType(type);
-	// }
+  const data = useContext(MainContext);
 
   useEffect(() => {
     data.getColWorks();
-	data.setFilePath([]);
+	  data.setFilePath([]);
   }, [])
 
   return (
@@ -29,19 +20,21 @@ export default function Collections() {
 
 			{data.collections.map((collection) => (
 
-				<Link key={collection.collection_id} to={collection.collection_id.toString()}>
-					<div className="col-card col-span-1">
+				
+					<div key={collection.collection_id} className="col-card col-span-1">
 						<div className="card">
-							<button className="dlt-btn" id={collection.collection_id}>
+							<button className="dlt-btn" onClick={() => data.deleteItems( "collection" , collection.collection_id)}>
 								<i className="fa-solid fa-xmark"></i>
 							</button>
+              <Link className='link-title' to={collection.collection_id.toString()}>
+                <div className="col-content">
+								  <h4>{collection.collection_name}</h4>
+							  </div>
+              </Link>
 							<div className="card-bg" />
-							<div className="col-content">
-								<h4>{collection.collection_name}</h4>
-							</div>
+							
 						</div>
 					</div>
-				</Link>
 			))}
 
 			<label htmlFor="addWorks" onClick={() => data.addWorks("koleksiyon")}>

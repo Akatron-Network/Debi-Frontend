@@ -12,8 +12,9 @@ import DragResizePanels from '../components/DragResizePanels'
 export default function MainPage() {
 
   const [collections, setCollections] = useState([]);
-  const [folders, setFolders] = useState([]);
-  const [files, setFiles] = useState([]);
+  const [folders, setFolders] = useState({directories: []});
+  const [filesChildDirs, setFilesChildDirs] = useState({child_dirs: []});
+  const [files, setFiles] = useState({pages: []});
   const [filepath, setFilePath] = useState([]);
 
 
@@ -22,14 +23,34 @@ export default function MainPage() {
     setCollections(resp.Data.owned_collections);
   }
   
-  const getFolderWorks = async (fold_id = undefined) => {
-    let resp = await WorkspaceAll.getFolders(fold_id);
-    setFolders(resp.Data.owned_directories);
+  const getFolderWorks = async (col_id = undefined) => {
+    let resp = await WorkspaceAll.getCollections(col_id);
+    setFolders(resp.Data);
+    setFilePath([{id: col_id, name: resp.Data.collection_name, url: "/" + col_id}]);
   }
 
-  const getFileWorks = async () => {
-    let resp = await WorkspaceAll.getFiles();
-    setFiles(resp.Data.owned_pages);
+	const getFileWorks = async (fold_id = undefined) => {
+    let resp = await WorkspaceAll.getFolders(fold_id);
+		setFilesChildDirs(resp.Data)
+		setFiles(resp.Data)
+		setFilePath(resp.Data.path)
+  }
+
+  const deleteItems = async (del_type , id) => {
+    if(del_type === 'collection') {
+      let resp = await WorkspaceAll.deleteCollections(id);
+      console.log(resp)
+      getColWorks();
+    }
+    else if(del_type === 'folder') {
+      let resp = await WorkspaceAll.deleteFolders(id);
+      console.log(resp)
+    }
+    else if(del_type === 'file') {
+      let resp = await WorkspaceAll.deleteFiles(id);
+      console.log(resp)
+    }
+    
   }
     
   const worksNameRef = useRef(null);
@@ -44,6 +65,7 @@ export default function MainPage() {
     collections,
     folders,
     files,
+    filesChildDirs,
     worksNameRef,
     type,
     filepath,
@@ -52,6 +74,7 @@ export default function MainPage() {
     getColWorks,
     getFolderWorks,
     getFileWorks,
+    deleteItems,
   }
 
   return (

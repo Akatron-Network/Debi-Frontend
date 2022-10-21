@@ -102,6 +102,14 @@
       whitespace-nowrap
   }
 
+  .link-title {
+    @apply
+      h-full
+      w-full
+      z-1
+      absolute
+  }
+  
   .hrLine {
     @apply
       border-b
@@ -908,7 +916,7 @@
       pr-2
       pt-1
       text-platinium
-      z-1
+      z-2
       opacity-50
       transition duration-300
       hover:scale-125

@@ -3,7 +3,7 @@ import React from 'react'
 export default function Sidebar() {
   return (
     <>
-    <div id="allsidepanel" className='h-screen translate-x-0 fixed transition duration-500 z-2'>
+    <div id="allsidepanel" className='h-screen translate-x-0 fixed transition duration-500 z-[3]'>
         <div id="sidepanel" className='w-[250px] -translate-x-[250px] fixed z-2 h-screen top-11 left-0 bg-side_black pt-4'>
 			<div id="sidetab_1" className='hidden hrLine'>
 				<div id="workspace-title" className="workspace-title">

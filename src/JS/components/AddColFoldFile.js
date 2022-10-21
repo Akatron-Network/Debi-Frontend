@@ -5,6 +5,7 @@ import { MainContext } from './context'
 
 export default function AddColFoldFile() {
 	const data = useContext(MainContext);
+  console.log(data);
 
 	const addWorksApply = async (type) => {
 
@@ -15,12 +16,24 @@ export default function AddColFoldFile() {
         data.getColWorks();
       }
       else if (type === 'klasör') {
-        await WorkspaceAll.postFolders(data.worksNameRef.current.value);
-        data.getFolderWorks();
+        let parentdir = undefined;
+
+        if (data.filepath.length > 1) {
+          parentdir = data.filepath[data.filepath.length - 1].id
+        }
+        await WorkspaceAll.postFolders(data.filepath[0].id , data.worksNameRef.current.value , parentdir);
+        
+        if (data.filepath.length > 1) {
+          data.getFileWorks(data.filepath[data.filepath.length -1].id);
+        }
+        else {
+          data.getFolderWorks(data.filepath[0].id);
+        }
       }
+
       else if (type === 'sayfa') {
-        await WorkspaceAll.postFiles(data.worksNameRef.current.value);
-        data.getFileWorks();
+        await WorkspaceAll.postFiles(data.filepath[0].id , data.filepath[data.filepath.length - 1].id  , data.worksNameRef.current.value);
+        data.getFileWorks(data.filepath[data.filepath.length -1].id);
       }
 
       document.getElementById('addWorks').checked = false;
