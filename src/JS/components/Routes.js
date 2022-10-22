@@ -6,9 +6,9 @@ import MainPage from '../pages/MainPage';
 import SettingsPage from '../pages/SettingsPage';
 import Deneme from '../pages/Deneme';
 import PanelsPage from '../pages/PanelsPage';
-import Collections from "./Collections";
-import Folders from "./Folders";
-import Files from "./Files";
+import Collections from "./workspace/Collections";
+import Folders from "./workspace/Folders";
+import Files from "./workspace/Files";
 
 export default function AllRoutes() {
 

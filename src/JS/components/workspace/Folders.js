@@ -1,8 +1,8 @@
-import React , { useContext , useEffect , useState} from 'react'
+import React , { useContext , useEffect } from 'react'
 import { Link , useParams } from "react-router-dom";
 import AddColFoldFile from './AddColFoldFile';
 import DeleteApply from './DeleteApply';
-import { MainContext } from './context'
+import { MainContext } from '../context'
 
 export default function Folders() {
 

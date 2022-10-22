@@ -152,6 +152,25 @@
       cursor-pointer
   }
 
+  /*! WORKSPACE -------------------------------------------- */
+  .tree-elm {
+    @apply
+      btn
+      bg-transparent
+      text-grayXgray
+      border-none
+      rounded-none
+      justify-start
+      px-3
+      w-full
+      h-8
+      min-h-8
+      hover:bg-earie_black
+      hover:text-platinium
+  
+  }
+  /*! ------------------------------------------------------ */
+
   /*! LOGIN SCREEN ----------------------------------------- */
   .social {
     @apply

@@ -2,7 +2,7 @@ import React , { useContext , useEffect } from 'react'
 import { Link } from "react-router-dom";
 import AddColFoldFile from './AddColFoldFile';
 import DeleteApply from './DeleteApply';
-import { MainContext } from './context'
+import { MainContext } from '../context'
 
 export default function Collections() {
 
@@ -10,7 +10,7 @@ export default function Collections() {
 
   useEffect(() => {
     data.getColWorks();
-	  data.setFilePath([]);
+		data.setFilePath([]);
   }, [])
 
   return (

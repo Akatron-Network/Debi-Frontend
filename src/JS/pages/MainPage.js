@@ -41,21 +41,21 @@ export default function MainPage() {
   const deleteItems = async (del_type , id) => {
     if(del_type === 'collection') {
       let resp = await WorkspaceAll.deleteCollections(id);
-      await getColWorks();
+      getColWorks();
     }
     else if(del_type === 'folder') {
       let resp = await WorkspaceAll.deleteFolders(id);
 
       if(resp.Data.parent_directory === null) {
-        await getFolderWorks(resp.Data.collection_id);
+        getFolderWorks(resp.Data.collection_id);
       }
       else {
-        await getFileWorks(resp.Data.parent_directory);
+        getFileWorks(resp.Data.parent_directory);
       }
     }
     else if(del_type === 'file') {
       let resp = await WorkspaceAll.deleteFiles(id);
-      await getFileWorks(resp.Data.directory_id);
+      getFileWorks(resp.Data.directory_id);
     }
     
   }

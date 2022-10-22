@@ -142,6 +142,20 @@ class WorkspaceAll {
         }
     }
 
+    static async getTrees() {
+        let getTrees_req = new Requests("workspace" , "tree");
+
+        try {
+            let resp = await getTrees_req.get();
+            
+            console.log(resp)
+            return resp;
+        } catch (err) {
+            console.log(err);
+            
+        }
+    }
+
 }
 
 export default WorkspaceAll;

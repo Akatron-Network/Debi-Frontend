@@ -1,6 +1,6 @@
 import React , { useContext } from 'react'
-import WorkspaceAll from '../libraries/categories/Workspace';
-import { MainContext } from './context'
+import WorkspaceAll from '../../libraries/categories/Workspace';
+import { MainContext } from '../context'
 
 
 export default function AddColFoldFile() {

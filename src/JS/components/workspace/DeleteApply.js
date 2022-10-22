@@ -1,18 +1,18 @@
 import React , {useContext} from 'react'
-import { MainContext } from './context'
+import { MainContext } from '../context'
 
 export default function DeleteApply() {
 	const data = useContext(MainContext);
 
     const deleteApplyFn = async () => {
 			if(data.deleteItemType === "koleksiyon") {
-				await data.deleteItems( "collection" , data.deleteItemRef.collection_id)
+				data.deleteItems( "collection" , data.deleteItemRef.collection_id)
 			}
 			else if(data.deleteItemType === "klasör") {
-				await data.deleteItems( "folder" , data.deleteItemRef.directory_id)
+				data.deleteItems( "folder" , data.deleteItemRef.directory_id)
 			}
 			else if(data.deleteItemType === "sayfa") {
-				await data.deleteItems( "file" , data.deleteItemRef.page_id)
+				data.deleteItems( "file" , data.deleteItemRef.page_id)
 			}
     document.getElementById('dltWorks').checked = false;
     }
