@@ -16,11 +16,9 @@ export default function Collections() {
   return (
 	<>
 		<h2 className="workspace-titles">Koleksiyonlar</h2>
-		<div className="grid xl:grid-cols-8 sm:grid-cols-4 grid-cols-2 grid-flow-row auto-rows-max gap-4 pl-[10px]">
+		<div className="grid xl:grid-cols-10 sm:grid-cols-4 grid-cols-2 grid-flow-row auto-rows-max gap-4 pl-[10px]">
 
 			{data.collections.map((collection) => (
-
-				
 					<div key={collection.collection_id} className="col-card col-span-1">
 						<div className="card">
 							<label htmlFor="dltWorks" className="dlt-btn cursor-pointer" onClick={() => {data.setDeleteItemRef(collection) ; data.setDeleteItemType("koleksiyon")}} >

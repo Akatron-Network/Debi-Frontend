@@ -11,10 +11,16 @@ export default function MainTree() {
     let resp = await WorkspaceAll.getTrees();
     setTreeCollections(resp.Data);
   }
+
+  const treeToggle = (type , id) => {
+    document.getElementById(type + id).classList.toggle('hidden');
+    document.getElementById(type + "angle_" + id).classList.toggle('rotate-90');
+  }
 	
 	const treeData = {
 		treeCollections,
 		getTreeCollections,
+    treeToggle,
 	}
 
   return (

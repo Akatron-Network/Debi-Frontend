@@ -25,7 +25,7 @@ export default function Folders() {
   return (
 		<>
 			<h2 className="workspace-titles">Klasörler</h2>
-			<div className="grid xl:grid-cols-8 sm:grid-cols-4 grid-cols-2 grid-flow-row auto-rows-max gap-4 pl-[10px]">
+			<div className="grid xl:grid-cols-10 sm:grid-cols-4 grid-cols-2 grid-flow-row auto-rows-max gap-4 pl-[10px]">
 
 				{data.folders.directories.map((folder) => (
 					

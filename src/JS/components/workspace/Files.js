@@ -27,7 +27,7 @@ export default function Files() {
   return (
 		<>
 			<h2 className="workspace-titles">Klasörler</h2>
-			<div className="grid xl:grid-cols-8 sm:grid-cols-4 grid-cols-2 grid-flow-row auto-rows-max gap-4 pl-[10px]">
+			<div className="grid xl:grid-cols-10 sm:grid-cols-4 grid-cols-2 grid-flow-row auto-rows-max gap-4 pl-[10px]">
 
 				{data.filesChildDirs.child_dirs.map((folder) => (
 					
@@ -60,7 +60,7 @@ export default function Files() {
 			<hr className="hrCols"></hr>
 
 			<h2 className="workspace-titles">Sayfalar</h2>
-			<div className="grid xl:grid-cols-8 sm:grid-cols-4 grid-cols-2 grid-flow-row auto-rows-max gap-4 pl-[10px]">
+			<div className="grid xl:grid-cols-10 sm:grid-cols-4 grid-cols-2 grid-flow-row auto-rows-max gap-4 pl-[10px]">
 				{data.files.pages.map((file) => (
 
 					

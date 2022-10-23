@@ -162,12 +162,23 @@
       rounded-none
       justify-start
       px-3
+      pl-0
       w-full
       h-8
       min-h-8
       hover:bg-earie_black
       hover:text-platinium
-  
+      normal-case
+  }
+
+  .tree-cursor {
+    @apply
+      mr-4
+      transition duration-300
+      p-[5px]
+      flex
+      rounded
+      hover:bg-jet_mid
   }
   /*! ------------------------------------------------------ */
 
