@@ -10,6 +10,8 @@ export default function MainTree() {
 	const getTreeCollections = async () => {
     let resp = await WorkspaceAll.getTrees();
     setTreeCollections(resp.Data);
+    localStorage.setItem("Tree" , JSON.stringify(resp.Data))
+    localStorage.setItem("TreeTime" , Date.now())
   }
 
   const treeToggle = (type , id) => {
@@ -19,6 +21,7 @@ export default function MainTree() {
 	
 	const treeData = {
 		treeCollections,
+    setTreeCollections,
 		getTreeCollections,
     treeToggle,
 	}

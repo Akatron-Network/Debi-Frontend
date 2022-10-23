@@ -14,7 +14,10 @@ export default function TreeFolder(props) {
     else if(data.type === "directory") {
       return (
         <>
-          <span className='tree-elm' style={{paddingLeft: (props.padding + 12) + "px"}}><i className="fa-solid fa-angle-right tree-cursor" id={"fold_angle_" + data.id} onClick={() => treeData.treeToggle("fold_" , data.id)}></i><i className="fa-solid fa-folder mr-[6px]"></i>{data.name}</span>
+          <span className='tree-elm' style={{paddingLeft: (props.padding + 12) + "px"}}>
+            <i className="fa-solid fa-angle-right tree-cursor" id={"fold_angle_" + data.id} onClick={() => treeData.treeToggle("fold_" , data.id)}></i>
+            <i className="fa-solid fa-folder mr-[6px]"></i>{data.name}
+          </span>
 
           <div id={"fold_" + data.id} className="hidden">
             {data.childs.map(function (child) {
