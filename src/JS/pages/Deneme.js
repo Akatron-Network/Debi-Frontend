@@ -1,6 +1,7 @@
 import React from 'react'
 import Table from '../components/Table';
-import { Outlet, Link } from "react-router-dom";
+import Input from '../components/Input';
+
 
 export default function Deneme() {
   
@@ -14,18 +15,13 @@ export default function Deneme() {
           
           <div className="md:col-span-2 col-span-5 bg-middle_black p-3 rounded shadow-md overflow-auto relative min-h-[570px] h-full">
             
-            <div className="form-control">
-              <div className="input-group shadow-md">
-                <span className='bg-black_light text-grayXgray px-2 py-[7px] !rounded-l border border-jet_mid justify-center min-w-[30%]'>Model Adı</span>
-                <input type="text" placeholder="Model adı girin" className="input my-0 input-bordered !rounded-r w-full h-auto" />
-              </div>
-            </div>
+            <Input value={"Model adı"} />
 
             <hr className='my-3 border-1 w-4/5 relative left-1/2 -translate-x-1/2 border-hr_gray'/>
 
             <div className="form-control">
               <div className="input-group z-30 shadow-md">
-                <span className='bg-black_light text-grayXgray px-2 py-[7px] !rounded-l border border-jet_mid justify-center min-w-[30%]'>Kaynak Tablo</span>
+                <span className='bg-black_light text-grayXgray px-2 py-[7px] !rounded-l border border-jet_mid justify-center min-w-[35%]'>Kaynak Tablo</span>
                 <input type="text" onClick={source_table} className="w-full text-left truncate h-auto overflow-hidden input my-0 input-bordered transition duration-300" />
                 <button onClick={source_table} className='bg-black_light px-2 py-[7px] !rounded-r border border-jet_mid justify-center min-w-[35px] transition duration-300 hover:bg-side_black hover:text-platinium'><i className="fa-sharp fa-solid fa-chevron-down "></i></button>
               </div>

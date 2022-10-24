@@ -9,7 +9,6 @@ class WorkspaceAll {
             let resp = await getCollections_req.get({
                 collection_id: id
             });
-            console.log(resp)
             return resp;
         } catch (err) {
             console.log(err);
@@ -24,7 +23,6 @@ class WorkspaceAll {
             let resp = await getFolders_req.get({
                 directory_id: id
             });
-            console.log(resp)
             return resp;
         } catch (err) {
             console.log(err);
@@ -37,7 +35,6 @@ class WorkspaceAll {
 
         try {
             let resp = await getFiles_req.get();
-            console.log(resp)
             return resp;
         } catch (err) {
             console.log(err);
@@ -147,8 +144,6 @@ class WorkspaceAll {
 
         try {
             let resp = await getTrees_req.get();
-            
-            console.log(resp)
             return resp;
         } catch (err) {
             console.log(err);

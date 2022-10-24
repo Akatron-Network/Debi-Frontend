@@ -129,7 +129,6 @@
     px-[6px]
     py-1
     !no-underline
-
     hover:text-platinium
     hover:bg-like_trans
   }
@@ -142,7 +141,7 @@
       pb-1
       rounded
       shadow-md
-      max-w-[150px]
+      max-w-[170px]
       text-grayXgray
       border border-transparent
       hover:text-platinium
@@ -150,6 +149,13 @@
       hover:border-jet_mid
       transition duration-300
       cursor-pointer
+  }
+
+  .chart-title {
+    @apply
+      text-center
+      p-1
+      truncate
   }
 
   /*! WORKSPACE -------------------------------------------- */
@@ -169,6 +175,7 @@
       hover:bg-earie_black
       hover:text-platinium
       normal-case
+      no-animation
   }
 
   .tree-cursor {
@@ -659,6 +666,11 @@
       duration-150
   }
 
+  .modal-box {
+    @apply
+      shadow-lg
+  }
+
   .elm_info_cards {
     @apply
       relative
@@ -785,7 +797,7 @@
       min-h-0
       w-full
       max-h-10
-      rounded
+      !rounded
       shadow-md
       focus:outline-none
       focus:border-onyx_light

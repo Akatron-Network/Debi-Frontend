@@ -8,13 +8,13 @@ export default function TreeFile(props) {
   const checkType = (data) => {
     if(data.type === "page") {
       return (
-        <span className='tree-elm' style={{paddingLeft: (props.padding + 12) + "px"}}><i className="fa-solid fa-file mr-[6px]"></i>{data.name}</span>
+        <span className='tree-elm' style={{paddingLeft: (props.padding + 51.75) + "px"}}><i className="fa-solid fa-file mr-[6px]"></i>{data.name}</span>
       )
     }
     else if(data.type === "directory") {
       return (
         <>
-        <span className='tree-elm' style={{paddingLeft: (props.padding + 12) + "px"}}>
+        <span className='tree-elm' style={{paddingLeft: (props.padding + 16) + "px"}}>
           <i className="fa-solid fa-angle-right tree-cursor" id={"fold_angle_" + data.id} onClick={() => treeData.treeToggle("fold_" , data.id)}></i>
           <i className="fa-solid fa-folder mr-[6px]"></i>{data.name}
         </span>
@@ -23,7 +23,7 @@ export default function TreeFile(props) {
           {data.childs.map(function (child) {
             return(
               <div key={child.id}>
-                <TreeFolder data={child} padding={props.padding + 12} />
+                <TreeFolder data={child} padding={props.padding + 16} />
               </div>
           )})}
         </div>

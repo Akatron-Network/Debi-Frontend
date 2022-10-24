@@ -60,11 +60,18 @@ export default function MainPage() {
     
   }
     
+  const colWorksNameRef = useRef(null);
+  const colWorksPassRef = useRef(null);
+  const colWorksDBRef = useRef(null);
+  const colWorksSelectRef = useRef(null);
+  
   const worksNameRef = useRef(null);
 	const [type, setType] = useState('');
 
 	const addWorks = (type) => {
-		data.worksNameRef.current.value = "";
+
+		worksNameRef.current.value = "";
+		colWorksNameRef.current.value = "";
 		setType(type);
 	}
 
@@ -74,6 +81,10 @@ export default function MainPage() {
     files,
     filesChildDirs,
     worksNameRef,
+    colWorksNameRef,
+    colWorksPassRef,
+    colWorksDBRef,
+    colWorksSelectRef,
     type,
     filepath,
     deleteItemRef,

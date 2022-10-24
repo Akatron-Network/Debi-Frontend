@@ -10,7 +10,7 @@ export default function TreeCollection() {
       let treeTime = parseInt(localStorage.getItem("TreeTime"))
       treeData.setTreeCollections(JSON.parse(localStorage.getItem("Tree")))
 
-      if(Date.now() -  treeTime > (1* 60 * 1000)) { //? Burada 5dk yı geçerse treedatayı yenilemesi için koyduk
+      if(Date.now() -  treeTime > (1 * 60 * 1000)) { //? Burada 5dk yı geçerse treedatayı yenilemesi için koyduk
         treeData.getTreeCollections();
       }
     }
