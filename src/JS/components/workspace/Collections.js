@@ -1,8 +1,8 @@
 import React , { useContext , useEffect } from 'react'
 import { Link } from "react-router-dom";
-import AddColFoldFile from './AddColFoldFile';
 import DeleteApply from './DeleteApply';
 import { MainContext } from '../context'
+import ColConnectorCreateor from './ColConnectorCreateor';
 
 export default function Collections() {
 
@@ -35,7 +35,7 @@ export default function Collections() {
 					</div>
 			))}
 
-			<label htmlFor="addWorks" onClick={() => data.addWorks("koleksiyon")}>
+			<label htmlFor="addWorksCol" onClick={() => data.clearRefs("koleksiyon")}>
 				<div className="col-card add col-span-1">
 					<div className="card">
 						<div className="col-content">
@@ -49,7 +49,7 @@ export default function Collections() {
 	
 		<hr className="hrCols"></hr>
 
-		<AddColFoldFile />
+		<ColConnectorCreateor />
 		<DeleteApply />
 	</>
   )

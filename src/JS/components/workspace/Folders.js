@@ -1,8 +1,8 @@
 import React , { useContext , useEffect } from 'react'
 import { Link , useParams } from "react-router-dom";
-import AddColFoldFile from './AddColFoldFile';
 import DeleteApply from './DeleteApply';
 import { MainContext } from '../context'
+import FoldCreator from './FoldCreator';
 
 export default function Folders() {
 
@@ -45,7 +45,7 @@ export default function Folders() {
 						</div>
 				))}
 
-				<label htmlFor="addWorks" onClick={() =>data.addWorks("klasör")} className="fold-card add col-span-1">
+				<label htmlFor="addWorksFold" className="fold-card add col-span-1" onClick={() => data.clearRefs("klasör")}>
 					<div className="card">
 						<div className="col-content">
 							<i className="fas fa-plus" style={{fontSize: '60px', color: 'var(--platinium)'}} />
@@ -57,7 +57,7 @@ export default function Folders() {
 
 			<hr className="hrCols"></hr>
 
-			<AddColFoldFile />
+			<FoldCreator />
 			<DeleteApply />
 		</>
   )

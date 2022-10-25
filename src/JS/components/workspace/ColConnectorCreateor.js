@@ -1,40 +1,39 @@
-import React , { useContext , useEffect } from 'react'
+import React , { useContext , useState } from 'react'
 import { MainContext } from '../context'
+import WorkspaceAll from '../../libraries/categories/Workspace';
 import Input from '../Input'
 
 export default function ColConnectorCreateor() {
 	const data = useContext(MainContext);
   console.log(data)
 
-  const apply = () => {
-    if(data.colWorksSelectRef.current.value !== "default" && data.worksNameRef.current.value !== "" && data.colWorksNameRef.current.value !== "" && data.colWorksPassRef.current.value !== "" && data.colWorksDBRef.current.value !== "" ) {
-
+  const addWorksApply = async () => {
+    if(data.colWorksSelectRef.current.value !== "default" && data.colNameRef.current.value !== "" && data.colWorksNickRef.current.value !== "" && data.colWorksPassRef.current.value !== "" && data.colWorksDBRef.current.value !== "" ) {
+      
+      await WorkspaceAll.postCollections(data.colNameRef.current.value);
+      data.getColWorks();
+      
+      document.getElementById('addWorksCol').checked = false;
     }
     else {
-      // if (type === 'koleksiyon') {
-      //   await WorkspaceAll.postCollections(data.worksNameRef.current.value);
-      //   data.getColWorks();
-      // }
       
       document.getElementById('colWarn').classList.add('!block');
 
     }
   }
 
-      // data.colWorksNameRef.current.value = "";
-      // data.colWorksPassRef.current.value = "";
-      // data.colWorksDBRef.current.value = "";
-      // data.colWorksSelectRef.current.value = "default";
-  
-  
+  const checkConnector = () => {
+    console.log(!data.checked)
+    data.setChecked(!data.checked);
+  }
 
   return (
     <div>
-      <input type="checkbox" id="addWorks" className="modal-toggle" />
-      <label htmlFor="addWorks" className="modal bg-modal_back">
+      <input type="checkbox" id="addWorksCol" className="modal-toggle" />
+      <label htmlFor="addWorksCol" className="modal bg-modal_back">
         <label className="modal-box relative max-w-[25%] h-fit p-3 bg-black_light rounded" htmlFor="">
 
-          <Input value={"Koleksiyon adı"} refName={data.colWorksNameRef}/>
+          <Input value={"Koleksiyon adı"} refName={data.colNameRef}/>
 
           <hr className='my-3 border-1 w-4/5 relative left-1/2 -translate-x-1/2 border-hr_gray'/>
           <h2 className="text-xl mb-3">Bağlantı Paneli</h2>
@@ -49,12 +48,21 @@ export default function ColConnectorCreateor() {
             </div>
           </div>
 
-          <Input value={"Kullanıcı adı"} refName={data.colWorksNameRef}/>
+          <Input value={"Kullanıcı adı"} refName={data.colWorksNickRef}/>
           <Input value={"Şifre"} refName={data.colWorksPassRef}/>
           <Input value={"Veritabanı Adı"} refName={data.colWorksDBRef}/>
+          <Input value={"Sunucu Adres"} refName={data.colServerRef}/>
+
+          <div className='inline-flex w-full items-center p-1'>
+            <input type="checkbox" className="checkbox mr-2 transition duration-300 hover:border-onyx_middle h-4 w-4" checked={data.checked} onChange={checkConnector} />
+            <span className='text-[14px] text-grayXgray'>Ağ geçidi kullanmak istiyorum.</span>
+          </div>
+
+          <div className={data.checked ? "block mt-2" : "hidden" }><Input value={"Geçit Adresi"} refName={data.colConnectorServerRef}/></div>
+          
 
           <span id='colWarn' className='text-sm text-red-600 hidden'>Lütfen gerekli bilgileri doldurun!</span>
-          <button onClick={() => apply()} className='green-btn float-right mt-3'>Kaydet</button>
+          <button onClick={() => addWorksApply()} className='green-btn float-right'>Kaydet</button>
         </label>
       </label>
     </div>

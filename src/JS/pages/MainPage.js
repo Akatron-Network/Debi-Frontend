@@ -60,43 +60,82 @@ export default function MainPage() {
     
   }
     
-  const colWorksNameRef = useRef(null);
-  const colWorksPassRef = useRef(null);
-  const colWorksDBRef = useRef(null);
-  const colWorksSelectRef = useRef(null);
+  const colWorksNameRef = useRef({value : ""});
+  const colWorksNickRef = useRef({value : ""});
+  const colWorksPassRef = useRef({value : ""});
+  const colWorksDBRef = useRef({value : ""});
+  const colWorksSelectRef = useRef({value : ""});
+  const colConnectorServerRef = useRef({value : ""});
+  const colServerRef = useRef({value : ""});
   
-  const worksNameRef = useRef(null);
-	const [type, setType] = useState('');
+  const colNameRef = useRef({value : ""});
+  const foldNameRef = useRef({value : ""});
+  const fileNameRef = useRef({value : ""});
 
-	const addWorks = (type) => {
+  
+  const [checked , setChecked] = useState(false);
 
-		worksNameRef.current.value = "";
-		colWorksNameRef.current.value = "";
-		setType(type);
-	}
+  const clearRefs = (type) => {
+    if(type === "koleksiyon") {
+      data.colNameRef.current.value = "";
+      data.colServerRef.current.value = "";
+      data.colConnectorServerRef.current.value = "";
+      data.colWorksNickRef.current.value = "";
+      data.colWorksPassRef.current.value = "";
+      data.colWorksDBRef.current.value = "";
+      data.colWorksSelectRef.current.value = "default";
+
+      if(checked) {
+        setChecked(!checked);
+      }
+
+      if(document.getElementById('colWarn').classList.contains('!block')) {
+        document.getElementById('colWarn').classList.remove('!block');
+      }
+
+    }
+    else if(type === "klasör") {
+      data.foldNameRef.current.value = "";
+      if(document.getElementById('foldWarn').classList.contains('!block')) {
+        document.getElementById('foldWarn').classList.remove('!block');
+      }
+    }
+    else if(type === "sayfa") {
+      data.fileNameRef.current.value = "";
+      if(document.getElementById('fileWarn').classList.contains('!block')) {
+        document.getElementById('fileWarn').classList.remove('!block');
+      }
+    }
+  }
 
   const data = {
     collections,
     folders,
     files,
     filesChildDirs,
-    worksNameRef,
+    colNameRef,
+    foldNameRef,
+    fileNameRef,
+    checked,
+    colConnectorServerRef,
+    colServerRef,
     colWorksNameRef,
+    colWorksNickRef,
     colWorksPassRef,
     colWorksDBRef,
     colWorksSelectRef,
-    type,
     filepath,
     deleteItemRef,
     deleteItemType,
+    clearRefs,
+    deleteItems,
+    getColWorks,
+    getFileWorks,
+    getFolderWorks,
+    setChecked,
     setDeleteItemRef,
     setDeleteItemType,
     setFilePath,
-    addWorks,
-    getColWorks,
-    getFolderWorks,
-    getFileWorks,
-    deleteItems,
   }
 
   return (
