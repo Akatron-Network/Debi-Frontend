@@ -4,10 +4,10 @@ import Shared from './sidebar/Shared'
 import Favorites from './sidebar/Favorites'
 
 export default function Sidebar() {
-	const [page, setPage] = useState(<MainTree />);
+	const [page, setPage] = useState(<MainTree fn={() => openCloseSideBar()} />);
 
 	const openPage = (id) => {
-		if(id === 0) { setPage(<MainTree />) }
+		if(id === 0) { setPage(<MainTree fn={() => openCloseSideBar()} />) }
 		else if(id === 1) { setPage(<Shared />) }
 		else if(id === 2) { setPage(<Favorites />) }
 	}
@@ -22,7 +22,7 @@ export default function Sidebar() {
 			if(open_btn.classList.contains('bg-side_black')) { openCloseSideBar() } //? Açık tab a tekrar tıklandığında sidebar kapanması için koydum
 			else { tabShown(id); openPage(id)	}
 		}
-		else { openCloseSideBar(); tabShown(id) }
+		else { openCloseSideBar(); tabShown(id); openPage(id) }
 	}
 
 	const tabShown = (id) => { //* Sidepanel'de açık olan tabı gösterir. Açık olan tabın üzeri yeşil olur

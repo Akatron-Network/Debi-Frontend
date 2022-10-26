@@ -3,27 +3,32 @@ import { SidebarContext } from '../context'
 import WorkspaceAll from '../../libraries/categories/Workspace';
 import TreeCollection from './tree/TreeCollection';
 
-export default function MainTree() {
+export default function MainTree(props) {
 
   const [treeCollections, setTreeCollections] = useState({owned: []});
 	
 	const getTreeCollections = async () => {
     let resp = await WorkspaceAll.getTrees();
+    console.log(resp);
     setTreeCollections(resp.Data);
     localStorage.setItem("Tree" , JSON.stringify(resp.Data))
     localStorage.setItem("TreeTime" , Date.now())
   }
 
-  const treeToggle = (type , id) => {
+  const treeToggle = (event , type , id ) => {
+    event.preventDefault();
     document.getElementById(type + id).classList.toggle('hidden');
     document.getElementById(type + "angle_" + id).classList.toggle('rotate-90');
   }
 	
+  const fn = props.fn; //? Dosya ağacındaki herhangi bir şeye tıklandığında sidebar kapanması için
+
 	const treeData = {
 		treeCollections,
     setTreeCollections,
 		getTreeCollections,
     treeToggle,
+    fn,
 	}
 
   return (

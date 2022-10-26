@@ -1,6 +1,7 @@
 import React , { useContext , useEffect } from 'react'
 import { SidebarContext } from '../../context'
 import TreeFolder from './TreeFolder'
+import { Link } from "react-router-dom";
 
 export default function TreeCollection() {
   const treeData = useContext(SidebarContext);
@@ -23,10 +24,12 @@ export default function TreeCollection() {
     <>
       {treeData.treeCollections.owned.map((treeCollection) => (
         <div className='mb-3' key={treeCollection.id}>
-          <span className="tree-elm pl-3">
-            <i className="fa-solid fa-angle-right tree-cursor" id={"col_angle_" + treeCollection.id} onClick={() => treeData.treeToggle("col_" , treeCollection.id)}></i>
-            <i className="fa-solid fa-folder-tree mr-[6px] text-lg"></i>{treeCollection.name}
-          </span>
+          <div className="tree-elm pl-3">
+            <i className="fa-solid fa-angle-right tree-cursor absolute" id={"col_angle_" + treeCollection.id} onClick={(event) => treeData.treeToggle(event , "col_" , treeCollection.id )}></i>
+            <Link className='w-full flex items-center ml-[34.75px]' to={treeCollection.id.toString()} onClick={treeData.fn}>
+              <i className="fa-solid fa-folder-tree mr-[6px] text-lg"></i>{treeCollection.name}
+            </Link>
+          </div>
         
           <div id={"col_" + treeCollection.id} className="hidden">
             {treeCollection.childs.map((child) => (
