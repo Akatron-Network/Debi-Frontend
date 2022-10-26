@@ -902,6 +902,8 @@
       h-10
       min-h-[40px]
       shadow-md
+      focus-visible:outline-onyx_light
+      focus-visible:outline-offset-0
   }
 
   .gridjs-wrapper {

@@ -8,6 +8,7 @@ class Requests {
         this.func_name = func_name;
 
         this.url = "http://" + this.host + "/api/functions/" + this.category + "/" + this.func_name + "/";
+        this.gateURL = "http://" + this.host + "/fn/" + this.category + "/" + this.func_name + "/";
 
     }
 
@@ -33,6 +34,30 @@ class Requests {
         console.log(resp)
         return resp.data;
 
+    }
+
+    async put(data) {
+
+        let resp = await axios({
+            method: 'put',
+            url: this.url,
+            data:data,
+            headers: {Token: localStorage.Token, "Content-Type": "application/json"}
+        })
+        console.log(resp)
+        return resp.data;
+    }
+
+    async gatePut(data) {
+
+        let resp = await axios({
+            method: 'put',
+            url: this.gateURL,
+            data:data,
+            headers: {Token: localStorage.Token, "Content-Type": "application/json"}
+        })
+        console.log(resp)
+        return resp.data;
     }
 
     async delete(data) {

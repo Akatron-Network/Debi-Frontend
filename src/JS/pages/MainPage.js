@@ -67,13 +67,15 @@ export default function MainPage() {
   const colWorksSelectRef = useRef({value : ""});
   const colConnectorServerRef = useRef({value : ""});
   const colServerRef = useRef({value : ""});
+  const colPortRef = useRef({value : ""});
   
   const colNameRef = useRef({value : ""});
   const foldNameRef = useRef({value : ""});
   const fileNameRef = useRef({value : ""});
 
   
-  const [checked , setChecked] = useState(false);
+  const [checkedConnector , setCheckedConnector] = useState(false);
+  const [checkedExpress , setCheckedExpress] = useState(false);
 
   const clearRefs = (type) => {
     if(type === "koleksiyon") {
@@ -84,13 +86,16 @@ export default function MainPage() {
       data.colWorksPassRef.current.value = "";
       data.colWorksDBRef.current.value = "";
       data.colWorksSelectRef.current.value = "default";
+      data.colPortRef.current.value = "1433";
 
-      if(checked) {
-        setChecked(!checked);
+      if(checkedConnector) { setCheckedConnector(!checkedConnector) }
+      if(checkedExpress) { setCheckedExpress(!checkedExpress) }
+
+      if(document.getElementById('colWarn1').classList.contains('!block')) {
+        document.getElementById('colWarn1').classList.remove('!block');
       }
-
-      if(document.getElementById('colWarn').classList.contains('!block')) {
-        document.getElementById('colWarn').classList.remove('!block');
+      else if(document.getElementById('colWarn2').classList.contains('!block')) {
+        document.getElementById('colWarn2').classList.remove('!block');
       }
 
     }
@@ -116,8 +121,10 @@ export default function MainPage() {
     colNameRef,
     foldNameRef,
     fileNameRef,
-    checked,
+    checkedConnector,
+    checkedExpress,
     colConnectorServerRef,
+    colPortRef,
     colServerRef,
     colWorksNameRef,
     colWorksNickRef,
@@ -132,7 +139,8 @@ export default function MainPage() {
     getColWorks,
     getFileWorks,
     getFolderWorks,
-    setChecked,
+    setCheckedConnector,
+    setCheckedExpress,
     setDeleteItemRef,
     setDeleteItemType,
     setFilePath,
