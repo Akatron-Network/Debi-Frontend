@@ -12,33 +12,22 @@ class Requests {
 
     }
 
-    async get(data) {
+    async get(data, gateReq = false) {
 
         let resp = await axios({
             method: 'get',
-            url: this.url,
+            url: (gateReq) ? this.gateURL : this.url,
             params: data,
             headers: {Token: localStorage.Token, "Content-Type": "application/json"}
         })
         return resp.data;
     }
 
-    async gateGet(data) {
-
-        let resp = await axios({
-            method: 'get',
-            url: this.gateURL,
-            params: data,
-            headers: {Token: localStorage.Token, "Content-Type": "application/json"}
-        })
-        return resp.data;
-    }
-
-    async post(data) {
+    async post(data, gateReq = false) {
 
         let resp = await axios({
             method: 'post',
-            url: this.url,
+            url: (gateReq) ? this.gateURL : this.url,
             data:data,
             headers: {Token: localStorage.Token, "Content-Type": "application/json"}
         })
@@ -47,11 +36,11 @@ class Requests {
 
     }
 
-    async put(data) {
+    async put(data, gateReq = false) {
 
         let resp = await axios({
             method: 'put',
-            url: this.url,
+            url: (gateReq) ? this.gateURL : this.url,
             data:data,
             headers: {Token: localStorage.Token, "Content-Type": "application/json"}
         })
@@ -59,23 +48,11 @@ class Requests {
         return resp.data;
     }
 
-    async gatePut(data) {
-
-        let resp = await axios({
-            method: 'put',
-            url: this.gateURL,
-            data:data,
-            headers: {Token: localStorage.Token, "Content-Type": "application/json"}
-        })
-        console.log(resp)
-        return resp.data;
-    }
-
-    async delete(data) {
+    async delete(data, gateReq = false) {
 
         let resp = await axios({
             method: 'delete',
-            url: this.url,
+            url: (gateReq) ? this.gateURL : this.url,
             data:data,
             headers: {Token: localStorage.Token, "Content-Type": "application/json"}
         })

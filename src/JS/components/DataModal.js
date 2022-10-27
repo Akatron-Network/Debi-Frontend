@@ -263,8 +263,9 @@ export default function DataModal() {
 
   const [sourceTable, setSourceTable] = useState([]);
   const colNameSelect = async (dataColSelectRef) => {
-    // let resp = await WorkspaceAll.getExplorer()
-    console.log(dataColSelectRef)
+    let resp = await WorkspaceAll.getExplorer();
+    console.log(resp);
+    // setSourceTable(resp.Data.)
   }
   
   return (

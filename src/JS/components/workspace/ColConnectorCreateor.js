@@ -43,7 +43,7 @@ export default function ColConnectorCreateor() {
           var connectResp = await Data.putConnector(data.colWorksSelectRef.current.value , connectionContent);
         }
         else {
-          var connectResp = await Data.putConnector(data.colWorksSelectRef.current.value , connectionContent , data.colConnectorServerRef.current.value);
+          var connectResp = await Data.putConnector(data.colWorksSelectRef.current.value , connectionContent , data.colConnectorServerRef.current.value + ":8001");
         }
         
         return connectResp;
@@ -68,7 +68,11 @@ export default function ColConnectorCreateor() {
         const forColID = await WorkspaceAll.postCollections(data.colNameRef.current.value);
         data.getColWorks();
 
-        await Data.postConnector(forColID.Data.collection_id , data.colWorksSelectRef.current.value , connectionContent);
+        console.log(forColID.Data.collection_id);
+        console.log( data.colWorksSelectRef.current.value);
+        console.log(connectionContent);
+        const a = await Data.postConnector(forColID.Data.collection_id , data.colWorksSelectRef.current.value , connectionContent);
+        console.log(a)
         document.getElementById('addWorksCol').checked = false;
       }
 
