@@ -1,8 +1,8 @@
-import React , { useContext , useState } from 'react'
+import React , { useContext } from 'react'
 import { MainContext } from '../context'
 import WorkspaceAll from '../../libraries/categories/Workspace';
+import Data from '../../libraries/categories/Data';
 import Input from '../Input'
-import { connect } from 'echarts';
 
 export default function ColConnectorCreateor() {
 	const data = useContext(MainContext);
@@ -40,10 +40,10 @@ export default function ColConnectorCreateor() {
 
       try {
         if(data.checkedConnector !== true) {
-          var connectResp = await WorkspaceAll.putConnector(data.colWorksSelectRef.current.value , connectionContent);
+          var connectResp = await Data.putConnector(data.colWorksSelectRef.current.value , connectionContent);
         }
         else {
-          var connectResp = await WorkspaceAll.putConnector(data.colWorksSelectRef.current.value , connectionContent , data.colConnectorServerRef.current.value);
+          var connectResp = await Data.putConnector(data.colWorksSelectRef.current.value , connectionContent , data.colConnectorServerRef.current.value);
         }
         
         return connectResp;
@@ -68,7 +68,7 @@ export default function ColConnectorCreateor() {
         const forColID = await WorkspaceAll.postCollections(data.colNameRef.current.value);
         data.getColWorks();
 
-        await WorkspaceAll.postConnector(forColID.Data.collection_id , data.colWorksSelectRef.current.value , connectionContent);
+        await Data.postConnector(forColID.Data.collection_id , data.colWorksSelectRef.current.value , connectionContent);
         document.getElementById('addWorksCol').checked = false;
       }
 

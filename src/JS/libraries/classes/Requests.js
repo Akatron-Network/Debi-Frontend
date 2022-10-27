@@ -23,6 +23,17 @@ class Requests {
         return resp.data;
     }
 
+    async gateGet(data) {
+
+        let resp = await axios({
+            method: 'get',
+            url: this.gateURL,
+            params: data,
+            headers: {Token: localStorage.Token, "Content-Type": "application/json"}
+        })
+        return resp.data;
+    }
+
     async post(data) {
 
         let resp = await axios({

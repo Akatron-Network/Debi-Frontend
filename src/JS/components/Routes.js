@@ -1,10 +1,11 @@
 import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
+import DataModal from '../components/DataModal';
 import LoginPage from '../pages/LoginPage';
 import MainPage from '../pages/MainPage';
 import SettingsPage from '../pages/SettingsPage';
-import Deneme from '../pages/Deneme';
+import ChartLayout from "../pages/ChartLayout";
 import PanelsPage from '../pages/PanelsPage';
 import Collections from "./workspace/Collections";
 import Folders from "./workspace/Folders";
@@ -22,9 +23,10 @@ export default function AllRoutes() {
           <Route path=":colID" element={<Folders />} />
           <Route path=":colID/:foldID" element={<Files />} />
         </Route>
+        <Route path=":colID/:foldID/:fileID" element={<ChartLayout />} />
         <Route path="/ayarlar" element={<SettingsPage />} />
         <Route path="/grafik-tablo" element={<PanelsPage />} />
-        <Route path="/deneme" element={<Deneme />} />
+        <Route path="/datamodal" element={<DataModal />} />
 
       </Routes>
     </BrowserRouter>

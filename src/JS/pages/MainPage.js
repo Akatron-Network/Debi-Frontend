@@ -6,7 +6,7 @@ import { Outlet } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import Sidebar from '../components/Sidebar';
 import Filepath from '../components/Filepath';
-import DragResizePanels from '../components/DragResizePanels'
+import DataModal from '../components/DataModal';
 
 
 export default function MainPage() {
@@ -148,13 +148,15 @@ export default function MainPage() {
 
   return (
     <MainContext.Provider value={data}>
-      <Navbar />
+      <Navbar new_btn={"hidden"} page_name={"hidden"} save_page_btn={"hidden"} />
       <Sidebar />
       <Filepath />
 
       <div className="pt-[89px] pb-10 pl-[100px] pr-[38px]">
         <Outlet />
       </div>
+
+      <DataModal />
     </MainContext.Provider >
   )
 }

@@ -176,6 +176,8 @@
       hover:text-platinium
       normal-case
       no-animation
+      flex-nowrap
+      truncate
   }
 
   .tree-cursor {
@@ -798,7 +800,6 @@
       w-full
       max-h-10
       !rounded
-      shadow-md
       focus:outline-none
       focus:border-onyx_light
       focus:bg-onyx

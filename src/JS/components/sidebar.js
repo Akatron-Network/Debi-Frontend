@@ -2,6 +2,7 @@ import React , {useState} from 'react'
 import MainTree from './sidebar/MainTree'
 import Shared from './sidebar/Shared'
 import Favorites from './sidebar/Favorites'
+import DataModalList from './sidebar/DataModalList'
 
 export default function Sidebar() {
 	const [page, setPage] = useState(<MainTree fn={() => openCloseSideBar()} />);
@@ -10,11 +11,12 @@ export default function Sidebar() {
 		if(id === 0) { setPage(<MainTree fn={() => openCloseSideBar()} />) }
 		else if(id === 1) { setPage(<Shared />) }
 		else if(id === 2) { setPage(<Favorites />) }
+		else if(id === 3) { setPage(<DataModalList />) }
 	}
 
+  var tab_id = [1,2,3,4];
 	const openWithTab = (id) => {
 
-		let tab_id = [1,2,3];
 		var open_btn = document.getElementById('open_btn_' + tab_id[id]);
 		let open_close_btn = document.getElementById('open_close_btn');
 
@@ -26,7 +28,6 @@ export default function Sidebar() {
 	}
 
 	const tabShown = (id) => { //* Sidepanel'de açık olan tabı gösterir. Açık olan tabın üzeri yeşil olur
-		let tab_id = [1,2,3];
 
 		for(var a in tab_id) {
 
@@ -77,7 +78,6 @@ export default function Sidebar() {
                     <button id="open_btn_1" onClick={() => openWithTab(0)} className='open-tab bg-side_black text-sea_green shadow-openbtn'>
                         <i className="fas fa-sitemap"></i>
                     </button>
-
                 </div>
                 <div className="tooltip tooltip-right" data-tip="Benimle Paylaşılanlar">
                     <button id="open_btn_2" onClick={() => openWithTab(1)} className='open-tab bg-black_light text-grayXgray shadow-defaultbtn'>
@@ -87,6 +87,11 @@ export default function Sidebar() {
                 <div className="tooltip tooltip-right display-no" data-tip="Favoriler">
                     <button id="open_btn_3" onClick={() => openWithTab(2)} className='open-tab bg-black_light text-grayXgray shadow-defaultbtn'>
                         <i className="fas fa-star"></i>
+                    </button>
+                </div>
+                <div className="tooltip tooltip-right display-no" data-tip="Veri Modelleri">
+                    <button id="open_btn_4" onClick={() => openWithTab(3)} className='open-tab bg-black_light text-grayXgray shadow-defaultbtn'>
+                      <i className="fa-solid fa-chart-simple"></i>
                     </button>
                 </div>
             </div>
