@@ -6,7 +6,6 @@ import Input from '../Input'
 
 export default function ColConnectorCreateor() {
 	const data = useContext(MainContext);
-  console.log(data)
 
   const checkWarn = (hidden , block) => {
     if(document.getElementById('colWarn' + hidden).classList.contains('!block')) {

@@ -1,7 +1,7 @@
 import React from 'react'
 import Navbar from '../components/Navbar';
 import Sidebar from '../components/Sidebar';
-import DataModal from '../components/DataModal';
+import DataModal from '../components/datamodal/DataModal';
 import DragResizePanels from '../components/DragResizePanels';
 
 export default function ChartLayout() {

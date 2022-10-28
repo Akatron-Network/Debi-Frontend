@@ -6,7 +6,7 @@ import { Outlet } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import Sidebar from '../components/Sidebar';
 import Filepath from '../components/Filepath';
-import DataModal from '../components/DataModal';
+import DataModal from '../components/datamodal/DataModal';
 
 
 export default function MainPage() {

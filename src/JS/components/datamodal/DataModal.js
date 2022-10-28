@@ -1,7 +1,12 @@
 import React , { useEffect , useRef , useState } from 'react'
-import Table from './Table';
-import Input from './Input';
-import WorkspaceAll from '../libraries/categories/Workspace';
+import Table from '../Table';
+import Input from '../Input';
+import WorkspaceAll from '../../libraries/categories/Workspace';
+import Data from '../../libraries/categories/Data';
+import { DataModalContext } from '../context'
+import SourceTable from './SourceTable';
+import Relations from './Relations';
+import RelationsAbsolute from './RelationsAbsolute';
 
 
 export default function DataModal() {
@@ -16,23 +21,41 @@ export default function DataModal() {
   }, [])
   
 
-  const resize = () => {
-    let allCards = [1 , 2 , 3 , 4 , 5 , 6 , 7, 8 , 9 , 10 , 11 , 12 , 13 , 14 , 15 , 16];
+  const resize = (id , rel_type) => {
+    // var allCards = [1 , 2];
+
+
+    // setTimeout(function(){
+    
+    //   for(var id of allCards) {
+    //     let open_card = document.getElementById('card_s_tbl_' + id);
+    //     let card = document.getElementById('card_elm_' + id);
+    //     let card_elm = card.getBoundingClientRect();
+    
+    //     open_card.style.width = card_elm.width + "px";
+    //     open_card.style.height = card_elm.height + "px";
+
+    //     coordinates(id);
+    //   }
+    // },210)
 
     setTimeout(function(){
-    
-      for(var id of allCards) {
-        let open_card = document.getElementById('card_s_tbl_' + id);
-        let card = document.getElementById('card_elm_' + id);
-        let card_elm = card.getBoundingClientRect();
-    
-        open_card.style.width = card_elm.width + "px";
-        open_card.style.height = card_elm.height + "px";
-
-        coordinates(id);
+      if(rel_type === "inner") {
+        var open_card = document.getElementById('card_s_tbl_inner_' + id);
+        var card = document.getElementById('card_elm_inner_' + id);
       }
+      else if(rel_type === "outer") {
+        var open_card = document.getElementById('card_s_tbl_outer_' + id);
+        var card = document.getElementById('card_elm_outer_' + id);
+      }
+      
+      var card_elm = card.getBoundingClientRect();
+      
+      open_card.style.width = card_elm.width + "px";
+      open_card.style.height = card_elm.height + "px";
+  
+      coordinates(id , rel_type);
     },210)
-
   }
 
   const review = () => { //!Önizleme için gerekiyor
@@ -59,35 +82,58 @@ export default function DataModal() {
 
   }
 
-  const coordinates = (id) => {
-    let open_card = document.getElementById('card_s_tbl_' + id);
-    let card = document.getElementById('card_elm_' + id);
-    let card_elm = card.getBoundingClientRect();
+  const coordinates = (id, rel_type) => {
+    
+    if(rel_type === "inner") {
+      var open_card = document.getElementById('card_s_tbl_inner_' + id);
+      var card = document.getElementById('card_elm_inner_' + id);
+    }
+    else if(rel_type === "outer") {
+      var open_card = document.getElementById('card_s_tbl_outer_' + id);
+      var card = document.getElementById('card_elm_outer_' + id);
+    }
+    var card_elm = card.getBoundingClientRect();
+    console.log(card_elm)
+    console.log(open_card);
+    console.log(card);
 
 
-    if(id % 4 === 1) {
-      open_card.style.left = '37px';
-    }
-    else if((id % 4 === 2)) {
-      open_card.style.left = ((1 * card_elm.width) + (1 * 8)) + 37 + 'px' ;
-    }
-    else if((id % 4 === 3)) {
-      open_card.style.left = ((2 * card_elm.width) + (2 * 8)) + 37 + 'px' ;
-    }
-    else if((id % 4 === 0)) {
-      open_card.style.left = ((3 * card_elm.width) + (3 * 8)) + 37 + 'px' ;
-    }
-
+    // if(id % 4 === 1) {
+    //   open_card.style.left = '37px';
+    // }
+    // else if((id % 4 === 2)) {
+    //   open_card.style.left = ((1 * card_elm.width) + (1 * 8)) + 37 + 'px' ;
+    // }
+    // else if((id % 4 === 3)) {
+    //   open_card.style.left = ((2 * card_elm.width) + (2 * 8)) + 37 + 'px' ;
+    // }
+    // else if((id % 4 === 0)) {
+    //   open_card.style.left = ((3 * card_elm.width) + (3 * 8)) + 37 + 'px' ;
+    // }
+  const a = getOffset(card)
+  console.log(a);
+    open_card.style.left = (card_elm.left - (card_elm.width / 2)) + 'px';
     open_card.style.top =  (card_elm.y - 40) + 'px';
   }
 
   var timer = 0;
-  function show_info(id , stat) {
+  function show_info(id , rel_type , stat) {
     
-    resize();
+    resize(id , rel_type);
 
-    let open_card = document.getElementById('card_s_tbl_' + id);
-    let card = document.getElementById('card_elm_' + id);
+    if(rel_type === "inner") {
+      var open_card = document.getElementById('card_s_tbl_inner_' + id);
+      var card = document.getElementById('card_elm_inner_' + id);
+
+    }
+    else if(rel_type === "outer") {
+      var open_card = document.getElementById('card_s_tbl_outer_' + id);
+      var card = document.getElementById('card_elm_outer_' + id);
+
+    }
+
+    // let open_card = document.getElementById('card_s_tbl_' + id);
+    // let card = document.getElementById('card_elm_' + id);
     
     open_card.classList.add('!bg-middle_black');
     open_card.classList.add('!border-onyx');
@@ -131,11 +177,18 @@ export default function DataModal() {
 
   }
 
-  function clearTime(id) {
+  function clearTime(id , rel_type) {
     clearTimeout(timer);
-    
-    let open_card = document.getElementById('card_s_tbl_' + id);
+    if(rel_type === "inner") {
+      var open_card = document.getElementById('card_s_tbl_inner_' + id);
 
+    }
+    else if(rel_type === "outer") {
+      var open_card = document.getElementById('card_s_tbl_outer_' + id);
+
+    }
+    
+    // let open_card = document.getElementById('card_s_tbl_' + id);
 
     if(open_card.classList.contains('!h-[200px]')) {
       return;
@@ -149,7 +202,6 @@ export default function DataModal() {
 
   }
 
-
   function source_table() {
 
     let source_table = document.getElementById('source_table');
@@ -161,11 +213,11 @@ export default function DataModal() {
 
     let source_table = document.getElementById('source_table');
 
-    source_table.classList.toggle('hidden');
+    source_table.classList.remove('hidden');
 
     setTimeout(function(){
-      source_table.classList.toggle('-translate-y-16');
-      source_table.classList.toggle('opacity-0');
+      source_table.classList.remove('-translate-y-16');
+      source_table.classList.remove('opacity-0');
     }, 1);
 
   }
@@ -174,13 +226,12 @@ export default function DataModal() {
 
     let source_table = document.getElementById('source_table');
 
-    setTimeout(function(){
-      source_table.classList.toggle('hidden');
-    }, 300);
-    
-    source_table.classList.toggle('-translate-y-16');
-    source_table.classList.toggle('opacity-0');
+    source_table.classList.add('-translate-y-16');
+    source_table.classList.add('opacity-0');
 
+    setTimeout(function(){
+      source_table.classList.add('hidden');
+    }, 300);
   }
 
   function checkbox(id) {
@@ -196,8 +247,7 @@ export default function DataModal() {
     }
   }
 
-
-  function addRelatedTable(id) {
+  function addRelatedTable(id , rel_type) {
     let open_card = document.getElementById('card_s_tbl_' + id);
     let card = document.getElementById('card_elm_' + id);
   }
@@ -250,27 +300,75 @@ export default function DataModal() {
     }
   }
 
-  const dataColSelectRef = useRef("default");
-  const dataModalName = useRef("");
+  const dataColSelectRef = useRef({value : "default"});
+  const dataModalName = useRef({value : ""});
+  const sourceTableInputRef = useRef({value : ""});
 
-  
   const [collections, setCollections] = useState([]);
+  const [filteredData, setFilteredData] = useState([]);
+  const [sourceTable, setSourceTable] = useState([]);
+  const [relations, setRelations] = useState({inner :[] , outer:[]});
+
   const getColSelect = async () => { //! Get collections
     let resp = await WorkspaceAll.getCollections();
-    console.log(resp);
     setCollections(resp.Data.owned_collections);
   }
 
-  const [sourceTable, setSourceTable] = useState([]);
-  const colNameSelect = async (dataColSelectRef) => {
-    let resp = await WorkspaceAll.getExplorer();
+  const colNameSelect = async (id) => {
+    let col = await WorkspaceAll.getCollections(id); //! Get Gateway host
+    let resp = await Data.getExplorer(id , col.Data.connector.gateway_host);
+    setSourceTable(resp.Data);
+    setFilteredData(resp.Data); //!We create filteredData for filtered datas, because we don't want change sourcetable
     console.log(resp);
-    // setSourceTable(resp.Data.)
+  }
+
+  const sourceTablesJSON = (event) => {
+    const searchWord = event.target.value.toLowerCase();
+    const newFilter = sourceTable.filter((source) => {
+      var condition = false;
+      
+      if (source.name !== undefined) {
+        condition = source.table.toLowerCase().includes(searchWord) || source.name.toLowerCase().includes(searchWord)
+      }
+      else {
+        condition = source.table.toLowerCase().includes(searchWord)
+      }
+
+      return condition;
+    });
+
+    setFilteredData(newFilter);
+  }
+
+  const chooseSource = async ( id , table , category , nameTable) => {
+    
+    sourceTableInputRef.current.value = category + " / " + nameTable
+
+    let col = await WorkspaceAll.getCollections(id); //! Get Gateway host
+    let resp = await Data.getExplorer(id , col.Data.connector.gateway_host , table , true); //! Get table relations
+    setRelations(resp.Data.relations);
+    console.log(resp);
+
+    close_s_tbl();
+  }
+
+  const data = {
+    dataColSelectRef,
+    sourceTableInputRef,
+    filteredData,
+    relations,
+    addRelatedTable,
+    chooseSource,
+    clearTime,
+    open_s_tbl,
+    show_info,
+    source_table,
+    sourceTablesJSON,
   }
   
   return (
 
-    <>
+    <DataModalContext.Provider value={data}>
           
       <input type="checkbox" id="datamodal" className="modal-toggle" />
       <div className="modal bg-modal_back">
@@ -295,111 +393,12 @@ export default function DataModal() {
             <hr className='my-3 border-1 w-4/5 relative left-1/2 -translate-x-1/2 border-hr_gray'/>
             
             <Input value={"Model adı"} refname={dataModalName} />
-
-            <div className="form-control">
-              <div className="input-group z-30 shadow-md">
-                <span className='bg-black_light text-grayXgray px-2 py-[7px] !rounded-l border border-jet_mid justify-center min-w-[35%]'>Kaynak Tablo</span>
-                <input type="text" onClick={source_table} className="w-full text-left truncate h-auto overflow-hidden input my-0 input-bordered transition duration-300" />
-                <button onClick={source_table} className='bg-black_light px-2 py-[7px] !rounded-r border border-jet_mid justify-center min-w-[35px] transition duration-300 hover:bg-side_black hover:text-platinium'><i className="fa-sharp fa-solid fa-chevron-down "></i></button>
-              </div>
-            </div>
             
-            <div id="source_table" className='max-h-[230px] overflow-auto z-20 left-3 right-3 mt-[-5px] w-[calc(100%_-_1.5rem)] bg-black_light shadow-xl rounded absolute border border-onyx opacity-0 transition duration-300 -translate-y-16 hidden'>
-              <div className="overflow-x-auto rounded">
-                <table className="table w-full">
-                  <thead>
-                    <tr>
-                      <th></th>
-                      <th>Name</th>
-                      <th>Job</th>
-                      <th>Favorite Color</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <th>1</th>
-                      <td>Cy Ganderton</td>
-                      <td>Quality Control Specialist</td>
-                      <td>Blue</td>
-                    </tr>
-                    <tr>
-                      <th>2</th>
-                      <td>Hart Hagerty</td>
-                      <td>Desktop Support Technician</td>
-                      <td>Purple</td>
-                    </tr>
-                    <tr>
-                      <th>3</th>
-                      <td>Brice Swyre</td>
-                      <td>Tax Accountant</td>
-                      <td>Red</td>
-                    </tr>
-                    <tr>
-                      <th>3</th>
-                      <td>Brice Swyre</td>
-                      <td>Tax Accountant</td>
-                      <td>Red</td>
-                    </tr>
-                    <tr>
-                      <th>3</th>
-                      <td>Brice Swyre</td>
-                      <td>Tax Accountant</td>
-                      <td>Red</td>
-                    </tr>
-                    <tr>
-                      <th>3</th>
-                      <td>Brice Swyre</td>
-                      <td>Tax Accountant</td>
-                      <td>Red</td>
-                    </tr>
-                    <tr>
-                      <th>3</th>
-                      <td>Brice Swyre</td>
-                      <td>Tax Accountant</td>
-                      <td>Red</td>
-                    </tr>
-                    <tr>
-                      <th>3</th>
-                      <td>Brice Swyre</td>
-                      <td>Tax Accountant</td>
-                      <td>Red</td>
-                    </tr>
-                    <tr>
-                      <th>3</th>
-                      <td>Brice Swyre</td>
-                      <td>Tax Accountant</td>
-                      <td>Red</td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
+            <SourceTable />
 
             <h1 className='text-lg text-platinium mt-3 mb-2 drop-shadow'>İlişkili Tablolar</h1>
 
-            <div onScroll={resize} className='w-full h-72 bg-darker_jet rounded shadow-md relative grid grid-cols-12 grid-flow-row auto-rows-max gap-2 p-2 overflow-auto border border-jet_mid border-r-0'>
-              <div onMouseEnter={() => show_info(1 , 'in')} onMouseLeave={() => clearTime(1)} onClick={() => addRelatedTable(1)} id='card_elm_1' className="elm_info_cards">
-                <h3 className='truncate'>AAAAAAAAAAAAAAAAAA</h3>
-                <h3 className='truncate'>BBBBBBBBBBBBBBBBBB</h3>
-                <h3 className='truncate'>CCCCCCCCCCCCCCCCCC</h3>
-              </div>
-
-              <div onMouseEnter={() => show_info(2 , 'in')} onMouseLeave={() => clearTime(2)} onClick={() => addRelatedTable(2)} id='card_elm_2' className="elm_info_cards"></div>
-              <div onMouseEnter={() => show_info(3 , 'in')} onMouseLeave={() => clearTime(3)} onClick={() => addRelatedTable(3)} id='card_elm_3' className="elm_info_cards"></div>
-              <div onMouseEnter={() => show_info(4 , 'in')} onMouseLeave={() => clearTime(4)} onClick={() => addRelatedTable(4)} id='card_elm_4' className="elm_info_cards"></div>
-              <div onMouseEnter={() => show_info(5 , 'in')} onMouseLeave={() => clearTime(5)} onClick={() => addRelatedTable(5)} id='card_elm_5' className="elm_info_cards"></div>
-              <div onMouseEnter={() => show_info(6 , 'in')} onMouseLeave={() => clearTime(6)} onClick={() => addRelatedTable(6)} id='card_elm_6' className="elm_info_cards"></div>
-              <div onMouseEnter={() => show_info(7 , 'in')} onMouseLeave={() => clearTime(7)} onClick={() => addRelatedTable(7)} id='card_elm_7' className="elm_info_cards"></div>
-              <div onMouseEnter={() => show_info(8 , 'in')} onMouseLeave={() => clearTime(8)} onClick={() => addRelatedTable(8)} id='card_elm_8' className="elm_info_cards"></div>
-              <div onMouseEnter={() => show_info(9 , 'in')} onMouseLeave={() => clearTime(9)} onClick={() => addRelatedTable(9)} id='card_elm_9' className="elm_info_cards"></div>
-              <div onMouseEnter={() => show_info(10 , 'in')} onMouseLeave={() => clearTime(10)} onClick={() => addRelatedTable(10)} id='card_elm_10' className="elm_info_cards"></div>
-              <div onMouseEnter={() => show_info(11 , 'in')} onMouseLeave={() => clearTime(11)} onClick={() => addRelatedTable(11)} id='card_elm_11' className="elm_info_cards"></div>
-              <div onMouseEnter={() => show_info(12 , 'in')} onMouseLeave={() => clearTime(12)} onClick={() => addRelatedTable(12)} id='card_elm_12' className="elm_info_cards"></div>
-              <div onMouseEnter={() => show_info(13 , 'in')} onMouseLeave={() => clearTime(13)} onClick={() => addRelatedTable(13)} id='card_elm_13' className="elm_info_cards"></div>
-              <div onMouseEnter={() => show_info(14 , 'in')} onMouseLeave={() => clearTime(14)} onClick={() => addRelatedTable(14)} id='card_elm_14' className="elm_info_cards"></div>
-              <div onMouseEnter={() => show_info(15 , 'in')} onMouseLeave={() => clearTime(15)} onClick={() => addRelatedTable(15)} id='card_elm_15' className="elm_info_cards"></div>
-              <div onMouseEnter={() => show_info(16 , 'in')} onMouseLeave={() => clearTime(16)} onClick={() => addRelatedTable(16)} id='card_elm_16' className="elm_info_cards"></div>
-            </div>
+            <Relations />
             
             <hr className='my-3 border-1 w-4/5 relative left-1/2 -translate-x-1/2 border-hr_gray'/>
 
@@ -539,8 +538,6 @@ export default function DataModal() {
                 <Table />
               </div>
             </div>
-
-
             
             <div id='closeModalBtn' className="bottom-3 right-3 absolute">
               <label htmlFor="datamodal" className="gray-btn mr-2">Kapat</label>
@@ -548,46 +545,11 @@ export default function DataModal() {
             </div>
           </div>
           
-
-
-
-
-
-
-
-
-          <div id='cards_for_info' className='absolute'>
-            <div onMouseLeave={() => show_info(1)} onClick={() => addRelatedTable(1)} id="card_s_tbl_1" className='info_cards'>
-                <h3 className='truncate'>AAAAAAAAAAAAAAAAAA</h3>
-                <h3 className='truncate'>BBBBBBBBBBBBBBBBBB</h3>
-                <h3 className='truncate'>CCCCCCCCCCCCCCCCCC</h3>
-            </div>
-            <div onMouseLeave={() => show_info(2)} onClick={() => addRelatedTable(2)} id="card_s_tbl_2" className='info_cards'></div>
-            <div onMouseLeave={() => show_info(3)} onClick={() => addRelatedTable(3)} id="card_s_tbl_3" className='info_cards'></div>
-            <div onMouseLeave={() => show_info(4)} onClick={() => addRelatedTable(4)} id="card_s_tbl_4" className='info_cards'></div>
-            <div onMouseLeave={() => show_info(5)} onClick={() => addRelatedTable(5)} id="card_s_tbl_5" className='info_cards'></div>
-            <div onMouseLeave={() => show_info(6)} onClick={() => addRelatedTable(6)} id="card_s_tbl_6" className='info_cards'></div>
-            <div onMouseLeave={() => show_info(7)} onClick={() => addRelatedTable(7)} id="card_s_tbl_7" className='info_cards'></div>
-            <div onMouseLeave={() => show_info(8)} onClick={() => addRelatedTable(8)} id="card_s_tbl_8" className='info_cards'></div>
-            <div onMouseLeave={() => show_info(9)} onClick={() => addRelatedTable(9)} id="card_s_tbl_9" className='info_cards'></div>
-            <div onMouseLeave={() => show_info(10)} onClick={() => addRelatedTable(10)} id="card_s_tbl_10" className='info_cards'></div>
-            <div onMouseLeave={() => show_info(11)} onClick={() => addRelatedTable(11)} id="card_s_tbl_11" className='info_cards'></div>
-            <div onMouseLeave={() => show_info(12)} onClick={() => addRelatedTable(12)} id="card_s_tbl_12" className='info_cards'></div>
-            <div onMouseLeave={() => show_info(13)} onClick={() => addRelatedTable(13)} id="card_s_tbl_13" className='info_cards'></div>
-            <div onMouseLeave={() => show_info(14)} onClick={() => addRelatedTable(14)} id="card_s_tbl_14" className='info_cards'></div>
-            <div onMouseLeave={() => show_info(15)} onClick={() => addRelatedTable(15)} id="card_s_tbl_15" className='info_cards'></div>
-            <div onMouseLeave={() => show_info(16)} onClick={() => addRelatedTable(16)} id="card_s_tbl_16" className='info_cards'></div>
-          </div>
+          <RelationsAbsolute />
 
         </div>
       </div>
-    </>
+    </DataModalContext.Provider>
 
   )
 }
-
-
-
-// function changePlaceholder() { //? Change the placeholder of the table search input
-//   document.getElementsByClassName('gridjs-search-input')[0].placeholder='Arama...';
-// }
