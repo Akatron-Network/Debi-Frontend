@@ -685,11 +685,9 @@
       border border-jet_mid
       hover:bg-middle_black
       hover:border-onyx
-      text-grayXgray
-      hover:text-platinium
       rounded
       shadow-md
-      min-h-[90px]
+      h-[70px]
       z-10
       p-2
       truncate
@@ -705,7 +703,6 @@
       border border-jet_mid
       hover:bg-middle_black
       hover:border-onyx
-      text-platinium
       p-2
       h-1
       w-1
@@ -715,7 +712,6 @@
       z-1
       hidden
       cursor-pointer
-      /* opacity-0 */
   }
 
   .elm_info_cards:active , .info_cards:active {

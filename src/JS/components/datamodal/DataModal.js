@@ -7,6 +7,7 @@ import { DataModalContext } from '../context'
 import SourceTable from './SourceTable';
 import Relations from './Relations';
 import RelationsAbsolute from './RelationsAbsolute';
+import Collapses from './Collapses';
 
 
 export default function DataModal() {
@@ -92,32 +93,34 @@ export default function DataModal() {
       var open_card = document.getElementById('card_s_tbl_outer_' + id);
       var card = document.getElementById('card_elm_outer_' + id);
     }
+
     var card_elm = card.getBoundingClientRect();
-    console.log(card_elm)
-    console.log(open_card);
-    console.log(card);
+    var elm_info_cards = document.getElementsByClassName('elm_info_cards');
+    var info_cards = document.getElementsByClassName('info_cards');
 
+    for (var index = 0; index < elm_info_cards.length; index++) { //! Outer ve Inner dolayısıyla idlerden koordinat çekemedik ve düzenleyemedik. Onun yerine classlara sahipliğinin sırasına göre yaptık
+      const elm_coord = elm_info_cards[index].getBoundingClientRect();
 
-    // if(id % 4 === 1) {
-    //   open_card.style.left = '37px';
-    // }
-    // else if((id % 4 === 2)) {
-    //   open_card.style.left = ((1 * card_elm.width) + (1 * 8)) + 37 + 'px' ;
-    // }
-    // else if((id % 4 === 3)) {
-    //   open_card.style.left = ((2 * card_elm.width) + (2 * 8)) + 37 + 'px' ;
-    // }
-    // else if((id % 4 === 0)) {
-    //   open_card.style.left = ((3 * card_elm.width) + (3 * 8)) + 37 + 'px' ;
-    // }
-  const a = getOffset(card)
-  console.log(a);
-    open_card.style.left = (card_elm.left - (card_elm.width / 2)) + 'px';
+      if(index % 4 === 0) {
+        info_cards[index].style.left = '37px';
+      }
+      else if((index % 4 === 1)) {
+        info_cards[index].style.left = ((1 * elm_coord.width) + (1 * 8)) + 37 + 'px' ;
+      }
+      else if((index % 4 === 2)) {
+        info_cards[index].style.left = ((2 * elm_coord.width) + (2 * 8)) + 37 + 'px' ;
+      }
+      else if((index % 4 === 3)) {
+        info_cards[index].style.left = ((3 * elm_coord.width) + (3 * 8)) + 37 + 'px' ;
+      }
+      
+    }
     open_card.style.top =  (card_elm.y - 40) + 'px';
   }
 
   var timer = 0;
-  function show_info(id , rel_type , stat) {
+  const show_info = (id , rel_type , stat) => {
+    
     
     resize(id , rel_type);
 
@@ -149,8 +152,8 @@ export default function DataModal() {
         open_card.style.display = 'block';
 
         setTimeout(() => { //! Büyürken z-indeksleri geç ayarladığından dolayı biraz erteledim ki arkada kalmasın
-          open_card.classList.add('!h-[200px]');
-          open_card.classList.add('!w-[400px]');
+          open_card.classList.add('!h-[150px]');
+          open_card.classList.add('!w-[280px]');
         }, 300);
 
       }, 700);
@@ -158,7 +161,7 @@ export default function DataModal() {
     }
     else {
 
-      if(open_card.classList.contains('!h-[200px]')) {
+      if(open_card.classList.contains('!h-[150px]')) {
 
         setTimeout(() => { //! Küçülürken z-indeksleri geç ayarladığından dolayı biraz erteledim ki önde kalmasın
           // open_card.style.opacity = '0';
@@ -169,15 +172,15 @@ export default function DataModal() {
 
         open_card.classList.remove('!bg-middle_black');
         open_card.classList.remove('!border-onyx');
-        open_card.classList.remove('!h-[200px]');
-        open_card.classList.remove('!w-[400px]');
+        open_card.classList.remove('!h-[150px]');
+        open_card.classList.remove('!w-[280px]');
       }
     }
 
 
   }
 
-  function clearTime(id , rel_type) {
+  const clearTime = (id , rel_type) => {
     clearTimeout(timer);
     if(rel_type === "inner") {
       var open_card = document.getElementById('card_s_tbl_inner_' + id);
@@ -202,14 +205,14 @@ export default function DataModal() {
 
   }
 
-  function source_table() {
+  const source_table = () => {
 
     let source_table = document.getElementById('source_table');
 
     if (source_table.classList.contains('opacity-0')) { open_s_tbl() } else { close_s_tbl() }
   }
 
-  function open_s_tbl() {
+  const open_s_tbl = () => {
 
     let source_table = document.getElementById('source_table');
 
@@ -222,7 +225,7 @@ export default function DataModal() {
 
   }
 
-  function close_s_tbl() {
+  const close_s_tbl = () => {
 
     let source_table = document.getElementById('source_table');
 
@@ -234,7 +237,7 @@ export default function DataModal() {
     }, 300);
   }
 
-  function checkbox(id) {
+  const checkbox = (id) => {
 
     var checkbox = document.getElementById('checkbox_' + id)
     var collapse = document.getElementById('collapse_' + id)
@@ -247,12 +250,12 @@ export default function DataModal() {
     }
   }
 
-  function addRelatedTable(id , rel_type) {
+  const addRelatedTable = (id , rel_type) => {
     let open_card = document.getElementById('card_s_tbl_' + id);
     let card = document.getElementById('card_elm_' + id);
   }
 
-  function changeCondition(tbl , bound) {
+  const changeCondition = (tbl , bound) => {
     let bounder = document.getElementById('tbl' + tbl + '_bounder' + bound);
 
     if(bounder.innerHTML === 'VEYA') {
@@ -358,6 +361,9 @@ export default function DataModal() {
     filteredData,
     relations,
     addRelatedTable,
+    checkbox,
+    changeCondition,
+    chooseColor,
     chooseSource,
     clearTime,
     open_s_tbl,
@@ -405,105 +411,8 @@ export default function DataModal() {
             <h1 className='text-lg text-platinium mb-2 drop-shadow-lg'>Seçilen Tablolar</h1>
 
             <div id="collapses">
-              <div tabIndex={0} id='collapse_1' onClick={() => checkbox(1)} className="collapse collapse-plus collapse_extra">
-
-                <input id='checkbox_1' type="checkbox"  className='!min-h-0 !py-2 !px-4' />
-                <div className="collapse-title text-base font-medium !min-h-0 !py-2 !px-4 text-grayXgray">
-                  Tablo Kolonları - I
-                </div>
-                
-                <div className="collapse-content text-graysix">
-
-                  <div className='table_layout'>
-                    <div id='card_elm_1' className="table_col_cards">
-                      <h4 className='text-sm'>SUBE_KODU</h4>
-                      <span className='text-xs'>İlgili kaydın hangi şube kodunda yapıldığını gösterir.</span>
-                    </div>
-                    <div id='card_elm_2' className="table_col_cards"></div>
-                    <div id='card_elm_3' className="table_col_cards"></div>
-                    <div id='card_elm_4' className="table_col_cards"></div>
-                    <div id='card_elm_5' className="table_col_cards"></div>
-                  </div>
-
-                
-                  <div className='table_layout mt-6'>
-
-                    <div id='tbl1_card1' className="condition_row_cards border-l-red-400">
-                      <div className='col-span-12 mb-3'>
-                        <span className='float-left text-platinium'>#1</span>
-                        <button className='float-right text-red-400' onClick={() => chooseColor(1 , 1)}><i className="fa-solid fa-circle"></i></button>
-                      </div>
-                      <select className="condition_select xl:col-span-5">
-                        <option disabled selected>Small</option>
-                        <option>Small Apple</option>
-                        <option>Small Orange</option>
-                        <option>Small Tomato</option>
-                      </select>
-                      <select className="condition_select xl:col-span-2">
-                        <option disabled selected> {'=>'} </option>
-                        <option>Small Apple</option>
-                        <option>Small Orange</option>
-                        <option>Small Tomato</option>
-                      </select>
-                      <input type="text" placeholder="Type here" className="condition_input" />
-                      <div className='col-span-12'>
-                        <button className='float-right remove-btn'><i className="fa-solid fa-trash-can"></i></button>
-                      </div>
-                    </div>
-                    
-                    
-                    
-                    <div id='tbl1_card2' className="condition_row_cards border-l-green-400">
-                      <button id='tbl1_bounder1' className='bounder' onClick={() => changeCondition(1 , 1)}>VEYA</button>
-                      <div className='col-span-12 mb-3'>
-                        <span className='float-left text-platinium'>#2</span>
-                        <button className='float-right text-green-400' onClick={() => chooseColor(1 , 2)}><i className="fa-solid fa-circle"></i></button>
-                      </div>
-                      <select className="condition_select xl:col-span-5">
-                        <option disabled selected>Small</option>
-                        <option>Small Apple</option>
-                        <option>Small Orange</option>
-                        <option>Small Tomato</option>
-                      </select>
-                      <select className="condition_select xl:col-span-2">
-                        <option disabled selected> {'=>'} </option>
-                        <option>Small Apple</option>
-                        <option>Small Orange</option>
-                        <option>Small Tomato</option>
-                      </select>
-                      <input type="text" placeholder="Type here" className="condition_input" />
-                      <div className='col-span-12'>
-                        <button className='float-right remove-btn'><i className="fa-solid fa-trash-can"></i></button>
-                      </div>
-                    </div>
-
-                    <div id='tbl1_card3' className="condition_row_cards border-l-blue-400">
-                      <button id='tbl1_bounder2' className='bounder' onClick={() => changeCondition(1 , 2)}>VEYA</button>
-                      <div className='col-span-12 mb-3'>
-                        <span className='float-left text-platinium'>#3</span>
-                        <button className='float-right text-blue-400' onClick={() => chooseColor(1 , 3)}><i className="fa-solid fa-circle"></i></button>
-                      </div>
-                      <select className="condition_select xl:col-span-5">
-                        <option disabled selected>Small</option>
-                        <option>Small Apple</option>
-                        <option>Small Orange</option>
-                        <option>Small Tomato</option>
-                      </select>
-                      <select className="condition_select xl:col-span-2">
-                        <option disabled selected> {'=>'} </option>
-                        <option>Small Apple</option>
-                        <option>Small Orange</option>
-                        <option>Small Tomato</option>
-                      </select>
-                      <input type="text" placeholder="Type here" className="condition_input" />
-                      <div className='col-span-12'>
-                        <button className='float-right remove-btn'><i className="fa-solid fa-trash-can"></i></button>
-                      </div>
-                    </div>
-
-                  </div>
-                </div>
-              </div>
+              
+              <Collapses />
 
               <div tabIndex={0} id='collapse_2' onClick={() => checkbox(2)} className="collapse collapse-plus collapse_extra">
                 <input id='checkbox_2' type="checkbox" className='!min-h-0 !py-2 !px-4' />
