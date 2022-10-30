@@ -3,7 +3,6 @@ import { DataModalContext } from "../context";
 
 export default function Relations() {
   const data = useContext(DataModalContext);
-  console.log(data);
 
   const allRelations = data.relations.inner.concat(data.relations.outer);
 
@@ -19,10 +18,10 @@ export default function Relations() {
             id={"card_elm_" + (index + 1)}
             className="elm_info_cards"
           >
-            <h3 className="truncate text-sea_green">{rel.table}</h3>
-            <h3 className="truncate text-grayXgray">{rel.name}</h3>
+            <h3 className="truncate text-sm text-sea_green h-6">{rel.table}</h3>
+            <h3 className="truncate text-sm text-grayXgray h-6">{rel.name}</h3>
             <hr className="my-1 border-1 w-4/5 relative border-hr_gray" />
-            <h3 className="overflow-hidden text-ellipsis text-onyx_light">
+            <h3 className="min-w-[264px] text-sm whitespace-normal text-ellipsis text-onyx_light">
               {rel.details}
             </h3>
           </div>

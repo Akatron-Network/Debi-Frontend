@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
-import Table from '../Table';
+import Table from './Table';
 import Input from '../Input';
 import WorkspaceAll from '../../libraries/categories/Workspace';
 import Data from '../../libraries/categories/Data';
@@ -10,6 +10,7 @@ import RelationsAbsolute from './RelationsAbsolute';
 import Collapses from './Collapses';
 import Condition from './Condition';
 import getAlias from '../../libraries/misc';
+import ColSelect from './ColSelect';
 
 export default function DataModal() {
 
@@ -92,7 +93,7 @@ export default function DataModal() {
           open_card.classList.add("!h-[150px]");
           open_card.classList.add("!w-[280px]");
         }, 300);
-      }, 700);
+      }, 1000);
     } else {
       if (open_card.classList.contains("!h-[150px]")) {
         setTimeout(() => {
@@ -220,6 +221,9 @@ export default function DataModal() {
   const [chosenTables, setChosenTables] = useState([]);
   const [collections, setCollections] = useState([]);
   const [conditions, setConditions] = useState([]);
+  const [executeCols, setExecuteCols] = useState([]);
+  const [executeResp, setExecuteResp] = useState([]);
+  const [executeRows, setExecuteRows] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
   const [gatewayHost, setGatewayHost] = useState("");
   const [miscIncludes, setMiscIncludes] = useState([]);
@@ -230,7 +234,7 @@ export default function DataModal() {
     collection_id: "",
     query: {
         table: "",
-        alias: "",
+        alias: "O",
         select: {},
         where: undefined,
         includes: {}
@@ -244,6 +248,7 @@ export default function DataModal() {
   };
 
   const colNameSelect = async (id) => {
+
     let col = await WorkspaceAll.getCollections(id); //! Get Gateway host
     let resp = await Data.getExplorer(id, col.Data.connector.gateway_host);
 
@@ -283,6 +288,10 @@ export default function DataModal() {
       true
     ); //! Get table relations
     setRelations(resp.Data.relations);
+
+    if(dataJSON.query["table"] !== "") {
+      document.getElementById("collapse_main").remove();
+    }
     
     setChosenTables(
       chosenTables.concat(<Collapses keyID={chosenTables.length} data={resp.Data} main={"main"} />) //! İlk tablo eklendiğinde gelen ana kolonlar vs için
@@ -296,7 +305,8 @@ export default function DataModal() {
       }
     });
 
-    close_s_tbl();
+    close_s_tbl()
+    
   };
 
   const addRelatedTable = async (index, table , rel_definition) => {
@@ -304,7 +314,7 @@ export default function DataModal() {
       dataColSelectRef.current.value,
       gatewayHost,
       table,
-      true
+      false
     ); //! Get table relations
     
     const alias = getAlias(miscIncludes);
@@ -316,6 +326,7 @@ export default function DataModal() {
 
     const includesJSON = {
       table: resp.Data.source_table.table,
+      alias: alias,
       type: "INNER",
       on: {
         [rel_definition.referenced_column]: rel_definition.source_column
@@ -334,67 +345,113 @@ export default function DataModal() {
     });
   };
 
-  const addColumns = async (main , col_name , index) => {
-
-    document.getElementById("elm_" + main + "_" + index).classList.toggle("border-sea_green")
-    document.getElementById("elm_" + main + "_" + index).classList.toggle("bg-middle_black")
-
-    if(main === "main") {
-      setDataJSON({
-        ...dataJSON,
-        query: {
-          ...dataJSON.query,
-          select: {
-            ...dataJSON.query.select,
-            [col_name]: true,
-          },
-        }
-      });
+  const dltRelatedTable = async (alias) => {
+    if(alias !== "main") {
+      delete dataJSON.query.includes[alias];
+      document.getElementById("collapse_" + alias).remove();
     } else {
-      setDataJSON({
-        ...dataJSON,
-        query: {
-          ...dataJSON.query,
-          includes: {
-            ...dataJSON.query.includes,
-            [main]: {
-              ...dataJSON.query.includes[main],
-              select: {
-                ...dataJSON.query.includes[main].select,
-                [col_name]: true
-              }
-            }
-          }
-        }
-      })
+      console.log("a");
     }
   }
 
-  const addCondition = () => {
+  const addColumns = async (main , col_name , index) => {
 
-    setConditions(
-      conditions.concat(<Condition key={conditions.length} />)
-    );
+    if(document.getElementById("elm_" + main + "_" + index).classList.contains("border-sea_green")) {
+      if(main === "main") {
+        console.log(dataJSON.query.select[col_name]);
+        delete dataJSON.query.select[col_name];
+      }
+      else {
+        console.log(dataJSON.query.includes[main].select[col_name]);
+        delete dataJSON.query.includes[main].select[col_name];
+      }
+    } else {
+
+      if(main === "main") {
+        setDataJSON({
+          ...dataJSON,
+          query: {
+            ...dataJSON.query,
+            select: {
+              ...dataJSON.query.select,
+              [col_name]: true,
+            },
+          }
+        });
+      } else {
+        setDataJSON({
+          ...dataJSON,
+          query: {
+            ...dataJSON.query,
+            includes: {
+              ...dataJSON.query.includes,
+              [main]: {
+                ...dataJSON.query.includes[main],
+                select: {
+                  ...dataJSON.query.includes[main].select,
+                  [col_name]: true
+                }
+              }
+            }
+          }
+        })
+      }
+
+    }
+
+    document.getElementById("elm_" + main + "_" + index).classList.toggle("border-sea_green")
+    document.getElementById("elm_" + main + "_" + index).classList.toggle("bg-middle_black")
   }
 
   const refreshTable = async () => {
-    let dt = dataJSON;
+    let dt = {...dataJSON};
     dt.query['includes'] = Object.values(dt.query['includes']);
-    console.log(dt)
+    
+    let incold = {}  //! Tersine fixleme yaptık. Bunu tekrar düzelteceğiz. Buraya gelen dataJSON dosyasının içerisinde includes başında alias bulundurmuyor. Hata belli değiL!
+    for (let tb of dataJSON.query.includes) {
+      incold[tb.alias] = tb
+    }
 
+    dataJSON.query.includes = incold
+    
     let resp = await Data.postExecute(dt, gatewayHost);
     console.log(resp)
 
+    setExecuteResp(resp.Data);
+    setExecuteCols(Object.keys(resp.Data[0]).map((cols) => ({name: cols})))
+    setExecuteRows(resp.Data.map((rows) => (Object.values(rows))))
+  }
+
+  const addCondition = (main) => {
+    console.log(main);
+
+    setConditions(
+      conditions.concat(<Condition key={conditions.length} value={conditions.length} alias={main} />)
+    );
+  }
+
+  const removeCondition = (value) => {
+    document.getElementById("condition_" + value).remove();
+    for(var a of conditions) {
+      conditions
+    }
+    console.log(data)
+
+    // conditions.splice(value , 1);
   }
 
   const data = {
     conditions,
-    dataColSelectRef,
+    collections,
     dataJSON,
-    sourceTableInputRef,
+    executeCols,
+    executeResp,
+    executeRows,
     filteredData,
     gatewayHost,
     relations,
+    dataColSelectRef,
+    sourceTableInputRef,
     addColumns,
     addCondition,
     addRelatedTable,
@@ -403,7 +460,10 @@ export default function DataModal() {
     chooseColor,
     chooseSource,
     clearTime,
+    colNameSelect,
+    dltRelatedTable,
     open_s_tbl,
+    removeCondition,
     setDataJSON,
     show_info,
     source_table,
@@ -411,69 +471,67 @@ export default function DataModal() {
   };
 
   return (
-
     <DataModalContext.Provider value={data}>
-
       <input type="checkbox" id="datamodal" className="modal-toggle" />
       <div className="modal bg-modal_back">
         <div className="modal-box max-w-full h-screen p-4 grid grid-cols-5 gap-5 bg-darkest_jet rounded">
-
           <div className="md:col-span-2 col-span-5 bg-middle_black p-3 rounded shadow-md overflow-auto relative min-h-[570px] h-full">
+            <ColSelect />
 
-            <div className="form-control mb-2">
-              <div className="input-group shadow-md">
-                <span className='bg-black_light text-grayXgray px-2 py-[7px] !rounded-l border border-jet_mid justify-center min-w-[35%] xl:truncate'>Koleksiyon Adı</span>
-                <select defaultValue='default' className="condition_select max-w-[65%] !rounded-l-none" ref={dataColSelectRef} onChange={() => colNameSelect(dataColSelectRef.current.value)}>
-                  <option disabled value="default">Bir koleksiyon seçin...</option>
+            <hr className="my-3 border-1 w-4/5 relative left-1/2 -translate-x-1/2 border-hr_gray" />
 
-                  {collections.map((collection) => (
-                    <option key={collection.collection_id.toString()} value={collection.collection_id}>{collection.collection_name}</option>
-                  ))}
-
-                </select>
-              </div>
-            </div>
-
-            <hr className='my-3 border-1 w-4/5 relative left-1/2 -translate-x-1/2 border-hr_gray' />
-
-            <Input value={"Model adı"} refname={dataModalName} />
+            <Input value={"Model Adı"} refname={dataModalName} />
 
             <SourceTable />
 
-            <h1 className='text-lg text-platinium mt-3 mb-2 drop-shadow'>İlişkili Tablolar</h1>
+            <h1 className="text-lg text-platinium mt-3 mb-2 drop-shadow">
+              İlişkili Tablolar
+            </h1>
 
             <Relations />
 
-            <hr className='my-3 border-1 w-4/5 relative left-1/2 -translate-x-1/2 border-hr_gray' />
+            <hr className="my-3 border-1 w-4/5 relative left-1/2 -translate-x-1/2 border-hr_gray" />
 
-            <h1 className='text-lg text-platinium mb-2 drop-shadow-lg'>Seçilen Tablolar</h1>
+            <h1 className="text-lg text-platinium mb-2 drop-shadow-lg">
+              Seçilen Tablolar
+            </h1>
 
             <div id="collapses">{chosenTables}</div>
-
           </div>
 
-
           <div className="md:col-span-3 col-span-5 bg-middle_black p-3 rounded shadow-md relative min-h-[570px] h-full">
-
-            <h1 className='text-xl text-platinium mb-2 drop-shadow-lg pl-2 inline-flex'>Ön İzleme</h1>
-            <button className='green-btn float-right' onClick={() => refreshTable()}><i className="fa-solid fa-rotate"></i></button>
-            <div id='review' className='w-full bg-darker_jet rounded shadow-md border border-jet_mid p-2'>
-              <div id='tableReview' className='w-full border border-onyx rounded shadow-md overflow-auto'>
+            <h1 className="text-xl text-platinium mb-2 drop-shadow-lg pl-2 inline-flex">
+              Ön İzleme
+            </h1>
+            <button
+              className="green-btn float-right"
+              onClick={() => refreshTable()}
+            >
+              <i className="fa-solid fa-rotate"></i>
+            </button>
+            <div
+              id="review"
+              className="w-full bg-darker_jet rounded shadow-md border border-jet_mid p-2"
+            >
+              <div
+                id="tableReview"
+                className="w-full border border-onyx rounded shadow-md overflow-auto"
+              >
                 <Table />
               </div>
             </div>
 
-            <div id='closeModalBtn' className="bottom-3 right-3 absolute">
-              <label htmlFor="datamodal" className="gray-btn mr-2">Kapat</label>
-              <button className='green-btn'>Kaydet</button>
+            <div id="closeModalBtn" className="bottom-3 right-3 absolute">
+              <label htmlFor="datamodal" className="gray-btn mr-2">
+                Kapat
+              </label>
+              <button className="green-btn">Kaydet</button>
             </div>
           </div>
 
           <RelationsAbsolute />
-
         </div>
       </div>
     </DataModalContext.Provider>
-
-  )
+  );
 }

@@ -592,12 +592,12 @@
     @apply
       !border-none
       !rounded
+      !overflow-visible
   }
 
-  .table-wrapper .gridjs-wrapper {
+  .table-wrapper.gridjs-container {
     @apply
-      !border-none
-      !rounded
+      !overflow-visible
   }
 
   .table-wrapper .gridjs-tr {
@@ -745,10 +745,10 @@
   .table_col_cards {
     @apply
       relative
-      col-span-3
+      col-span-6
       bg-side_black
       border border-jet_mid
-      hover:bg-earie_black
+      hover:bg-middle_black
       text-grayXgray
       hover:text-platinium
       rounded

@@ -19,10 +19,10 @@ export default function Relations() {
             id={"card_s_tbl_" + (index + 1)}
             className="info_cards"
           >
-            <h3 className="truncate text-green_pantone">{rel.table}</h3>
-            <h3 className="truncate text-platinium">{rel.name}</h3>
+            <h3 className="truncate text-sm text-green_pantone h-6">{rel.table}</h3>
+            <h3 className="truncate text-sm text-platinium h-6">{rel.name}</h3>
             <hr className="my-1 border-1 w-4/5 relative border-hr_gray" />
-            <h3 className="overflow-hidden text-grayXgray">{rel.details}</h3>
+            <h3 className="min-w-[264px] text-sm whitespace-normal overflow-hidden text-grayXgray">{rel.details}</h3>
           </div>
         )})}
       {/* {data.relations.outer.map(function(rel , index) {
