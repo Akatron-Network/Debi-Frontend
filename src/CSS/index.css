@@ -748,8 +748,7 @@
       col-span-3
       bg-side_black
       border border-jet_mid
-      hover:bg-middle_black
-      hover:border-onyx
+      hover:bg-earie_black
       text-grayXgray
       hover:text-platinium
       rounded
@@ -896,12 +895,13 @@
       hover:bg-green_pantone
       hover:text-platinium
       normal-case
-      text-base
-      px-3
+      w-max
+      text-sm
+      px-2
       font-light
       leading-none
-      h-10
-      min-h-[40px]
+      h-fit
+      min-h-[30px]
       shadow-md
       focus-visible:outline-onyx_light
       focus-visible:outline-offset-0
@@ -924,12 +924,13 @@
       hover:bg-onyx_light
       hover:text-platinium
       normal-case
-      text-base
-      px-3
+      w-max
+      text-sm
+      px-2
       font-light
       leading-none
-      h-10
-      min-h-[40px]
+      h-fit
+      min-h-[30px]
       shadow-md
   }
   

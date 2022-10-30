@@ -19,7 +19,7 @@ class Data {
   }
 
   static async putConnector(type, content, host) {
-    let putConnector_req = new Requests("data", "connector", host);
+    let putConnector_req = new Requests("data", "connector", host + ":8001");
 
     var resp = await putConnector_req.put(
       {
@@ -28,19 +28,6 @@ class Data {
       },
       host !== undefined
     );
-    return resp;
-  }
-
-  static async getExplorer(id, host ) {
-    let getExplorer_req = new Requests("data", "explorer", host + ":8001");
-
-    var resp = await getExplorer_req.get(
-      {
-        collection_id: id,
-      },
-      host !== undefined
-    );
-
     return resp;
   }
 
@@ -55,6 +42,17 @@ class Data {
           relations: rel
         }
       },
+      host !== undefined
+    );
+
+    return resp;
+  }
+
+  static async postExecute(data, host) {
+    let postExecute_req = new Requests("data", "execute", host + ":8001");
+
+    var resp = await postExecute_req.post(
+      data,
       host !== undefined
     );
 
