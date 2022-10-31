@@ -9,7 +9,7 @@ import Relations from './Relations';
 import RelationsAbsolute from './RelationsAbsolute';
 import Collapses from './Collapses';
 import Condition from './Condition';
-import getAlias from '../../libraries/misc';
+import { getAlias , getKeyID } from '../../libraries/misc';
 import ColSelect from './ColSelect';
 
 export default function DataModal() {
@@ -230,13 +230,17 @@ export default function DataModal() {
   const [relations, setRelations] = useState({ inner: [], outer: [] });
   const [sourceTable, setSourceTable] = useState([]);
 
+  const [conditionsJSON, setConditionsJSON] = useState([]);
+
+  const [tables, setTables] = useState({})
+
   const [dataJSON, setDataJSON] = useState({
     collection_id: "",
     query: {
         table: "",
         alias: "O",
         select: {},
-        where: undefined,
+        where_plain: [],
         includes: {}
     }
   });
@@ -251,6 +255,8 @@ export default function DataModal() {
 
     let col = await WorkspaceAll.getCollections(id); //! Get Gateway host
     let resp = await Data.getExplorer(id, col.Data.connector.gateway_host);
+
+    source_table();
 
     setGatewayHost(col.Data.connector.gateway_host);
     setSourceTable(resp.Data);
@@ -288,25 +294,28 @@ export default function DataModal() {
       true
     ); //! Get table relations
     setRelations(resp.Data.relations);
+    var result = [];
 
-    if(dataJSON.query["table"] !== "") {
-      document.getElementById("collapse_main").remove();
-    }
-    
+    setTables(
+      {
+        ...tables,
+        O: resp.Data
+      }
+    )
+
     setChosenTables(
-      chosenTables.concat(<Collapses keyID={chosenTables.length} data={resp.Data} main={"main"} />) //! İlk tablo eklendiğinde gelen ana kolonlar vs için
+      result.concat(<Collapses key={0} data={resp.Data} main={"main"} />) //! İlk tablo eklendiğinde gelen ana kolonlar vs için
     );
-    
+
     setDataJSON({
       ...dataJSON,
       query: {
         ...dataJSON.query,
         table: table,
-      }
+      },
     });
 
-    close_s_tbl()
-    
+    close_s_tbl();
   };
 
   const addRelatedTable = async (index, table , rel_definition) => {
@@ -319,9 +328,18 @@ export default function DataModal() {
     
     const alias = getAlias(miscIncludes);
     setMiscIncludes(alias);
+
+    let keyID = getKeyID(chosenTables);
     
+    setTables(
+      {
+        ...tables,
+        [alias]: resp.Data
+      }
+    )
+
     setChosenTables(
-      chosenTables.concat(<Collapses keyID={chosenTables.length} data={resp.Data} main={alias} />)
+      chosenTables.concat(<Collapses key={keyID + 1} keyID={keyID + 1} data={resp.Data} main={alias} />)
     );
 
     const includesJSON = {
@@ -333,7 +351,7 @@ export default function DataModal() {
       },
       select: {
       },
-      where: undefined
+      where_plain: []
     }
 
     setDataJSON({
@@ -345,10 +363,13 @@ export default function DataModal() {
     });
   };
 
-  const dltRelatedTable = async (alias) => {
+  const dltRelatedTable = async (alias , keyID) => {
+    console.log(keyID);
+    
+
     if(alias !== "main") {
       delete dataJSON.query.includes[alias];
-      document.getElementById("collapse_" + alias).remove();
+      setChosenTables(chosenTables.filter(item => item.key !== keyID.toString()))
     } else {
       console.log("a");
     }
@@ -425,23 +446,107 @@ export default function DataModal() {
   const addCondition = (main) => {
     console.log(main);
 
-    setConditions(
-      conditions.concat(<Condition key={conditions.length} value={conditions.length} alias={main} />)
-    );
-  }
-
-  const removeCondition = (value) => {
-    document.getElementById("condition_" + value).remove();
-    for(var a of conditions) {
-      conditions
+    let keyID = getKeyID(conditions);
+    
+    if (main === "main") {
+      if (dataJSON.query.where_plain.length === 0) {
+        setDataJSON({
+          ...dataJSON,
+          query: {
+            ...dataJSON.query,
+            where_plain: [{}],
+          },
+        });
+      } else {
+        setDataJSON({
+          ...dataJSON,
+          query: {
+            ...dataJSON.query,
+            where_plain: [...dataJSON.query.where_plain, "", {}],
+          },
+        });
+      }
+    } else {
+      if (dataJSON.query.includes[main].where_plain.length === 0) {
+        setDataJSON({
+          ...dataJSON,
+          query: {
+            ...dataJSON.query,
+            includes: {
+              ...dataJSON.query.includes,
+              [main]: {
+                ...dataJSON.query.includes[main],
+                where_plain: [{}],
+              },
+            },
+          },
+        });
+      } else {
+        setDataJSON({
+          ...dataJSON,
+          query: {
+            ...dataJSON.query,
+            includes: {
+              ...dataJSON.query.includes,
+              [main]: {
+                ...dataJSON.query.includes[main],
+                where_plain: [...dataJSON.query.includes[main].where_plain , "", {}],
+              },
+            },
+          },
+        });
+      }
     }
-    console.log(data)
 
-    // conditions.splice(value , 1);
+    // if (keyID === 0) {
+    //   setConditionsJSON(conditionsJSON.concat({}));
+    // } else {
+    //   setConditionsJSON(conditionsJSON.concat("", {}));
+    // }
+
+    // setConditions(
+    //   conditions.concat(<Condition key={keyID} value={keyID} alias={main} />)
+    // );
+  };
+
+  const removeCondition = (alias , value) => {
+    console.log(alias);
+    console.log(value);
+    if (alias === 'O') {
+
+      let newconds = []
+      for (let i in dataJSON.query.where_plain) {
+        if (value === 0 && parseInt(i) === 1) { continue; }
+        if (parseInt(i) !== value) { newconds.push(dataJSON.query.where_plain[i])}
+        else if (value !== 0) { newconds.pop() }
+      }
+
+      setDataJSON({
+        ...dataJSON,
+        query: {
+          ...dataJSON.query,
+          where_plain: newconds,
+        },
+      })
+    }
+
   }
+
+  const compile = (type, ref, alias, value) => {
+    
+    if (type === "col") {
+
+    } else if (type === "eq") {
+
+    } else if (type === "value") {
+
+    }
+    console.log(type, ref, value, alias);
+  };
 
   const data = {
     conditions,
+    conditionsJSON,
     collections,
     dataJSON,
     executeCols,
@@ -452,6 +557,7 @@ export default function DataModal() {
     relations,
     dataColSelectRef,
     sourceTableInputRef,
+    tables,
     addColumns,
     addCondition,
     addRelatedTable,
@@ -461,6 +567,7 @@ export default function DataModal() {
     chooseSource,
     clearTime,
     colNameSelect,
+    compile,
     dltRelatedTable,
     open_s_tbl,
     removeCondition,

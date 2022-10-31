@@ -19,4 +19,16 @@ function getAlias(notinclude = []) {
   return alias
 }
 
-export default getAlias;
+function getKeyID (array = []) {
+    var keyID = Math.max(...array.map((key) => key.key));
+
+  if (keyID === -Infinity) {
+    keyID = 0;
+  } else {
+    keyID = keyID + 1;
+  }
+
+  return keyID;
+}
+
+export {getAlias , getKeyID};

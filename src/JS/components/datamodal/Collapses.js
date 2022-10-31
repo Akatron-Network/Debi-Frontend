@@ -1,18 +1,43 @@
 import React , { useContext , useState , useEffect } from 'react'
 import { DataModalContext } from '../context'
+import Condition from './Condition';
 
 export default function Collapses(props) {
   const data = useContext(DataModalContext);
+  console.log(data)
 
   const [mainDlt, setMainDlt] = useState(false);
   const [checkbox, setCheckbox] = useState(false);
+  const [conds, setConds] = useState([])
 
   useEffect(() => {
     if (props.main === "main") {
       setMainDlt(true);
     }
-  }, []);
+    setConds(getconds())
+  }, [data.dataJSON]);
   
+  const getconds = () => {
+    let ret = []
+    if (props.main === 'main') {
+      for (let i = 0; i < data.dataJSON.query.where_plain.length; i++) {
+        let cond = data.dataJSON.query.where_plain[i]
+        if (typeof(cond) === 'object') {
+          ret.push(<Condition key={i} value={i} alias={'O'} />)
+        }
+      }
+    }
+    else {
+      for (let i = 0; i < data.dataJSON.query.includes[props.main].where_plain.length; i++) {
+        let cond = data.dataJSON.query.includes[props.main].where_plain[i]
+        if (typeof(cond) === 'object') {
+          ret.push(<Condition key={i} value={i} alias={props.main} />)
+        }
+      }
+    }
+    console.log(ret)
+    return ret
+  }
 
   return (
     <div
@@ -46,7 +71,8 @@ export default function Collapses(props) {
         </div>
 
         <div className="table_layout mt-6 max-h-[465px]">
-          {data.conditions}
+          {conds}
+          
           <div className="col-span-12 text-center">
             <button className="green-btn" onClick={() => data.addCondition(props.main)}>
               <i className="fa-solid fa-plus mr-2"></i>Koşul Ekle
@@ -58,7 +84,7 @@ export default function Collapses(props) {
           <div className="text-right">
             <button
               className="green-btn bg-danger hover:bg-danger_light"
-              onClick={() => data.dltRelatedTable(props.main)}
+              onClick={() => data.dltRelatedTable(props.main , props.keyID)}
             >
               <i className="fa-solid fa-xmark mr-2"></i>Tabloyu Sil
             </button>

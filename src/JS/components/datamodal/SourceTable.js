@@ -39,11 +39,11 @@ export default function SourceTable() {
               else {nameTable = source.name + " (" + source.table + ")"}
 
               return (
-                <tr key={index} onClick={() => data.chooseSource(source.table , category , nameTable )} onMouseEnter={() => document.getElementById("tooltip_" +index).classList.remove('hidden')} onMouseLeave={() => document.getElementById("tooltip_" +index).classList.add('hidden')}>
+                <tr key={index} onClick={() => data.chooseSource(source.table , category , nameTable )}>
                   <td>{type}</td>
                   <td>{category}</td>
                   <td>{nameTable}</td>
-                  <td id={"tooltip_" + index} className='bg-onyx left-[1%] px-2 min-h-[38px] w-56 whitespace-normal mt-1 absolute hidden rounded border border-onyx_middle cursor-default'>{source.details}</td>
+                  {/* <td id={"tooltip_" + index} className='bg-onyx left-[1%] px-2 min-h-[38px] w-56 whitespace-normal mt-1 absolute hidden rounded border border-onyx_middle cursor-default'>{source.details}</td> */}
                 </tr>
             )})}
           </tbody>
