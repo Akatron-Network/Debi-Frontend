@@ -428,11 +428,10 @@ export default function DataModal() {
     let dt = {...dataJSON};
     dt.query['includes'] = Object.values(dt.query['includes']);
     
-    let incold = {}  //! Tersine fixleme yaptık. Bunu tekrar düzelteceğiz. Buraya gelen dataJSON dosyasının içerisinde includes başında alias bulundurmuyor. Hata belli değiL!
+    let incold = {}
     for (let tb of dataJSON.query.includes) {
       incold[tb.alias] = tb
     }
-
     dataJSON.query.includes = incold
     
     let resp = await Data.postExecute(dt, gatewayHost);
@@ -444,10 +443,6 @@ export default function DataModal() {
   }
 
   const addCondition = (main) => {
-    console.log(main);
-
-    let keyID = getKeyID(conditions);
-    
     if (main === "main") {
       if (dataJSON.query.where_plain.length === 0) {
         setDataJSON({
@@ -497,16 +492,6 @@ export default function DataModal() {
         });
       }
     }
-
-    // if (keyID === 0) {
-    //   setConditionsJSON(conditionsJSON.concat({}));
-    // } else {
-    //   setConditionsJSON(conditionsJSON.concat("", {}));
-    // }
-
-    // setConditions(
-    //   conditions.concat(<Condition key={keyID} value={keyID} alias={main} />)
-    // );
   };
 
   const removeCondition = (alias , value) => {
@@ -528,21 +513,85 @@ export default function DataModal() {
           where_plain: newconds,
         },
       })
+    } else {
+
+      let newconds = []
+      for (let i in dataJSON.query.includes[alias].where_plain) {
+        if (value === 0 && parseInt(i) === 1) { continue; }
+        if (parseInt(i) !== value) { newconds.push(dataJSON.query.includes[alias].where_plain[i])}
+        else if (value !== 0) { newconds.pop() }
+      }
+
+      setDataJSON({
+        ...dataJSON,
+        query: {
+          ...dataJSON.query,
+          includes: {
+            ...dataJSON.query.includes,
+            [alias]: {
+              ...dataJSON.query.includes[alias],
+              where_plain: newconds,
+            },
+          },
+        },
+      });
+
     }
+    
 
   }
 
-  const compile = (type, ref, alias, value) => {
-    
-    if (type === "col") {
+  const compile = (alias, value , refCol, refEq , refVal , refOpr) => {
 
-    } else if (type === "eq") {
+    if(alias === "O") {
+      var plain = dataJSON.query.where_plain
 
-    } else if (type === "value") {
+      if(value%2 === 0) {
+        plain[value] = {[refCol]: {[refEq]: refVal}};
+      } else {
+        plain[value] = refOpr;
+      }
 
+      setDataJSON({
+        ...dataJSON,
+        query: {
+          ...dataJSON.query,
+          where_plain: plain,
+        },
+      })
+    } else {
+      var plain = dataJSON.query.includes[alias].where_plain
+
+      if(value%2 === 0) {
+        plain[value] = {[refCol]: {[refEq]: refVal}};
+      } else {
+        plain[value] = refOpr;
+      }
+
+      setDataJSON({
+        ...dataJSON,
+        query: {
+          ...dataJSON.query,
+          includes: {
+            ...dataJSON.query.includes,
+            [alias]: {
+              ...dataJSON.query.includes[alias],
+              where_plain: plain,
+            },
+          },
+        },
+      })
     }
-    console.log(type, ref, value, alias);
   };
+
+  const saveDataJSON = async () => {
+    let dt = {...dataJSON};
+    dt.query['includes'] = Object.values(dt.query['includes']);
+
+    console.log(dt)
+    let resp = await Data.postModel(dataModalName.current.value , collections[0].db_scheme_id , dt.query);
+    console.log(resp)
+  }
 
   const data = {
     conditions,
@@ -632,7 +681,7 @@ export default function DataModal() {
               <label htmlFor="datamodal" className="gray-btn mr-2">
                 Kapat
               </label>
-              <button className="green-btn">Kaydet</button>
+              <button onClick={() => saveDataJSON()} className="green-btn">Kaydet</button>
             </div>
           </div>
 

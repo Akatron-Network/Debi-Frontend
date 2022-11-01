@@ -4,7 +4,6 @@ import Condition from './Condition';
 
 export default function Collapses(props) {
   const data = useContext(DataModalContext);
-  console.log(data)
 
   const [mainDlt, setMainDlt] = useState(false);
   const [checkbox, setCheckbox] = useState(false);
@@ -43,9 +42,9 @@ export default function Collapses(props) {
     <div
       id={"collapse_" + props.main}
       className={"collapse collapse-plus collapse_extra " + (checkbox ? "bg-jet" : null)}
-      onClick={() => setCheckbox(!checkbox)}
+      
     >
-      <input type="checkbox" className="!min-h-0 !py-2 !px-4" />
+      <input type="checkbox" className="!min-h-0 !py-2 !px-4" onClick={() => setCheckbox(!checkbox)} />
       <div className="collapse-title text-base font-medium !min-h-0 !py-2 !px-4 text-grayXgray">
         {props.data.source_table.name}
         <span className="text-onyx_light">

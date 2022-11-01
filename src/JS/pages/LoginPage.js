@@ -121,7 +121,7 @@ export default function LoginPage() {
               <h1 className='font-bold m-0 text-[2.5rem]'>Giriş Yap</h1>
               {/* <a href="#" className="social giris-a"><i className="fab fa-google-plus-g" /></a> */}
               {/* <span className='text-xs'>ya da hesabını kullanabilirsin</span> */}
-              <input className='input placeholder:opacity-50 w-3/4' type="email" placeholder="Kullanıcı Adı" ref={login_nicknameRef} />
+              <input className='input placeholder:opacity-50 w-3/4' type="text" placeholder="Kullanıcı Adı" ref={login_nicknameRef} />
               <input className='input placeholder:opacity-50 w-3/4' type="password" placeholder="Şifre" ref={login_passRef} />
               <div id='loginWarns'>
                 <span id='warn_2' className='text-sm text-red-600 hidden'>Lütfen tüm gerekli bilgileri doldurun!</span>

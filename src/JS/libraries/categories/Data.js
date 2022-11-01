@@ -58,6 +58,20 @@ class Data {
 
     return resp;
   }
+
+  static async postModel(model_name , id , data) {
+    let postModel_req = new Requests("data", "model");
+
+    var resp = await postModel_req.post(
+      {
+        model_name : model_name,
+        db_scheme_id: id,
+        query: data,
+      },
+    );
+
+    return resp;
+  }
 }
 
 export default Data;

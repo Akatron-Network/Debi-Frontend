@@ -32,7 +32,7 @@ export default function SettingPage() {
                 <label className="label">
                   <span className="label-text">Şifre</span>
                 </label>
-                <input type="text" placeholder="Şifre girin" className="input input-bordered w-full" />
+                <input type="password" placeholder="Şifre girin" className="input input-bordered w-full" />
               </div>
               <div className="form-control w-full min-w-[170px]">
                 <label className="label">
