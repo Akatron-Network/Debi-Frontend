@@ -1,4 +1,3 @@
-import { type } from '@testing-library/user-event/dist/type';
 import React , { useContext , useState , useEffect , useRef } from 'react'
 import { DataModalContext } from '../context'
 

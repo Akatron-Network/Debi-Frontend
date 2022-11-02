@@ -1,5 +1,5 @@
 import React , { useState , useRef } from 'react'
-import { MainContext } from '../components/context'
+import { MainContext, ModalContext } from '../components/context'
 import WorkspaceAll from '../libraries/categories/Workspace';
 import { Outlet } from 'react-router-dom';
 
@@ -18,6 +18,8 @@ export default function MainPage() {
   const [filepath, setFilePath] = useState([]);
   const [deleteItemRef, setDeleteItemRef] = useState({});
   const [deleteItemType, setDeleteItemType] = useState('');
+  const [modalChecked, setModalChecked] = useState(false);
+  const [modalType, setModalType] = useState({});
 
 
   const getColWorks = async (col_id = undefined) => {
@@ -79,14 +81,14 @@ export default function MainPage() {
 
   const clearRefs = (type) => {
     if(type === "koleksiyon") {
-      data.colNameRef.current.value = "";
-      data.colServerRef.current.value = "";
-      data.colConnectorServerRef.current.value = "";
-      data.colWorksNickRef.current.value = "";
-      data.colWorksPassRef.current.value = "";
-      data.colWorksDBRef.current.value = "";
-      data.colWorksSelectRef.current.value = "default";
-      data.colPortRef.current.value = "1433";
+      maincontext_data.colNameRef.current.value = "";
+      maincontext_data.colServerRef.current.value = "";
+      maincontext_data.colConnectorServerRef.current.value = "";
+      maincontext_data.colWorksNickRef.current.value = "";
+      maincontext_data.colWorksPassRef.current.value = "";
+      maincontext_data.colWorksDBRef.current.value = "";
+      maincontext_data.colWorksSelectRef.current.value = "default";
+      maincontext_data.colPortRef.current.value = "1433";
 
       if(checkedConnector) { setCheckedConnector(!checkedConnector) }
       if(checkedExpress) { setCheckedExpress(!checkedExpress) }
@@ -100,20 +102,20 @@ export default function MainPage() {
 
     }
     else if(type === "klasör") {
-      data.foldNameRef.current.value = "";
+      maincontext_data.foldNameRef.current.value = "";
       if(document.getElementById('foldWarn').classList.contains('!block')) {
         document.getElementById('foldWarn').classList.remove('!block');
       }
     }
     else if(type === "sayfa") {
-      data.fileNameRef.current.value = "";
+      maincontext_data.fileNameRef.current.value = "";
       if(document.getElementById('fileWarn').classList.contains('!block')) {
         document.getElementById('fileWarn').classList.remove('!block');
       }
     }
   }
 
-  const data = {
+  const maincontext_data = {
     collections,
     folders,
     files,
@@ -146,17 +148,26 @@ export default function MainPage() {
     setFilePath,
   }
 
+  const modal_data = {
+    modalChecked,
+    modalType,
+    setModalChecked,
+    setModalType,
+  }
+
   return (
-    <MainContext.Provider value={data}>
-      <Navbar new_btn={"hidden"} page_name={"hidden"} save_page_btn={"hidden"} />
-      <Sidebar />
-      <Filepath />
+    <MainContext.Provider value={maincontext_data}>
+      <ModalContext.Provider value={modal_data}>
+        <Navbar new_btn={"hidden"} page_name={"hidden"} save_page_btn={"hidden"} />
+        <Sidebar />
+        <Filepath />
 
-      <div className="pt-[89px] pb-10 pl-[100px] pr-[38px]">
-        <Outlet />
-      </div>
+        <div className="pt-[89px] pb-10 pl-[100px] pr-[38px]">
+          <Outlet />
+        </div>
 
-      <DataModal />
+        <DataModal />
+      </ModalContext.Provider>
     </MainContext.Provider >
   )
 }

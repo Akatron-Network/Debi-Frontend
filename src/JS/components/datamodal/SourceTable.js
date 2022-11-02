@@ -4,6 +4,7 @@ import { DataModalContext } from '../context'
 export default function SourceTable() {
   
   const data = useContext(DataModalContext);
+  console.log(data)
   return (
   <>
     <div className="form-control">

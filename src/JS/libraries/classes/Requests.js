@@ -20,6 +20,7 @@ class Requests {
             params: data,
             headers: {Token: localStorage.Token, "Content-Type": "application/json"}
         })
+        console.log(resp)
         return resp.data;
     }
 

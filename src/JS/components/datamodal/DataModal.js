@@ -1,27 +1,54 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React , { useContext , useState , useEffect , useRef } from 'react'
 import Table from './Table';
 import Input from '../Input';
 import WorkspaceAll from '../../libraries/categories/Workspace';
 import Data from '../../libraries/categories/Data';
-import { DataModalContext } from '../context'
+import { DataModalContext , ModalContext } from '../context'
 import SourceTable from './SourceTable';
 import Relations from './Relations';
 import RelationsAbsolute from './RelationsAbsolute';
 import Collapses from './Collapses';
-import Condition from './Condition';
 import { getAlias , getKeyID } from '../../libraries/misc';
 import ColSelect from './ColSelect';
 
 export default function DataModal() {
+  const modal_data = useContext(ModalContext);
 
   useEffect(() => {
-    window.addEventListener("resize", review);
     getColSelect();
 
-    return () => {
-      window.removeEventListener("resize", review);
-    };
-  }, []);
+    //*Eğer modal açıldıysa burayı kontrol edecek ve ona göre editModal fonksiyonunda dataJSON düzenlenecek
+    if (modal_data.modalChecked === true) {
+      if (modal_data.modalType === "new") {
+        console.log("New Modal");
+      } else {
+        editModal();
+      }
+    }
+  }, [modal_data.modalChecked]);
+
+  const editModal = () => {
+    console.log(modal_data.modalType);
+    console.log(modal_data)
+    console.log(collections);
+
+    setDataJSON({...dataJSON , query: modal_data.modalType.query});
+    console.log(dataJSON);
+
+    var modal_type = modal_data.modalType;
+
+    if(collections[0].db_scheme_id === modal_type.db_scheme_id) {
+      dataColSelectRef.current.value = collections[0].collection_id; //* Koleksiyon adı
+    }
+    dataModalName.current.value = modal_type.model_name; //* Model adı
+    colNameSelect(dataColSelectRef.current.value); //* Kaynak tablo getir
+
+    var a = filteredData.filter((data) => (data.table === modal_type.query.table))
+    console.log(a);
+    // chooseSource(modal_type.query.table , )
+
+
+  };
 
   const resize = (id) => {
     setTimeout(function () {
@@ -36,24 +63,24 @@ export default function DataModal() {
     }, 210);
   };
 
-  const review = () => {
-    //!Önizleme için gerekiyor
-    let review_btn = document.getElementById("closeModalBtn");
-    let review = document.getElementById("review");
-    let tblReview = document.getElementById("tableReview");
+  // const review = () => {
+  //   //!Önizleme için gerekiyor
+  //   let review_btn = document.getElementById("closeModalBtn");
+  //   let review = document.getElementById("review");
+  //   let tblReview = document.getElementById("tableReview");
 
-    setTimeout(() => {
-      let review_btn_crd = review_btn.getBoundingClientRect();
-      let review_crd = review.getBoundingClientRect();
+  //   setTimeout(() => {
+  //     let review_btn_crd = review_btn.getBoundingClientRect();
+  //     let review_crd = review.getBoundingClientRect();
 
-      review.style.height = review_btn_crd.top - review_crd.top - 8 + "px";
-    }, 220);
+  //     review.style.height = review_btn_crd.top - review_crd.top - 8 + "px";
+  //   }, 220);
 
-    setTimeout(() => {
-      let review_crd = review.getBoundingClientRect();
-      tblReview.style.height = review_crd.height - 16 + "px";
-    }, 230);
-  };
+  //   setTimeout(() => {
+  //     let review_crd = review.getBoundingClientRect();
+  //     tblReview.style.height = review_crd.height - 16 + "px";
+  //   }, 230);
+  // };
 
   const coordinates = (id) => {
     let open_card = document.getElementById("card_s_tbl_" + id);
@@ -215,7 +242,7 @@ export default function DataModal() {
   }
 
   const dataColSelectRef = useRef({ value: "default" });
-  const dataModalName = useRef({ value: "" });
+  const dataModalName = useRef("");
   const sourceTableInputRef = useRef({ value: "" });
 
   const [chosenTables, setChosenTables] = useState([]);
@@ -229,10 +256,10 @@ export default function DataModal() {
   const [miscIncludes, setMiscIncludes] = useState([]);
   const [relations, setRelations] = useState({ inner: [], outer: [] });
   const [sourceTable, setSourceTable] = useState([]);
+  const [tables, setTables] = useState({});
 
   const [conditionsJSON, setConditionsJSON] = useState([]);
 
-  const [tables, setTables] = useState({})
 
   const [dataJSON, setDataJSON] = useState({
     collection_id: "",
@@ -252,7 +279,6 @@ export default function DataModal() {
   };
 
   const colNameSelect = async (id) => {
-
     let col = await WorkspaceAll.getCollections(id); //! Get Gateway host
     let resp = await Data.getExplorer(id, col.Data.connector.gateway_host);
 
@@ -262,7 +288,6 @@ export default function DataModal() {
     setSourceTable(resp.Data);
     setFilteredData(resp.Data); //!We create filteredData for filtered datas, because we don't want change sourcetable
     setDataJSON({...dataJSON , collection_id: id})
-    
   };
 
   const sourceTablesJSON = (event) => {
@@ -589,7 +614,7 @@ export default function DataModal() {
     dt.query['includes'] = Object.values(dt.query['includes']);
 
     console.log(dt)
-    let resp = await Data.postModel(dataModalName.current.value , collections[0].db_scheme_id , dt.query);
+    let resp = await Data.postModel(dataModalName.current.value , collections[0].source_table , collections[0].db_scheme_id , dt.query);
     console.log(resp)
   }
 
@@ -628,7 +653,7 @@ export default function DataModal() {
 
   return (
     <DataModalContext.Provider value={data}>
-      <input type="checkbox" id="datamodal" className="modal-toggle" />
+      <input type="checkbox" id="datamodal"  className="modal-toggle" />
       <div className="modal bg-modal_back">
         <div className="modal-box max-w-full h-screen p-4 grid grid-cols-5 gap-5 bg-darkest_jet rounded">
           <div className="md:col-span-2 col-span-5 bg-middle_black p-3 rounded shadow-md overflow-auto relative min-h-[570px] h-full">
@@ -636,7 +661,7 @@ export default function DataModal() {
 
             <hr className="my-3 border-1 w-4/5 relative left-1/2 -translate-x-1/2 border-hr_gray" />
 
-            <Input value={"Model Adı"} refname={dataModalName} />
+            <Input value={"Model Adı"} refName={dataModalName} />
 
             <SourceTable />
 
@@ -678,7 +703,7 @@ export default function DataModal() {
             </div>
 
             <div id="closeModalBtn" className="bottom-3 right-3 absolute">
-              <label htmlFor="datamodal" className="gray-btn mr-2">
+              <label htmlFor="datamodal" onClick={() => modal_data.setModalChecked(false)}className="gray-btn mr-2">
                 Kapat
               </label>
               <button onClick={() => saveDataJSON()} className="green-btn">Kaydet</button>

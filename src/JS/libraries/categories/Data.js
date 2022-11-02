@@ -31,7 +31,7 @@ class Data {
     return resp;
   }
 
-  static async getExplorer(id, host , tbl_name = "" , rel = false) {
+  static async getExplorer(id, host, tbl_name = "", rel = false) {
     let getExplorer_req = new Requests("data", "explorer", host + ":8001");
 
     var resp = await getExplorer_req.get(
@@ -39,8 +39,8 @@ class Data {
         collection_id: id,
         table_name: tbl_name,
         include: {
-          relations: rel
-        }
+          relations: rel,
+        },
       },
       host !== undefined
     );
@@ -51,27 +51,32 @@ class Data {
   static async postExecute(data, host) {
     let postExecute_req = new Requests("data", "execute", host + ":8001");
 
-    var resp = await postExecute_req.post(
-      data,
-      host !== undefined
-    );
+    var resp = await postExecute_req.post(data, host !== undefined);
 
     return resp;
   }
 
-  static async postModel(model_name , id , data) {
+  static async postModel(model_name, source_table, id, data) {
     let postModel_req = new Requests("data", "model");
 
-    var resp = await postModel_req.post(
-      {
-        model_name : model_name,
-        db_scheme_id: id,
-        query: data,
-      },
-    );
+    var resp = await postModel_req.post({
+      model_name: model_name,
+      source_table: source_table,
+      db_scheme_id: id,
+      query: data,
+    });
 
     return resp;
   }
+
+  static async getModalList() {
+    let getModalList_req = new Requests("data", "model");
+
+    var resp = await getModalList_req.get();
+
+    return resp;
+  }
+
 }
 
 export default Data;
