@@ -30,17 +30,35 @@ class WorkspaceAll {
         }
     }
 
-    static async getFiles() {
+    static async getFiles(id = undefined) {
         let getFiles_req = new Requests("workspace" , "pages");
 
         try {
-            let resp = await getFiles_req.get();
+            let resp = await getFiles_req.get({
+              page_id: id
+            });
             return resp;
         } catch (err) {
             console.log(err);
             
         }
     }
+
+    static async putFiles(id = undefined , values = {}) {
+        let getFiles_req = new Requests("workspace" , "pages");
+
+        try {
+            let resp = await getFiles_req.put({
+              page_id: id,
+              values: values
+            });
+            return resp;
+        } catch (err) {
+            console.log(err);
+            
+        }
+    }
+
 
     static async postCollections(name) {
         let postCollections_req = new Requests("workspace" , "collections");

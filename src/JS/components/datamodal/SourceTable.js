@@ -4,7 +4,6 @@ import { DataModalContext } from '../context'
 export default function SourceTable() {
   
   const data = useContext(DataModalContext);
-  console.log(data)
   return (
   <>
     <div className="form-control">
@@ -40,7 +39,7 @@ export default function SourceTable() {
               else {nameTable = source.name + " (" + source.table + ")"}
 
               return (
-                <tr key={index} onClick={() => data.chooseSource(source.table , category , nameTable )}>
+                <tr key={index} onClick={() => data.chooseSource(source.table , category , nameTable , data.gatewayHost)}>
                   <td>{type}</td>
                   <td>{category}</td>
                   <td>{nameTable}</td>

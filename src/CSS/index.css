@@ -135,18 +135,17 @@
 
   .chart-type-cards {
     @apply
-      col-span-2
-      bg-middle_black
+      col-span-1
+      bg-earie_black
       p-3
       pb-1
       rounded
       shadow-md
-      max-w-[170px]
+      max-w-[110px]
       text-grayXgray
       border border-transparent
       hover:text-platinium
-      hover:bg-earie_black
-      hover:border-jet_mid
+      hover:bg-darker_jet
       transition duration-300
       cursor-pointer
   }
@@ -154,8 +153,8 @@
   .chart-title {
     @apply
       text-center
+      text-sm
       p-1
-      truncate
   }
 
   /*! WORKSPACE -------------------------------------------- */

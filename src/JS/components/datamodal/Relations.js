@@ -14,7 +14,7 @@ export default function Relations() {
             key={index}
             onMouseEnter={() => data.show_info(index + 1, "in")}
             onMouseLeave={() => data.clearTime(index + 1)}
-            onClick={() => data.addRelatedTable(index + 1 , rel.table, rel.relation_definition)}
+            onClick={() => data.addRelatedTable(rel.table, rel.relation_definition , data.gatewayHost)}
             id={"card_elm_" + (index + 1)}
             className="elm_info_cards"
           >

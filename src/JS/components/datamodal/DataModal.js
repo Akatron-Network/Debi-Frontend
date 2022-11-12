@@ -16,38 +16,56 @@ export default function DataModal() {
 
   useEffect(() => {
     getColSelect();
+  }, []);
 
-    //*Eğer modal açıldıysa burayı kontrol edecek ve ona göre editModal fonksiyonunda dataJSON düzenlenecek
-    if (modal_data.modalChecked === true) {
-      if (modal_data.modalType === "new") {
-        console.log("New Modal");
-      } else {
-        editModal();
-      }
-    }
-  }, [modal_data.modalChecked]);
+  // useEffect(() => {
+  //   setDataJSON({ ...dataJSON , query: modal_data.modalType.query });
+  //   console.log(modal_data.modalType.query)
+  
+  // }, [modal_data.modalType])
+  
 
-  const editModal = () => {
+  // useEffect(() => {
+  //   //*Eğer modal açıldıysa burayı kontrol edecek ve ona göre editModal fonksiyonunda dataJSON düzenlenecek
+  //   if (modal_data.modalChecked === true) {
+  //     if (modal_data.modalType === "new") {
+  //       console.log("New Modal");
+  //       setDataJSON({
+  //         collection_id: "",
+  //         query: {
+  //             table: "",
+  //             alias: "O",
+  //             select: {},
+  //             where_plain: [],
+  //             includes: {}
+  //         }
+  //       });
+  //     } else {
+  //       editModal();
+  //     }
+  //   }
+  // }, [modal_data.modalChecked])
+  
+
+  const editModal = async () => {
     console.log(modal_data.modalType);
-    console.log(modal_data)
-    console.log(collections);
+    // var modal_type = modal_data.modalType;
 
-    setDataJSON({...dataJSON , query: modal_data.modalType.query});
+    // if (collections[0].db_scheme_id === modal_type.db_scheme_id) {
+    //   dataColSelectRef.current.value = collections[0].collection_id; //* Koleksiyon adı
+    // }
+    // dataModalName.current.value = modal_type.model_name; //* Model adı
     console.log(dataJSON);
+    // let rt = await colNameSelect(dataColSelectRef.current.value); //* Kaynak tablo getir
 
-    var modal_type = modal_data.modalType;
+    // console.log(rt);
+    // var dt = rt[1].filter((data) => (data.table === modal_type.query.table));
+    // console.log(dt);
+    // await chooseSource(modal_type.query.table, dt[0].category, dt[0].name, rt[0]); //* Kaynak tablo seçimi
+    // await addRelatedTable(modal_type.query.table, "" ,rt[0]);
+    
 
-    if(collections[0].db_scheme_id === modal_type.db_scheme_id) {
-      dataColSelectRef.current.value = collections[0].collection_id; //* Koleksiyon adı
-    }
-    dataModalName.current.value = modal_type.model_name; //* Model adı
-    colNameSelect(dataColSelectRef.current.value); //* Kaynak tablo getir
-
-    var a = filteredData.filter((data) => (data.table === modal_type.query.table))
-    console.log(a);
-    // chooseSource(modal_type.query.table , )
-
-
+    // setDataJSON({ collection_id: collections[0].collection_id, query: modal_data.modalType.query });
   };
 
   const resize = (id) => {
@@ -287,7 +305,10 @@ export default function DataModal() {
     setGatewayHost(col.Data.connector.gateway_host);
     setSourceTable(resp.Data);
     setFilteredData(resp.Data); //!We create filteredData for filtered datas, because we don't want change sourcetable
-    setDataJSON({...dataJSON , collection_id: id})
+    console.log(dataJSON)
+    setDataJSON({...dataJSON, collection_id: id})
+
+    return [col.Data.connector.gateway_host , resp.Data];
   };
 
   const sourceTablesJSON = (event) => {
@@ -309,24 +330,23 @@ export default function DataModal() {
     setFilteredData(newFilter);
   };
 
-  const chooseSource = async (table, category, nameTable) => {
+  const chooseSource = async (table, category = "", nameTable = "" , gatewayHost) => {
     sourceTableInputRef.current.value = category + " / " + nameTable;
 
+    //! Get table relations
     let resp = await Data.getExplorer(
       dataColSelectRef.current.value,
       gatewayHost,
       table,
       true
-    ); //! Get table relations
+    );
     setRelations(resp.Data.relations);
     var result = [];
 
-    setTables(
-      {
-        ...tables,
-        O: resp.Data
-      }
-    )
+    setTables({
+      ...tables,
+      O: resp.Data,
+    });
 
     setChosenTables(
       result.concat(<Collapses key={0} data={resp.Data} main={"main"} />) //! İlk tablo eklendiğinde gelen ana kolonlar vs için
@@ -343,7 +363,7 @@ export default function DataModal() {
     close_s_tbl();
   };
 
-  const addRelatedTable = async (index, table , rel_definition) => {
+  const addRelatedTable = async (table , rel_definition = "" , gatewayHost) => {
     let resp = await Data.getExplorer(
       dataColSelectRef.current.value,
       gatewayHost,
@@ -703,7 +723,7 @@ export default function DataModal() {
             </div>
 
             <div id="closeModalBtn" className="bottom-3 right-3 absolute">
-              <label htmlFor="datamodal" onClick={() => modal_data.setModalChecked(false)}className="gray-btn mr-2">
+              <label htmlFor="datamodal" onClick={() => modal_data.setModalChecked(false)} className="gray-btn mr-2">
                 Kapat
               </label>
               <button onClick={() => saveDataJSON()} className="green-btn">Kaydet</button>

@@ -9,7 +9,7 @@ export default function TreeFile(props) {
   const checkType = (data) => {
     if(data.type === "page") {
       return (
-        <Link to={data.url.toString()}  className='tree-elm' style={{paddingLeft: (props.padding + 51.75) + "px"}}><i className="fa-solid fa-file mr-[6px]"></i>{data.name}</Link>
+        <Link to={data.url.toString()} onClick={treeData.fn} className='tree-elm' style={{paddingLeft: (props.padding + 51.75) + "px"}}><i className="fa-solid fa-file mr-[6px]"></i>{data.name}</Link>
       )
     }
     else if(data.type === "directory") {

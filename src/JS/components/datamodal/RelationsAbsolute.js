@@ -15,7 +15,7 @@ export default function Relations() {
           <div
             key={index}
             onMouseLeave={() => data.show_info(index + 1)}
-            onClick={() => data.addRelatedTable(index + 1 , rel.table, rel.relation_definition)}
+            onClick={() => data.addRelatedTable(rel.table, rel.relation_definition , data.gatewayHost)}
             id={"card_s_tbl_" + (index + 1)}
             className="info_cards"
           >

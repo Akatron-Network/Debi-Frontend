@@ -20,8 +20,8 @@ export default function AllRoutes() {
           <Route index={true} element={<Collections />} />
           <Route path=":colID" element={<Folders />} />
           <Route path=":colID/:foldID" element={<Files />} />
+          <Route path=":colID/:foldID/:fileID" element={<ChartLayout />} />
         </Route>
-        <Route path=":colID/:foldID/:fileID" element={<ChartLayout />} />
         <Route path="/ayarlar" element={<SettingsPage />} />
         <Route path="/grafik-tablo" element={<PanelsPage />} />
         <Route path="/datamodal" element={<DataModal />} />

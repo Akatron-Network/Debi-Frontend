@@ -1,6 +1,6 @@
 import React , { useEffect , useRef } from 'react'
 import debi_logo from '../../img/icon2.png';
-import ChartChoose from './ChartChoose';
+import ChartChoose from './panels/ChartChoose';
 
 export default function Navbar(props) {
 
@@ -30,7 +30,6 @@ export default function Navbar(props) {
     }
   }
   
-
   return (
     
    <>
@@ -38,11 +37,11 @@ export default function Navbar(props) {
       <div className="mx-auto items-center grid grid-cols-5">
 
           <nav id='nav-left' className="col-span-2 flex items-center text-base">
-            <div className={"tooltip tooltip-bottom " + props.new_btn} data-tip="Öğe Oluştur">
-              <button id="new_btn" ref={refNew} className="nav-btn"><i className="fas fa-plus" /></button>
+            <div className="tooltip tooltip-bottom" data-tip="Öğe Oluştur">
+              <button id="new_btn" ref={refNew} className={"nav-btn " + props.new_btn}><i className="fas fa-plus" /></button>
             </div>
 
-            <button id="page-btn" className={"nav-btn w-60 flex items-center justify-between " + props.page_name}>
+            <button id="page-btn" className={"nav-btn w-60 flex items-center justify-between " + props.page_btn}>
               <span id="page-name">Ana Sayfa</span>
               <i className="fa-solid fa-chevron-down"></i>
             </button>
@@ -56,11 +55,11 @@ export default function Navbar(props) {
           </div>
 
           <nav id='nav-right' className="col-span-2 flex items-center text-base justify-end">
-            <div className={"tooltip tooltip-bottom " + props.save_page_btn} data-tip="Kaydet">
-              <button id="save-page-btn" className="nav-btn border-r-0 border-l"><i className="fa-solid fa-floppy-disk"></i></button>
+            <div className="tooltip tooltip-bottom" data-tip="Kaydet">
+              <button id="save-page-btn" className={"nav-btn border-r-0 border-l " + props.save_page_btn}><i className="fa-solid fa-floppy-disk"></i></button>
             </div>
-            <div className={"tooltip tooltip-bottom " + props.menu_btn} data-tip="Menü">
-              <button id="menu-btn" ref={refMenu} className="nav-btn border-r-0 border-l"><i className="fa-solid fa-bars"></i></button>
+            <div className="tooltip tooltip-bottom" data-tip="Menü">
+              <button id="menu-btn" ref={refMenu} className={"nav-btn border-r-0 border-l " + props.menu_btn}><i className="fa-solid fa-bars"></i></button>
             </div>
           </nav>
 
