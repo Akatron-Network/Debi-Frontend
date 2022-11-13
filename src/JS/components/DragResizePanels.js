@@ -15,8 +15,8 @@ const ResponsiveReactGridLayout = WidthProvider(Responsive);
 const originalLayouts = getFromLS("layouts") || {};
 
 export default class ResponsiveLocalStorageLayout extends React.PureComponent {
-
   static contextType = ChartContext;
+
   constructor(props) {
     super(props);
 
@@ -33,8 +33,6 @@ export default class ResponsiveLocalStorageLayout extends React.PureComponent {
     };
   }
 
-  // static modal_data = ModalContext;
-
   resetLayout() {
     this.setState({ layouts: {} });
   }
@@ -42,10 +40,6 @@ export default class ResponsiveLocalStorageLayout extends React.PureComponent {
   onLayoutChange(layout, layouts) {
     saveToLS("layouts", layouts);
     this.setState({ layouts });
-  }
-
-  componentDidUpdate() {
-    console.log("a")
   }
 
   render() {
@@ -71,7 +65,7 @@ export default class ResponsiveLocalStorageLayout extends React.PureComponent {
               return (
                 <div className="panels" key={panel.PanelID} data-grid={panel.Coordinates}>
                   <h1 className="panels-title">{panel.PanelName}</h1>
-                  <span><AxisAlignWithTick /></span>
+                  <span><AxisAlignWithTick modelID={panel.ModelID} panelID={panel.PanelID} /></span>
                 </div>
               )
             }

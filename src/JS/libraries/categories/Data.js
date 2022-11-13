@@ -77,6 +77,17 @@ class Data {
     return resp;
   }
 
+  static async getModel(id) {
+    let getModel_req = new Requests("data", "model");
+
+    var resp = await getModel_req.get({
+      model_id: id
+    });
+    return resp;
+  }
+
+
+
 }
 
 export default Data;

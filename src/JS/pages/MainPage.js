@@ -259,20 +259,89 @@ export default function MainPage() {
 
     let coordinates = getCoordinates();
 
-    let content_temp = pageContent;
+    setPageContent({
+      ...pageContent,
+      page_data: {
+        ...pageContent.page_data,
+        panels: [
+          ...pageContent.page_data.panels,
+          {
+            PanelID: getAlias(panelIDs),
+            PanelType: panelType,
+            PanelName: panelNameRef.current.value,
+            ModelID: parseInt(modelNameRef.current.value),
+            SelColumns: selColumns,
+            Coordinates: coordinates,
+          }
+        ]
+      }
+    })
 
-    content_temp.page_data.panels.push({
-      PanelID: getAlias(panelIDs),
-      PanelType: panelType,
-      PanelName: panelNameRef.current.value,
-      ModelID: parseInt(modelNameRef.current.value),
-      SelColumns: selColumns,
-      Coordinates: coordinates,
+    WorkspaceAll.putFiles(pageContent.page_id , {
+      page_data: {
+        ...pageContent.page_data,
+        panels: [
+          ...pageContent.page_data.panels,
+          {
+            PanelID: getAlias(panelIDs),
+            PanelType: panelType,
+            PanelName: panelNameRef.current.value,
+            ModelID: parseInt(modelNameRef.current.value),
+            SelColumns: selColumns,
+            Coordinates: coordinates,
+          }
+        ]
+      }
     });
+  }
 
-    setPageContent(content_temp);
+  const savePage = async () => {
+    
+    document.getElementById('save-page-btn').innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i>';
+    document.getElementById('save-page-btn').disabled = true;
 
-    WorkspaceAll.putFiles(content_temp.page_id , {page_data: content_temp.page_data});
+    let parse = JSON.parse(localStorage["rgl-8"])
+    console.log(parse)
+
+    let panels = [...pageContent.page_data.panels]
+
+    for (let [index , a] of pageContent.page_data.panels.entries()) {
+      for (let b of parse.layouts.lg) {
+
+        if(a.PanelID === b.i) {
+
+          panels[index] = {
+            ...pageContent.page_data.panels[index],
+            Coordinates: {
+              w: b.w,
+              h: b.h,
+              x: b.x,
+              y: b.y,
+              minW: b.minW,
+              minH:	b.minH,
+
+            }
+          }
+
+          await WorkspaceAll.putFiles(pageContent.page_id, {page_data: {panels: panels}})
+
+          setPageContent({
+            ...pageContent,
+            page_data: {
+              ...pageContent.page_data,
+              panels: panels
+            }
+          })
+        }
+      }
+    }
+
+    document.getElementById('save-page-btn').innerHTML = '<i class="fa-solid fa-check text-green_pantone"></i>';
+
+    setTimeout(() => {
+      document.getElementById('save-page-btn').innerHTML = '<i class="fa-solid fa-floppy-disk"></i>';
+      document.getElementById('save-page-btn').disabled = false;
+    }, 5000);
   }
 
   const chart_data = {
@@ -286,6 +355,7 @@ export default function MainPage() {
     axisSel,
     chooseChart,
     modelNameSelect,
+    savePage,
     savePanel,
     setPageContent,
   }

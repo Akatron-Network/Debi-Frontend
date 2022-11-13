@@ -1,8 +1,10 @@
-import React , { useEffect , useRef } from 'react'
+import React , { useEffect, useRef, useContext } from 'react'
 import debi_logo from '../../img/icon2.png';
 import ChartChoose from './panels/ChartChoose';
+import { ChartContext } from './context';
 
 export default function Navbar(props) {
+  const chart_data = useContext(ChartContext);
 
   useEffect(() => {
     document.addEventListener('click' , clickOutside , true)
@@ -16,14 +18,14 @@ export default function Navbar(props) {
   const refMenu = useRef(null);
 
   const clickOutside = (e) => {
-    let new_elm_list = document.getElementById("new_elm_list");
+    // let new_elm_list = document.getElementById("new_elm_list");
     let menu_page = document.getElementById("menu_page");
     
-    new_elm_list.classList.remove("!-translate-y-0");
+    // new_elm_list.classList.remove("!-translate-y-0");
     menu_page.classList.remove("!-translate-y-0");
 
     if(refNew.current.contains(e.target)) { //? Click inside
-      new_elm_list.classList.toggle("!-translate-y-0");
+      // new_elm_list.classList.toggle("!-translate-y-0");
     }
     else if(refMenu.current.contains(e.target)) { //? Click inside
       menu_page.classList.toggle("!-translate-y-0");
@@ -38,7 +40,7 @@ export default function Navbar(props) {
 
           <nav id='nav-left' className="col-span-2 flex items-center text-base">
             <div className="tooltip tooltip-bottom" data-tip="Öğe Oluştur">
-              <button id="new_btn" ref={refNew} className={"nav-btn " + props.new_btn}><i className="fas fa-plus" /></button>
+              <label id="new_btn" ref={refNew} htmlFor="chart_choose" className={"nav-btn cursor-pointer items-center " + props.new_btn}><i className="fas fa-plus" /></label>
             </div>
 
             <button id="page-btn" className={"nav-btn w-60 flex items-center justify-between " + props.page_btn}>
@@ -56,10 +58,10 @@ export default function Navbar(props) {
 
           <nav id='nav-right' className="col-span-2 flex items-center text-base justify-end">
             <div className="tooltip tooltip-bottom" data-tip="Kaydet">
-              <button id="save-page-btn" className={"nav-btn border-r-0 border-l " + props.save_page_btn}><i className="fa-solid fa-floppy-disk"></i></button>
+              <button id="save-page-btn" className={"nav-btn max-w-[55px] border-r-0 border-l items-center " + props.save_page_btn} onClick={chart_data.savePage}><i className="fa-solid fa-floppy-disk"></i></button>
             </div>
             <div className="tooltip tooltip-bottom" data-tip="Menü">
-              <button id="menu-btn" ref={refMenu} className={"nav-btn border-r-0 border-l " + props.menu_btn}><i className="fa-solid fa-bars"></i></button>
+              <button id="menu-btn" ref={refMenu} className={"nav-btn border-r-0 border-l items-center " + props.menu_btn}><i className="fa-solid fa-bars"></i></button>
             </div>
           </nav>
 

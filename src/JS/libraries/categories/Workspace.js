@@ -59,7 +59,6 @@ class WorkspaceAll {
         }
     }
 
-
     static async postCollections(name) {
         let postCollections_req = new Requests("workspace" , "collections");
 

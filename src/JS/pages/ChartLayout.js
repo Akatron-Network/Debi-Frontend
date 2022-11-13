@@ -11,16 +11,17 @@ export default function ChartLayout() {
 
   useEffect(() => {
     document.getElementById('file_path_top').style.display = "none";
-    document.getElementById('new_btn').style.display = "block";
-    document.getElementById('page-btn').style.display = "flex";
-    document.getElementById('save-page-btn').style.display = "block";
+    document.getElementById('new_btn').style.display = "flex";
+    // document.getElementById('page-btn').style.display = "flex";
+    document.getElementById('save-page-btn').style.display = "flex";
 
     getFiles(fileID);
+    console.log((chart_data.pageContent.page_data.panels.length))
   
     return () => {
       document.getElementById('file_path_top').style.display = "block";
       document.getElementById('new_btn').style.display = "none";
-      document.getElementById('page-btn').style.display = "none";
+      // document.getElementById('page-btn').style.display = "none";
       document.getElementById('save-page-btn').style.display = "none";
     }
   }, [])
