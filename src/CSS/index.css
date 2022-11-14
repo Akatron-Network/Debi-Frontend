@@ -932,6 +932,32 @@
       min-h-[30px]
       shadow-md
   }
+
+  .danger-btn {
+    @apply
+      btn
+      font-righteous
+      bg-danger
+      rounded
+      text-grayXgray
+      transition-all
+      duration-300
+      border-t-0
+      border-b-0
+      hover:bg-danger_light
+      hover:text-platinium
+      normal-case
+      w-max
+      text-sm
+      px-2
+      font-light
+      leading-none
+      h-auto
+      min-h-[30px]
+      shadow-md
+      focus-visible:outline-onyx_light
+      focus-visible:outline-offset-0
+  }
   
   .remove-btn {
     @apply

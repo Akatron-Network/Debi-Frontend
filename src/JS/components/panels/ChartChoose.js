@@ -47,7 +47,7 @@ export default function ChartChoose() {
               <img src={chart_markPoint} alt="Mark Chart" />
               <h1 className='chart-title'>Gruplu Çizgi Grafiği</h1>
           </button>
-          <button className='chart-type-cards' id='gauge_card' onClick={() => chart_data.chooseChart("gauge")}>
+          <button disabled className='chart-type-cards opacity-50 cursor-default hover:bg-earie_black hover:text-grayXgray' id='gauge_card' onClick={() => chart_data.chooseChart("gauge")}>
               <img src={chart_gauge} alt="Gauge Chart" />
               <h1 className='chart-title'>Gösterge Grafiği</h1>
           </button>

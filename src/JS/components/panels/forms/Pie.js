@@ -1,7 +1,7 @@
 import React , {useContext} from 'react'
-import { ChartContext , ModalContext } from '../../context';
+import { ChartContext } from '../../context';
 
-export default function Bar() {
+export default function Pie() {
   const chart_data = useContext(ChartContext);
 
   return (

@@ -68,18 +68,50 @@ export default class ResponsiveLocalStorageLayout extends React.PureComponent {
                   <span><AxisAlignWithTick modelID={panel.ModelID} panelID={panel.PanelID} /></span>
                 </div>
               )
+            } else if (panel.PanelType === "treemap") {
+              return (
+                <div className="panels" key={panel.PanelID} data-grid={panel.Coordinates}>
+                  <h1 className="panels-title">{panel.PanelName}</h1>
+                  <span><BarLabelRotation modelID={panel.ModelID} panelID={panel.PanelID} /></span>
+                </div>
+              )
+            } else if (panel.PanelType === "line") {
+              return (
+                <div className="panels" key={panel.PanelID} data-grid={panel.Coordinates}>
+                  <h1 className="panels-title">{panel.PanelName}</h1>
+                  <span><BasicLineCharts modelID={panel.ModelID} panelID={panel.PanelID} /></span>
+                </div>
+              )
+            } else if (panel.PanelType === "mark") {
+              return (
+                <div className="panels" key={panel.PanelID} data-grid={panel.Coordinates}>
+                  <h1 className="panels-title">{panel.PanelName}</h1>
+                  <span><StackedLineCharts modelID={panel.ModelID} panelID={panel.PanelID} /></span>
+                </div>
+              )
+            } else if (panel.PanelType === "pie") {
+              return (
+                <div className="panels" key={panel.PanelID} data-grid={panel.Coordinates}>
+                  <h1 className="panels-title">{panel.PanelName}</h1>
+                  <span><PieChart modelID={panel.ModelID} panelID={panel.PanelID} /></span>
+                </div>
+              )
             }
           })}
 
-          {/*
+          {/* <div className="panels" key="1" data-grid={{ w: 4, h: 10, x: 0, y: 0, minW: 3, minH: 7}}>
+              <h1 className="panels-title">Pie Charts</h1>
+              <span><PieChart /></span>
+            </div> */}
+
+            {/*
+            <div className="panels" key="5" data-grid={{ w: 4, h: 10, x: 4, y: 0, minW: 2, minH: 7}}>
+              <h1 className="panels-title">Bar Label Rotation</h1>
+              <span><BarLabelRotation /></span>
+            </div>
             <div className="panels" key="4" data-grid={{ w: 4, h: 10, x: 0, y: 0, minW: 2, minH: 5}}>
               <h1 className="panels-title">Axis Align With Tick</h1>
               <span><AxisAlignWithTick /></span>
-            </div>
-
-            <div className="panels" key="1" data-grid={{ w: 4, h: 10, x: 0, y: 0, minW: 3, minH: 7}}>
-              <h1 className="panels-title">Pie Charts</h1>
-              <span><PieChart /></span>
             </div>
             <div className="panels" key="2" data-grid={{ w: 4, h: 10, x: 4, y: 0, minW: 2, minH: 5}}>
               <h1 className="panels-title">Basic Line Charts</h1>
@@ -89,15 +121,19 @@ export default class ResponsiveLocalStorageLayout extends React.PureComponent {
               <h1 className="panels-title">Stacked Line Charts</h1>
               <span><StackedLineCharts /></span>
             </div>
-            <div className="panels" key="5" data-grid={{ w: 4, h: 10, x: 4, y: 0, minW: 2, minH: 7}}>
-              <h1 className="panels-title">Bar Label Rotation</h1>
-              <span><BarLabelRotation /></span>
+            */}
+
+            {/*
+            <div className="panels" key="1" data-grid={{ w: 4, h: 10, x: 0, y: 0, minW: 3, minH: 7}}>
+              <h1 className="panels-title">Pie Charts</h1>
+              <span><PieChart /></span>
             </div>
             <div className="panels" key="6" data-grid={{ w: 4, h: 10, x: 8, y: 0, minW: 3, minH: 8}}>
               <h1 className="panels-title">Temperature Gauge</h1>
               <span><TemperatureGauge /></span>
             </div>
-          */}
+            */}
+          
           
         </ResponsiveReactGridLayout>
       </div>

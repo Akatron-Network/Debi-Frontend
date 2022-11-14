@@ -68,14 +68,14 @@ export default function Navbar(props) {
       </div>
     </header>
 
-    <div id='new_elm_list' className="absolute top-11 w-48 bg-earie_black shadow-dropdown z-10 -translate-y-48 transition duration-300">
+    {/* <div id='new_elm_list' className="fixed top-11 w-48 bg-earie_black shadow-dropdown z-10 -translate-y-48 transition duration-300">
       <button className='new-elm'>&nbsp;<i className="far fa-file-alt" aria-hidden="true"></i> &nbsp;Yeni Sayfa</button>
       <label className='new-elm items-center inline-flex cursor-pointer' htmlFor="chart_choose">&nbsp;<i className="fas fa-columns" aria-hidden="true"></i>&nbsp;&nbsp;Yeni Panel</label>
-    </div>
+    </div> */}
 
     <ChartChoose />
 
-    <div id='menu_page' className="absolute top-11 w-64 bg-earie_black shadow-dropdown z-10 transition -translate-y-48 duration-300 right-0">
+    <div id='menu_page' className="fixed top-11 w-64 bg-earie_black shadow-dropdown z-10 transition -translate-y-48 duration-300 right-0">
       <a className="avatar new-elm flex items-center border-b border-solid border-hr_gray" href="/ayarlar">
         <div className="h-full mask mask-squircle w-1/5">
           <img src="https://placeimg.com/192/192/people" />

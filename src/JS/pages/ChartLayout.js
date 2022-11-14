@@ -16,7 +16,7 @@ export default function ChartLayout() {
     document.getElementById('save-page-btn').style.display = "flex";
 
     getFiles(fileID);
-    console.log((chart_data.pageContent.page_data.panels.length))
+    console.log("a");
   
     return () => {
       document.getElementById('file_path_top').style.display = "block";
@@ -24,7 +24,7 @@ export default function ChartLayout() {
       // document.getElementById('page-btn').style.display = "none";
       document.getElementById('save-page-btn').style.display = "none";
     }
-  }, [])
+  }, [fileID])
 
   //* Hangi sayfada olduğumuz görmek için başlık olarak bunu çektik ve buraya yazacağız
   const getFiles = async (id) => {

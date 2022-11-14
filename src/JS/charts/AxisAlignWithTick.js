@@ -14,95 +14,95 @@ const Page = (props) => {
   useEffect(() => {
     getData();
 
-    setOptions({
-      tooltip: {
-        show: true,
-        backgroundColor: "#3D3D3D",
-        borderColor: "#333333",
-        textStyle: {
-          color: "#EBEBEB",
-          fontFamily: "cabin",
-          fontSize: 15,
-        },
-        trigger: "axis",
-        axisPointer: {
-          type: "shadow",
-          label: {
-            color: "#14B85B",
-            fontFamily: "cabin",
-            fontSize: 15,
-            fontWeight: "bold",
-            backgroundColor: "#333333"
-          }
-        },
-      },
+    // setOptions({
+    //   tooltip: {
+    //     show: true,
+    //     backgroundColor: "#3D3D3D",
+    //     borderColor: "#333333",
+    //     textStyle: {
+    //       color: "#EBEBEB",
+    //       fontFamily: "cabin",
+    //       fontSize: 15,
+    //     },
+    //     trigger: "axis",
+    //     axisPointer: {
+    //       type: "shadow",
+    //       label: {
+    //         color: "#14B85B",
+    //         fontFamily: "cabin",
+    //         fontSize: 15,
+    //         fontWeight: "bold",
+    //         backgroundColor: "#333333"
+    //       }
+    //     },
+    //   },
 
-      grid: {
-        left: '4%',
-        right: '4%',
-        bottom: '4%',
-        top:'10%',
-        containLabel: true
-      },
+    //   grid: {
+    //     left: '4%',
+    //     right: '4%',
+    //     bottom: '4%',
+    //     top:'10%',
+    //     containLabel: true
+    //   },
 
-      xAxis: {
-        type: 'category',
-        data: [],
+    //   xAxis: {
+    //     type: 'category',
+    //     data: [],
         
-        axisLine: {
-          lineStyle: {
-            color: "#B9B9B9"
-          }
-        },
-        axisTick: {
-          length: 6,
-          alignWithLabel: false
-        },
-        axisLabel: {
-          show: true,
-          fontFamily: "cabin",
-          fontWeight: "bold",
-          fontSize: 14,
-          rotate: 90,
-        }
-      },
+    //     axisLine: {
+    //       lineStyle: {
+    //         color: "#B9B9B9"
+    //       }
+    //     },
+    //     axisTick: {
+    //       length: 6,
+    //       alignWithLabel: false
+    //     },
+    //     axisLabel: {
+    //       show: true,
+    //       fontFamily: "cabin",
+    //       fontWeight: "bold",
+    //       fontSize: 14,
+    //       rotate: 90,
+    //     }
+    //   },
 
-      yAxis: {
-        type: 'value',
-        splitNumber: 6,
-        splitLine: {
-          lineStyle: {
-            color: "#3D3D3D",
-          }
-        },
-        axisLine: {
-          lineStyle: {
-            color: "#B9B9B9"
-          }
-        },
-        axisTick: {
-          length: 6
-        },
-        axisLabel: {
-          show: true,
-          fontFamily: "cabin",
-          fontWeight: "bold",
-          fontSize: 14,
-        },
-      },
+    //   yAxis: {
+    //     type: 'value',
+    //     splitNumber: 6,
+    //     splitLine: {
+    //       lineStyle: {
+    //         color: "#3D3D3D",
+    //       }
+    //     },
+    //     axisLine: {
+    //       lineStyle: {
+    //         color: "#B9B9B9"
+    //       }
+    //     },
+    //     axisTick: {
+    //       length: 6
+    //     },
+    //     axisLabel: {
+    //       show: true,
+    //       fontFamily: "cabin",
+    //       fontWeight: "bold",
+    //       fontSize: 14,
+    //     },
+    //   },
 
-      series: [{
-          name: 'Direct',
-          type: 'bar',
-          barWidth: '60%',
-          data: [],
+    //   series: [{
+    //       name: 'Direct',
+    //       type: 'bar',
+    //       barWidth: '60%',
+    //       data: [],
           
-          itemStyle: {
-            color: "#20834B"
-          },
-        }]
+    //       itemStyle: {
+    //         color: "#20834B"
+    //       },
+    //     }]
 
-    });
+    // });
   
   }, [])
 

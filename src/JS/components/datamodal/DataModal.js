@@ -411,12 +411,9 @@ export default function DataModal() {
   const dltRelatedTable = async (alias , keyID) => {
     console.log(keyID);
     
-
     if(alias !== "main") {
       delete dataJSON.query.includes[alias];
       setChosenTables(chosenTables.filter(item => item.key !== keyID.toString()))
-    } else {
-      console.log("a");
     }
   }
 
@@ -502,7 +499,7 @@ export default function DataModal() {
           ...dataJSON,
           query: {
             ...dataJSON.query,
-            where_plain: [...dataJSON.query.where_plain, "", {}],
+            where_plain: [...dataJSON.query.where_plain, "AND", {}],
           },
         });
       }

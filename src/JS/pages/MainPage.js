@@ -8,8 +8,12 @@ import Navbar from '../components/Navbar';
 import Sidebar from '../components/Sidebar';
 import Filepath from '../components/Filepath';
 import DataModal from '../components/datamodal/DataModal';
-import Bar from '../components/panels/forms/Bar';
 import { getAlias } from '../libraries/misc';
+import Bar from '../components/panels/forms/Bar';
+import TreeMap from '../components/panels/forms/TreeMap';
+import Line from '../components/panels/forms/Line';
+import Mark from '../components/panels/forms/Mark';
+import Pie from '../components/panels/forms/Pie';
 
 
 export default function MainPage() {
@@ -179,6 +183,7 @@ export default function MainPage() {
   const [colList, setColList] = useState([]);
   const [panelType, setPanelType] = useState("");
   const [chartForms, setChartForms] = useState();
+  const [allAxis, setAllAxis] = useState([]);
   const [pageContent, setPageContent] = useState({page_data : {panels: []}});
 
   var ch_cards = ["bar", "treemap", "line", "mark", "gauge", "pie", "table", "pivot"];
@@ -201,6 +206,10 @@ export default function MainPage() {
     card.classList.add("border-green_pantone");
 
     if (type === "bar") {setChartForms(<Bar />)}
+    else if (type === "treemap") {setChartForms(<TreeMap />)}
+    else if (type === "line") {setChartForms(<Line />)}
+    else if (type === "mark") {setChartForms(<Mark />)}
+    else if (type === "pie") {setChartForms(<Pie />)}
 
     setPanelType(type);
   }
@@ -223,21 +232,64 @@ export default function MainPage() {
     setColList(colList_temp);
   }
 
-  const axisSel = () => {
-    let selColumns = {xAxis:{} , yAxis:{}};
+  const addAxis = () => {
+    let a = getAlias(allAxis); //*A ile başlamamızın sebebi ilk başta fix bir tane olacağı için
+    console.log(a);
+    setAllAxis([...allAxis, a]);
+  }
 
-    selColumns = {
-      xAxis:{
-        alias: chart_data.xColSelRef.current.value.split("/")[0],
-        table: chart_data.xColSelRef.current.value.split("/")[1],
-        col: chart_data.xColSelRef.current.value.split("/")[2],
-      },
-      yAxis:{
-        alias: chart_data.yColSelRef.current.value.split("/")[0],
-        table: chart_data.yColSelRef.current.value.split("/")[1],
-        col: chart_data.yColSelRef.current.value.split("/")[2],
+  const dltAxis = (alias) => {
+    setAllAxis(allAxis.filter(item => item !== alias))
+  }
+
+  const axisSel = (paneltype) => {
+    console.log(paneltype)
+    let selColumns = {};
+
+    if (paneltype === "bar" || paneltype === "line" || paneltype === "pie") {
+      selColumns = {
+        xAxis:{
+          alias: chart_data.xColSelRef.current.value.split("/")[0],
+          table: chart_data.xColSelRef.current.value.split("/")[1],
+          col: chart_data.xColSelRef.current.value.split("/")[2],
+        },
+        yAxis:{
+          alias: chart_data.yColSelRef.current.value.split("/")[0],
+          table: chart_data.yColSelRef.current.value.split("/")[1],
+          col: chart_data.yColSelRef.current.value.split("/")[2],
+        }
+      }
+    } else if (paneltype === "treemap" || paneltype === "mark") {
+      //* Burada toplu olarak Y ekseni değerlerini topladık. İlk başta ana yColRef kullandığımız için daha sonrasında eklenen eksen varsa diye bi if koyduk
+      let ax = [
+        {
+          alias: chart_data.yColSelRef.current.value.split("/")[0],
+          table: chart_data.yColSelRef.current.value.split("/")[1],
+          col: chart_data.yColSelRef.current.value.split("/")[2],
+        }
+      ];
+
+      if (allAxis.length > 0) {
+        for(var a of allAxis) {
+          ax.push({
+            alias: chart_data.yColSelRef.current[a].value.split("/")[0],
+            table: chart_data.yColSelRef.current[a].value.split("/")[1],
+            col: chart_data.yColSelRef.current[a].value.split("/")[2],
+          })
+        }
+      }
+
+      selColumns = {
+        yAxis:ax,
+        xAxis:{
+          alias: chart_data.xColSelRef.current.value.split("/")[0],
+          table: chart_data.xColSelRef.current.value.split("/")[1],
+          col: chart_data.xColSelRef.current.value.split("/")[2],
+        }
       }
     }
+
+    console.log(selColumns);
 
     return selColumns;
   }
@@ -245,12 +297,16 @@ export default function MainPage() {
   const getCoordinates = () => {
     let crd = {};
     if(panelType === "bar") {crd = { w: 4, h: 10, x: 0, y: 0, minW: 2, minH: 5}}
+    else if(panelType === "treemap") {crd = { w: 4, h: 10, x: 0, y: 0, minW: 2, minH: 7}}
+    else if(panelType === "line") {crd = { w: 4, h: 10, x: 4, y: 0, minW: 2, minH: 5}}
+    else if(panelType === "mark") {crd = { w: 4, h: 10, x: 8, y: 0, minW: 2, minH: 7}}
+    else if(panelType === "pie") {crd = { w: 4, h: 10, x: 0, y: 0, minW: 3, minH: 7}}
     console.log(crd)
     return crd;
   }
 
   const savePanel = () => {
-    let selColumns = axisSel();
+    let selColumns = axisSel(panelType);
     let panelIDs = [];
 
     for(let p of pageContent.page_data.panels) {
@@ -345,13 +401,16 @@ export default function MainPage() {
   }
 
   const chart_data = {
+    allAxis,
     chartForms,
     colList,
+    dltAxis,
     xColSelRef,
     yColSelRef,
     modelNameRef,
     panelNameRef,
     pageContent,
+    addAxis,
     axisSel,
     chooseChart,
     modelNameSelect,
