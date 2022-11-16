@@ -17,12 +17,12 @@ export default function TreeMap() {
         Kolonlar
       </h1>
 
-      <div className='flex mt-2'>
+      <div className='grid grid-cols-4 mt-2'>
 
-        <div className="form-control mb-2 w-1/2 mr-[6px]">
+        <div className="form-control mb-2 col-span-2 mr-[6px]">
           <div className="input-group shadow-md">
             <span className="bg-black_light text-grayXgray px-2 py-[7px] !rounded-l border border-jet_mid justify-center min-w-[35%] xl:truncate">
-              Dikey Eksen
+              Kolon #1
             </span>
             <select
               defaultValue="default"
@@ -42,7 +42,7 @@ export default function TreeMap() {
           </div>
         </div>
 
-        <div className="form-control mb-2 w-1/2 ml-[6px]">
+        {/* <div className="form-control mb-2 w-1/2 ml-[6px]">
           <div className="input-group shadow-md">
             <span className="bg-black_light text-grayXgray px-2 py-[7px] !rounded-l border border-jet_mid justify-center min-w-[35%] xl:truncate">
               Yatay Eksen
@@ -64,18 +64,24 @@ export default function TreeMap() {
               })}
             </select>
           </div>
-        </div>
-      </div>
+        </div> */}
 
       {chart_data.allAxis.map((alias) => {
         // console.log(chart_data.xColSelRef.current["A"].value);
 
+        console.log(chart_data.allAxis.indexOf(alias))
+        let padding = "";
+        if(chart_data.allAxis.indexOf(alias) % 2 !== 0) {
+          padding = "pr-[6px]"
+        } else {
+          padding = "pl-[6px]"
+        }
+
         return (
-          <div key={alias} className='w-full'>
-            <div className="form-control mb-2 w-1/2 pr-[6px]">
+            <div key={alias} className={"form-control mb-2 col-span-2 " + padding}>
               <div className="input-group shadow-md">
                 <span className="bg-black_light text-grayXgray px-2 py-[7px] !rounded-l border border-jet_mid justify-center min-w-[35%] xl:truncate">
-                  Dikey Eksen
+                  Kolon #{chart_data.allAxis.indexOf(alias) + 2}
                 </span>
                 <select
                   defaultValue="default"
@@ -85,7 +91,6 @@ export default function TreeMap() {
                   <option disabled value="default">
                     Bir kolon seçin...
                   </option>
-
                   {chart_data.colList.map((tbi) => {
                     let table = Object.keys(tbi)[0];
                     return (tbi[table].columns.map((col , index) => {
@@ -96,10 +101,11 @@ export default function TreeMap() {
                 <button className="danger-btn h-auto ml-[-3px] w-[8%] !rounded-l-none !rounded-r" onClick={() => chart_data.dltAxis(alias)}><i className="fa-solid fa-xmark"></i></button>
               </div>
             </div>
-          </div>
       )})}
+      <div className='col-span-2 items-center flex h-10 mb-2'><button className="green-btn w-1/3 relative !left-1/2 !-translate-x-1/2" onClick={chart_data.addAxis}><i className="fa-solid fa-plus mr-1"></i>Kolon Ekle</button></div>
+      </div>
 
-      <div className='w-full'><button className="green-btn !ml-[25%] !-translate-x-1/2" onClick={chart_data.addAxis}><i className="fa-solid fa-plus mr-1"></i>Dikey Eksen Ekle</button></div>
+      
           
     </>
   )

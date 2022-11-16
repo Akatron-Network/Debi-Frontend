@@ -1,12 +1,8 @@
-import React , { useEffect, useRef, useContext } from 'react'
+import React , { useEffect, useRef } from 'react'
 import { Link } from "react-router-dom";
 import debi_logo from '../../img/icon2.png';
-import ChartChoose from './panels/ChartChoose';
-import { ChartContext } from './context';
 
 export default function Navbar(props) {
-  const chart_data = useContext(ChartContext);
-  console.log(chart_data)
 
   useEffect(() => {
     document.addEventListener('click' , clickOutside , true)
@@ -60,9 +56,6 @@ export default function Navbar(props) {
           </div>
 
           <nav id='nav-right' className="col-span-2 flex items-center text-base justify-end">
-            <div className="tooltip tooltip-bottom" data-tip="Kaydet">
-              <button id="save-page-btn" className={"nav-btn max-w-[55px] border-r-0 border-l items-center " + props.save_page_btn} onClick={chart_data.savePage}><i className="fa-solid fa-floppy-disk"></i></button>
-            </div>
             <div className="tooltip tooltip-bottom" data-tip="Menü">
               <button id="menu-btn" ref={refMenu} className={"nav-btn border-r-0 border-l items-center " + props.menu_btn}><i className="fa-solid fa-bars"></i></button>
             </div>
@@ -75,8 +68,6 @@ export default function Navbar(props) {
       <button className='new-elm'>&nbsp;<i className="far fa-file-alt" aria-hidden="true"></i> &nbsp;Yeni Sayfa</button>
       <label className='new-elm items-center inline-flex cursor-pointer' htmlFor="chart_choose">&nbsp;<i className="fas fa-columns" aria-hidden="true"></i>&nbsp;&nbsp;Yeni Panel</label>
     </div> */}
-
-    <ChartChoose />
 
     <div id='menu_page' className="fixed top-11 w-64 bg-earie_black shadow-dropdown z-10 transition -translate-y-48 duration-300 right-0">
       <Link className="avatar new-elm flex items-center border-b border-solid border-hr_gray" to="/ayarlar">

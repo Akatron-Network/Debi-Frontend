@@ -100,7 +100,7 @@ export default function ChartChoose() {
         </div>
 
         <div className="bottom-3 right-3 mt-2 float-right">
-          <label htmlFor="chart_choose" className="gray-btn mr-2">
+          <label htmlFor="chart_choose" onClick={chart_data.clearPanelInputs} className="gray-btn mr-2">
             Kapat
           </label>
           <button className="green-btn" onClick={chart_data.savePanel}>Kaydet</button>

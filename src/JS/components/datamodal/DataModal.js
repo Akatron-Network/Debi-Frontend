@@ -13,6 +13,7 @@ import ColSelect from './ColSelect';
 
 export default function DataModal() {
   const modal_data = useContext(ModalContext);
+  console.log(modal_data);
 
   useEffect(() => {
     getColSelect();
@@ -24,7 +25,6 @@ export default function DataModal() {
   
   // }, [modal_data.modalType])
   
-
   // useEffect(() => {
   //   //*Eğer modal açıldıysa burayı kontrol edecek ve ona göre editModal fonksiyonunda dataJSON düzenlenecek
   //   if (modal_data.modalChecked === true) {
@@ -633,6 +633,49 @@ export default function DataModal() {
     console.log(dt)
     let resp = await Data.postModel(dataModalName.current.value , collections[0].source_table , collections[0].db_scheme_id , dt.query);
     console.log(resp)
+
+    if(resp.Success === true) {
+      //Modal oluşturma ekranını kapat
+      document.getElementById('datamodal').checked = false;
+      modal_data.setModalChecked(false);
+      clearModelInputs();
+    }
+
+  }
+
+  const clearModelInputs = () => {
+    //Modal ekleme ekranını kapattık
+    modal_data.setModalChecked(false);
+
+    //DataJSON sıfırladık
+    setDataJSON({
+      collection_id: "",
+      query: {
+          table: "",
+          alias: "O",
+          select: {},
+          where_plain: [],
+          includes: {}
+      }
+    });
+
+    //Inputları sıfırlıyoruz
+    dataColSelectRef.current.value = "default";
+    dataModalName.current.value = "";
+
+    //Source table kapattık
+    let source_table = document.getElementById("source_table");
+    if (!source_table.classList.contains("opacity-0")) {
+      close_s_tbl();
+    }
+
+    //İlişkili tabloları sildik
+    sourceTableInputRef.current.value = "";
+    setRelations({ inner: [], outer: [] });
+    setTables({});
+    setChosenTables([]);
+    setExecuteCols([]);
+    setExecuteRows([]);
   }
 
   const data = {
@@ -720,7 +763,7 @@ export default function DataModal() {
             </div>
 
             <div id="closeModalBtn" className="bottom-3 right-3 absolute">
-              <label htmlFor="datamodal" onClick={() => modal_data.setModalChecked(false)} className="gray-btn mr-2">
+              <label htmlFor="datamodal" onClick={clearModelInputs} className="gray-btn mr-2">
                 Kapat
               </label>
               <button onClick={() => saveDataJSON()} className="green-btn">Kaydet</button>

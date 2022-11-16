@@ -37,9 +37,6 @@ const Page = (props) => {
       yAxisData.push(a[yAxis])
     }
 
-    console.log(xAxisData)
-    console.log(yAxisData);
-
     for (let x in xAxisData) {
       data.push({
         value: yAxisData[x],

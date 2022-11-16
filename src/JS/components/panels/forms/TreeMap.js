@@ -1,9 +1,15 @@
-import React , {useContext} from 'react'
-import { ChartContext , ModalContext } from '../../context';
+import React , {useContext , useEffect} from 'react'
+import { ChartContext } from '../../context';
 
 export default function TreeMap() {
   const chart_data = useContext(ChartContext);
   console.log(chart_data)
+
+  useEffect(() => {
+    return () => {
+      chart_data.setAllAxis([]);
+    }
+  }, [])
 
   return (
     <>
@@ -74,7 +80,7 @@ export default function TreeMap() {
                 <select
                   defaultValue="default"
                   className="condition_select max-w-[58%] !rounded-l-none"
-                  ref={(el) => (chart_data.yColSelRef.current[alias] = el)}
+                  ref={(el) => {if (chart_data.yColSelRef.current !== null) chart_data.yColSelRef.current[alias] = el}}
                 >
                   <option disabled value="default">
                     Bir kolon seçin...
@@ -90,7 +96,7 @@ export default function TreeMap() {
                     }))
                   })}
                 </select>
-                <button className="danger-btn h-auto ml-[-3px] w-[8%]" onClick={() => chart_data.dltAxis(alias)}><i className="fa-solid fa-xmark"></i></button>
+                <button className="danger-btn h-auto ml-[-3px] w-[8%] !rounded-l-none !rounded-r" onClick={() => chart_data.dltAxis(alias)}><i className="fa-solid fa-xmark"></i></button>
               </div>
             </div>
           </div>

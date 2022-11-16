@@ -5,6 +5,8 @@ import AxisAlignWithTick from '../charts/AxisAlignWithTick'
 import StackedLineCharts from '../charts/StackedLineCharts'
 import TemperatureGauge from '../charts/TemperatureGauge'
 import BarLabelRotation from '../charts/BarLabelRotation'
+import TableChart from '../charts/TableChart'
+import PivotTableChart from '../charts/PivotTableChart'
 
 import { WidthProvider, Responsive } from "react-grid-layout";
 import 'react-resizable/css/styles.css';
@@ -44,7 +46,6 @@ export default class ResponsiveLocalStorageLayout extends React.PureComponent {
 
   render() {
     let value = this.context;
-    console.log(value);
     return (
       <div className="overflow-hidden">
         {/* <button className="btn ml-[10px]" onClick={() => this.resetLayout()}>Reset Layout</button> */}
@@ -64,45 +65,76 @@ export default class ResponsiveLocalStorageLayout extends React.PureComponent {
             if (panel.PanelType === "bar") {
               return (
                 <div className="panels" key={panel.PanelID} data-grid={panel.Coordinates}>
-                  <h1 className="panels-title">{panel.PanelName}</h1>
+                  <div className="panels-title w-full">
+                    <h1>{panel.PanelName}</h1>
+                    <button className="danger-btn float-right" onClick={() => value.dltPanel(panel.PanelID)}><i className="fa-solid fa-xmark"></i></button>
+                  </div>
                   <span><AxisAlignWithTick modelID={panel.ModelID} panelID={panel.PanelID} /></span>
                 </div>
               )
             } else if (panel.PanelType === "treemap") {
               return (
                 <div className="panels" key={panel.PanelID} data-grid={panel.Coordinates}>
-                  <h1 className="panels-title">{panel.PanelName}</h1>
+                  <div className="panels-title w-full">
+                    <h1>{panel.PanelName}</h1>
+                    <button className="danger-btn float-right" onClick={() => value.dltPanel(panel.PanelID)}><i className="fa-solid fa-xmark"></i></button>
+                  </div>
                   <span><BarLabelRotation modelID={panel.ModelID} panelID={panel.PanelID} /></span>
                 </div>
               )
             } else if (panel.PanelType === "line") {
               return (
                 <div className="panels" key={panel.PanelID} data-grid={panel.Coordinates}>
-                  <h1 className="panels-title">{panel.PanelName}</h1>
+                  <div className="panels-title w-full">
+                    <h1>{panel.PanelName}</h1>
+                    <button className="danger-btn float-right" onClick={() => value.dltPanel(panel.PanelID)}><i className="fa-solid fa-xmark"></i></button>
+                  </div>
                   <span><BasicLineCharts modelID={panel.ModelID} panelID={panel.PanelID} /></span>
                 </div>
               )
             } else if (panel.PanelType === "mark") {
               return (
                 <div className="panels" key={panel.PanelID} data-grid={panel.Coordinates}>
-                  <h1 className="panels-title">{panel.PanelName}</h1>
+                  <div className="panels-title w-full">
+                    <h1>{panel.PanelName}</h1>
+                    <button className="danger-btn float-right" onClick={() => value.dltPanel(panel.PanelID)}><i className="fa-solid fa-xmark"></i></button>
+                  </div>
                   <span><StackedLineCharts modelID={panel.ModelID} panelID={panel.PanelID} /></span>
                 </div>
               )
             } else if (panel.PanelType === "pie") {
               return (
                 <div className="panels" key={panel.PanelID} data-grid={panel.Coordinates}>
-                  <h1 className="panels-title">{panel.PanelName}</h1>
+                  <div className="panels-title w-full">
+                    <h1>{panel.PanelName}</h1>
+                    <button className="danger-btn float-right" onClick={() => value.dltPanel(panel.PanelID)}><i className="fa-solid fa-xmark"></i></button>
+                  </div>
                   <span><PieChart modelID={panel.ModelID} panelID={panel.PanelID} /></span>
+                </div>
+              )
+            } else if (panel.PanelType === "table") {
+              return (
+                <div className="panels overflow-y-hidden" key={panel.PanelID} data-grid={panel.Coordinates}>
+                  <div className="overflow-auto h-[inherit]">
+                  <div className="panels-title pb-3 w-full bg-middle_black shadow-md hover:bg-side_black transition duration-300">
+                    <h1>{panel.PanelName}</h1>
+                    <button className="danger-btn float-right" onClick={() => value.dltPanel(panel.PanelID)}><i className="fa-solid fa-xmark"></i></button>
+                  </div>
+                    <span className="relative top-12 left-[1px]"><TableChart modelID={panel.ModelID} panelID={panel.PanelID} /></span>
+                  </div>
+                </div>
+              )
+            } else if (panel.PanelType === "pivot") {
+              return (
+                <div className="panels overflow-y-hidden" key={panel.PanelID} data-grid={panel.Coordinates}>
+                  <div className="overflow-auto h-[inherit]">
+                    <h1 className="panels-title pb-3 w-full bg-middle_black z-10 shadow-md hover:bg-side_black transition duration-300">{panel.PanelName}</h1>
+                    <span className="relative top-12 left-[1px]"><PivotTableChart modelID={panel.ModelID} panelID={panel.PanelID} /></span>
+                  </div>
                 </div>
               )
             }
           })}
-
-          {/* <div className="panels" key="1" data-grid={{ w: 4, h: 10, x: 0, y: 0, minW: 3, minH: 7}}>
-              <h1 className="panels-title">Pie Charts</h1>
-              <span><PieChart /></span>
-            </div> */}
 
             {/*
             <div className="panels" key="5" data-grid={{ w: 4, h: 10, x: 4, y: 0, minW: 2, minH: 7}}>
@@ -121,13 +153,13 @@ export default class ResponsiveLocalStorageLayout extends React.PureComponent {
               <h1 className="panels-title">Stacked Line Charts</h1>
               <span><StackedLineCharts /></span>
             </div>
-            */}
-
-            {/*
             <div className="panels" key="1" data-grid={{ w: 4, h: 10, x: 0, y: 0, minW: 3, minH: 7}}>
               <h1 className="panels-title">Pie Charts</h1>
               <span><PieChart /></span>
             </div>
+            */}
+
+            {/*
             <div className="panels" key="6" data-grid={{ w: 4, h: 10, x: 8, y: 0, minW: 3, minH: 8}}>
               <h1 className="panels-title">Temperature Gauge</h1>
               <span><TemperatureGauge /></span>

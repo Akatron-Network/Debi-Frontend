@@ -9,7 +9,6 @@ export default function MainTree(props) {
 	
 	const getTreeCollections = async () => {
     let resp = await WorkspaceAll.getTrees();
-    console.log(resp);
     setTreeCollections(resp.Data);
     localStorage.setItem("Tree" , JSON.stringify(resp.Data))
     localStorage.setItem("TreeTime" , Date.now())

@@ -16,9 +16,10 @@ export default function ChartLayout() {
     document.getElementById('save-page-btn').style.display = "flex";
 
     getFiles(fileID);
-    console.log("a");
   
     return () => {
+      console.log(fileID);
+
       document.getElementById('file_path_top').style.display = "block";
       document.getElementById('new_btn').style.display = "none";
       // document.getElementById('page-btn').style.display = "none";

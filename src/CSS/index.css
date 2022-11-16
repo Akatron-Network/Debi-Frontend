@@ -484,10 +484,13 @@
     @apply
       pt-3
       px-6
+      flex
       text-xl
       absolute
       cursor-default
       text-cultured
+      justify-between
+      z-10
   }
   /*! -------------------------------------------------------------  */
 
@@ -878,7 +881,6 @@
       cursor-pointer
       transition duration-300
   }
-
 
   /*! -------------------------------------------------------------  */
   

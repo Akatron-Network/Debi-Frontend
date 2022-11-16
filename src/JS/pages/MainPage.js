@@ -14,6 +14,8 @@ import TreeMap from '../components/panels/forms/TreeMap';
 import Line from '../components/panels/forms/Line';
 import Mark from '../components/panels/forms/Mark';
 import Pie from '../components/panels/forms/Pie';
+import Table from '../components/panels/forms/Table';
+import Pivot from '../components/panels/forms/Pivot';
 
 
 export default function MainPage() {
@@ -126,8 +128,6 @@ export default function MainPage() {
 
   const getList = async () => {
     let resp = await Data.getModalList();
-    console.log(resp)
-
     setModalList(resp.Data.owned_models);
   }
 
@@ -184,6 +184,8 @@ export default function MainPage() {
   const [panelType, setPanelType] = useState("");
   const [chartForms, setChartForms] = useState();
   const [allAxis, setAllAxis] = useState([]);
+  const [titleAxis, setTitleAxis] = useState([]);
+  const [valueAxis, setValueAxis] = useState([]);
   const [pageContent, setPageContent] = useState({page_data : {panels: []}});
 
   var ch_cards = ["bar", "treemap", "line", "mark", "gauge", "pie", "table", "pivot"];
@@ -210,6 +212,8 @@ export default function MainPage() {
     else if (type === "line") {setChartForms(<Line />)}
     else if (type === "mark") {setChartForms(<Mark />)}
     else if (type === "pie") {setChartForms(<Pie />)}
+    else if (type === "table") {setChartForms(<Table />)}
+    else if (type === "pivot") {setChartForms(<Pivot />)}
 
     setPanelType(type);
   }
@@ -232,14 +236,31 @@ export default function MainPage() {
     setColList(colList_temp);
   }
 
-  const addAxis = () => {
-    let a = getAlias(allAxis); //*A ile başlamamızın sebebi ilk başta fix bir tane olacağı için
-    console.log(a);
-    setAllAxis([...allAxis, a]);
+  const addAxis = (type = "") => {
+    var al = "";
+
+    if (type === "title") {
+      al = getAlias(titleAxis);
+      setTitleAxis([...titleAxis, al]);
+    } else if (type === "value") {
+      al = getAlias(valueAxis);
+      setValueAxis([...valueAxis, al]);
+    } else {
+      al = getAlias(allAxis);
+      setAllAxis([...allAxis, al]);
+    }
   }
 
-  const dltAxis = (alias) => {
-    setAllAxis(allAxis.filter(item => item !== alias))
+  const dltAxis = (alias , type = "") => {
+
+    if (type === "title") {
+      setTitleAxis(titleAxis.filter(item => item !== alias))
+    } else if (type === "value") {
+      setValueAxis(valueAxis.filter(item => item !== alias))
+    } else {
+      setAllAxis(allAxis.filter(item => item !== alias))
+    }
+
   }
 
   const axisSel = (paneltype) => {
@@ -259,7 +280,7 @@ export default function MainPage() {
           col: chart_data.yColSelRef.current.value.split("/")[2],
         }
       }
-    } else if (paneltype === "treemap" || paneltype === "mark") {
+    } else if (paneltype === "treemap" || paneltype === "mark" || paneltype === "table") {
       //* Burada toplu olarak Y ekseni değerlerini topladık. İlk başta ana yColRef kullandığımız için daha sonrasında eklenen eksen varsa diye bi if koyduk
       let ax = [
         {
@@ -279,19 +300,49 @@ export default function MainPage() {
         }
       }
 
-      selColumns = {
-        yAxis:ax,
-        xAxis:{
-          alias: chart_data.xColSelRef.current.value.split("/")[0],
-          table: chart_data.xColSelRef.current.value.split("/")[1],
-          col: chart_data.xColSelRef.current.value.split("/")[2],
+      if (paneltype === "table") {
+        selColumns = {
+          yAxis:ax
+        }
+
+      } else {
+        selColumns = {
+          yAxis:ax,
+          xAxis:{
+            alias: chart_data.xColSelRef.current.value.split("/")[0],
+            table: chart_data.xColSelRef.current.value.split("/")[1],
+            col: chart_data.xColSelRef.current.value.split("/")[2],
+          }
         }
       }
+    } else if (paneltype === "pivot") {
+
     }
 
     console.log(selColumns);
 
     return selColumns;
+  }
+
+  const dltPanel = (panelID) => {
+    for (var p of pageContent.page_data.panels) {
+      if (p.PanelID === panelID) {
+        setPageContent({
+          ...pageContent,
+          page_data: {
+            ...pageContent.page_data,
+            panels: pageContent.page_data.panels.filter(item => item.PanelID !== panelID)
+          }
+        })
+        
+        WorkspaceAll.putFiles(pageContent.page_id , {
+          page_data: {
+            ...pageContent.page_data,
+            panels: pageContent.page_data.panels.filter(item => item.PanelID !== panelID)
+          }
+        });
+      }
+    }
   }
 
   const getCoordinates = () => {
@@ -301,7 +352,8 @@ export default function MainPage() {
     else if(panelType === "line") {crd = { w: 4, h: 10, x: 4, y: 0, minW: 2, minH: 5}}
     else if(panelType === "mark") {crd = { w: 4, h: 10, x: 8, y: 0, minW: 2, minH: 7}}
     else if(panelType === "pie") {crd = { w: 4, h: 10, x: 0, y: 0, minW: 3, minH: 7}}
-    console.log(crd)
+    else if(panelType === "table") {crd = { w: 4, h: 10, x: 0, y: 0, minW: 3, minH: 7}}
+    else if(panelType === "pivot") {crd = { w: 4, h: 10, x: 0, y: 0, minW: 3, minH: 7}}
     return crd;
   }
 
@@ -349,6 +401,36 @@ export default function MainPage() {
         ]
       }
     });
+
+    document.getElementById('chart_choose').checked = false;
+    clearPanelInputs();
+  }
+
+  const clearPanelInputs = () => {
+    setChartForms(null);
+
+    //Kolon listesi sıfırladık
+    setColList([]);
+
+    //Panel Form Listesini kaldırdık
+    let panel_form = document.getElementById('panelForm')
+    if(panel_form.classList.contains('flex')) {
+      panel_form.classList.add('hidden');
+      panel_form.classList.remove('flex');
+    }
+
+    //Panel Form inputlarını sıfırladık
+    panelNameRef.current.value = "";
+    modelNameRef.current.value = "default";
+
+    //Seçili paneli kaldırdık
+    for(let a of ch_cards) {
+      if(document.getElementById(a + "_card").classList.contains("border-green_pantone")) {
+        document.getElementById(a + "_card").classList.remove("border-green_pantone");
+        document.getElementById(a + "_card").classList.add("border-transparent");
+      }
+    }
+
   }
 
   const savePage = async () => {
@@ -410,13 +492,20 @@ export default function MainPage() {
     modelNameRef,
     panelNameRef,
     pageContent,
+    titleAxis,
+    valueAxis,
     addAxis,
     axisSel,
     chooseChart,
+    clearPanelInputs,
+    dltPanel,
     modelNameSelect,
     savePage,
     savePanel,
     setPageContent,
+    setAllAxis,
+    setTitleAxis,
+    setValueAxis,
   }
   //* ----------------------------------------------------------/
   

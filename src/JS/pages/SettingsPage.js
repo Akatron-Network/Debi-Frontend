@@ -1,5 +1,5 @@
 import React from 'react'
-import Navbar from '../components/Navbar'
+import SettingsNavbar from '../components/SettingsNavbar'
 import Pricing from '../components/Pricing'
 
 import avatar from '../../img/ico.png'
@@ -7,7 +7,7 @@ import avatar from '../../img/ico.png'
 export default function SettingPage() {
   return (
     <>
-      <Navbar />
+      <SettingsNavbar new_btn={"hidden"} page_btn={"hidden"} />
 
       <div className="container mx-auto mt-20 mb-12 h-fit w-[75%] ">
         <div className='grid grid-cols-3 gap-2'>

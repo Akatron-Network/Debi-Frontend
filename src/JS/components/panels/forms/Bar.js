@@ -1,5 +1,5 @@
 import React , {useContext} from 'react'
-import { ChartContext , ModalContext } from '../../context';
+import { ChartContext } from '../../context';
 
 export default function Bar() {
   const chart_data = useContext(ChartContext);

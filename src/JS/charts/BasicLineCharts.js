@@ -84,7 +84,9 @@ const Page = (props) => {
           fontFamily: "cabin",
           fontWeight: "bold",
           fontSize: 14,
-          rotate: 90,
+          rotate: -45,
+          overflow: "truncate",
+          width: 80,
         }
       },
   
