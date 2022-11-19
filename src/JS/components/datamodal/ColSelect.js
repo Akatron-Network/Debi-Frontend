@@ -3,7 +3,6 @@ import { DataModalContext } from "../context";
 
 export default function ColSelect() {
   const data = useContext(DataModalContext);
-  console.log(data);
 
   return (
     <div className="form-control mb-2">

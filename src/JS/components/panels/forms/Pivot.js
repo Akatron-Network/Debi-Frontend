@@ -23,7 +23,7 @@ export default function Pivot() {
           <div className="form-control mb-2 w-full">
             <div className="input-group shadow-md">
               <span className="bg-black_light text-grayXgray px-2 py-[7px] !rounded-l border border-jet_mid justify-center min-w-[35%] xl:truncate">
-                Başlık #1
+                Sütun #1
               </span>
               <select
                 defaultValue="default"
@@ -53,7 +53,7 @@ export default function Pivot() {
                 <div className="form-control mb-2 w-full">
                   <div className="input-group shadow-md">
                     <span className="bg-black_light text-grayXgray px-2 py-[7px] !rounded-l border border-jet_mid justify-center min-w-[35%] xl:truncate">
-                      Başlık #{chart_data.titleAxis.indexOf(alias) + 2}
+                      Sütun #{chart_data.titleAxis.indexOf(alias) + 2}
                     </span>
                     <select
                       defaultValue="default"
@@ -77,18 +77,18 @@ export default function Pivot() {
               </div>
           )})}
 
-          <div className='w-full'><button className="green-btn relative left-1/2 !-translate-x-1/2" onClick={() => chart_data.addAxis("title")}><i className="fa-solid fa-plus mr-1"></i>Başlık Ekle</button></div>
+          <div className='w-full'><button className="green-btn relative left-1/2 !-translate-x-1/2" onClick={() => chart_data.addAxis("title")}><i className="fa-solid fa-plus mr-1"></i>Sütun Ekle</button></div>
         </div>
 
         <div className='col-span-1 ml-[6px]'>
             <div className="form-control mb-2">
               <div className="input-group shadow-md">
                 <span className="bg-black_light text-grayXgray px-2 py-[7px] !rounded-l border border-jet_mid justify-center min-w-[35%] xl:truncate">
-                  Değer #1
+                  Satır #1
                 </span>
                 <select
                   defaultValue="default"
-                  className="condition_select max-w-[45%] !rounded-l-none"
+                  className="condition_select max-w-[65%] !rounded-l-none"
                   ref={chart_data.yColSelRef}
                 >
                   <option disabled value="default">
@@ -101,7 +101,7 @@ export default function Pivot() {
                     }))
                   })}
                 </select>
-                <select
+                {/* <select
                   defaultValue="default"
                   className="condition_select max-w-[20%] !rounded-l-none"
                   ref={chart_data.yColSelRef}
@@ -115,7 +115,7 @@ export default function Pivot() {
                       return (<option key={index} value={tbi[table].alias + "/" +table + "/" + col}>{table} - {col}</option>)
                     }))
                   })}
-                </select>
+                </select> */}
               </div>
             </div>
 
@@ -128,12 +128,12 @@ export default function Pivot() {
                   <div className="form-control mb-2">
                     <div className="input-group shadow-md">
                       <span className="bg-black_light text-grayXgray px-2 py-[7px] !rounded-l border border-jet_mid justify-center min-w-[35%] xl:truncate">
-                        Değer #{chart_data.valueAxis.indexOf(alias) + 2}
+                        Satır #{chart_data.valueAxis.indexOf(alias) + 2}
                       </span>
                       <select
                         defaultValue="default"
-                        className="condition_select max-w-[41%] !rounded-l-none"
-                        ref={chart_data.yColSelRef}
+                        className="condition_select max-w-[58%] !rounded-l-none"
+                        ref={(el) => {if (chart_data.yColSelRef.current !== null) chart_data.yColSelRef.current[alias] = el}}
                       >
                         <option disabled value="default">
                           Bir kolon seçin...
@@ -145,7 +145,7 @@ export default function Pivot() {
                           }))
                         })}
                       </select>
-                      <select
+                      {/* <select
                         defaultValue="default"
                         className="condition_select max-w-[17%] !rounded-l-none"
                         ref={chart_data.yColSelRef}
@@ -159,14 +159,14 @@ export default function Pivot() {
                             return (<option key={index} value={tbi[table].alias + "/" +table + "/" + col}>{table} - {col}</option>)
                           }))
                         })}
-                      </select>
+                      </select> */}
                     <button className="danger-btn h-auto ml-[-3px] w-[8%] !rounded-l-none !rounded-r" onClick={() => chart_data.dltAxis(alias , "value")}><i className="fa-solid fa-xmark"></i></button>
                     </div>
                   </div>
                 </div>
             )})}
 
-          <div className='w-full'><button className="green-btn relative left-1/2 !-translate-x-1/2" onClick={() => chart_data.addAxis("value")}><i className="fa-solid fa-plus mr-1"></i>Değer Ekle</button></div>
+          <div className='w-full'><button className="green-btn relative left-1/2 !-translate-x-1/2" onClick={() => chart_data.addAxis("value")}><i className="fa-solid fa-plus mr-1"></i>Satır Ekle</button></div>
         </div>
       </div>
     </>

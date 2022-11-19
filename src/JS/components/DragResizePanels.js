@@ -116,11 +116,11 @@ export default class ResponsiveLocalStorageLayout extends React.PureComponent {
               return (
                 <div className="panels overflow-y-hidden" key={panel.PanelID} data-grid={panel.Coordinates}>
                   <div className="overflow-auto h-[inherit]">
-                  <div className="panels-title pb-3 w-full bg-middle_black shadow-md hover:bg-side_black transition duration-300">
-                    <h1>{panel.PanelName}</h1>
-                    <button className="danger-btn float-right" onClick={() => value.dltPanel(panel.PanelID)}><i className="fa-solid fa-xmark"></i></button>
-                  </div>
-                    <span className="relative top-12 left-[1px]"><TableChart modelID={panel.ModelID} panelID={panel.PanelID} /></span>
+                    <div className="panels-title pb-3 bg-middle_black shadow-md hover:bg-side_black transition duration-300 w-[calc(100%_-_12px)]">
+                      <h1>{panel.PanelName}</h1>
+                      <button className="danger-btn float-right" onClick={() => value.dltPanel(panel.PanelID)}><i className="fa-solid fa-xmark"></i></button>
+                    </div>
+                    <span className="relative top-[54px] left-[1px]"><TableChart modelID={panel.ModelID} panelID={panel.PanelID} /></span>
                   </div>
                 </div>
               )
@@ -128,45 +128,16 @@ export default class ResponsiveLocalStorageLayout extends React.PureComponent {
               return (
                 <div className="panels overflow-y-hidden" key={panel.PanelID} data-grid={panel.Coordinates}>
                   <div className="overflow-auto h-[inherit]">
-                    <h1 className="panels-title pb-3 w-full bg-middle_black z-10 shadow-md hover:bg-side_black transition duration-300">{panel.PanelName}</h1>
-                    <span className="relative top-12 left-[1px]"><PivotTableChart modelID={panel.ModelID} panelID={panel.PanelID} /></span>
+                    <div className="panels-title pb-3 bg-middle_black shadow-md hover:bg-side_black transition duration-300 w-[calc(100%_-_12px)]">
+                      <h1>{panel.PanelName}</h1>
+                      <button className="danger-btn float-right" onClick={() => value.dltPanel(panel.PanelID)}><i className="fa-solid fa-xmark"></i></button>
+                    </div>
+                    <span className="relative top-[54px] left-[1px]"><PivotTableChart modelID={panel.ModelID} panelID={panel.PanelID} /></span>
                   </div>
                 </div>
               )
             }
           })}
-
-            {/*
-            <div className="panels" key="5" data-grid={{ w: 4, h: 10, x: 4, y: 0, minW: 2, minH: 7}}>
-              <h1 className="panels-title">Bar Label Rotation</h1>
-              <span><BarLabelRotation /></span>
-            </div>
-            <div className="panels" key="4" data-grid={{ w: 4, h: 10, x: 0, y: 0, minW: 2, minH: 5}}>
-              <h1 className="panels-title">Axis Align With Tick</h1>
-              <span><AxisAlignWithTick /></span>
-            </div>
-            <div className="panels" key="2" data-grid={{ w: 4, h: 10, x: 4, y: 0, minW: 2, minH: 5}}>
-              <h1 className="panels-title">Basic Line Charts</h1>
-              <span><BasicLineCharts /></span>
-            </div>
-            <div className="panels" key="3" data-grid={{ w: 4, h: 10, x: 8, y: 0, minW: 2, minH: 7}}>
-              <h1 className="panels-title">Stacked Line Charts</h1>
-              <span><StackedLineCharts /></span>
-            </div>
-            <div className="panels" key="1" data-grid={{ w: 4, h: 10, x: 0, y: 0, minW: 3, minH: 7}}>
-              <h1 className="panels-title">Pie Charts</h1>
-              <span><PieChart /></span>
-            </div>
-            */}
-
-            {/*
-            <div className="panels" key="6" data-grid={{ w: 4, h: 10, x: 8, y: 0, minW: 3, minH: 8}}>
-              <h1 className="panels-title">Temperature Gauge</h1>
-              <span><TemperatureGauge /></span>
-            </div>
-            */}
-          
-          
         </ResponsiveReactGridLayout>
       </div>
     );

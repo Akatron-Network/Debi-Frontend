@@ -16,7 +16,6 @@ export default function TableChart(props) {
     getData();
   }, [])
 
-
   const getData = async () => {
     let resp = await Data.getModel(props.modelID);
     let col = await WorkspaceAll.getCollections(chart_data.pageContent.collection_id); //! Get Gateway host

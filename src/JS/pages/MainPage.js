@@ -316,7 +316,46 @@ export default function MainPage() {
         }
       }
     } else if (paneltype === "pivot") {
+      let ax = [
+        {
+          alias: chart_data.xColSelRef.current.value.split("/")[0],
+          table: chart_data.xColSelRef.current.value.split("/")[1],
+          col: chart_data.xColSelRef.current.value.split("/")[2],
+        }
+      ];
+      
+      let ay = [
+        {
+          alias: chart_data.yColSelRef.current.value.split("/")[0],
+          table: chart_data.yColSelRef.current.value.split("/")[1],
+          col: chart_data.yColSelRef.current.value.split("/")[2],
+        }
+      ];
 
+      if(titleAxis.length > 0) {
+        for(var a of titleAxis) {
+          ax.push({
+            alias: chart_data.xColSelRef.current[a].value.split("/")[0],
+            table: chart_data.xColSelRef.current[a].value.split("/")[1],
+            col: chart_data.xColSelRef.current[a].value.split("/")[2],
+          })
+        }
+      }
+      
+      if(valueAxis.length > 0) {
+        for(var a of valueAxis) {
+          ay.push({
+            alias: chart_data.yColSelRef.current[a].value.split("/")[0],
+            table: chart_data.yColSelRef.current[a].value.split("/")[1],
+            col: chart_data.yColSelRef.current[a].value.split("/")[2],
+          })
+        }
+      }
+
+      selColumns = {
+        yAxis:ay,
+        xAxis:ax,
+      }
     }
 
     console.log(selColumns);
