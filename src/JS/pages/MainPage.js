@@ -1,4 +1,4 @@
-import React , { useState , useRef } from 'react'
+import React , { useState , useRef , useEffect } from 'react'
 import { MainContext, ModalContext, ChartContext } from '../components/context'
 import WorkspaceAll from '../libraries/categories/Workspace';
 import Data from '../libraries/categories/Data';
@@ -186,10 +186,12 @@ export default function MainPage() {
   const [allAxis, setAllAxis] = useState([]);
   const [titleAxis, setTitleAxis] = useState([]);
   const [valueAxis, setValueAxis] = useState([]);
+  const [panel, setPanel] = useState("");
   const [pageContent, setPageContent] = useState({page_data : {panels: []}});
 
   var ch_cards = ["bar", "treemap", "line", "mark", "gauge", "pie", "table", "pivot"];
   const chooseChart = (type) => {
+    setPanel(panel);
     let card = document.getElementById(type + "_card");
     let panel_form = document.getElementById('panelForm')
 
@@ -231,7 +233,6 @@ export default function MainPage() {
     for(let b of query.query.includes) {
       colList_temp.push({[b.table] : {columns: Object.keys(b.select) , alias: b.alias}});
     }
-    console.log(colList_temp)
     
     setColList(colList_temp);
   }
@@ -363,6 +364,102 @@ export default function MainPage() {
     return selColumns;
   }
 
+  //Edit Panel-----------------------------------------------------------------------------------------------------------------
+  let als = [];
+  let alX = [];
+  let alY = [];
+  const editPanel = (panelID) => {
+    for(let p of pageContent.page_data.panels) {
+      if(p.PanelID === panelID) {
+        //Chart choose
+        chooseChart(p.PanelType);
+
+        //ModelName
+        modelNameRef.current.value = p.ModelID
+        modelNameSelect(p.ModelID);
+
+        //X-Y Axis (We use setTimeout because chooseChart sometimes came with delay)
+        setTimeout(() => {
+          if (p.PanelType === "bar" || p.paneltype === "line" || p.paneltype === "pie") {
+
+            xColSelRef.current.value = p.SelColumns.xAxis.alias + "/" + p.SelColumns.xAxis.table + "/" + p.SelColumns.xAxis.col
+            yColSelRef.current.value = p.SelColumns.yAxis.alias + "/" + p.SelColumns.yAxis.table + "/" + p.SelColumns.yAxis.col
+            
+          } else if (p.PanelType === "treemap" || p.PanelType === "mark" || p.PanelType === 'table') {
+            setPanel(panelID);
+
+            for (let a of p.SelColumns.yAxis) {
+              if (p.SelColumns.yAxis.length - 1 > als.length) { //Remove last alias
+                als.push(getAlias(als))
+              }
+            }
+            setAllAxis(als);
+          } else if (p.PanelType === "pivot") {
+            setPanel(panelID);
+
+            for (let x of p.SelColumns.xAxis) {
+              if (p.SelColumns.xAxis.length - 1 > alX.length) { //Remove last alias
+                alX.push(getAlias(alX))
+              }
+            }
+            setTitleAxis(alX);
+
+            for (let y of p.SelColumns.yAxis) {
+              if (p.SelColumns.yAxis.length - 1 > alY.length) { //Remove last alias
+                alY.push(getAlias(alY))
+              }
+            }
+            setValueAxis(alY);
+
+
+          }
+        }, 300);
+      }
+    }
+  }
+
+  useEffect(() => {
+    //If Panel and AllAxis aren't empty
+    if (panel !== "" && allAxis.length > 0) {
+      for (let p of pageContent.page_data.panels) {
+        if (p.PanelID === panel) {
+
+          if (p.PanelType !== "table") { xColSelRef.current.value = p.SelColumns.xAxis.alias + "/" + p.SelColumns.xAxis.table + "/" + p.SelColumns.xAxis.col }
+          yColSelRef.current.value = p.SelColumns.yAxis[0].alias + "/" + p.SelColumns.yAxis[0].table + "/" + p.SelColumns.yAxis[0].col
+
+          for (let y in p.SelColumns.yAxis) {
+            if (parseInt(y) === 0) {continue;}
+            yColSelRef.current[allAxis[parseInt(y) - 1]].value = p.SelColumns.yAxis[parseInt(y)].alias + "/" + p.SelColumns.yAxis[parseInt(y)].table + "/" + p.SelColumns.yAxis[parseInt(y)].col
+          }
+        }
+      }
+    } else if (titleAxis.length > 0 || valueAxis.length > 0) {
+      for (let p of pageContent.page_data.panels) {
+        if (p.PanelID === panel) {
+          xColSelRef.current.value = p.SelColumns.xAxis[0].alias + "/" + p.SelColumns.xAxis[0].table + "/" + p.SelColumns.xAxis[0].col
+          yColSelRef.current.value = p.SelColumns.yAxis[0].alias + "/" + p.SelColumns.yAxis[0].table + "/" + p.SelColumns.yAxis[0].col
+
+          for (let x in p.SelColumns.xAxis) {
+            if (parseInt(x) === 0) {continue;}
+            xColSelRef.current[titleAxis[parseInt(x) - 1]].value = p.SelColumns.xAxis[parseInt(x)].alias + "/" + p.SelColumns.xAxis[parseInt(x)].table + "/" + p.SelColumns.xAxis[parseInt(x)].col
+          }
+
+          for (let y in p.SelColumns.yAxis) {
+            if (parseInt(y) === 0) {continue;}
+            yColSelRef.current[valueAxis[parseInt(y) - 1]].value = p.SelColumns.yAxis[parseInt(y)].alias + "/" + p.SelColumns.yAxis[parseInt(y)].table + "/" + p.SelColumns.yAxis[parseInt(y)].col
+          }
+        }
+      }
+      
+
+    }
+
+    
+  }, [allAxis , titleAxis , valueAxis])
+  //-------------------------------------------------------------------------------------------------------------------------------
+  
+  
+
   const dltPanel = (panelID) => {
     for (var p of pageContent.page_data.panels) {
       if (p.PanelID === panelID) {
@@ -446,6 +543,7 @@ export default function MainPage() {
   }
 
   const clearPanelInputs = () => {
+    setPanel('');
     setChartForms(null);
 
     //Kolon listesi sıfırladık
@@ -525,7 +623,6 @@ export default function MainPage() {
     allAxis,
     chartForms,
     colList,
-    dltAxis,
     xColSelRef,
     yColSelRef,
     modelNameRef,
@@ -537,7 +634,9 @@ export default function MainPage() {
     axisSel,
     chooseChart,
     clearPanelInputs,
+    dltAxis,
     dltPanel,
+    editPanel,
     modelNameSelect,
     savePage,
     savePanel,

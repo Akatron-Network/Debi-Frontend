@@ -47,7 +47,6 @@ export default function Pivot() {
 
           {chart_data.titleAxis.map((alias) => {
             // console.log(chart_data.xColSelRef.current["A"].value);
-            console.log(chart_data.titleAxis)
             return (
               <div key={alias} className='col-span-1'>
                 <div className="form-control mb-2 w-full">
@@ -122,7 +121,6 @@ export default function Pivot() {
 
             {chart_data.valueAxis.map((alias) => {
               // console.log(chart_data.xColSelRef.current["A"].value);
-              console.log(chart_data.valueAxis)
               return (
                 <div key={alias} className='col-span-1'>
                   <div className="form-control mb-2">

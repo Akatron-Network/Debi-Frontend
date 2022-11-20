@@ -85,9 +85,6 @@ export default function TreeMap() {
                   <option disabled value="default">
                     Bir kolon seçin...
                   </option>
-                  <option value="a">
-                    Bir kolon seçin...
-                  </option>
 
                   {chart_data.colList.map((tbi) => {
                     let table = Object.keys(tbi)[0];
