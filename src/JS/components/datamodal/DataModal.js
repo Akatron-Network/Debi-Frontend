@@ -10,10 +10,10 @@ import RelationsAbsolute from './RelationsAbsolute';
 import Collapses from './Collapses';
 import { getAlias , getKeyID } from '../../libraries/misc';
 import ColSelect from './ColSelect';
+import GroupModal from './GroupModal';
 
 export default function DataModal() {
   const modal_data = useContext(ModalContext);
-  console.log(modal_data);
 
   useEffect(() => {
     getColSelect();
@@ -261,9 +261,13 @@ export default function DataModal() {
 
   const dataColSelectRef = useRef({ value: "default" });
   const dataModalName = useRef("");
+  const calcColRef = useRef("default");
+  const calcColNameRef = useRef("");
+  const colSelRef = useRef("default");
   const sourceTableInputRef = useRef({ value: "" });
 
   const [chosenTables, setChosenTables] = useState([]);
+  const [calcCols, setCalcCols] = useState([]);
   const [collections, setCollections] = useState([]);
   const [conditions, setConditions] = useState([]);
   const [executeCols, setExecuteCols] = useState([]);
@@ -462,8 +466,50 @@ export default function DataModal() {
 
     }
 
+    document.getElementById("sel_" + main + "_" + index).classList.toggle("hidden")
     document.getElementById("elm_" + main + "_" + index).classList.toggle("border-sea_green")
     document.getElementById("elm_" + main + "_" + index).classList.toggle("bg-middle_black")
+  }
+
+  const selColGroups = (main , col_name , index) => {
+
+    let selID = document.getElementById("sel_" + main + "_" + index);
+    let group = selID.value;
+
+    if (selID.value === "default") {
+      group = true;
+    }
+
+    if(main === "main") {
+      setDataJSON({
+        ...dataJSON,
+        query: {
+          ...dataJSON.query,
+          select: {
+            ...dataJSON.query.select,
+            [col_name]: group,
+          },
+        }
+      });
+    } else {
+      setDataJSON({
+        ...dataJSON,
+        query: {
+          ...dataJSON.query,
+          includes: {
+            ...dataJSON.query.includes,
+            [main]: {
+              ...dataJSON.query.includes[main],
+              select: {
+                ...dataJSON.query.includes[main].select,
+                [col_name]: group,
+              }
+            }
+          }
+        }
+      })
+    }
+
   }
 
   const refreshTable = async () => {
@@ -679,6 +725,7 @@ export default function DataModal() {
   }
 
   const data = {
+    calcCols,
     conditions,
     conditionsJSON,
     collections,
@@ -689,6 +736,9 @@ export default function DataModal() {
     filteredData,
     gatewayHost,
     relations,
+    calcColRef,
+    calcColNameRef,
+    colSelRef,
     dataColSelectRef,
     sourceTableInputRef,
     tables,
@@ -705,7 +755,9 @@ export default function DataModal() {
     dltRelatedTable,
     open_s_tbl,
     removeCondition,
+    selColGroups,
     setDataJSON,
+    setCalcCols,
     show_info,
     source_table,
     sourceTablesJSON,
@@ -771,6 +823,12 @@ export default function DataModal() {
           </div>
 
           <RelationsAbsolute />
+          <GroupModal />
+          
+          <label htmlFor="groupmodal" className="green-btn">
+            <i className="fa-solid fa-plus mr-2"></i>Hesap Kolonu Ekle
+          </label>
+
         </div>
       </div>
     </DataModalContext.Provider>

@@ -34,24 +34,35 @@ export default function PivotTableCharts(props) {
     let respData = await Data.postExecute({query: query , collection_id: chart_data.pageContent.collection_id}, col.Data.connector.gateway_host);
     console.log(respData);
 
+    let proData = respData.Data[0]
+    console.log(proData);
+
     for(let p of chart_data.pageContent.page_data.panels) {
       if (props.panelID === p.PanelID) {
         for (let x of p.SelColumns.xAxis) {
+          console.log(x.col + " : " + typeof(proData[x.col]) + " - " + proData[x.col])
           fields.push({
             area: 'column',
             dataField: x.col,
             caption: x.col,
+            dataType: (typeof(proData[x.col]) === 'number') ? 'number' : undefined,
+            summaryType: (typeof(proData[x.col]) === 'number') ? 'sum' : undefined,
           })
         }
         for (let y of p.SelColumns.yAxis) {
+          console.log(y.col + " : " + typeof(proData[y.col]) + " - " + proData[y.col])
           fields.push({
             area: 'row',
-            caption: y.col,
             dataField: y.col,
+            caption: y.col,
+            dataType: (typeof(proData[y.col]) === 'number') ? 'number' : undefined,
+            summaryType: (typeof(proData[y.col]) === 'number') ? 'sum' : undefined,
           })
         }
       }
     }
+
+    console.log(fields);
 
     setAllData(new PivotGridDataSource({
       fields: fields,

@@ -191,7 +191,7 @@ export default function MainPage() {
 
   var ch_cards = ["bar", "treemap", "line", "mark", "gauge", "pie", "table", "pivot"];
   const chooseChart = (type) => {
-    setPanel(panel);
+    setPanel("");
     let card = document.getElementById(type + "_card");
     let panel_form = document.getElementById('panelForm')
 
@@ -388,6 +388,10 @@ export default function MainPage() {
           } else if (p.PanelType === "treemap" || p.PanelType === "mark" || p.PanelType === 'table') {
             setPanel(panelID);
 
+            //Eğer table ise x olmuyor. Diğerlerinde ise ilk elemanı yazıyoruz daha sonra useeffect kısmında geri kalanı dolduruyoruz
+            if (p.PanelType !== "table") { xColSelRef.current.value = p.SelColumns.xAxis.alias + "/" + p.SelColumns.xAxis.table + "/" + p.SelColumns.xAxis.col }
+            yColSelRef.current.value = p.SelColumns.yAxis[0].alias + "/" + p.SelColumns.yAxis[0].table + "/" + p.SelColumns.yAxis[0].col
+
             for (let a of p.SelColumns.yAxis) {
               if (p.SelColumns.yAxis.length - 1 > als.length) { //Remove last alias
                 als.push(getAlias(als))
@@ -396,6 +400,10 @@ export default function MainPage() {
             setAllAxis(als);
           } else if (p.PanelType === "pivot") {
             setPanel(panelID);
+            
+            //İlk başta ilk elemanları dolduruyoruz daha sonrasında ise useEffect kısmında eğer varsa gerisini dolduruyoruz
+            xColSelRef.current.value = p.SelColumns.xAxis[0].alias + "/" + p.SelColumns.xAxis[0].table + "/" + p.SelColumns.xAxis[0].col
+            yColSelRef.current.value = p.SelColumns.yAxis[0].alias + "/" + p.SelColumns.yAxis[0].table + "/" + p.SelColumns.yAxis[0].col
 
             for (let x of p.SelColumns.xAxis) {
               if (p.SelColumns.xAxis.length - 1 > alX.length) { //Remove last alias
@@ -418,14 +426,11 @@ export default function MainPage() {
     }
   }
 
-  useEffect(() => {
-    //If Panel and AllAxis aren't empty
-    if (panel !== "" && allAxis.length > 0) {
+  useEffect(() => { //We use useEffect because in editPanel setAllAxis etc. async. Didn't refresh immediately. When (allAxis , titleAxis , valueAxis) change, run this useEffect
+    
+    if (panel !== "" && allAxis.length > 0) { //If Panel and AllAxis aren't empty
       for (let p of pageContent.page_data.panels) {
         if (p.PanelID === panel) {
-
-          if (p.PanelType !== "table") { xColSelRef.current.value = p.SelColumns.xAxis.alias + "/" + p.SelColumns.xAxis.table + "/" + p.SelColumns.xAxis.col }
-          yColSelRef.current.value = p.SelColumns.yAxis[0].alias + "/" + p.SelColumns.yAxis[0].table + "/" + p.SelColumns.yAxis[0].col
 
           for (let y in p.SelColumns.yAxis) {
             if (parseInt(y) === 0) {continue;}
@@ -433,11 +438,9 @@ export default function MainPage() {
           }
         }
       }
-    } else if (titleAxis.length > 0 || valueAxis.length > 0) {
+    } else if (panel !== "" && (titleAxis.length > 0 || valueAxis.length > 0)) { //If titleAxis and valueAxis aren't empty
       for (let p of pageContent.page_data.panels) {
         if (p.PanelID === panel) {
-          xColSelRef.current.value = p.SelColumns.xAxis[0].alias + "/" + p.SelColumns.xAxis[0].table + "/" + p.SelColumns.xAxis[0].col
-          yColSelRef.current.value = p.SelColumns.yAxis[0].alias + "/" + p.SelColumns.yAxis[0].table + "/" + p.SelColumns.yAxis[0].col
 
           for (let x in p.SelColumns.xAxis) {
             if (parseInt(x) === 0) {continue;}
@@ -450,8 +453,6 @@ export default function MainPage() {
           }
         }
       }
-      
-
     }
 
     
@@ -496,21 +497,27 @@ export default function MainPage() {
   const savePanel = () => {
     let selColumns = axisSel(panelType);
     let panelIDs = [];
+    let lastPanelID = panel;
+    console.log(panel);
 
     for(let p of pageContent.page_data.panels) {
       panelIDs.push(p.PanelID);
     }
 
     let coordinates = getCoordinates();
+    
+    if (panel === "") {
+      lastPanelID = getAlias(panelIDs);
+    }
 
     setPageContent({
       ...pageContent,
       page_data: {
         ...pageContent.page_data,
         panels: [
-          ...pageContent.page_data.panels,
+          ...pageContent.page_data.panels.filter(item => item.PanelID !== lastPanelID), //Son düzenleneni içerisinden çıkardık
           {
-            PanelID: getAlias(panelIDs),
+            PanelID: lastPanelID,
             PanelType: panelType,
             PanelName: panelNameRef.current.value,
             ModelID: parseInt(modelNameRef.current.value),
@@ -525,9 +532,9 @@ export default function MainPage() {
       page_data: {
         ...pageContent.page_data,
         panels: [
-          ...pageContent.page_data.panels,
+          ...pageContent.page_data.panels.filter(item => item.PanelID !== lastPanelID), //Son düzenleneni içerisinden çıkardık
           {
-            PanelID: getAlias(panelIDs),
+            PanelID: lastPanelID,
             PanelType: panelType,
             PanelName: panelNameRef.current.value,
             ModelID: parseInt(modelNameRef.current.value),
@@ -630,6 +637,7 @@ export default function MainPage() {
     pageContent,
     titleAxis,
     valueAxis,
+    panel,
     addAxis,
     axisSel,
     chooseChart,

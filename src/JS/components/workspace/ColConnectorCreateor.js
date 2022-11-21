@@ -42,7 +42,7 @@ export default function ColConnectorCreateor() {
           var connectResp = await Data.putConnector(data.colWorksSelectRef.current.value , connectionContent);
         }
         else {
-          var connectResp = await Data.putConnector(data.colWorksSelectRef.current.value , connectionContent , data.colConnectorServerRef.current.value + ":8001");
+          var connectResp = await Data.putConnector(data.colWorksSelectRef.current.value , connectionContent , data.colConnectorServerRef.current.value);
         }
         
         return connectResp;
