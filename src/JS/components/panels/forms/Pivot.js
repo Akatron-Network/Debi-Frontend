@@ -56,7 +56,7 @@ export default function Pivot() {
                     </span>
                     <select
                       defaultValue="default"
-                      className="condition_select max-w-[58%] !rounded-l-none"
+                      className="condition_select max-w-[58%] !rounded-none"
                       ref={(el) => {if (chart_data.xColSelRef.current !== null) chart_data.xColSelRef.current[alias] = el}}
                     >
                       <option disabled value="default">
@@ -70,7 +70,7 @@ export default function Pivot() {
                         }))
                       })}
                     </select>
-                    <button className="danger-btn h-auto ml-[-3px] w-[8%] !rounded-l-none !rounded-r" onClick={() => chart_data.dltAxis(alias , "title")}><i className="fa-solid fa-xmark"></i></button>
+                    <button className="danger-btn h-auto w-[7%] !rounded-l-none !rounded-r" onClick={() => chart_data.dltAxis(alias , "title")}><i className="fa-solid fa-xmark"></i></button>
                   </div>
                 </div>
               </div>
@@ -130,7 +130,7 @@ export default function Pivot() {
                       </span>
                       <select
                         defaultValue="default"
-                        className="condition_select max-w-[58%] !rounded-l-none"
+                        className="condition_select max-w-[58%] !rounded-none"
                         ref={(el) => {if (chart_data.yColSelRef.current !== null) chart_data.yColSelRef.current[alias] = el}}
                       >
                         <option disabled value="default">
@@ -158,7 +158,7 @@ export default function Pivot() {
                           }))
                         })}
                       </select> */}
-                    <button className="danger-btn h-auto ml-[-3px] w-[8%] !rounded-l-none !rounded-r" onClick={() => chart_data.dltAxis(alias , "value")}><i className="fa-solid fa-xmark"></i></button>
+                    <button className="danger-btn h-auto w-[7%] !rounded-l-none !rounded-r" onClick={() => chart_data.dltAxis(alias , "value")}><i className="fa-solid fa-xmark"></i></button>
                     </div>
                   </div>
                 </div>

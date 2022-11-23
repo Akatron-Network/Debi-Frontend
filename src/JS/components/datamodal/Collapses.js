@@ -3,19 +3,37 @@ import { DataModalContext } from '../context'
 import Condition from './Condition';
 
 export default function Collapses(props) {
-  const data = useContext(DataModalContext);
+  var data = useContext(DataModalContext);
   console.log(data);
 
   const [mainDlt, setMainDlt] = useState(false);
   const [checkbox, setCheckbox] = useState(false);
   const [conds, setConds] = useState([])
 
+  console.log(props)
+
   useEffect(() => {
     if (props.main === "main") {
       setMainDlt(true);
     }
+
     setConds(getconds())
   }, [data.dataJSON]);
+
+  useEffect(() => {
+    //* Her açılan collapse componentinde ilk başta calcModalCols içerisinde kolonları atıyor
+    //* Cols ile gönderdiğimiz data içerisine alias ve name de ekledik
+    let cols = [...props.data.source_table.columns]
+    for (let i in cols) {
+      cols[i]['table_alias'] = props.main;
+      cols[i]['table_name'] = props.data.source_table.table;
+    }
+    data.setCalcModalCols({
+      ...data.calcModalCols,
+      [props.main]: props.data.source_table.columns
+    })
+  }, [])
+
   
   const getconds = () => {
     let ret = []
@@ -48,7 +66,7 @@ export default function Collapses(props) {
       <div className="collapse-title text-base font-medium !min-h-0 !py-2 !px-4 text-grayXgray">
         {props.data.source_table.name}
         <span className="text-onyx_light">
-          {" (" + props.data.source_table.table + ")"}
+        {props.main !== "main" ? " (" + props.data.source_table.table + ") (#" + props.main + ")" : " (" + props.data.source_table.table + ") (#O)"}
         </span>
       </div>
 
@@ -79,22 +97,14 @@ export default function Collapses(props) {
                     Ortalama
                   </option>
                   <option value="MAX">
-                    Max
+                    Maksimum
                   </option>
                   <option value="MIN">
-                    Min
+                    Minimum
                   </option>
                 </select>
             </div>
           ))}
-        </div>
-      
-        <div className="table_layout mt-6 max-h-[465px]">
-          <div className="col-span-12 text-center">
-            <label htmlFor="groupmodal" className="green-btn">
-              <i className="fa-solid fa-plus mr-2"></i>Hesap Kolonu Ekle
-            </label>
-          </div>
         </div>
 
         <div className="table_layout mt-6 max-h-[465px]">

@@ -261,13 +261,18 @@ export default function DataModal() {
 
   const dataColSelectRef = useRef({ value: "default" });
   const dataModalName = useRef("");
-  const calcColRef = useRef("default");
+  const calcRef = useRef("");
+  const transRef = useRef({});
+  const calcColRef = useRef({});
+  const calcColTrRef = useRef({});
   const calcColNameRef = useRef("");
   const colSelRef = useRef("default");
   const sourceTableInputRef = useRef({ value: "" });
 
   const [chosenTables, setChosenTables] = useState([]);
+  const [allTransCols, setAllTransCols] = useState([])
   const [calcCols, setCalcCols] = useState([]);
+  const [calcModalCols, setCalcModalCols] = useState({});
   const [collections, setCollections] = useState([]);
   const [conditions, setConditions] = useState([]);
   const [executeCols, setExecuteCols] = useState([]);
@@ -376,7 +381,7 @@ export default function DataModal() {
     ); //! Get table relations
     
     const alias = getAlias(miscIncludes);
-    setMiscIncludes(alias);
+    setMiscIncludes([...miscIncludes , alias]);
 
     let keyID = getKeyID(chosenTables);
     
@@ -419,6 +424,8 @@ export default function DataModal() {
       delete dataJSON.query.includes[alias];
       setChosenTables(chosenTables.filter(item => item.key !== keyID.toString()))
     }
+
+    delete calcModalCols[alias]
   }
 
   const addColumns = async (main , col_name , index) => {
@@ -722,10 +729,63 @@ export default function DataModal() {
     setChosenTables([]);
     setExecuteCols([]);
     setExecuteRows([]);
+    setCalcModalCols({});
+  }
+
+  const saveCalcCol = () => {
+    //*Tüm harfleri tek tek döndürüp üzerine yazıyoruz.
+
+    if(allTransCols.length > 0) {
+      for(let n of allTransCols) {
+        console.log(Object.keys(n)[0])
+        console.log(Object.keys(n)[0].replaceAll(/[{}]/g , ""))
+
+        if(Object.keys(n)[0].replaceAll(/[{}]/g , "") === calcColNameRef.current.value) {
+          document.getElementById('group_modal_warn_1').classList.remove('hidden');
+          return;
+        }
+      }
+    }
+
+    let transaction = calcRef.current.value;
+    let convertedTransaction = ""
+
+    for (var l in transaction) {
+      let letter = transaction[l]
+      if (calcCols.includes(letter)) { //Eğer calcCols yazılan harflerden birini içeriyorsa
+        let realcol = calcColRef.current[letter].value
+        if (calcColTrRef.current[letter].value !== "default") { //Eğer işlem default değilse
+          realcol = calcColTrRef.current[letter].value + "(" + realcol + ")"
+        }
+        convertedTransaction += realcol
+      } else {
+        convertedTransaction += letter
+      }
+    }
+    console.log(convertedTransaction)
+
+    setAllTransCols([
+      ...allTransCols ,
+      {["{" + calcColNameRef.current.value + "}"] : convertedTransaction}
+    ])
+  }
+
+  const clearCalcColInp = () => {
+    document.getElementById('group_modal_warn_1').classList.add('hidden');
+
+    setCalcCols([]);
+    calcColNameRef.current.value = "";
+    calcRef.current.value = "";
+  }
+
+  const cV = () => {
+    //Bunu sadece value değiştirirken kullandım hata veriyordu. Alltrans kısmında
   }
 
   const data = {
+    allTransCols, //Bu
     calcCols,
+    calcModalCols,
     conditions,
     conditionsJSON,
     collections,
@@ -736,11 +796,14 @@ export default function DataModal() {
     filteredData,
     gatewayHost,
     relations,
+    calcRef,
     calcColRef,
+    calcColTrRef,
     calcColNameRef,
     colSelRef,
     dataColSelectRef,
     sourceTableInputRef,
+    miscIncludes,
     tables,
     addColumns,
     addCondition,
@@ -749,15 +812,18 @@ export default function DataModal() {
     changeCondition,
     chooseColor,
     chooseSource,
+    clearCalcColInp,
     clearTime,
     colNameSelect,
     compile,
     dltRelatedTable,
     open_s_tbl,
     removeCondition,
+    saveCalcCol,
     selColGroups,
     setDataJSON,
     setCalcCols,
+    setCalcModalCols,
     show_info,
     source_table,
     sourceTablesJSON,
@@ -790,6 +856,27 @@ export default function DataModal() {
             </h1>
 
             <div id="collapses">{chosenTables}</div>
+
+              <div className="table_layout mt-2 p-2 max-h-[465px] border border-jet_mid">
+                {allTransCols.map((col , index) => {
+                  let name = Object.keys(col);
+                  let name_last = name[0].replaceAll(/[{}]/g , "");
+
+                  return(
+                    <div key={index} className="form-control col-span-12">
+                      <div className="input-group shadow-md">
+                        <span className='bg-black_light text-grayXgray px-2 py-[7px] !rounded-l border border-jet_mid justify-center min-w-[35%] xl:truncate'>{name_last}</span>
+                        <input type="text" className="input my-0 input-bordered !rounded-r w-full h-auto pointer-events-none" ref={transRef} onChange={cV} value={Object.values(col)[0]} />
+                      </div>
+                    </div>
+                  )
+                })}
+                <div className="col-span-12 text-center">
+                  <label htmlFor="groupmodal" className="green-btn">
+                    <i className="fa-solid fa-plus mr-2"></i>Hesap Kolonu Ekle
+                  </label>
+                </div>
+              </div>
           </div>
 
           <div className="md:col-span-3 col-span-5 bg-middle_black p-3 rounded shadow-md relative min-h-[570px] h-full">
@@ -824,11 +911,6 @@ export default function DataModal() {
 
           <RelationsAbsolute />
           <GroupModal />
-          
-          <label htmlFor="groupmodal" className="green-btn">
-            <i className="fa-solid fa-plus mr-2"></i>Hesap Kolonu Ekle
-          </label>
-
         </div>
       </div>
     </DataModalContext.Provider>
