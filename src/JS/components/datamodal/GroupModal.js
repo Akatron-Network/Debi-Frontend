@@ -9,7 +9,6 @@ export default function GroupModal() {
 
   const addCalcCol = () => {
     let alias = getAlias(data.calcCols);
-    console.log(alias)
     data.setCalcCols([...data.calcCols , alias]);
 
   }

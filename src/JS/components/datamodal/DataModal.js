@@ -14,7 +14,6 @@ import GroupModal from './GroupModal';
 
 export default function DataModal() {
   const modal_data = useContext(ModalContext);
-
   useEffect(() => {
     getColSelect();
   }, []);
@@ -314,7 +313,6 @@ export default function DataModal() {
     setGatewayHost(col.Data.connector.gateway_host);
     setSourceTable(resp.Data);
     setFilteredData(resp.Data); //!We create filteredData for filtered datas, because we don't want change sourcetable
-    console.log(dataJSON)
     setDataJSON({...dataJSON, collection_id: id})
 
     return [col.Data.connector.gateway_host , resp.Data];
@@ -418,8 +416,6 @@ export default function DataModal() {
   };
 
   const dltRelatedTable = async (alias , keyID) => {
-    console.log(keyID);
-    
     if(alias !== "main") {
       delete dataJSON.query.includes[alias];
       setChosenTables(chosenTables.filter(item => item.key !== keyID.toString()))
@@ -432,11 +428,9 @@ export default function DataModal() {
 
     if(document.getElementById("elm_" + main + "_" + index).classList.contains("border-sea_green")) {
       if(main === "main") {
-        console.log(dataJSON.query.select[col_name]);
         delete dataJSON.query.select[col_name];
       }
       else {
-        console.log(dataJSON.query.includes[main].select[col_name]);
         delete dataJSON.query.includes[main].select[col_name];
       }
     } else {
@@ -762,12 +756,30 @@ export default function DataModal() {
         convertedTransaction += letter
       }
     }
-    console.log(convertedTransaction)
 
     setAllTransCols([
       ...allTransCols ,
       {["{" + calcColNameRef.current.value + "}"] : convertedTransaction}
     ])
+
+    setDataJSON({
+      ...dataJSON,
+      query: {
+        ...dataJSON.query,
+        select: {
+          ...dataJSON.query.select,
+          ["{" + calcColNameRef.current.value + "}"] : convertedTransaction,
+        },
+      }
+    });
+
+    document.getElementById('groupmodal').checked = false;
+    clearCalcColInp();
+  }
+
+  const dltAllTransCols = (name) => {
+    setAllTransCols(allTransCols.filter(key => Object.keys(key)[0] !== name[0]))
+    delete dataJSON.query.select[name];
   }
 
   const clearCalcColInp = () => {
@@ -779,7 +791,8 @@ export default function DataModal() {
   }
 
   const cV = () => {
-    //Bunu sadece value değiştirirken kullandım hata veriyordu. Alltrans kısmında
+    setCalcCols([]);
+    //Bunu sadece value değiştirirken kullandım hata veriyordu. AllTrans kısmında
   }
 
   const data = {
@@ -829,6 +842,7 @@ export default function DataModal() {
     sourceTablesJSON,
   };
 
+
   return (
     <DataModalContext.Provider value={data}>
       <input type="checkbox" id="datamodal"  className="modal-toggle" />
@@ -857,26 +871,30 @@ export default function DataModal() {
 
             <div id="collapses">{chosenTables}</div>
 
-              <div className="table_layout mt-2 p-2 max-h-[465px] border border-jet_mid">
-                {allTransCols.map((col , index) => {
-                  let name = Object.keys(col);
-                  let name_last = name[0].replaceAll(/[{}]/g , "");
+            {(chosenTables.length > 0) ? (
+                <div className="table_layout mt-2 p-2 max-h-[465px] border border-jet_mid">
+                  {allTransCols.map((col , index) => {
+                    let name = Object.keys(col);
+                    let name_last = name[0].replaceAll(/[{}]/g , "");
 
-                  return(
-                    <div key={index} className="form-control col-span-12">
-                      <div className="input-group shadow-md">
-                        <span className='bg-black_light text-grayXgray px-2 py-[7px] !rounded-l border border-jet_mid justify-center min-w-[35%] xl:truncate'>{name_last}</span>
-                        <input type="text" className="input my-0 input-bordered !rounded-r w-full h-auto pointer-events-none" ref={transRef} onChange={cV} value={Object.values(col)[0]} />
+                    return(
+                      <div key={index} className="form-control col-span-12">
+                        <div className="input-group shadow-md">
+                          <span className='bg-black_light text-grayXgray px-2 py-[7px] !rounded-l border border-jet_mid justify-center min-w-[35%] xl:truncate'>{name_last}</span>
+                          <input type="text" className="input my-0 input-bordered !rounded-none w-full h-auto pointer-events-none" ref={transRef} onChange={cV} value={Object.values(col)[0]} />
+                          <button className="danger-btn h-auto w-[7%] !rounded-l-none !rounded-r" onClick={() => dltAllTransCols(name)}><i className="fa-solid fa-xmark"></i></button>
+                        </div>
                       </div>
+                    )
+                  })}
+                    <div className="col-span-12 text-center">
+                      <label htmlFor="groupmodal" className="green-btn">
+                        <i className="fa-solid fa-plus mr-2"></i>Hesap Kolonu Ekle
+                      </label>
                     </div>
-                  )
-                })}
-                <div className="col-span-12 text-center">
-                  <label htmlFor="groupmodal" className="green-btn">
-                    <i className="fa-solid fa-plus mr-2"></i>Hesap Kolonu Ekle
-                  </label>
                 </div>
-              </div>
+              ) : undefined
+            }
           </div>
 
           <div className="md:col-span-3 col-span-5 bg-middle_black p-3 rounded shadow-md relative min-h-[570px] h-full">

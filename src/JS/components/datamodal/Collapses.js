@@ -4,13 +4,10 @@ import Condition from './Condition';
 
 export default function Collapses(props) {
   var data = useContext(DataModalContext);
-  console.log(data);
 
   const [mainDlt, setMainDlt] = useState(false);
   const [checkbox, setCheckbox] = useState(false);
   const [conds, setConds] = useState([])
-
-  console.log(props)
 
   useEffect(() => {
     if (props.main === "main") {
