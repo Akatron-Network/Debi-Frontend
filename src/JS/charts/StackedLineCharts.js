@@ -16,7 +16,7 @@ const Page = (props) => {
 
   useEffect(() => {
     getData();
-  }, [])
+  }, [chart_data.pageContent.page_data])
 
   const getData = async () => {
     console.log(props);

@@ -1,7 +1,7 @@
 import React , { useContext } from 'react'
 import { DataModalContext } from '../context'
 
-export default function SourceTable() {
+export default function ModalSourceTable() {
   
   const data = useContext(DataModalContext);
   return (
@@ -9,12 +9,12 @@ export default function SourceTable() {
     <div className="form-control">
       <div className="input-group z-30 shadow-md">
         <span className='bg-black_light text-grayXgray px-2 py-[7px] !rounded-l border border-jet_mid justify-center min-w-[35%]'>Kaynak Tablo</span>
-        <input type="text" onClick={() => data.open_s_tbl()} onChange={(event) => data.sourceTablesJSON(event)} ref={data.sourceTableInputRef} className="w-full text-left truncate h-auto overflow-hidden input my-0 input-bordered transition duration-300" />
-        <button onClick={() => data.source_table()} className='bg-black_light px-2 py-[7px] !rounded-r border border-jet_mid justify-center min-w-[35px] transition duration-300 hover:bg-side_black hover:text-platinium'><i className="fa-sharp fa-solid fa-chevron-down "></i></button>
+        <input type="text" onClick={() => data.open_s_tbl("modal")} onChange={(event) => data.sourceTablesJSON(event)} ref={data.modalSourceTableInputRef} className="w-full text-left truncate h-auto overflow-hidden input my-0 input-bordered transition duration-300" />
+        <button onClick={() => data.source_table("modal")} className='bg-black_light px-2 py-[7px] !rounded-r border border-jet_mid justify-center min-w-[35px] transition duration-300 hover:bg-side_black hover:text-platinium'><i className="fa-sharp fa-solid fa-chevron-down "></i></button>
       </div>
     </div>
       
-    <div id="source_table" className='max-h-[230px] overflow-auto z-20 left-3 right-3 mt-[-5px] w-[calc(100%_-_1.5rem)] bg-black_light shadow-xl rounded absolute border border-onyx opacity-0 transition duration-300 -translate-y-16 hidden'>
+    <div id="modal_source_table" className='max-h-[230px] overflow-auto z-20 left-4 right-4 mt-[-5px] w-[calc(100%_-_2rem)] bg-black_light shadow-xl rounded absolute border border-onyx opacity-0 transition duration-300 -translate-y-16 hidden'>
       <div className="rounded">
         <table className="table w-full">
           <thead>
@@ -39,7 +39,7 @@ export default function SourceTable() {
               else {nameTable = source.name + " (" + source.table + ")"}
 
               return (
-                <tr key={index} onClick={() => data.chooseSource(source.table , category , nameTable , data.gatewayHost)}>
+                <tr key={index} onClick={() => data.chooseSource(source.table , category , nameTable , data.gatewayHost, "modal")}>
                   <td>{type}</td>
                   <td>{category}</td>
                   <td>{nameTable}</td>

@@ -13,9 +13,10 @@ const Page = (props) => {
 
   useEffect(() => {
     getData();
-  }, [])
+  }, [chart_data.pageContent.page_data])
 
   const getData = async () => {
+    console.log("a")
     let resp = await Data.getModel(props.modelID);
     let col = await WorkspaceAll.getCollections(chart_data.pageContent.collection_id); //! Get Gateway host
     let query = resp.Data.query;

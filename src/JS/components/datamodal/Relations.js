@@ -4,8 +4,8 @@ import { DataModalContext } from "../context";
 export default function Relations() {
   const data = useContext(DataModalContext);
 
-  const allRelations = data.relations.inner.concat(data.relations.outer);
-
+  const allRelations = data.relations.inner.concat(data.relations.outer ,data.relations.extra);
+  
   return (
     <div className="w-full h-72 bg-darker_jet rounded shadow-md relative grid grid-cols-12 grid-flow-row auto-rows-max gap-2 p-2 overflow-auto border border-jet_mid border-r-0">
       {allRelations.map(function (rel, index) {

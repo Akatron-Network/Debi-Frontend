@@ -13,7 +13,7 @@ const Page = (props) => {
 
   useEffect(() => {
     getData();
-  }, [])
+  }, [chart_data.pageContent.page_data])
 
   const getData = async () => {
     let resp = await Data.getModel(props.modelID);

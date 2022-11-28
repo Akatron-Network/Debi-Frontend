@@ -5,12 +5,10 @@ import { getAlias } from '../../libraries/misc';
 
 export default function GroupModal() {
   const data = useContext(DataModalContext);
-  console.log(data);
 
   const addCalcCol = () => {
     let alias = getAlias(data.calcCols);
     data.setCalcCols([...data.calcCols , alias]);
-
   }
 
   const dltCalcCol = (alias) => {

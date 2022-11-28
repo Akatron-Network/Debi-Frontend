@@ -32,15 +32,12 @@ export default function DataModalList() {
   
     }, 200);
 
-    if(modal_data.modalChecked === true) {
-      modal_data.setModalChecked(false);
-    } else {
+    if(modal_data.modalChecked !== true) {
       modal_data.setModalChecked(true);
     }
 
     modal_data.setModalType(modal_type);
     console.log(modal_type)
-
   }
   
   return (
@@ -53,7 +50,14 @@ export default function DataModalList() {
 
       <div className='my-4'>
 
-        {modal_data.modalList.map((list) => (<label key={list.model_id} htmlFor="datamodal" className="btn tree-elm px-3 pointer-events-none" onClick={() => openModal(list)}><i className="fa-solid fa-chart-line mr-2 p-[5px]"></i>{list.model_name}</label>))}
+        {modal_data.modalList.map((list , index) => (
+          <div className='mb-1' key={index}>
+            <div className='tree-elm pl-3'>
+              <label htmlFor="datamodal" className="w-[200px] cursor-pointer truncate flex items-center" onClick={() => openModal(list)}><i className="fa-solid fa-chart-line mr-2 p-[5px]"></i>{list.model_name}</label>
+              <i className="fa-solid fa-xmark tree-cursor absolute right-3 mr-0 hover:text-danger_light" onClick={() => modal_data.deleteModel(list.model_id)}></i>
+            </div>
+          </div>
+        ))}
         <label htmlFor="datamodal" className="btn tree-elm px-3 text-sea_green hover:text-green_pantone" onClick={() => openModal("new")}><i className="fa-solid fa-plus mr-2 p-[5px]"></i>Yeni Veri Modeli Ekle</label>
       </div>
     </>

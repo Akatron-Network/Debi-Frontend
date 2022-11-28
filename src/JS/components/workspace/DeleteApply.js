@@ -14,6 +14,7 @@ export default function DeleteApply() {
 			else if(data.deleteItemType === "sayfa") {
 				data.deleteItems( "file" , data.deleteItemRef.page_id)
 			}
+      data.getTreeCollections();
     document.getElementById('dltWorks').checked = false;
     }
 

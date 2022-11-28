@@ -1,28 +1,29 @@
 import React , { useContext , useEffect } from 'react'
-import { SidebarContext } from '../../context'
+import { SidebarContext , MainContext } from '../../context'
 import TreeFolder from './TreeFolder'
 import { Link } from "react-router-dom";
 
 export default function TreeCollection() {
   const treeData = useContext(SidebarContext);
+  const mainData = useContext(MainContext);
 
   useEffect(() => {
     if (localStorage.getItem("Tree")) {
       let treeTime = parseInt(localStorage.getItem("TreeTime"))
-      treeData.setTreeCollections(JSON.parse(localStorage.getItem("Tree")))
+      mainData.setTreeCollections(JSON.parse(localStorage.getItem("Tree")))
 
       if(Date.now() -  treeTime > (1 * 60 * 1000)) { //? Burada 5dk yı geçerse treedatayı yenilemesi için koyduk
-        treeData.getTreeCollections();
+        mainData.getTreeCollections();
       }
     }
     else {
-      treeData.getTreeCollections();
+      mainData.getTreeCollections();
     }
   }, [])
 
   return (
     <>
-      {treeData.treeCollections.owned.map((treeCollection) => (
+      {mainData.treeCollections.owned.map((treeCollection) => (
         <div className='mb-3' key={treeCollection.id}>
           <div className="tree-elm pl-3">
             <i className="fa-solid fa-angle-right tree-cursor absolute" id={"col_angle_" + treeCollection.id} onClick={(event) => treeData.treeToggle(event , "col_" , treeCollection.id )}></i>

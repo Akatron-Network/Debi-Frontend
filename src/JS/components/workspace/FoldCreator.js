@@ -25,6 +25,7 @@ export default function FoldFileCreator() {
         data.getFolderWorks(data.filepath[0].id);
       }
 
+      data.getTreeCollections();
       document.getElementById('addWorksFold').checked = false;
     
     }

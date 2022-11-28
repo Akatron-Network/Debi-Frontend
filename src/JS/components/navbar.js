@@ -6,7 +6,6 @@ import { ChartContext } from './context';
 
 export default function Navbar(props) {
   const chart_data = useContext(ChartContext);
-  console.log(chart_data)
 
   useEffect(() => {
     document.addEventListener('click' , clickOutside , true)

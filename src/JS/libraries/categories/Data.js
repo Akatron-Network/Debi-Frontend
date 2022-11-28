@@ -86,6 +86,15 @@ class Data {
     return resp;
   }
 
+  static async dltModel(id) {
+    let dltModel_req = new Requests("data", "model");
+
+    var resp = await dltModel_req.delete({
+      model_id: id
+    });
+    return resp;
+  }
+
 
 
 }

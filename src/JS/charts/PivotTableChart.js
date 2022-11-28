@@ -21,7 +21,6 @@ export default function PivotTableCharts(props) {
   var fields = [];
   
   const chart_data = useContext(ChartContext);
-  console.log(chart_data);
   
   useEffect(() => {
     getData();
@@ -32,15 +31,12 @@ export default function PivotTableCharts(props) {
     let col = await WorkspaceAll.getCollections(chart_data.pageContent.collection_id); //! Get Gateway host
     let query = resp.Data.query;
     let respData = await Data.postExecute({query: query , collection_id: chart_data.pageContent.collection_id}, col.Data.connector.gateway_host);
-    console.log(respData);
 
     let proData = respData.Data[0]
-    console.log(proData);
 
     for(let p of chart_data.pageContent.page_data.panels) {
       if (props.panelID === p.PanelID) {
         for (let x of p.SelColumns.xAxis) {
-          console.log(x.col + " : " + typeof(proData[x.col]) + " - " + proData[x.col])
           fields.push({
             area: 'column',
             dataField: x.col,
@@ -50,7 +46,6 @@ export default function PivotTableCharts(props) {
           })
         }
         for (let y of p.SelColumns.yAxis) {
-          console.log(y.col + " : " + typeof(proData[y.col]) + " - " + proData[y.col])
           fields.push({
             area: 'row',
             dataField: y.col,
@@ -61,8 +56,6 @@ export default function PivotTableCharts(props) {
         }
       }
     }
-
-    console.log(fields);
 
     setAllData(new PivotGridDataSource({
       fields: fields,

@@ -61,14 +61,13 @@ export default function ColConnectorCreateor() {
     if(data.colWorksSelectRef.current.value !== "default" && data.colNameRef.current.value !== "" && data.colWorksNickRef.current.value !== "" && data.colWorksPassRef.current.value !== "" && data.colWorksDBRef.current.value !== "" && data.colServerRef.current.value !== "" && data.colPortRef.current.value !== "") {
       var connectResp = await testConnection();
       var connectionContent = createContent();
-      
 
       if(connectResp.Success !== false) {
         const forColID = await WorkspaceAll.postCollections(data.colNameRef.current.value);
         data.getColWorks();
 
         console.log(forColID.Data.collection_id);
-        console.log( data.colWorksSelectRef.current.value);
+        console.log(data.colWorksSelectRef.current.value);
         console.log(connectionContent);
         const a = await Data.postConnector(forColID.Data.collection_id , data.colWorksSelectRef.current.value , connectionContent);
         console.log(a)
@@ -77,7 +76,6 @@ export default function ColConnectorCreateor() {
 
     } else {checkWarn(2 , 1)}
   }
-
 
   const checkConnector = () => {
     data.setCheckedConnector(!data.checkedConnector); //? datadaki checked burada her seferinde tam tersine dönüyor. checked ise unchecked değilse
@@ -124,7 +122,6 @@ export default function ColConnectorCreateor() {
           </div>
 
           <div className={data.checkedConnector ? "block mt-2" : "hidden" }><Input value={"Geçit Adresi"} refName={data.colConnectorServerRef}/></div>
-          
 
           <span id='colWarn1' className='text-sm p-1 text-red-600 hidden'>Lütfen gerekli bilgileri doldurun!</span>
           <span id='colWarn2' className='text-sm p-1 text-red-600 hidden'>Bağlantı bilgileri yanlış. Lütfen tekrar gözden geçirin.</span>

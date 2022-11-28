@@ -18,9 +18,35 @@ export default function Condition(props) {
   const [typeLength, setTypeLength] = useState("");
 
   useEffect(() => {
+    console.log(props.alias)
     setBounderBtn(props.value > 0);
     setCols(data.tables[props.alias].source_table.columns)
   }, [])
+
+  useEffect(() => {
+    let cond = props.context;
+    if (cols.length === 0) return;
+    if (Object.keys(cond).length === 0) return;
+
+    let col = Object.keys(cond)[0]
+    let opr = Object.keys(cond[col])[0]
+    let val = cond[col][opr]
+
+    selColRef.current.value = col;
+    selEqRef.current.value = opr;
+    inputValueRef.current.value = val;
+
+    let conj = props.conj;
+
+    if (!conj) return;
+
+    setOperatorR(conj)
+
+    if (conj === "AND") setOperator("VE")
+    else setOperator("VEYA")
+
+  }, [cols])
+  
 
   const changeOperator = (alias, value , colRef , eqRef , valueRef) => {
     var opr = "VE";
@@ -68,8 +94,8 @@ export default function Condition(props) {
       </div>
       <select defaultValue='default' ref={selColRef} className="condition_select xl:col-span-5" onChange={() => { changeInput();  data.compile(props.alias , props.value , selColRef.current.value , selEqRef.current.value , inputValueRef.current.value , operatorR)}}>
         <option disabled value="default">Kolon Seçiniz</option>
-        {cols.map((c) => {
-          return (<option value={c.name}>{c.name}</option>)
+        {cols.map((c , index) => {
+          return (<option key={index} value={c.name}>{c.name}</option>)
         })}
       </select>
       <select defaultValue='equals' className="condition_select xl:col-span-2" ref={selEqRef} onChange={() => data.compile(props.alias , props.value , selColRef.current.value , selEqRef.current.value , inputValueRef.current.value , operatorR)}>

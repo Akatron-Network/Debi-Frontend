@@ -521,6 +521,25 @@
       hover:text-platinium
       cursor-pointer
   }
+  
+  #modal_source_table thead tr th {
+    @apply
+      bg-side_black
+      text-grayXgray
+      pt-[20px]
+      pb-[15px]
+  }
+
+  #modal_source_table tbody tr{
+    @apply
+      bg-darkest_jet
+      text-grayXgray
+      transition
+      duration-300
+      hover:bg-jet
+      hover:text-platinium
+      cursor-pointer
+  }
 
   #calc_table thead tr th {
     @apply

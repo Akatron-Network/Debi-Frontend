@@ -82,9 +82,6 @@ module.exports = {
       fontFamily: {
         'righteous': ['Righteous' , 'cursive']
       },
-
-      screens : {
-      }
       
     },
   },

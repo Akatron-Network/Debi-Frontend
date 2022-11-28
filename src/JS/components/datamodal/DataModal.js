@@ -11,61 +11,184 @@ import Collapses from './Collapses';
 import { getAlias , getKeyID } from '../../libraries/misc';
 import ColSelect from './ColSelect';
 import GroupModal from './GroupModal';
+import ManuelRelatedTable from './ManuelRelatedTable';
 
 export default function DataModal() {
   const modal_data = useContext(ModalContext);
+  console.log(modal_data)
+
+  const dataColSelectRef = useRef({ value: "default" });
+  const dataModalName = useRef("");
+  const calcRef = useRef("");
+  const transRef = useRef({});
+  const calcColRef = useRef({});
+  const calcColTrRef = useRef({});
+  const calcColNameRef = useRef("");
+  const colSelRef = useRef("default");
+  const sourceTableInputRef = useRef({ value: "" });
+  const modalSourceTableInputRef = useRef({ value: "" });
+  const referencedColsRef = useRef("");
+  const sourceColsRef = useRef("");
+
+  const [chosenTables, setChosenTables] = useState([]);
+  const [allTransCols, setAllTransCols] = useState([])
+  const [calcCols, setCalcCols] = useState([]);
+  const [calcModalCols, setCalcModalCols] = useState({});
+  const [collections, setCollections] = useState([]);
+  const [conditions, setConditions] = useState([]);
+  const [executeCols, setExecuteCols] = useState([]);
+  const [executeResp, setExecuteResp] = useState([]);
+  const [executeRows, setExecuteRows] = useState([]);
+  const [filteredData, setFilteredData] = useState([]);
+  const [gatewayHost, setGatewayHost] = useState("");
+  const [miscIncludes, setMiscIncludes] = useState([]);
+  const [relations, setRelations] = useState({ inner: [], outer: [] , extra: [] });
+  const [modalRelations, setModalRelations] = useState({ inner: [], outer: []});
+  const [sourceTable, setSourceTable] = useState([]);
+  const [tables, setTables] = useState({});
+  const [modalTables, setModalTables] = useState({});
+  const [conditionsJSON, setConditionsJSON] = useState([]);
+
+  const [dataJSON, setDataJSON] = useState({
+    collection_id: "",
+    query: {
+        table: "",
+        alias: "O",
+        select: {},
+        where_plain: [],
+        includes: {}
+    }
+  });
+
   useEffect(() => {
     getColSelect();
   }, []);
 
-  // useEffect(() => {
-  //   setDataJSON({ ...dataJSON , query: modal_data.modalType.query });
-  //   console.log(modal_data.modalType.query)
+  useEffect(() => { //* Düzenleme yapılacak olan modelin dataJSON 'unu aldık. Eğer modalType dolu değilse component yüklenince çalıştırmasın diye bir if koyduk
+    if (Object.keys(modal_data.modalType).length !== 0) {
+      // ssetDataJSON({ ...dataJSON , query: modal_data.modalType.query }); //! EĞER GEREKMİYORSA BURAYI KALDIRABİLİRİZ. ALTTA DİREK EDİTMODAL SONUCUNDA MODALJSON 'U D,REKT DATAJSON A EŞİTLERİZ
+    }
+  }, [modal_data.modalType])
   
-  // }, [modal_data.modalType])
-  
-  // useEffect(() => {
-  //   //*Eğer modal açıldıysa burayı kontrol edecek ve ona göre editModal fonksiyonunda dataJSON düzenlenecek
-  //   if (modal_data.modalChecked === true) {
-  //     if (modal_data.modalType === "new") {
-  //       console.log("New Modal");
-  //       setDataJSON({
-  //         collection_id: "",
-  //         query: {
-  //             table: "",
-  //             alias: "O",
-  //             select: {},
-  //             where_plain: [],
-  //             includes: {}
-  //         }
-  //       });
-  //     } else {
-  //       editModal();
-  //     }
-  //   }
-  // }, [modal_data.modalChecked])
-  
-
-  const editModal = async () => {
-    console.log(modal_data.modalType);
-    // var modal_type = modal_data.modalType;
-
-    // if (collections[0].db_scheme_id === modal_type.db_scheme_id) {
-    //   dataColSelectRef.current.value = collections[0].collection_id; //* Koleksiyon adı
-    // }
-    // dataModalName.current.value = modal_type.model_name; //* Model adı
+  useEffect(() => {
     console.log(dataJSON);
-    // let rt = await colNameSelect(dataColSelectRef.current.value); //* Kaynak tablo getir
+    //*Eğer modal açıldıysa burayı kontrol edecek ve ona göre editModal fonksiyonunda dataJSON düzenlenecek
+    if (modal_data.modalChecked === true) {
+      if (modal_data.modalType === "new") {
+        setInEdit(false);
+        setDataJSON({
+          collection_id: "",
+          query: {
+              table: "",
+              alias: "O",
+              select: {},
+              where_plain: [],
+              includes: {}
+          }
+        });
+      } else {
+        editModal();
+      }
+    }
+  }, [modal_data.modalChecked])
+  
 
-    // console.log(rt);
-    // var dt = rt[1].filter((data) => (data.table === modal_type.query.table));
-    // console.log(dt);
-    // await chooseSource(modal_type.query.table, dt[0].category, dt[0].name, rt[0]); //* Kaynak tablo seçimi
-    // await addRelatedTable(modal_type.query.table, "" ,rt[0]);
-    
+  const [chsCols, setChsCols] = useState({})
+  const [inEdit, setInEdit] = useState(false);
+  const editModal = async () => {
+    setInEdit(true);
+    let modalJSON = modal_data.modalType;
 
-    // setDataJSON({ collection_id: collections[0].collection_id, query: modal_data.modalType.query });
+    if ([].constructor === modalJSON.query.includes.constructor) { //* Includes liste mi değil mi diye kontrol ediyoruz
+      let newIncludes = {};
+  
+      for (let i of modalJSON.query.includes) {
+        newIncludes[i.alias] = i
+      }
+      modalJSON.query.includes = newIncludes;
+
+    }
+
+    console.log(modalJSON)
+
+
+    if (collections[0].db_scheme_id === modalJSON.db_scheme_id) {
+      dataColSelectRef.current.value = collections[0].collection_id; //* Koleksiyon adı
+    }
+    dataModalName.current.value = modalJSON.model_name; //* Model adı
+
+    let rt = await colNameSelect(dataColSelectRef.current.value); //* Kaynak tablo getir
+    var dt = rt[1].filter((data) => (data.table === modalJSON.query.table)); //*Kaynak tablolardan bizimki ile aynı olanı seçtik
+    let chsTbls = [(await chooseSource(modalJSON.query.table, dt[0].category, dt[0].name, rt[0], undefined ,true))[0]]; //* Kaynak tablo seçimi
+
+    let tblsTemp = {"O" : (await chooseSource(modalJSON.query.table, dt[0].category, dt[0].name, rt[0], undefined ,true))[1].Data}
+
+    let chsColsTemp = {};
+    chsColsTemp["O"] = (await chooseSource(modalJSON.query.table, dt[0].category, dt[0].name, rt[0], undefined ,true))[1].Data.source_table.columns; //* Tüm kolonları çektik aliaslarına öre sonrasında seçilileri yeşile boyayacağız
+
+    for (let r in modalJSON.query.includes) { //* İlişkili tablo ekleme
+      chsTbls.push((await addRelatedTable(modalJSON.query.includes[r].table, "" , rt[0], true))[0])
+      chsColsTemp[r] = ((await addRelatedTable(modalJSON.query.includes[r].table, "" , rt[0], true))[1].Data.source_table.columns)
+      tblsTemp[r] = (await addRelatedTable(modalJSON.query.includes[r].table, "" , rt[0], true))[1].Data;
+    }
+    setChsCols(chsColsTemp);
+    setChosenTables(chsTbls);
+    setTables(tblsTemp);
+
+    setDataJSON({ collection_id: collections[0].collection_id, query: modal_data.modalType.query });
   };
+
+  useEffect(() => {
+    if (Object.keys(chsCols).length === 0) return;
+
+    let transColTemp = [];
+    for (let c in modal_data.modalType.query.select) {  //* for selected columns in source table
+      let cval = modal_data.modalType.query.select[c]   //* column's val (true, 'sum' etc)
+      let cindex = 0                                    //* Column's index in all columns of table
+      for (let ac in chsCols['O']) { if (chsCols['O'][ac].name === c) cindex = ac }    //* set c index
+
+      if (!c.includes('{')) {
+        document.getElementById('elm_main_' + cindex).classList.add("border-sea_green")
+        document.getElementById("sel_main_" + cindex).classList.remove("hidden")
+
+        if (cval !== true) {
+          document.getElementById("sel_main_" + cindex).value = cval;
+        }
+      } else {
+        //Hesap kolonu ekleneceğiz
+        transColTemp.push({[c] : cval})
+      }
+    }
+
+    for (let incAlias in  modal_data.modalType.query.includes) {  //* for including tables incAlias = alias of alter table
+      let incObj = modal_data.modalType.query.includes[incAlias]  //* table's object
+
+      for (let c in incObj.select) {
+        let cval = incObj.select[c]
+        let cindex = 0
+        for (let ac in chsCols[incAlias]) { if (chsCols[incAlias][ac].name === c) cindex = ac }
+  
+        if (!c.includes('{')) {
+          document.getElementById('elm_'+ incAlias +'_' + cindex).classList.add("border-sea_green")
+          document.getElementById("sel_" + incAlias + "_" + cindex).classList.remove("hidden")
+
+          if (cval !== true) {
+            document.getElementById("sel_" + incAlias + "_" + cindex).value = cval;
+          }
+        } else {
+          //Hesap kolonu ekleneceğiz
+          transColTemp.push({[c] : cval})
+        }
+      }
+    }
+
+    setAllTransCols(transColTemp);
+
+    // console.log("a")
+    // document.getElementById('elm_main_0').classList.add("hidden");
+  
+  }, [chsCols])
+  
 
   const resize = (id) => {
     setTimeout(function () {
@@ -170,18 +293,26 @@ export default function DataModal() {
     }
   };
 
-  const source_table = () => {
+  const source_table = (type) => {
     let source_table = document.getElementById("source_table");
 
+    if(type !== undefined) {
+      source_table = document.getElementById(type + "_source_table");
+    }
+
     if (source_table.classList.contains("opacity-0")) {
-      open_s_tbl();
+      open_s_tbl(type);
     } else {
-      close_s_tbl();
+      close_s_tbl(type);
     }
   };
 
-  const open_s_tbl = () => {
+  const open_s_tbl = (type) => {
     let source_table = document.getElementById("source_table");
+
+    if(type !== undefined) {
+      source_table = document.getElementById(type + "_source_table");
+    }
 
     source_table.classList.remove("hidden");
 
@@ -191,8 +322,12 @@ export default function DataModal() {
     }, 1);
   };
 
-  const close_s_tbl = () => {
+  const close_s_tbl = (type) => {
     let source_table = document.getElementById("source_table");
+
+    if(type !== undefined) {
+      source_table = document.getElementById(type + "_source_table");
+    }
 
     source_table.classList.add("-translate-y-16");
     source_table.classList.add("opacity-0");
@@ -258,46 +393,6 @@ export default function DataModal() {
     }
   }
 
-  const dataColSelectRef = useRef({ value: "default" });
-  const dataModalName = useRef("");
-  const calcRef = useRef("");
-  const transRef = useRef({});
-  const calcColRef = useRef({});
-  const calcColTrRef = useRef({});
-  const calcColNameRef = useRef("");
-  const colSelRef = useRef("default");
-  const sourceTableInputRef = useRef({ value: "" });
-
-  const [chosenTables, setChosenTables] = useState([]);
-  const [allTransCols, setAllTransCols] = useState([])
-  const [calcCols, setCalcCols] = useState([]);
-  const [calcModalCols, setCalcModalCols] = useState({});
-  const [collections, setCollections] = useState([]);
-  const [conditions, setConditions] = useState([]);
-  const [executeCols, setExecuteCols] = useState([]);
-  const [executeResp, setExecuteResp] = useState([]);
-  const [executeRows, setExecuteRows] = useState([]);
-  const [filteredData, setFilteredData] = useState([]);
-  const [gatewayHost, setGatewayHost] = useState("");
-  const [miscIncludes, setMiscIncludes] = useState([]);
-  const [relations, setRelations] = useState({ inner: [], outer: [] });
-  const [sourceTable, setSourceTable] = useState([]);
-  const [tables, setTables] = useState({});
-
-  const [conditionsJSON, setConditionsJSON] = useState([]);
-
-
-  const [dataJSON, setDataJSON] = useState({
-    collection_id: "",
-    query: {
-        table: "",
-        alias: "O",
-        select: {},
-        where_plain: [],
-        includes: {}
-    }
-  });
-
   const getColSelect = async () => {
     //! Get collections
     let resp = await WorkspaceAll.getCollections();
@@ -337,40 +432,63 @@ export default function DataModal() {
     setFilteredData(newFilter);
   };
 
-  const chooseSource = async (table, category = "", nameTable = "" , gatewayHost) => {
-    sourceTableInputRef.current.value = category + " / " + nameTable;
-
+  const chooseSource = async (table, category = "", nameTable = "" , gatewayHost , type , edit = false) => {
     //! Get table relations
-    let resp = await Data.getExplorer(
+    var resp = await Data.getExplorer(
       dataColSelectRef.current.value,
       gatewayHost,
       table,
       true
     );
-    setRelations(resp.Data.relations);
-    var result = [];
+    console.log(resp);
 
-    setTables({
-      ...tables,
-      O: resp.Data,
-    });
+    if (type === "modal") { //Fazladan ilişkili tablo eklemek istediğimizde bunu uygulayacak.
 
-    setChosenTables(
-      result.concat(<Collapses key={0} data={resp.Data} main={"main"} />) //! İlk tablo eklendiğinde gelen ana kolonlar vs için
-    );
+      modalSourceTableInputRef.current.value = category + " / " + nameTable;
+      setModalRelations(resp.Data.relations);
 
-    setDataJSON({
-      ...dataJSON,
-      query: {
-        ...dataJSON.query,
-        table: table,
-      },
-    });
+      setModalTables({
+        O: resp.Data,
+      });
 
-    close_s_tbl();
+    } else {
+
+      sourceTableInputRef.current.value = category + " / " + nameTable;
+      setRelations({
+        inner: resp.Data.relations.inner,
+        outer: resp.Data.relations.outer,
+        extra: [],
+      });
+      var result = [];
+      
+      if (edit) {
+        close_s_tbl(type);
+        return [<Collapses key={0} data={resp.Data} main={"main"} /> , resp] ;
+      }
+
+      setTables({
+        ...tables,
+        O: resp.Data,
+      });
+      
+      setChosenTables(
+        result.concat(<Collapses key={0} data={resp.Data} main={"main"} />) //! İlk tablo eklendiğinde gelen ana kolonlar vs için
+      );
+  
+      setDataJSON({
+        ...dataJSON,
+        query: {
+          ...dataJSON.query,
+          table: table,
+        },
+      });
+
+    }
+  
+    close_s_tbl(type);
   };
 
-  const addRelatedTable = async (table , rel_definition = "" , gatewayHost) => {
+  const addRelatedTable = async (table , rel_definition = "" , gatewayHost , edit = false) => {
     let resp = await Data.getExplorer(
       dataColSelectRef.current.value,
       gatewayHost,
@@ -382,7 +500,11 @@ export default function DataModal() {
     setMiscIncludes([...miscIncludes , alias]);
 
     let keyID = getKeyID(chosenTables);
-    
+
+    if (edit) {
+      return [<Collapses key={keyID + 1} keyID={keyID + 1} data={resp.Data} main={alias} /> , resp];
+    }
+
     setTables(
       {
         ...tables,
@@ -426,50 +548,59 @@ export default function DataModal() {
 
   const addColumns = async (main , col_name , index) => {
 
-    if(document.getElementById("elm_" + main + "_" + index).classList.contains("border-sea_green")) {
-      if(main === "main") {
-        delete dataJSON.query.select[col_name];
-      }
-      else {
-        delete dataJSON.query.includes[main].select[col_name];
+    if (document.getElementById("elm_" + main + "_" + index).classList.contains("border-sea_green")) {
+      if (!document.getElementById('datepart_' + index).classList.contains("!bg-onyx_light")) { //Eğer tarihi parçala dediysem ve normalde kolon seçiliyse hiçbir şey silmeyecek. Sadece gidip tarihleri de dataJSON a ekleyecek
+
+        if(main === "main") {
+          delete dataJSON.query.select[col_name];
+        }
+        else {
+          delete dataJSON.query.includes[main].select[col_name];
+        }
       }
     } else {
 
-      if(main === "main") {
-        setDataJSON({
-          ...dataJSON,
-          query: {
-            ...dataJSON.query,
-            select: {
-              ...dataJSON.query.select,
-              [col_name]: true,
-            },
-          }
-        });
-      } else {
-        setDataJSON({
-          ...dataJSON,
-          query: {
-            ...dataJSON.query,
-            includes: {
-              ...dataJSON.query.includes,
-              [main]: {
-                ...dataJSON.query.includes[main],
-                select: {
-                  ...dataJSON.query.includes[main].select,
-                  [col_name]: true
+      if (document.getElementById('datepart_' + index) === null || (document.getElementById('datepart_' + index) !== null && !document.getElementById('datepart_' + index).classList.contains("!bg-onyx_light"))) {
+  
+        if (main === "main") {
+          setDataJSON({
+            ...dataJSON,
+            query: {
+              ...dataJSON.query,
+              select: {
+                ...dataJSON.query.select,
+                [col_name]: true,
+              },
+            }
+          });
+        } else {
+          setDataJSON({
+            ...dataJSON,
+            query: {
+              ...dataJSON.query,
+              includes: {
+                ...dataJSON.query.includes,
+                [main]: {
+                  ...dataJSON.query.includes[main],
+                  select: {
+                    ...dataJSON.query.includes[main].select,
+                    [col_name]: true
+                  }
                 }
               }
             }
-          }
-        })
+          })
+        }
       }
 
     }
-
-    document.getElementById("sel_" + main + "_" + index).classList.toggle("hidden")
-    document.getElementById("elm_" + main + "_" + index).classList.toggle("border-sea_green")
-    document.getElementById("elm_" + main + "_" + index).classList.toggle("bg-middle_black")
+    if (document.getElementById("elm_" + main + "_" + index).classList.contains("border-sea_green") && document.getElementById('datepart_' + index).classList.contains("!bg-onyx_light")) {
+      return;
+    } else {
+      document.getElementById("sel_" + main + "_" + index).classList.toggle("hidden")
+      document.getElementById("elm_" + main + "_" + index).classList.toggle("border-sea_green")
+      document.getElementById("elm_" + main + "_" + index).classList.toggle("bg-middle_black")
+    }
   }
 
   const selColGroups = (main , col_name , index) => {
@@ -674,6 +805,8 @@ export default function DataModal() {
   };
 
   const saveDataJSON = async () => {
+    console.log(inEdit)
+    //+BUradayım
     let dt = {...dataJSON};
     dt.query['includes'] = Object.values(dt.query['includes']);
 
@@ -682,9 +815,10 @@ export default function DataModal() {
     console.log(resp)
 
     if(resp.Success === true) {
-      //Modal oluşturma ekranını kapat
+      //Modal oluşturma ekranını kapat, modal listesini yenile
       document.getElementById('datamodal').checked = false;
       modal_data.setModalChecked(false);
+      modal_data.getList();
       clearModelInputs();
     }
 
@@ -718,17 +852,83 @@ export default function DataModal() {
 
     //İlişkili tabloları sildik
     sourceTableInputRef.current.value = "";
-    setRelations({ inner: [], outer: [] });
+    setRelations({ inner: [], outer: [] , extra: [] });
+    setModalRelations({ inner: [], outer: [] });
     setTables({});
+    setMiscIncludes([]);
+    setModalTables({});
     setChosenTables([]);
     setExecuteCols([]);
     setExecuteRows([]);
     setCalcModalCols({});
+    setAllTransCols([]);
+    setInEdit(false);
+  }
+
+  const datepart = (col_name , alias , index) => {
+
+    if(alias === "main") {
+      alias = "O";
+    }
+
+    if (document.getElementById('datepart_' + index).classList.contains("!bg-onyx_light")) { //Eğer tarih zaten parçalanmışsa yani buton aktifse tüm parçalanmış tarihleri sileceğiz
+      //setAllTransCols içerisinden çıkardık
+      setAllTransCols(
+        allTransCols.filter(col =>
+        Object.keys(col)[0] !== Object.keys({["{" + col_name + "_YIL}"] : "DATEPART(yyyy ," + alias + "." + col_name + ")"})[0] &&
+        Object.keys(col)[0] !==Object.keys({["{" + col_name + "_AY}"] :  "DATEPART(m ," + alias + "." + col_name + ")"})[0] &&
+        Object.keys(col)[0] !==Object.keys({["{" + col_name + "_HAFTA}"] :  "DATEPART(ww ," + alias + "." + col_name + ")"})[0] &&
+        Object.keys(col)[0] !==Object.keys({["{" + col_name + "_GUN}"] :  "DATEPART(d ," + alias + "." + col_name + ")"})[0]
+      ))
+      
+      //Tüm parçalı tarih kolonlarını dolaştık ve seçtiğimize karşılık gelenleri kaldırdık
+      for (let a of allTransCols) {
+        if (Object.keys(a)[0] === "{" + col_name + "_YIL}") {
+          delete dataJSON.query.select[Object.keys(a)[0]]
+        } else if (Object.keys(a)[0] === "{" + col_name + "_AY}") {
+          delete dataJSON.query.select[Object.keys(a)[0]]
+        } else if (Object.keys(a)[0] === "{" + col_name + "_HAFTA}") {
+          delete dataJSON.query.select[Object.keys(a)[0]]
+        } else if (Object.keys(a)[0] === "{" + col_name + "_GUN}") {
+          delete dataJSON.query.select[Object.keys(a)[0]]
+        }
+      }
+
+    } else {
+
+      setAllTransCols([
+        ...allTransCols ,
+        {["{" + col_name + "_YIL}"] : "DATEPART(yyyy ," + alias + "." + col_name + ")"},
+        {["{" + col_name + "_AY}"] :  "DATEPART(m ," + alias + "." + col_name + ")"},
+        {["{" + col_name + "_HAFTA}"] :  "DATEPART(ww ," + alias + "." + col_name + ")"},
+        {["{" + col_name + "_GUN}"] :  "DATEPART(d ," + alias + "." + col_name + ")"},
+      ])
+  
+      setDataJSON({
+        ...dataJSON,
+        query: {
+          ...dataJSON.query,
+          select: {
+            ...dataJSON.query.select,
+            ["{" + col_name + "_YIL}"] : "DATEPART(yyyy , " + alias + "." + col_name + ")",
+            ["{" + col_name + "_AY}"] :  "DATEPART(m , " + alias + "." + col_name + ")",
+            ["{" + col_name + "_HAFTA}"] :  "DATEPART(ww , " + alias + "." + col_name + ")",
+            ["{" + col_name + "_GUN}"] :  "DATEPART(d , " + alias + "." + col_name + ")",
+          },
+        }
+      });
+
+    }
+
+    document.getElementById('datepart_' + index).classList.toggle("!bg-onyx_light")
+    document.getElementById('datepart_' + index).classList.toggle("border-grayXgray")
+    document.getElementById('datepart_' + index).classList.toggle("!text-platinium")
   }
 
   const saveCalcCol = () => {
     //*Tüm harfleri tek tek döndürüp üzerine yazıyoruz.
 
+    //Aynı ada sahip kolon olmaması için
     if(allTransCols.length > 0) {
       for(let n of allTransCols) {
         console.log(Object.keys(n)[0])
@@ -790,13 +990,45 @@ export default function DataModal() {
     calcRef.current.value = "";
   }
 
+  const saveManRelTbl = () => {
+    //relations içerisine ekleyeceksin
+    let ext = {};
+
+    ext = {
+      category: modalTables.O.source_table.category,
+      details: modalTables.O.source_table.details,
+      name: modalTables.O.source_table.name,
+      priority: modalTables.O.source_table.priority,
+      table: modalTables.O.source_table.table,
+      table: modalTables.O.source_table.table,
+      relation_definition: {
+        referenced_column: referencedColsRef.current.value,
+        single_record: true,
+        source_column: sourceColsRef.current.value,
+      }
+    }
+
+    setRelations({
+      ...relations,
+      extra: [...relations.extra , ext]
+    })
+
+    document.getElementById('manuelrelatedmodal').checked = false;
+    clearManRelTblInp();
+  }
+
+  const clearManRelTblInp = () => {
+    modalSourceTableInputRef.current.value = "";
+    setModalTables({});
+    setModalRelations({ inner: [], outer: [] });
+  }
+
   const cV = () => {
-    setCalcCols([]);
     //Bunu sadece value değiştirirken kullandım hata veriyordu. AllTrans kısmında
   }
 
   const data = {
-    allTransCols, //Bu
+    allTransCols, //Bunu kaldır
     calcCols,
     calcModalCols,
     conditions,
@@ -808,6 +1040,7 @@ export default function DataModal() {
     executeRows,
     filteredData,
     gatewayHost,
+    modalRelations,
     relations,
     calcRef,
     calcColRef,
@@ -815,9 +1048,13 @@ export default function DataModal() {
     calcColNameRef,
     colSelRef,
     dataColSelectRef,
+    modalSourceTableInputRef,
     sourceTableInputRef,
+    sourceColsRef,
+    referencedColsRef,
     miscIncludes,
     tables,
+    modalTables,
     addColumns,
     addCondition,
     addRelatedTable,
@@ -826,13 +1063,16 @@ export default function DataModal() {
     chooseColor,
     chooseSource,
     clearCalcColInp,
+    clearManRelTblInp,
     clearTime,
     colNameSelect,
     compile,
+    datepart,
     dltRelatedTable,
     open_s_tbl,
     removeCondition,
     saveCalcCol,
+    saveManRelTbl,
     selColGroups,
     setDataJSON,
     setCalcCols,
@@ -856,10 +1096,17 @@ export default function DataModal() {
             <Input value={"Model Adı"} refName={dataModalName} />
 
             <SourceTable />
-
-            <h1 className="text-lg text-platinium mt-3 mb-2 drop-shadow">
-              İlişkili Tablolar
-            </h1>
+            
+            <div className='inline-flex items-center w-full justify-between'>
+              <h1 className="text-lg text-platinium mt-3 mb-2 drop-shadow">
+                İlişkili Tablolar
+              </h1>
+              <div className="tooltip tooltip-left" data-tip="Yeni İlişkili Tablo Ekle">
+                <label htmlFor="manuelrelatedmodal" className="green-btn">
+                  <i className="fa-solid fa-plus"></i>
+                </label>
+              </div>
+            </div>
 
             <Relations />
 
@@ -929,6 +1176,7 @@ export default function DataModal() {
 
           <RelationsAbsolute />
           <GroupModal />
+          <ManuelRelatedTable />
         </div>
       </div>
     </DataModalContext.Provider>

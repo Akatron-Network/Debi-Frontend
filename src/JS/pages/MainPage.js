@@ -30,6 +30,14 @@ export default function MainPage() {
   const [modalChecked, setModalChecked] = useState(false);
   const [modalType, setModalType] = useState({});
 
+  const [treeCollections, setTreeCollections] = useState({owned: []});
+	
+	const getTreeCollections = async () => {
+    let resp = await WorkspaceAll.getTrees();
+    setTreeCollections(resp.Data);
+    localStorage.setItem("Tree" , JSON.stringify(resp.Data))
+    localStorage.setItem("TreeTime" , Date.now())
+  }
 
   const getColWorks = async (col_id = undefined) => {
     let resp = await WorkspaceAll.getCollections(col_id);
@@ -131,6 +139,11 @@ export default function MainPage() {
     setModalList(resp.Data.owned_models);
   }
 
+  const deleteModel = async (id) => {
+    let resp = await Data.dltModel(id);
+    getList();
+  }
+
   const maincontext_data = {
     collections,
     folders,
@@ -162,12 +175,17 @@ export default function MainPage() {
     setDeleteItemRef,
     setDeleteItemType,
     setFilePath,
+
+    treeCollections,
+    getTreeCollections,
+    setTreeCollections,
   }
 
   const modal_data = {
     modalChecked,
     modalList,
     modalType,
+    deleteModel,
     getList,
     setModalChecked,
     setModalType,
@@ -228,11 +246,43 @@ export default function MainPage() {
     for(let a of modalList) { if (a.model_id === id) { query = a } }
     console.log(query);
 
-    colList_temp = [{[query.query.table] : {columns: Object.keys(query.query.select) , alias: query.query.alias}}];
+    let arrMain = [];
+    let keyMain = Object.keys(query.query.select)
+    let valueMain = Object.values(query.query.select)
+    for (let v in valueMain) {
+      console.log(valueMain[v])
+      console.log(keyMain[v])
 
-    for(let b of query.query.includes) {
-      colList_temp.push({[b.table] : {columns: Object.keys(b.select) , alias: b.alias}});
+      //* Toplam vb işlemler için kolonları 3 e bölerek isimlendirdik. Valuesi true gelenler, sum-min vs gelenler bir de içerisinde {} bulunduranlar olarak.
+      if (valueMain[v] === true) {
+        arrMain.push(keyMain[v])
+      } else if (valueMain[v].includes("{")) {
+        arrMain.push(valueMain[v].replaceAll("{" , "").replaceAll("}" , ""))
+      } else {
+        arrMain.push(keyMain[v] + "_" + valueMain[v])
+      }
     }
+    colList_temp = [{[query.query.table] : {columns: arrMain , alias: query.query.alias}}];
+
+    let arrAlias = [];
+    for(let b of query.query.includes) {
+      let valueAlias =Object.values(b.select);
+      let keyAlias =Object.keys(b.select);
+
+      for (let v in valueAlias) {
+        console.log(valueAlias[v])
+        console.log(keyAlias[v])
+        if (valueAlias[v] === true) {
+          arrAlias.push(keyAlias[v])
+        } else if (valueAlias[v].includes("{")) {
+          arrAlias.push(valueAlias[v].replaceAll("{" , "").replaceAll("}" , ""))
+        } else {
+          arrAlias.push(keyAlias[v] + "_" + valueAlias[v])
+        }
+      }
+      colList_temp.push({[b.table] : {columns: arrAlias , alias: b.alias}});
+    }
+    console.log(colList_temp);
     
     setColList(colList_temp);
   }
@@ -265,7 +315,6 @@ export default function MainPage() {
   }
 
   const axisSel = (paneltype) => {
-    console.log(paneltype)
     let selColumns = {};
 
     if (paneltype === "bar" || paneltype === "line" || paneltype === "pie") {
@@ -369,6 +418,7 @@ export default function MainPage() {
   let alX = [];
   let alY = [];
   const editPanel = (panelID) => {
+    console.log(panelID)
     for(let p of pageContent.page_data.panels) {
       if(p.PanelID === panelID) {
         //Chart choose
@@ -380,13 +430,15 @@ export default function MainPage() {
 
         //X-Y Axis (We use setTimeout because chooseChart sometimes came with delay)
         setTimeout(() => {
-          if (p.PanelType === "bar" || p.paneltype === "line" || p.paneltype === "pie") {
+          setPanel(panelID);
+          if (p.PanelType === "bar" || p.PanelType === "line" || p.PanelType === "pie") {
+            console.log("a")
 
             xColSelRef.current.value = p.SelColumns.xAxis.alias + "/" + p.SelColumns.xAxis.table + "/" + p.SelColumns.xAxis.col
             yColSelRef.current.value = p.SelColumns.yAxis.alias + "/" + p.SelColumns.yAxis.table + "/" + p.SelColumns.yAxis.col
             
           } else if (p.PanelType === "treemap" || p.PanelType === "mark" || p.PanelType === 'table') {
-            setPanel(panelID);
+            // setPanel(panelID);
 
             //Eğer table ise x olmuyor. Diğerlerinde ise ilk elemanı yazıyoruz daha sonra useeffect kısmında geri kalanı dolduruyoruz
             if (p.PanelType !== "table") { xColSelRef.current.value = p.SelColumns.xAxis.alias + "/" + p.SelColumns.xAxis.table + "/" + p.SelColumns.xAxis.col }
@@ -399,7 +451,7 @@ export default function MainPage() {
             }
             setAllAxis(als);
           } else if (p.PanelType === "pivot") {
-            setPanel(panelID);
+            // setPanel(panelID);
             
             //İlk başta ilk elemanları dolduruyoruz daha sonrasında ise useEffect kısmında eğer varsa gerisini dolduruyoruz
             xColSelRef.current.value = p.SelColumns.xAxis[0].alias + "/" + p.SelColumns.xAxis[0].table + "/" + p.SelColumns.xAxis[0].col
@@ -459,8 +511,6 @@ export default function MainPage() {
   }, [allAxis , titleAxis , valueAxis])
   //-------------------------------------------------------------------------------------------------------------------------------
   
-  
-
   const dltPanel = (panelID) => {
     for (var p of pageContent.page_data.panels) {
       if (p.PanelID === panelID) {
@@ -498,7 +548,6 @@ export default function MainPage() {
     let selColumns = axisSel(panelType);
     let panelIDs = [];
     let lastPanelID = panel;
-    console.log(panel);
 
     for(let p of pageContent.page_data.panels) {
       panelIDs.push(p.PanelID);

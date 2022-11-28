@@ -1,18 +1,9 @@
-import React , { useState } from 'react'
+import React , { useState , useEffect} from 'react'
 import { SidebarContext } from '../context'
 import WorkspaceAll from '../../libraries/categories/Workspace';
 import TreeCollection from './tree/TreeCollection';
 
 export default function MainTree(props) {
-
-  const [treeCollections, setTreeCollections] = useState({owned: []});
-	
-	const getTreeCollections = async () => {
-    let resp = await WorkspaceAll.getTrees();
-    setTreeCollections(resp.Data);
-    localStorage.setItem("Tree" , JSON.stringify(resp.Data))
-    localStorage.setItem("TreeTime" , Date.now())
-  }
 
   const treeToggle = (event , type , id ) => {
     event.preventDefault();
@@ -23,9 +14,6 @@ export default function MainTree(props) {
   const fn = props.fn; //? Dosya ağacındaki herhangi bir şeye tıklandığında sidebar kapanması için
 
 	const treeData = {
-		treeCollections,
-    setTreeCollections,
-		getTreeCollections,
     treeToggle,
     fn,
 	}

@@ -5,7 +5,7 @@ export default function Relations() {
   
   const data = useContext(DataModalContext);
   
-  const allRelations = (data.relations.inner).concat(data.relations.outer)
+  const allRelations = (data.relations.inner).concat(data.relations.outer , data.relations.extra)
 
   return (
   <>
