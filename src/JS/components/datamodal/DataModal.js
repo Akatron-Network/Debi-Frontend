@@ -63,12 +63,6 @@ export default function DataModal() {
   useEffect(() => {
     getColSelect();
   }, []);
-
-  useEffect(() => { //* Düzenleme yapılacak olan modelin dataJSON 'unu aldık. Eğer modalType dolu değilse component yüklenince çalıştırmasın diye bir if koyduk
-    if (Object.keys(modal_data.modalType).length !== 0) {
-      // ssetDataJSON({ ...dataJSON , query: modal_data.modalType.query }); //! EĞER GEREKMİYORSA BURAYI KALDIRABİLİRİZ. ALTTA DİREK EDİTMODAL SONUCUNDA MODALJSON 'U D,REKT DATAJSON A EŞİTLERİZ
-    }
-  }, [modal_data.modalType])
   
   useEffect(() => {
     console.log(dataJSON);
@@ -126,10 +120,13 @@ export default function DataModal() {
     let chsColsTemp = {};
     chsColsTemp["O"] = (await chooseSource(modalJSON.query.table, dt[0].category, dt[0].name, rt[0], undefined ,true))[1].Data.source_table.columns; //* Tüm kolonları çektik aliaslarına öre sonrasında seçilileri yeşile boyayacağız
 
+    let aliaslist = ["O"]
     for (let r in modalJSON.query.includes) { //* İlişkili tablo ekleme
-      chsTbls.push((await addRelatedTable(modalJSON.query.includes[r].table, "" , rt[0], true))[0])
-      chsColsTemp[r] = ((await addRelatedTable(modalJSON.query.includes[r].table, "" , rt[0], true))[1].Data.source_table.columns)
-      tblsTemp[r] = (await addRelatedTable(modalJSON.query.includes[r].table, "" , rt[0], true))[1].Data;
+      let a = getAlias(aliaslist)
+      aliaslist.push(a)
+      chsTbls.push((await addRelatedTable(modalJSON.query.includes[r].table, "" , rt[0], true, a ))[0])
+      chsColsTemp[r] = ((await addRelatedTable(modalJSON.query.includes[r].table, "" , rt[0], true, a ))[1].Data.source_table.columns)
+      tblsTemp[r] = (await addRelatedTable(modalJSON.query.includes[r].table, "" , rt[0], true, a ))[1].Data;
     }
     setChsCols(chsColsTemp);
     setChosenTables(chsTbls);
@@ -155,7 +152,6 @@ export default function DataModal() {
           document.getElementById("sel_main_" + cindex).value = cval;
         }
       } else {
-        //Hesap kolonu ekleneceğiz
         transColTemp.push({[c] : cval})
       }
     }
@@ -176,7 +172,6 @@ export default function DataModal() {
             document.getElementById("sel_" + incAlias + "_" + cindex).value = cval;
           }
         } else {
-          //Hesap kolonu ekleneceğiz
           transColTemp.push({[c] : cval})
         }
       }
@@ -396,6 +391,7 @@ export default function DataModal() {
   const getColSelect = async () => {
     //! Get collections
     let resp = await WorkspaceAll.getCollections();
+    console.log(resp)
     setCollections(resp.Data.owned_collections);
   };
 
@@ -488,7 +484,7 @@ export default function DataModal() {
     close_s_tbl(type);
   };
 
-  const addRelatedTable = async (table , rel_definition = "" , gatewayHost , edit = false) => {
+  const addRelatedTable = async (table , rel_definition = "" , gatewayHost , edit = false, sAlias) => {
     let resp = await Data.getExplorer(
       dataColSelectRef.current.value,
       gatewayHost,
@@ -502,7 +498,7 @@ export default function DataModal() {
     let keyID = getKeyID(chosenTables);
 
     if (edit) {
-      return [<Collapses key={keyID + 1} keyID={keyID + 1} data={resp.Data} main={alias} /> , resp];
+      return [<Collapses key={sAlias ? sAlias : alias} keyID={keyID + 1} data={resp.Data} main={sAlias ? sAlias : alias} /> , resp];
     }
 
     setTables(
@@ -547,9 +543,14 @@ export default function DataModal() {
   }
 
   const addColumns = async (main , col_name , index) => {
+    //+ ToDO Bu FONKSİYONU KOMPLE BAŞTAN YAZZ! DatePart'a main de ekle yani "datepart_" + main + "_" + index olsun
+    let datepart = document.getElementById('datepart_' + index);
+    let elm_main = document.getElementById("elm_" + main + "_" + index);
+    
+    if (datepart === null) {datepart = {classList: {contains: () => {}, toggle: () => {}}}}
 
-    if (document.getElementById("elm_" + main + "_" + index).classList.contains("border-sea_green")) {
-      if (!document.getElementById('datepart_' + index).classList.contains("!bg-onyx_light")) { //Eğer tarihi parçala dediysem ve normalde kolon seçiliyse hiçbir şey silmeyecek. Sadece gidip tarihleri de dataJSON a ekleyecek
+    if (elm_main.classList.contains("border-sea_green") && datepart !== null) {
+      if (!datepart.classList.contains("!bg-onyx_light")) { //Eğer tarihi parçala dediysem ve normalde kolon seçiliyse hiçbir şey silmeyecek. Sadece gidip tarihleri de dataJSON a ekleyecek
 
         if(main === "main") {
           delete dataJSON.query.select[col_name];
@@ -558,9 +559,10 @@ export default function DataModal() {
           delete dataJSON.query.includes[main].select[col_name];
         }
       }
-    } else {
+    }
+    else {
 
-      if (document.getElementById('datepart_' + index) === null || (document.getElementById('datepart_' + index) !== null && !document.getElementById('datepart_' + index).classList.contains("!bg-onyx_light"))) {
+      if (datepart === null || (datepart !== null && !datepart.classList.contains("!bg-onyx_light"))) {
   
         if (main === "main") {
           setDataJSON({
@@ -594,12 +596,14 @@ export default function DataModal() {
       }
 
     }
-    if (document.getElementById("elm_" + main + "_" + index).classList.contains("border-sea_green") && document.getElementById('datepart_' + index).classList.contains("!bg-onyx_light")) {
+    
+    if (elm_main.classList.contains("border-sea_green") && datepart.classList.contains("!bg-onyx_light")) {
       return;
-    } else {
+    }
+    else {
       document.getElementById("sel_" + main + "_" + index).classList.toggle("hidden")
-      document.getElementById("elm_" + main + "_" + index).classList.toggle("border-sea_green")
-      document.getElementById("elm_" + main + "_" + index).classList.toggle("bg-middle_black")
+      elm_main.classList.toggle("border-sea_green")
+      elm_main.classList.toggle("bg-middle_black")
     }
   }
 
@@ -647,18 +651,21 @@ export default function DataModal() {
   const refreshTable = async () => {
     let dt = {...dataJSON};
     dt.query['includes'] = Object.values(dt.query['includes']);
+    console.log(dt);
     
     let incold = {}
     for (let tb of dataJSON.query.includes) {
       incold[tb.alias] = tb
     }
+    console.log(incold)
     dataJSON.query.includes = incold
     
     let resp = await Data.postExecute(dt, gatewayHost);
     console.log(resp)
 
     setExecuteResp(resp.Data);
-    setExecuteCols(Object.keys(resp.Data[0]).map((cols) => ({name: cols})))
+    if (resp.Data.length > 0) setExecuteCols(Object.keys(resp.Data[0]).map((cols) => ({name: cols})))
+    //* boş veri döndü hatası döndür
     setExecuteRows(resp.Data.map((rows) => (Object.values(rows))))
   }
 
@@ -806,13 +813,24 @@ export default function DataModal() {
 
   const saveDataJSON = async () => {
     console.log(inEdit)
-    //+BUradayım
     let dt = {...dataJSON};
     dt.query['includes'] = Object.values(dt.query['includes']);
-
     console.log(dt)
-    let resp = await Data.postModel(dataModalName.current.value , collections[0].source_table , collections[0].db_scheme_id , dt.query);
-    console.log(resp)
+
+    var sch_id = "";
+    for (let id of collections) {
+      console.log(id.collection_id)
+      console.log(parseInt(dt.collection_id))
+      if (id.collection_id === parseInt(dt.collection_id)) { sch_id = id.db_scheme_id }
+    }
+
+    if (!inEdit) { //* Yeni oluşturuluyorsa
+      var resp = await Data.postModel(dataModalName.current.value ,dataJSON.query.table , sch_id , dt.query);
+      console.log(resp)
+    } else { //* Edit halindeyse
+      var resp = await Data.putModel(modal_data.modalType.model_id, dataModalName.current.value, dataJSON.query.table , sch_id , dt.query);
+      console.log(resp)
+    }
 
     if(resp.Success === true) {
       //Modal oluşturma ekranını kapat, modal listesini yenile
@@ -866,12 +884,13 @@ export default function DataModal() {
   }
 
   const datepart = (col_name , alias , index) => {
+    let datepart = document.getElementById('datepart_' + index);
 
     if(alias === "main") {
       alias = "O";
     }
 
-    if (document.getElementById('datepart_' + index).classList.contains("!bg-onyx_light")) { //Eğer tarih zaten parçalanmışsa yani buton aktifse tüm parçalanmış tarihleri sileceğiz
+    if (datepart.classList.contains("!bg-onyx_light")) { //Eğer tarih zaten parçalanmışsa yani buton aktifse tüm parçalanmış tarihleri sileceğiz
       //setAllTransCols içerisinden çıkardık
       setAllTransCols(
         allTransCols.filter(col =>
@@ -920,9 +939,9 @@ export default function DataModal() {
 
     }
 
-    document.getElementById('datepart_' + index).classList.toggle("!bg-onyx_light")
-    document.getElementById('datepart_' + index).classList.toggle("border-grayXgray")
-    document.getElementById('datepart_' + index).classList.toggle("!text-platinium")
+    datepart.classList.toggle("!bg-onyx_light")
+    datepart.classList.toggle("border-grayXgray")
+    datepart.classList.toggle("!text-platinium")
   }
 
   const saveCalcCol = () => {
@@ -1089,6 +1108,10 @@ export default function DataModal() {
       <div className="modal bg-modal_back">
         <div className="modal-box max-w-full h-screen p-4 grid grid-cols-5 gap-5 bg-darkest_jet rounded">
           <div className="md:col-span-2 col-span-5 bg-middle_black p-3 rounded shadow-md overflow-auto relative min-h-[570px] h-full">
+            <h1 className="text-lg text-platinium mb-2 drop-shadow">
+              Model Oluştur
+            </h1>
+
             <ColSelect />
 
             <hr className="my-3 border-1 w-4/5 relative left-1/2 -translate-x-1/2 border-hr_gray" />

@@ -1,5 +1,5 @@
 import React , { useState , useRef , useEffect } from 'react'
-import { MainContext, ModalContext, ChartContext } from '../components/context'
+import { MainContext, ModalContext, ChartContext, UnionDataModalContext } from '../components/context'
 import WorkspaceAll from '../libraries/categories/Workspace';
 import Data from '../libraries/categories/Data';
 import { Outlet } from 'react-router-dom';
@@ -8,6 +8,7 @@ import Navbar from '../components/Navbar';
 import Sidebar from '../components/Sidebar';
 import Filepath from '../components/Filepath';
 import DataModal from '../components/datamodal/DataModal';
+import UnionDataModal from '../components/uniondatamodal/UnionDataModal';
 import { getAlias } from '../libraries/misc';
 import Bar from '../components/panels/forms/Bar';
 import TreeMap from '../components/panels/forms/TreeMap';
@@ -136,6 +137,7 @@ export default function MainPage() {
 
   const getList = async () => {
     let resp = await Data.getModalList();
+    console.log(resp.Data.owned_models)
     setModalList(resp.Data.owned_models);
   }
 
@@ -703,21 +705,34 @@ export default function MainPage() {
     setValueAxis,
   }
   //* ----------------------------------------------------------/
+
+  //* Union Modal Data------------------------------------------/
+  const openUnionModal = () => {
+
+  }
+
+  const union_data = {
+    openUnionModal,
+  }
+  //* ----------------------------------------------------------/
   
 
   return (
     <MainContext.Provider value={maincontext_data}>
       <ModalContext.Provider value={modal_data}>
         <ChartContext.Provider value={chart_data}>
-          <Navbar new_btn={"hidden"} page_btn={"hidden"} save_page_btn={"hidden"} />
-          <Sidebar />
-          <Filepath />
+          <UnionDataModalContext.Provider value={union_data}>
+            <Navbar new_btn={"hidden"} page_btn={"hidden"} save_page_btn={"hidden"} />
+            <Sidebar />
+            <Filepath />
 
-          <div className="pt-[89px] pb-10 pl-[100px] pr-[10px]">
-            <Outlet />
-          </div>
+            <div className="pt-[89px] pb-10 pl-[100px] pr-[10px]">
+              <Outlet />
+            </div>
 
-          <DataModal />
+            <DataModal />
+            <UnionDataModal />
+          </UnionDataModalContext.Provider>
         </ChartContext.Provider>
       </ModalContext.Provider>
     </MainContext.Provider >

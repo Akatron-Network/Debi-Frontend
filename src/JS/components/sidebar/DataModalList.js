@@ -1,8 +1,10 @@
 import React , { useContext , useEffect } from 'react'
-import { ModalContext } from '../context'
+import { UnionDataModalContext , ModalContext } from '../context'
 
 export default function DataModalList() {
   const modal_data = useContext(ModalContext);
+  const union_modal_data = useContext(UnionDataModalContext);
+  console.log(union_modal_data);
 
   useEffect(() => {
     modal_data.getList();
@@ -39,7 +41,38 @@ export default function DataModalList() {
     modal_data.setModalType(modal_type);
     console.log(modal_type)
   }
+
+  const openUnionModal = (modal_type) => { //!Önizleme için gerekiyor
+    setTimeout(() => {
+      let review_btn = document.getElementById('closeUnionModalBtn');
+      let review = document.getElementById('unionReview');
+      let tblReview = document.getElementById('unionTableReview');
+      
+      var review_btn_crd = review_btn.getBoundingClientRect();
+
+      setTimeout(() => {
+    
+        let review_crd = review.getBoundingClientRect();
+        review.style.height = (review_btn_crd.top - review_crd.top - 8) +'px';
+    
+      }, 10);
+    
+      setTimeout(() => {
+      
+        let review_crd = review.getBoundingClientRect();
+        tblReview.style.height = (review_crd.height - 16) + 'px';
+    
+      }, 20);
   
+    }, 200);
+
+    // if(modal_data.modalChecked !== true) {
+    //   modal_data.setModalChecked(true);
+    // }
+
+    // modal_data.setModalType(modal_type);
+    // console.log(modal_type)
+  }
   return (
     <>
       <div className='hrLine'>
@@ -59,6 +92,7 @@ export default function DataModalList() {
           </div>
         ))}
         <label htmlFor="datamodal" className="btn tree-elm px-3 text-sea_green hover:text-green_pantone" onClick={() => openModal("new")}><i className="fa-solid fa-plus mr-2 p-[5px]"></i>Yeni Veri Modeli Ekle</label>
+        <label htmlFor="unionmodal" className="btn tree-elm px-3 text-sea_green hover:text-green_pantone" onClick={() => openUnionModal("new")}><i className="fa-solid fa-plus mr-2 p-[5px]"></i>Yeni Birleşik Model Ekle</label>
       </div>
     </>
   )

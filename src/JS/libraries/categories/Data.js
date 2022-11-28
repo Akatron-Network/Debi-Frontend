@@ -69,6 +69,22 @@ class Data {
     return resp;
   }
 
+  static async putModel(model_id, model_name, source_table, id, data) {
+    let putModel_req = new Requests("data", "model");
+
+    var resp = await putModel_req.put({
+      model_id: model_id,
+      values: {
+        model_name: model_name,
+        source_table: source_table,
+        db_scheme_id: id,
+        query: data,
+      }
+    });
+
+    return resp;
+  }
+
   static async getModalList() {
     let getModalList_req = new Requests("data", "model");
 
