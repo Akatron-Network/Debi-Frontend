@@ -3,8 +3,6 @@ import { UnionDataModalContext , ModalContext } from '../context'
 
 export default function DataModalList() {
   const modal_data = useContext(ModalContext);
-  const union_modal_data = useContext(UnionDataModalContext);
-  console.log(union_modal_data);
 
   useEffect(() => {
     modal_data.getList();
@@ -73,6 +71,7 @@ export default function DataModalList() {
     // modal_data.setModalType(modal_type);
     // console.log(modal_type)
   }
+
   return (
     <>
       <div className='hrLine'>

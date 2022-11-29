@@ -59,12 +59,13 @@ class WorkspaceAll {
         }
     }
 
-    static async postCollections(name) {
+    static async postCollections(name , scheme) {
         let postCollections_req = new Requests("workspace" , "collections");
 
         try {
             let resp = await postCollections_req.post({
                 collection_name: name,
+                db_scheme_id: scheme,
             });
 
             

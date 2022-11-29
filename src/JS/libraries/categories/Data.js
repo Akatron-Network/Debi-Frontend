@@ -1,12 +1,14 @@
 import Requests from '../classes/Requests';
 
 class Data {
-  static async postConnector(colID, type, content) {
+  static async postConnector(colID, type, gateway, gateway_host, content) {
     let postConnector_req = new Requests("data", "connector");
 
     try {
       let resp = await postConnector_req.post({
         collection_id: colID,
+        gateway: gateway,
+        gateway_host: gateway_host,
         connector_type: type,
         context: content,
       });

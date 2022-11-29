@@ -1,4 +1,4 @@
-import React , { useContext } from 'react'
+import React , { useContext , useState } from 'react'
 import { MainContext } from '../context'
 import WorkspaceAll from '../../libraries/categories/Workspace';
 import Data from '../../libraries/categories/Data';
@@ -7,14 +7,15 @@ import Input from '../Input'
 export default function ColConnectorCreateor() {
 	const data = useContext(MainContext);
 
-  const checkWarn = (hidden , block) => {
-    if(document.getElementById('colWarn' + hidden).classList.contains('!block')) {
-    document.getElementById('colWarn' + hidden).classList.remove('!block');
-    }
-    document.getElementById('colWarn' + block).classList.add('!block')
-  }
+  const checkWarn = (block) => {
+    let warns = ["1" , "2" , "3"]
 
-  
+    for (let w of warns) {
+      document.getElementById('colWarn' + w).classList.remove('!block');
+    }
+
+    document.getElementById('colWarn' + block).classList.add('!block');
+  }
 
   const createContent = () => {
     var content = {
@@ -45,15 +46,17 @@ export default function ColConnectorCreateor() {
           var connectResp = await Data.putConnector(data.colWorksSelectRef.current.value , connectionContent , data.colConnectorServerRef.current.value);
         }
         
+        checkWarn(3);
+        data.setDbSchemas(Object.keys(connectResp.Data.scheme_similarity))
         return connectResp;
 
       } catch (error) {
         console.log(error);
-        checkWarn(1 , 2)
+        checkWarn(2)
       }
 
 
-    } else {checkWarn(2 , 1)}
+    } else {checkWarn(1)}
 
   }
  
@@ -63,18 +66,21 @@ export default function ColConnectorCreateor() {
       var connectionContent = createContent();
 
       if(connectResp.Success !== false) {
-        const forColID = await WorkspaceAll.postCollections(data.colNameRef.current.value);
+        const forColID = await WorkspaceAll.postCollections(data.colNameRef.current.value, data.dbSchemas[0]);
         data.getColWorks();
 
-        console.log(forColID.Data.collection_id);
-        console.log(data.colWorksSelectRef.current.value);
-        console.log(connectionContent);
-        const a = await Data.postConnector(forColID.Data.collection_id , data.colWorksSelectRef.current.value , connectionContent);
-        console.log(a)
+        if (data.checkConnector === true) {
+          const a = await Data.postConnector(forColID.Data.collection_id, data.colWorksSelectRef.current.value, false, undefined,  connectionContent);
+          console.log(a)
+
+        } else {
+          const a = await Data.postConnector(forColID.Data.collection_id, data.colWorksSelectRef.current.value, true, data.colConnectorServerRef.current.value,  connectionContent);
+          console.log(a)
+        }
         document.getElementById('addWorksCol').checked = false;
       }
 
-    } else {checkWarn(2 , 1)}
+    } else {checkWarn(1)}
   }
 
   const checkConnector = () => {
@@ -126,6 +132,18 @@ export default function ColConnectorCreateor() {
           <span id='colWarn1' className='text-sm p-1 text-red-600 hidden'>Lütfen gerekli bilgileri doldurun!</span>
           <span id='colWarn2' className='text-sm p-1 text-red-600 hidden'>Bağlantı bilgileri yanlış. Lütfen tekrar gözden geçirin.</span>
           <span id='colWarn3' className='text-sm p-1 text-green-600 hidden'>Bağlantı başarılı. 'Kaydet' butonuna tıklayarak koleksiyon oluşturabilirsiniz.</span>
+
+          {data.dbSchemas.length > 0 ? <h2 className="text-lg mt-2 mb-1 text-platinium">Veri Tabanı Şeması</h2> : undefined}
+          
+          {data.dbSchemas.map((sch , index) => {
+            return(
+              <div key={index} className='inline-flex w-full items-center p-1'>
+                <input type="checkbox" checked={index === 0} className="checkbox mr-2 transition duration-300 hover:border-onyx_middle h-4 w-4" />
+                <span className='text-[14px] text-grayXgray'>{sch}</span>
+              </div>
+            )
+          })}
+        
           <button onClick={() => addWorksApply()} className='green-btn float-right mt-1'>Kaydet</button>
           <button onClick={() => testConnection()} className='gray-btn float-right mr-1 mt-1'>Bağlantı Kontrol</button>
         </label>

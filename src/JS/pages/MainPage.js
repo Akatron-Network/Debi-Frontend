@@ -62,6 +62,7 @@ export default function MainPage() {
   const deleteItems = async (del_type , id) => {
     if(del_type === 'collection') {
       let resp = await WorkspaceAll.deleteCollections(id);
+      console.log(resp);
       getColWorks();
     }
     else if(del_type === 'folder') {
@@ -92,8 +93,8 @@ export default function MainPage() {
   const colNameRef = useRef({value : ""});
   const foldNameRef = useRef({value : ""});
   const fileNameRef = useRef({value : ""});
-
   
+  const [dbSchemas, setDbSchemas] = useState([])
   const [checkedConnector , setCheckedConnector] = useState(false);
   const [checkedExpress , setCheckedExpress] = useState(false);
 
@@ -111,11 +112,11 @@ export default function MainPage() {
       if(checkedConnector) { setCheckedConnector(!checkedConnector) }
       if(checkedExpress) { setCheckedExpress(!checkedExpress) }
 
-      if(document.getElementById('colWarn1').classList.contains('!block')) {
-        document.getElementById('colWarn1').classList.remove('!block');
-      }
-      else if(document.getElementById('colWarn2').classList.contains('!block')) {
-        document.getElementById('colWarn2').classList.remove('!block');
+      
+      let warns = ["1" , "2" , "3"]
+
+      for (let w of warns) {
+        document.getElementById('colWarn' + w).classList.remove('!block');
       }
 
     }
@@ -148,6 +149,7 @@ export default function MainPage() {
 
   const maincontext_data = {
     collections,
+    dbSchemas,
     folders,
     files,
     filesChildDirs,
@@ -176,6 +178,7 @@ export default function MainPage() {
     setCheckedExpress,
     setDeleteItemRef,
     setDeleteItemType,
+    setDbSchemas,
     setFilePath,
 
     treeCollections,
@@ -706,22 +709,10 @@ export default function MainPage() {
   }
   //* ----------------------------------------------------------/
 
-  //* Union Modal Data------------------------------------------/
-  const openUnionModal = () => {
-
-  }
-
-  const union_data = {
-    openUnionModal,
-  }
-  //* ----------------------------------------------------------/
-  
-
   return (
     <MainContext.Provider value={maincontext_data}>
       <ModalContext.Provider value={modal_data}>
         <ChartContext.Provider value={chart_data}>
-          <UnionDataModalContext.Provider value={union_data}>
             <Navbar new_btn={"hidden"} page_btn={"hidden"} save_page_btn={"hidden"} />
             <Sidebar />
             <Filepath />
@@ -732,7 +723,6 @@ export default function MainPage() {
 
             <DataModal />
             <UnionDataModal />
-          </UnionDataModalContext.Provider>
         </ChartContext.Provider>
       </ModalContext.Provider>
     </MainContext.Provider >
