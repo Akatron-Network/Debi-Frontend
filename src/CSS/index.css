@@ -232,7 +232,7 @@
       text-base
       font-normal
       leading-5
-      tracking-[3px]
+      tracking-[2px]
       mb-[30px]
       font-righteous
       text-grayXgray
@@ -245,8 +245,8 @@
       font-normal
       text-jet_mid
       drop-shadow-logo-title
-      tracking-[3px]
-      text-[2.5rem]
+      tracking-[2px]
+      text-[3.25rem]
       leading-tight
       
   }
@@ -265,7 +265,7 @@
     @apply
       bg-jet_mid
       text-grayXgray
-      px-[15px]
+      px-[8px]
       my-2
       mx-0
       border-[1px]
@@ -708,6 +708,11 @@
       focus:!outline-none
       placeholder:opacity-50
       h-10
+  }
+
+  .table-wrapper .gridjs-footer {
+    @apply
+      hidden
   }
   /*?--------------------------------------*/
 

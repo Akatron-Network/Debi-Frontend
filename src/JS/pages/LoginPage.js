@@ -121,7 +121,7 @@ export default function LoginPage() {
               <h1 className='font-bold m-0 text-[2.5rem]'>Giriş Yap</h1>
               {/* <a href="#" className="social giris-a"><i className="fab fa-google-plus-g" /></a> */}
               {/* <span className='text-xs'>ya da hesabını kullanabilirsin</span> */}
-              <input className='input placeholder:opacity-50 w-3/4' type="text" placeholder="Kullanıcı Adı" ref={login_nicknameRef} />
+              <input className='input placeholder:opacity-50 w-3/4' autoFocus type="text" placeholder="Kullanıcı Adı" ref={login_nicknameRef} />
               <input className='input placeholder:opacity-50 w-3/4' type="password" placeholder="Şifre" ref={login_passRef} />
               <div id='loginWarns'>
                 <span id='warn_2' className='text-sm text-red-600 hidden'>Lütfen tüm gerekli bilgileri doldurun!</span>
@@ -134,15 +134,15 @@ export default function LoginPage() {
           <div className="absolute top-0 w-1/2 left-1/2 h-full overflow-hidden transition-transform ease-in-out duration-700 z-[100]" id='overlay-container'>
             <div className="bg-gradient-to-r from-green_pantone to-cadmium_green bg-no-repeat bg-cover text-platinium relative -left-full h-full w-[200%] translate-x-0 transition-transform duration-700" id='overlay'>
               <div className="overlay-panel" id='overlay-left'>
-                <img src={debi_logo} alt="Debisis Logo" className="logo" />
-                <h1 className="logo-title">Debisis</h1>
-                <p className="logo-text">Detaylı Bilgi Sistemi</p>
+                <a href='https://debi.akatron.net/'><img src={debi_logo} alt="DeBI" className="logo" /></a>
+                <a href='https://debi.akatron.net/' className="logo-title">DeBI</a>
+                <a href='https://debi.akatron.net/' className="logo-text">Designable Business Intelligence</a>
                 <button className="ghost button" onClick={change}>GİRİŞ YAP</button>
               </div>
               <div className="overlay-panel right-0 translate-x-0" id='overlay-right'>
-                <img src={debi_logo} alt="Debisis Logo" className="logo" />
-                <h1 className="logo-title">Debisis</h1>
-                <p className="logo-text">Detaylı Bilgi Sistemi</p>
+                <a href='https://debi.akatron.net/'><img src={debi_logo} alt="DeBI" className="logo" /></a>
+                <a href='https://debi.akatron.net/' className="logo-title">DeBI</a>
+                <a href='https://debi.akatron.net/' className="logo-text">Designable Business Intelligence</a>
                 <button className="ghost button" onClick={change}>Kayıt Ol</button>
               </div>
             </div>

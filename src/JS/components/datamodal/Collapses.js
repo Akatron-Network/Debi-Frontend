@@ -81,6 +81,9 @@ export default function Collapses(props) {
       </div>
 
       <div className="collapse-content text-graysix">
+        <h1 className="text-lg text-grayXgray mt-2 drop-shadow">
+          Kolonlar
+        </h1>
         <div className="table_layout max-h-72">
           {props.data.source_table.columns.map((col, index) => (
             <div className="table_col_cards inline-grid relative" key={index} id={"elm_" + props.main + "_" + index}>

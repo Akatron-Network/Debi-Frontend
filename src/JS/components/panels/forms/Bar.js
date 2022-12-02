@@ -3,6 +3,7 @@ import { ChartContext } from '../../context';
 
 export default function Bar() {
   const chart_data = useContext(ChartContext);
+  console.log(chart_data)
 
   return (
     <>

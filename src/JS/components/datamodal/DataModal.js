@@ -424,7 +424,6 @@ export default function DataModal() {
 
       return condition;
     });
-
     setFilteredData(newFilter);
   };
 
@@ -482,6 +481,7 @@ export default function DataModal() {
     }
   
     close_s_tbl(type);
+    setFilteredData(sourceTable); // soruceTablesJSON(yani kaynak tabloları arattığımız yer) sıfırlamak için yapıyoruz
   };
 
   const addRelatedTable = async (table , rel_definition = "" , gatewayHost , edit = false, sAlias) => {
@@ -1088,6 +1088,7 @@ export default function DataModal() {
     compile,
     datepart,
     dltRelatedTable,
+    getColSelect, //Bunu daha detaylı düşün
     open_s_tbl,
     removeCondition,
     saveCalcCol,
@@ -1185,7 +1186,7 @@ export default function DataModal() {
                 id="tableReview"
                 className="w-full border border-onyx rounded shadow-md overflow-auto"
               >
-                <Table />
+                <Table pagination={true} />
               </div>
             </div>
 

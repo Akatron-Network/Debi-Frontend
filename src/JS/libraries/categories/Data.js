@@ -21,20 +21,20 @@ class Data {
   }
 
   static async putConnector(type, content, host) {
-    let putConnector_req = new Requests("data", "connector", host + ":8001");
+    let putConnector_req = new Requests("data", "connector", (host) ? host + ":8001" : undefined);
 
     var resp = await putConnector_req.put(
       {
         connector_type: type,
         context: content,
       },
-      host !== undefined
+      (host !== undefined && host !== null)
     );
     return resp;
   }
 
   static async getExplorer(id, host, tbl_name = "", rel = false) {
-    let getExplorer_req = new Requests("data", "explorer", host + ":8001");
+    let getExplorer_req = new Requests("data", "explorer", (host) ? host + ":8001" : undefined);
 
     var resp = await getExplorer_req.get(
       {
@@ -44,16 +44,16 @@ class Data {
           relations: rel,
         },
       },
-      host !== undefined
+      (host !== undefined && host !== null)
     );
 
     return resp;
   }
 
   static async postExecute(data, host) {
-    let postExecute_req = new Requests("data", "execute", host + ":8001");
+    let postExecute_req = new Requests("data", "execute", (host) ? host + ":8001" : undefined);
 
-    var resp = await postExecute_req.post(data, host !== undefined);
+    var resp = await postExecute_req.post(data, (host !== undefined && host !== null));
 
     return resp;
   }

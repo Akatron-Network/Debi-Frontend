@@ -2,8 +2,9 @@ import React, { useContext } from "react";
 import { DataModalContext } from "../context";
 import { Grid } from 'gridjs-react';
 import "gridjs/dist/theme/mermaid.min.css";
+import { trTR } from "gridjs/l10n";
 
-export default function Table() {
+export default function Table(props) {
   const data = useContext(DataModalContext);
   
   const grid = new Grid({
@@ -20,10 +21,15 @@ export default function Table() {
     columns: data.executeCols,
     data:data.executeRows,
 
+    pagination: {
+      enabled: props.pagination,
+      limit: 100,
+    },
     className: {
       table: '!w-full !bg-darker_jet !table-auto',
       container: "table-wrapper"
-    }
+    },
+    language: trTR
   });
 
   

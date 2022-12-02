@@ -35,6 +35,7 @@ export default function MainPage() {
 	
 	const getTreeCollections = async () => {
     let resp = await WorkspaceAll.getTrees();
+    if (resp === undefined || resp === null) return;
     setTreeCollections(resp.Data);
     localStorage.setItem("Tree" , JSON.stringify(resp.Data))
     localStorage.setItem("TreeTime" , Date.now())
@@ -62,7 +63,6 @@ export default function MainPage() {
   const deleteItems = async (del_type , id) => {
     if(del_type === 'collection') {
       let resp = await WorkspaceAll.deleteCollections(id);
-      console.log(resp);
       getColWorks();
     }
     else if(del_type === 'folder') {
@@ -79,6 +79,9 @@ export default function MainPage() {
       let resp = await WorkspaceAll.deleteFiles(id);
       getFileWorks(resp.Data.directory_id);
     }
+    setTimeout(() => {
+      getTreeCollections();
+    }, 750);
     
   }
     
@@ -93,24 +96,30 @@ export default function MainPage() {
   const colNameRef = useRef({value : ""});
   const foldNameRef = useRef({value : ""});
   const fileNameRef = useRef({value : ""});
+  const checkDBSchemaRef = useRef([])
   
   const [dbSchemas, setDbSchemas] = useState([])
+  const [choosenSchema, setChoosenSchema] = useState("");
   const [checkedConnector , setCheckedConnector] = useState(false);
   const [checkedExpress , setCheckedExpress] = useState(false);
+  const [checkedConnection, setCheckedConnection] = useState(false)
 
   const clearRefs = (type) => {
     if(type === "koleksiyon") {
-      maincontext_data.colNameRef.current.value = "";
-      maincontext_data.colServerRef.current.value = "";
-      maincontext_data.colConnectorServerRef.current.value = "";
-      maincontext_data.colWorksNickRef.current.value = "";
-      maincontext_data.colWorksPassRef.current.value = "";
-      maincontext_data.colWorksDBRef.current.value = "";
-      maincontext_data.colWorksSelectRef.current.value = "default";
-      maincontext_data.colPortRef.current.value = "1433";
-
-      if(checkedConnector) { setCheckedConnector(!checkedConnector) }
-      if(checkedExpress) { setCheckedExpress(!checkedExpress) }
+      colNameRef.current.value = "";
+      colServerRef.current.value = "";
+      colConnectorServerRef.current.value = "";
+      colWorksNickRef.current.value = "";
+      colWorksPassRef.current.value = "";
+      colWorksDBRef.current.value = "";
+      colWorksSelectRef.current.value = "default";
+      colPortRef.current.value = "1433";
+      checkDBSchemaRef.current.value = [];
+      setDbSchemas([]);
+      setChoosenSchema("");
+      setCheckedConnector(false);
+      setCheckedConnection(false);
+      setCheckedExpress(false);
 
       
       let warns = ["1" , "2" , "3"]
@@ -154,9 +163,12 @@ export default function MainPage() {
     files,
     filesChildDirs,
     colNameRef,
+    choosenSchema,
+    checkDBSchemaRef,
     foldNameRef,
     fileNameRef,
     checkedConnector,
+    checkedConnection,
     checkedExpress,
     colConnectorServerRef,
     colPortRef,
@@ -175,10 +187,12 @@ export default function MainPage() {
     getFileWorks,
     getFolderWorks,
     setCheckedConnector,
+    setCheckedConnection,
     setCheckedExpress,
     setDeleteItemRef,
     setDeleteItemType,
     setDbSchemas,
+    setChoosenSchema,
     setFilePath,
 
     treeCollections,
@@ -261,16 +275,16 @@ export default function MainPage() {
       //* Toplam vb işlemler için kolonları 3 e bölerek isimlendirdik. Valuesi true gelenler, sum-min vs gelenler bir de içerisinde {} bulunduranlar olarak.
       if (valueMain[v] === true) {
         arrMain.push(keyMain[v])
-      } else if (valueMain[v].includes("{")) {
-        arrMain.push(valueMain[v].replaceAll("{" , "").replaceAll("}" , ""))
+      } else if (keyMain[v].includes("{")) {
+        arrMain.push(keyMain[v].replaceAll("{" , "").replaceAll("}" , ""))
       } else {
         arrMain.push(keyMain[v] + "_" + valueMain[v])
       }
     }
     colList_temp = [{[query.query.table] : {columns: arrMain , alias: query.query.alias}}];
 
-    let arrAlias = [];
     for(let b of query.query.includes) {
+      let arrAlias = [];
       let valueAlias =Object.values(b.select);
       let keyAlias =Object.keys(b.select);
 
@@ -279,13 +293,15 @@ export default function MainPage() {
         console.log(keyAlias[v])
         if (valueAlias[v] === true) {
           arrAlias.push(keyAlias[v])
-        } else if (valueAlias[v].includes("{")) {
-          arrAlias.push(valueAlias[v].replaceAll("{" , "").replaceAll("}" , ""))
+        } else if (keyAlias[v].includes("{")) {
+          arrAlias.push(keyAlias[v].replaceAll("{" , "").replaceAll("}" , ""))
         } else {
           arrAlias.push(keyAlias[v] + "_" + valueAlias[v])
         }
       }
+      console.log(arrAlias)
       colList_temp.push({[b.table] : {columns: arrAlias , alias: b.alias}});
+      console.log(colList_temp);
     }
     console.log(colList_temp);
     
