@@ -1,21 +1,29 @@
 import React , { useContext , useState , useEffect , useRef } from 'react'
-import { UnionDataModalContext , ModalContext } from '../context'
+import { UnionDataModalContext , ModalContext , MainContext } from '../context'
 import Table from '../datamodal/Table';
 import Input from '../Input';
 import UnionCollapse from './UnionCollapse';
 import UnionColumns from './UnionColumns';
 import { getAlias } from '../../libraries/misc';
+import UnionCollectionSelect from './UnionCollectionSelect';
+import WorkspaceAll from '../../libraries/categories/Workspace';
 
 export default function UnionDataModal() {
   const modal_data = useContext(ModalContext);
+  const maincontext_data = useContext(MainContext);
+  console.log(maincontext_data);
   console.log(modal_data)
+
+  const [collections, setCollections] = useState([])
 
   const unionNameRef = useRef("");
   const unionExplanationRef = useRef("");
+  const unionCollectionNameRef = useRef("");
   const unionColumnsNameRef = useRef([]);
-  const unionSourceSelectRef = useRef([]);
-  const unionSourceNameRef = useRef("");
-  const unionSourceColSelectRef = useRef("default");
+  const unionSourceColumnSelectRef = useRef([]);
+  const unionSourceModelSelectRef = useRef([]);
+  const unionSourceNameRef = useRef([]);
+  const unionSourceTitleNameRef = useRef([]);
 
   //* unionJSON Template
   // {
@@ -44,44 +52,89 @@ export default function UnionDataModal() {
       union_expl: "",
       columns: [],
       db_scheme_id: "",
-      childs: [
-        {
-          child_id: null,
-          child_type: "",
-          child_name: "",
-          columns: []
-        }
-      ]
+      childs: []
     }
   )
 
-  const addColumns = () => {
-    let new_columns = [...unionJSON.columns , ""]
+  //? Choose Collections -------------------------------
+  const getCollections = async () => {
+    let resp = await WorkspaceAll.getCollections();
+    console.log(resp)
+    setCollections(resp.Data.owned_collections);
+  }
 
-    setUnionJSON(
-      {
-        ...unionJSON,
-        columns: new_columns
+  const collectionSelect = (colID) => {
+    console.log(colID);
+  }
+  //? --------------------------------------------------
+  
+
+  //? Columns ------------------------------------------
+  const addColumns = () => {
+    let new_columns = [...unionJSON.columns , ""];
+    let new_childs = [...unionJSON.childs];
+
+    if (new_childs.length > 0) {  // Eğer daha önceden eklenmiş bir kaynak var ise o kaynağı burada kontrol ediyoruz.
+      for (let c of new_childs) { // Kaynağın içerisine "" şeklinde bir eleman daha ekliyoruz. Yeni kolon anlamında
+        c.columns.push("")
       }
-    )
+
+      setUnionJSON(
+        {
+          ...unionJSON,
+          childs: new_childs,
+          columns: new_columns
+        }
+      )
+
+    } else {
+      setUnionJSON(
+        {
+          ...unionJSON,
+          columns: new_columns
+        }
+      )
+    }
   }
 
   const deleteColumns = (index) => {
-    let new_columns = [...unionJSON.columns]
+    let new_columns = [...unionJSON.columns];
+    let new_childs = [...unionJSON.childs];
+
     new_columns.splice(index , 1)
-    if (unionColumnsNameRef.current[index + 1]) {
-      unionColumnsNameRef.current[index].value = unionColumnsNameRef.current[index + 1].value
+    
+    for (let i in new_columns) {  // Bunun amacı kolon sildiğimizde kolonların bilgilerini düzgün şekilde yazdırmak
+      unionColumnsNameRef.current[i].value = new_columns[i];
     }
 
-    setUnionJSON(
-      {
-        ...unionJSON,
-        columns: new_columns
+    if (new_childs.length > 0) {  // Eğer daha önceden eklenmiş bir kaynak var ise o kaynağı burada kontrol ediyoruz.
+      for (let c in new_childs) { // Kaynağın içerisinden indekslenen elemanı çıkarıyoruz
+        new_childs[c].columns.splice(index , 1)
+        
+        for (let i in new_childs[c].columns) {  // Burada props indeks  bizim c elemanımız oluyor. i ise kolonnu selectinin indeksi oluyor. örn: 0_1 referansından alıyoruz bilgileri
+          unionSourceColumnSelectRef.current[c + "_" + i].value = new_childs[c].columns[i];
+        }
       }
-    )
+
+      setUnionJSON(
+        {
+          ...unionJSON,
+          childs: new_childs,
+          columns: new_columns
+        }
+      )
+
+    } else {
+      setUnionJSON(
+        {
+          ...unionJSON,
+          columns: new_columns
+        }
+      )
+    }
   }
 
-  const unionColumnsNameSave = (index) => {
+  const columnsNameSave = (index) => {
     let val = unionColumnsNameRef.current[index].value;
     let new_columns = [...unionJSON.columns]
 
@@ -95,12 +148,75 @@ export default function UnionDataModal() {
     )
 
   }
+  //? --------------------------------------------------
 
-  const unionSourceSelectSave = (index) => {
-    let val = unionSourceSelectRef.current[index].value
+
+  //? Sources ------------------------------------------
+  const addSources = () => {
+    let new_sources = [...unionJSON.childs];
+    let columns = [];
+
+    for (let c = 0; unionJSON.columns.length > c ; c++) { columns.push("") } //unionJSON içerisinde columnsta kaç tane kolon var ise yeni oluşturduğumuz kaynak içerisindeki
+                                                                             //kolon listesine o kadar kolon oluşturuyoruz. örnek: 3 tane kolon varsa -> ["","",""] şeklinde
+    let source =  {
+                    child_id: null,
+                    child_type: "",
+                    child_name: "",
+                    columns: columns
+                  };
+                  
+   new_sources.push(source);
+
+    setUnionJSON(
+      {
+        ...unionJSON,
+        childs : new_sources
+      }
+    )
+  }
+
+  const deleteSources = (index) => {
+    let new_sources = [...unionJSON.childs]
+    new_sources.splice(index, 1)
+
+    //Bunun amacı kaynak sildiğimizde kendisinden sonra gelen bir kaynak varsa onun bilgilerini aktarmak.
+    // if (unionSourceNameRef.current[index + 1]) {
+    //   unionSourceNameRef.current[index].value = unionSourceNameRef.current[index + 1].value
+    // }
+    console.log(new_sources);
+    for (let i in new_sources) {
+      console.log(new_sources[i])
+      unionSourceModelSelectRef.current[i].value = new_sources[i].child_id;
+      unionSourceNameRef.current[i].value = new_sources[i].child_name;
+      unionSourceTitleNameRef.current[i].innerHTML = " (" + new_sources[i].child_name + ")";
+    }
+
+    setUnionJSON(
+      {
+        ...unionJSON,
+        childs : new_sources
+      }
+    )
+  }
+  
+  const renderCollapses = () => {
+    let ret = [];
+    let i = 0;
+
+    for (let child of unionJSON.childs) {
+      ret.push(<UnionCollapse data={child} key={i} index={i} /> )
+      i++;
+    }
+
+    return ret;
+  }
+
+  const sourceModelSelect = (index) => { //+ ToDo
+    let val = unionSourceModelSelectRef.current[index].value
     let new_childs = [...unionJSON.childs]
 
     new_childs[index].child_id = val;
+    new_childs[index].child_type = "model"; //+ Burada model olarak direkt kaydediyoruz ama ileride birleşik model de olabilir
 
     setUnionJSON(
       {
@@ -110,10 +226,41 @@ export default function UnionDataModal() {
     )
   }
 
-  const addSources = () => {
+  const sourceName = (index) => {
+    let val = unionSourceNameRef.current[index].value;
+    let new_childs = [...unionJSON.childs]
 
+    new_childs[index].child_name = val;
+
+    setUnionJSON(
+      {
+        ...unionJSON,
+        childs: new_childs
+      }
+    )
+    unionSourceTitleNameRef.current[index].innerHTML = " (" + unionSourceNameRef.current[index].value + ")"
   }
 
+  const sourceColumnsSave = (sourceIndex, columnIndex, value) => {
+    let new_childs = [...unionJSON.childs];
+    console.log(sourceIndex);
+    console.log(columnIndex);
+    console.log(value);
+
+    new_childs[sourceIndex].columns[columnIndex] = value;
+
+    setUnionJSON(
+      {
+        ...unionJSON,
+        childs: new_childs,
+      }
+    )
+
+  }
+  //? --------------------------------------------------
+
+
+  //? Others -------------------------------------------
   const refreshUnionTable = () => {
 
   }
@@ -129,29 +276,28 @@ export default function UnionDataModal() {
   const openUnionModal = () => {
 
   }
-  
+  //? --------------------------------------------------
+
   const union_data = {
+    collections,
     unionJSON,
 
+    unionCollectionNameRef,
     unionColumnsNameRef,
-    unionSourceSelectRef,
+    unionSourceColumnSelectRef,
+    unionSourceModelSelectRef,
+    unionSourceNameRef,
+    unionSourceTitleNameRef,
 
     addColumns,
+    collectionSelect,
+    columnsNameSave,
     deleteColumns,
-    unionColumnsNameSave,
-    unionSourceSelectSave,
-  }
-
-  const renderCollapses = () => {
-    let ret = [];
-    let i = 0;
-
-    for (let child of unionJSON.childs) {
-      ret.push(<UnionCollapse data={child} key={i} index={i} /> )
-      i++;
-    }
-
-    return ret;
+    deleteSources,
+    getCollections,
+    sourceColumnsSave,
+    sourceModelSelect,
+    sourceName,
   }
 
   return (
@@ -164,6 +310,10 @@ export default function UnionDataModal() {
             <h1 className="text-lg text-platinium mb-2 drop-shadow">
               Birleşik Model Oluştur
             </h1>
+
+            <UnionCollectionSelect />
+
+            <hr className="my-3 border-1 w-4/5 relative left-1/2 -translate-x-1/2 border-hr_gray" />
 
             <Input value={"B. Model Adı"} refName={unionNameRef} />
             <Input value={"B. Model Açıklaması"} refName={unionExplanationRef} />

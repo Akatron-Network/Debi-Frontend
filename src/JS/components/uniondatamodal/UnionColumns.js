@@ -19,7 +19,7 @@ export default function UnionColumns() {
                 placeholder={(index + 1) + ". Kolon adı girin"}
                 className="input my-0 input-bordered !rounded-none w-full h-auto"
                 ref={(el) => {union_data.unionColumnsNameRef.current[index] = el}}
-                onBlur={() => union_data.unionColumnsNameSave(index)}
+                onBlur={() => union_data.columnsNameSave(index)}
               />
               <button className="danger-btn h-auto w-[12%] !rounded-l-none !rounded-r" onClick={() => union_data.deleteColumns(index)}><i className="fa-solid fa-xmark"></i></button>
             </div>

@@ -147,7 +147,6 @@ export default function MainPage() {
 
   const getList = async () => {
     let resp = await Data.getModalList();
-    console.log(resp.Data.owned_models)
     setModalList(resp.Data.owned_models);
   }
 
