@@ -6,6 +6,7 @@ export default function DataModalList() {
 
   useEffect(() => {
     modal_data.getList();
+    modal_data.getUnions();
   }, [])
 
   const openModal = (modal_type) => { //!Önizleme için gerekiyor
@@ -91,6 +92,17 @@ export default function DataModalList() {
           </div>
         ))}
         <label htmlFor="datamodal" className="btn tree-elm px-3 text-sea_green hover:text-green_pantone" onClick={() => openModal("new")}><i className="fa-solid fa-plus mr-2 p-[5px]"></i>Yeni Veri Modeli Ekle</label>
+        
+        <hr className="my-3 border-1 w-4/5 relative left-1/2 -translate-x-1/2 border-hr_gray" />
+
+        {modal_data.unionList.map((list , index) => (
+          <div className='mb-1' key={index}>
+            <div className='tree-elm pl-3'>
+              <label htmlFor="default" className="w-[200px] cursor-pointer truncate flex items-center" onClick={() => openUnionModal(list)}><i className="fa-solid fa-diagram-project mr-2 p-[5px]"></i>{list.union_name}</label>
+              <i className="fa-solid fa-xmark tree-cursor absolute right-3 mr-0 hover:text-danger_light" onClick={() => modal_data.deleteUnion(list.union_id)}></i>
+            </div>
+          </div>
+        ))}
         <label htmlFor="unionmodal" className="btn tree-elm px-3 text-sea_green hover:text-green_pantone" onClick={() => openUnionModal("new")}><i className="fa-solid fa-plus mr-2 p-[5px]"></i>Yeni Birleşik Model Ekle</label>
       </div>
     </>

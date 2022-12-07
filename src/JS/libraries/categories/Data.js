@@ -113,7 +113,29 @@ class Data {
     return resp;
   }
 
+  static async getUnionList() {
+    let getUnionList_req = new Requests("data", "union");
 
+    var resp = await getUnionList_req.get();
+
+    return resp;
+  }
+
+  static async postUnion(data) {
+    let postUnion_req = new Requests("data", "union");
+
+    var resp = await postUnion_req.post(data);
+    return resp;
+  }
+
+  static async dltUnion(id) {
+    let dltUnion_req = new Requests("data", "union");
+
+    var resp = await dltUnion_req.delete({
+      union_id: id
+    });
+    return resp;
+  }
 
 }
 

@@ -147,12 +147,26 @@ export default function MainPage() {
 
   const getList = async () => {
     let resp = await Data.getModalList();
+    console.log(resp)
     setModalList(resp.Data.owned_models);
   }
 
   const deleteModel = async (id) => {
     let resp = await Data.dltModel(id);
     getList();
+  }
+
+  const [unionList, setUnionList] = useState([]);
+
+  const getUnions = async () => {
+    let resp = await Data.getUnionList();
+    console.log(resp)
+    setUnionList(resp.Data.owned_unions);
+  }
+
+  const deleteUnion = async (id) => {
+    let resp = await Data.dltUnion(id);
+    getUnions();
   }
 
   const maincontext_data = {
@@ -203,8 +217,11 @@ export default function MainPage() {
     modalChecked,
     modalList,
     modalType,
+    unionList,
     deleteModel,
+    deleteUnion,
     getList,
+    getUnions,
     setModalChecked,
     setModalType,
   }
@@ -268,9 +285,6 @@ export default function MainPage() {
     let keyMain = Object.keys(query.query.select)
     let valueMain = Object.values(query.query.select)
     for (let v in valueMain) {
-      console.log(valueMain[v])
-      console.log(keyMain[v])
-
       //* Toplam vb işlemler için kolonları 3 e bölerek isimlendirdik. Valuesi true gelenler, sum-min vs gelenler bir de içerisinde {} bulunduranlar olarak.
       if (valueMain[v] === true) {
         arrMain.push(keyMain[v])

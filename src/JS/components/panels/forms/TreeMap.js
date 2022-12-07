@@ -3,7 +3,6 @@ import { ChartContext } from '../../context';
 
 export default function TreeMap() {
   const chart_data = useContext(ChartContext);
-  console.log(chart_data)
 
   useEffect(() => {
     return () => {

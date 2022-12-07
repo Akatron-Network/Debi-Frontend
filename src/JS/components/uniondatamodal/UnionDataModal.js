@@ -1,12 +1,12 @@
 import React , { useContext , useState , useEffect , useRef } from 'react'
 import { UnionDataModalContext , ModalContext , MainContext } from '../context'
-import Table from '../datamodal/Table';
-import Input from '../Input';
+import UnionTable from '../uniondatamodal/UnionTable';
 import UnionCollapse from './UnionCollapse';
 import UnionColumns from './UnionColumns';
 import { getAlias } from '../../libraries/misc';
 import UnionCollectionSelect from './UnionCollectionSelect';
 import WorkspaceAll from '../../libraries/categories/Workspace';
+import Data from '../../libraries/categories/Data';
 
 export default function UnionDataModal() {
   const modal_data = useContext(ModalContext);
@@ -14,7 +14,10 @@ export default function UnionDataModal() {
   console.log(maincontext_data);
   console.log(modal_data)
 
-  const [collections, setCollections] = useState([])
+  const [collections, setCollections] = useState([]);
+  const [sourceColumns, setSourceColumns] = useState([]);
+  const [executeUnionCols, setExecuteUnionCols] = useState([]);
+  const [executeUnionRows, setExecuteUnionRows] = useState([]);
 
   const unionNameRef = useRef("");
   const unionExplanationRef = useRef("");
@@ -56,7 +59,7 @@ export default function UnionDataModal() {
     }
   )
 
-  //? Choose Collections -------------------------------
+  //? Choose Collections, Name, Explanation -------------------------------
   const getCollections = async () => {
     let resp = await WorkspaceAll.getCollections();
     console.log(resp)
@@ -64,7 +67,39 @@ export default function UnionDataModal() {
   }
 
   const collectionSelect = (colID) => {
-    console.log(colID);
+    for (let c of collections) {
+      if (c.collection_id === parseInt(colID)) {
+        setUnionJSON(
+          {
+            ...unionJSON,
+            db_scheme_id: c.db_scheme_id
+          }
+        )
+      }
+    }
+  }
+
+  const nameExplanationSave = (type) => {
+    let val = "";
+
+    if (type === "name") {
+      val = unionNameRef.current.value
+      setUnionJSON(
+        {
+          ...unionJSON,
+          union_name : val
+        }
+      )
+    } else if (type === "exp") {
+      val = unionExplanationRef.current.value
+      setUnionJSON(
+        {
+          ...unionJSON,
+          union_expl : val
+        }
+      )
+
+    }
   }
   //? --------------------------------------------------
   
@@ -110,7 +145,7 @@ export default function UnionDataModal() {
     if (new_childs.length > 0) {  // Eğer daha önceden eklenmiş bir kaynak var ise o kaynağı burada kontrol ediyoruz.
       for (let c in new_childs) { // Kaynağın içerisinden indekslenen elemanı çıkarıyoruz
         new_childs[c].columns.splice(index , 1)
-        
+
         for (let i in new_childs[c].columns) {  // Burada props indeks  bizim c elemanımız oluyor. i ise kolonnu selectinin indeksi oluyor. örn: 0_1 referansından alıyoruz bilgileri
           unionSourceColumnSelectRef.current[c + "_" + i].value = new_childs[c].columns[i];
         }
@@ -180,9 +215,6 @@ export default function UnionDataModal() {
     new_sources.splice(index, 1)
 
     //Bunun amacı kaynak sildiğimizde kendisinden sonra gelen bir kaynak varsa onun bilgilerini aktarmak.
-    // if (unionSourceNameRef.current[index + 1]) {
-    //   unionSourceNameRef.current[index].value = unionSourceNameRef.current[index + 1].value
-    // }
     console.log(new_sources);
     for (let i in new_sources) {
       console.log(new_sources[i])
@@ -215,7 +247,7 @@ export default function UnionDataModal() {
     let val = unionSourceModelSelectRef.current[index].value
     let new_childs = [...unionJSON.childs]
 
-    new_childs[index].child_id = val;
+    new_childs[index].child_id = parseInt(val);
     new_childs[index].child_type = "model"; //+ Burada model olarak direkt kaydediyoruz ama ileride birleşik model de olabilir
 
     setUnionJSON(
@@ -224,6 +256,8 @@ export default function UnionDataModal() {
         childs: new_childs,
       }
     )
+    
+    if (val !== undefined) renderSourceColumnsOptions(val);
   }
 
   const sourceName = (index) => {
@@ -243,11 +277,7 @@ export default function UnionDataModal() {
 
   const sourceColumnsSave = (sourceIndex, columnIndex, value) => {
     let new_childs = [...unionJSON.childs];
-    console.log(sourceIndex);
-    console.log(columnIndex);
-    console.log(value);
-
-    new_childs[sourceIndex].columns[columnIndex] = value;
+    new_childs[sourceIndex].columns[columnIndex] = value; //Eğer ileride O/TBLCAHAR/CARI_KOD gibi bir value gelirse value.split("/")[2] bunu kullan
 
     setUnionJSON(
       {
@@ -255,22 +285,119 @@ export default function UnionDataModal() {
         childs: new_childs,
       }
     )
+  }
 
+  const renderSourceColumnsOptions = (modelID) => {
+
+    console.log(modelID);
+    let columns = [];
+    let columns_option = [];
+    let i = 0;
+
+    for (let m of modal_data.modalList) { // Model ID si aynı olanların içerisindeki query'den table, alias ve kolon isimlerini alıp bir liste oluşturduk.
+      if (m.model_id === parseInt(modelID)) {
+
+        for (let s of Object.keys(m.query.select)) {
+          // columns.push(m.query.alias + "/" + m.query.table + "/" + s) - İleride gerekirse bunu kullanabiliriz örn: O/TBLCAHAR/CARI_KOD
+          columns.push(s)
+        }
+
+        if (m.query.includes.length > 0) {
+          for (let q of m.query.includes) {
+            for (let ins of Object.keys(q.select)) {
+              // columns.push(q.alias + "/" + q.table + "/" + ins) - İleride gerekirse bunu kullanabiliriz örn: O/TBLCAHAR/CARI_KOD
+              columns.push(ins)
+            }
+          }
+        }
+        console.log(columns)  // Örnek çıktı: ["ISLETME_KODU", "CARI_TEL"]
+      }
+    }
+
+    for (let c of columns) {
+      columns_option.push(<option key={i} value={c}>{c}</option>) //İleride eğer O/TBLCAHAR/CARI_KOD gibi bir value gelirse ayırmak için {c.split("/")[1]} - {c.split("/")[2]} kullanılabilir
+      i++;
+    }
+    console.log(columns_option);
+
+    setSourceColumns(columns_option);
   }
   //? --------------------------------------------------
 
 
   //? Others -------------------------------------------
-  const refreshUnionTable = () => {
+  const refreshUnionTable = async () => {
+    let columns = [...unionJSON.columns];
+    let last_columns = {};
+    let last_JSON = {
+      collection_id: undefined,
+      union: {...unionJSON}
+    };
+    let gateway = "";
 
+    for (let c of columns) {  // unionJSON içerisindeki Columns u JSON a çeviriyoruz yani
+      last_columns[c] = true; // ["Cari_Kod", "Cari_Isim"] -> {"Cari_Kod": true, "Cari_Isim": true} gibi olacak
+    }
+
+    last_JSON.collection_id = unionCollectionNameRef.current.value
+    last_JSON.union.columns = last_columns;
+
+    for (let c of collections) {
+      if (c.collection_id === parseInt(unionCollectionNameRef.current.value)) gateway = c.connector.gateway_host
+    }
+
+    let resp = await Data.postExecute(last_JSON, gateway);
+    console.log(resp)
+
+    if (resp.Data.length > 0) {
+      setExecuteUnionCols(Object.keys(resp.Data[0]).map((cols) => { // Kolon gözükürken Category diye gözükmesin istedik
+        if (cols === "CATEGORY") {
+          cols = "KATEGORI"
+        }
+        return(
+          {name: cols}
+        )
+      }))
+      setExecuteUnionRows(resp.Data.map((rows) => (Object.values(rows))))
+    }
   }
 
-  const saveUnion = () => {
+  const saveUnion = async () => {
+    let columns = [...unionJSON.columns];
+    let last_columns = {};
+    let last_JSON = {...unionJSON};
 
+    for (let c of columns) {  // unionJSON içerisindeki Columns u JSON a çeviriyoruz yani
+      last_columns[c] = true; // ["Cari_Kod", "Cari_Isim"] -> {"Cari_Kod": true, "Cari_Isim": true} gibi olacak
+    }
+
+    last_JSON.columns = last_columns;
+
+    let resp = await Data.postUnion(last_JSON);
+    console.log(resp)
+
+    if (resp.Success === true) {
+      document.getElementById("unionmodal").checked = false;
+      clearUnionInputs();
+    }
   }
 
   const clearUnionInputs = () => {
+    unionCollectionNameRef.current.value = "default";
+    unionNameRef.current.value = "";
+    unionExplanationRef.current.value = "";
+    setExecuteUnionCols([]);
+    setExecuteUnionRows([]);
 
+    setUnionJSON(
+      {
+        union_name: "",
+        union_expl: "",
+        columns: [],
+        db_scheme_id: "",
+        childs: []
+      }
+    )
   }
 
   const openUnionModal = () => {
@@ -280,6 +407,9 @@ export default function UnionDataModal() {
 
   const union_data = {
     collections,
+    executeUnionCols,
+    executeUnionRows,
+    sourceColumns,
     unionJSON,
 
     unionCollectionNameRef,
@@ -295,6 +425,7 @@ export default function UnionDataModal() {
     deleteColumns,
     deleteSources,
     getCollections,
+    renderSourceColumnsOptions,
     sourceColumnsSave,
     sourceModelSelect,
     sourceName,
@@ -314,9 +445,19 @@ export default function UnionDataModal() {
             <UnionCollectionSelect />
 
             <hr className="my-3 border-1 w-4/5 relative left-1/2 -translate-x-1/2 border-hr_gray" />
-
-            <Input value={"B. Model Adı"} refName={unionNameRef} />
-            <Input value={"B. Model Açıklaması"} refName={unionExplanationRef} />
+            
+            <div className="form-control mb-2">
+              <div className="input-group shadow-md">
+                <span className='bg-black_light text-grayXgray px-2 py-[7px] !rounded-l border border-jet_mid justify-center min-w-[35%] xl:truncate'>B. Model Adı</span>
+                <input type="text" placeholder="B. Model Adı girin" className="input my-0 input-bordered !rounded-r w-full h-auto" ref={unionNameRef} onBlur={() => nameExplanationSave("name")} />
+              </div>
+            </div>
+            <div className="form-control mb-2">
+              <div className="input-group shadow-md">
+                <span className='bg-black_light text-grayXgray px-2 py-[7px] !rounded-l border border-jet_mid justify-center min-w-[35%] xl:truncate'>B. Model Açıklaması</span>
+                <input type="text" placeholder="B. Model Açıklaması girin" className="input my-0 input-bordered !rounded-r w-full h-auto" ref={unionExplanationRef} onBlur={() => nameExplanationSave("exp")} />
+              </div>
+            </div>
 
             <div className="justify-between items-center flex">
               <h1 className="text-lg text-platinium mt-3 mb-2 drop-shadow">
@@ -356,11 +497,8 @@ export default function UnionDataModal() {
               <i className="fa-solid fa-rotate"></i>
             </button>
             <div id="unionReview" className="w-full bg-darker_jet rounded shadow-md border border-jet_mid p-2">
-              <div
-                id="unionTableReview"
-                className="w-full border border-onyx rounded shadow-md overflow-auto"
-              >
-                {/* <Table /> */}
+              <div id="unionTableReview" className="w-full border border-onyx rounded shadow-md overflow-auto">
+                <UnionTable pagination={true} />
               </div>
             </div>
 

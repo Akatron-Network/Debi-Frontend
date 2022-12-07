@@ -92,6 +92,11 @@ export default function ChartChoose() {
                     {modal.model_name}
                   </option>
                 ))}
+                {modal_data.unionList.map((union) => (
+                  <option key={union.union_id.toString()} value={union.union_id}>
+                    {union.union_name + " (Birleşik Model)"}
+                  </option>
+                ))}
               </select>
             </div>
           </div>

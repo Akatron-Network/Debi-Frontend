@@ -4,7 +4,6 @@ import { UnionDataModalContext , ModalContext } from '../context'
 export default function UnionCollapse(props) {
   const union_data = useContext(UnionDataModalContext);
   const modal_data = useContext(ModalContext);
-  console.log(modal_data);
   console.log(props);
 
   return (
@@ -59,11 +58,9 @@ export default function UnionCollapse(props) {
                 <option disabled value="default">
                   {index + 1}. Kolon seçin...
                 </option>
-                <option value="a">a</option>
-                <option value="b">b</option>
-                <option value="c">c</option>
-                <option value="d">d</option>
-                <option value="e">e</option>
+                {union_data.sourceColumns.map(el => {
+                  return (el)
+                })}
               </select>
             )
           })}

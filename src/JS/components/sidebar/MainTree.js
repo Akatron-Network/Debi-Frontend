@@ -1,6 +1,5 @@
-import React , { useState , useEffect} from 'react'
+import React  from 'react'
 import { SidebarContext } from '../context'
-import WorkspaceAll from '../../libraries/categories/Workspace';
 import TreeCollection from './tree/TreeCollection';
 
 export default function MainTree(props) {
