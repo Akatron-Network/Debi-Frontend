@@ -41,7 +41,7 @@ export default function DataModalList() {
     console.log(modal_type)
   }
 
-  const openUnionModal = (modal_type) => { //!Önizleme için gerekiyor
+  const openUnionModal = (union_type) => { //!Önizleme için gerekiyor
     setTimeout(() => {
       let review_btn = document.getElementById('closeUnionModalBtn');
       let review = document.getElementById('unionReview');
@@ -65,12 +65,14 @@ export default function DataModalList() {
   
     }, 200);
 
-    // if(modal_data.modalChecked !== true) {
-    //   modal_data.setModalChecked(true);
-    // }
+    if (union_type !== "new") {
+      if (modal_data.unionEditChecked !== true) {
+        modal_data.setUnionEditChecked(true);
+        modal_data.setUnionInformations(union_type);
+      }
+    }
 
-    // modal_data.setModalType(modal_type);
-    // console.log(modal_type)
+    console.log(union_type)
   }
 
   return (
@@ -98,7 +100,7 @@ export default function DataModalList() {
         {modal_data.unionList.map((list , index) => (
           <div className='mb-1' key={index}>
             <div className='tree-elm pl-3'>
-              <label htmlFor="default" className="w-[200px] cursor-pointer truncate flex items-center" onClick={() => openUnionModal(list)}><i className="fa-solid fa-diagram-project mr-2 p-[5px]"></i>{list.union_name}</label>
+              <label htmlFor="unionmodal" className="w-[200px] cursor-pointer truncate flex items-center" onClick={() => openUnionModal(list)}><i className="fa-solid fa-diagram-project mr-2 p-[5px]"></i>{list.union_name}</label>
               <i className="fa-solid fa-xmark tree-cursor absolute right-3 mr-0 hover:text-danger_light" onClick={() => modal_data.deleteUnion(list.union_id)}></i>
             </div>
           </div>

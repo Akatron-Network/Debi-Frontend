@@ -59,6 +59,11 @@ export default function UnionDataModal() {
     }
   )
 
+  useEffect(() => {
+    getCollections();
+  }, [])
+  
+
   //? Choose Collections, Name, Explanation -------------------------------
   const getCollections = async () => {
     let resp = await WorkspaceAll.getCollections();
@@ -388,6 +393,13 @@ export default function UnionDataModal() {
     unionExplanationRef.current.value = "";
     setExecuteUnionCols([]);
     setExecuteUnionRows([]);
+    unionSourceColumnSelectRef.current = [];
+    
+    if(modal_data.unionEditChecked === true) {
+      modal_data.setUnionEditChecked(false);
+      modal_data.setUnionInformations({});
+      modal_data.setUnionList([]);
+    }
 
     setUnionJSON(
       {
@@ -399,10 +411,74 @@ export default function UnionDataModal() {
       }
     )
   }
+  //? --------------------------------------------------
 
-  const openUnionModal = () => {
 
+  //? Edit Model ---------------------------------------
+  useEffect(() => {
+    //Edit check kontrolü yapılıyor burada. Edit mi yoksa yeni bir tane mi açıldı diye
+    if (modal_data.unionEditChecked) { editUnionModel(); }
+  }, [modal_data.unionEditChecked])
+
+  const editUnionModel = () => {
+    let js = {};
+
+    for (let u of modal_data.unionList) {
+      if (u.union_id === modal_data.unionInformations.union_id) {
+        js = {...u};
+      }
+    }
+    console.log(js);
+    js.columns = Object.keys(js.columns);
+    setUnionJSON(js);
   }
+
+  useEffect(() => { //+ ToDo
+    if (modal_data.unionEditChecked) { // Editchecked true iken çalıştıracak
+
+      if (collections[0].db_scheme_id === unionJSON.db_scheme_id) {
+        unionCollectionNameRef.current.value = collections[0].collection_id;
+      }
+
+      unionNameRef.current.value = unionJSON.union_name
+      unionExplanationRef.current.value = unionJSON.union_expl
+
+      for (let c in unionJSON.columns) {
+        unionColumnsNameRef.current[c].value = unionJSON.columns[c]
+      }
+
+      for (let child in unionJSON.childs) {
+        unionSourceTitleNameRef.current[child].innerHTML = " (" + unionJSON.childs[child].child_name + ")";
+        unionSourceModelSelectRef.current[child].value = unionJSON.childs[child].child_id;
+        unionSourceNameRef.current[child].value = unionJSON.childs[child].child_name;
+
+        renderSourceColumnsOptions(unionJSON.childs[child].child_id);
+
+        setTimeout(() => {  // Yukarıdaki fonksiyonun bitmesini bekleyeceğiz. Yoksa kolonlar oluşturulması geciktiğinden geç dolduruluyor
+          let arr = [];
+          for (let col in unionJSON.childs[child].columns) {
+            console.log(unionSourceColumnSelectRef.current[child + "_" + col]);
+
+            if (unionSourceColumnSelectRef.current[child + "_" + col] === undefined || unionSourceColumnSelectRef.current[child + "_" + col] === null) {
+              // unionJSON.childs[child].columns.splice(col, 1)
+              arr.push(col);
+              continue;
+            }
+
+            unionSourceColumnSelectRef.current[child + "_" + col].value = unionJSON.childs[child].columns[col]
+            console.log(unionSourceColumnSelectRef.current[child + "_" + col].value)
+          }
+
+          //+ Burada bir sıkıntı var o yüzden hardfix attım. Sıkıntı da şu editlerken kolon ekliyorum ama kaydetmiyorum ve sonrasında kapatıp tekrar editlemek için açtığımda eski kolonlar yerinde kalıyor gitmiyordu. Ben de hepsini sil diyorum
+          unionJSON.childs[child].columns.splice(arr[0], (unionJSON.childs[child].columns.length - parseInt(arr[0])))
+
+        }, 1000);
+      }
+
+      modal_data.setUnionEditChecked(false); //Tüm bilgileri dolduruktan sonra artık false haline getirsin
+    }
+  }, [unionJSON])
+  
   //? --------------------------------------------------
 
   const union_data = {

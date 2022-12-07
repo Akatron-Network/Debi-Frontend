@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import debi_logo from '../../img/icon2.png';
 import ChartChoose from './panels/ChartChoose';
 import { ChartContext } from './context';
+import avatar from '../../img/ico.png'
 
 export default function Navbar(props) {
   const chart_data = useContext(ChartContext);
@@ -78,22 +79,23 @@ export default function Navbar(props) {
     <ChartChoose />
 
     <div id='menu_page' className="fixed top-11 w-64 bg-earie_black shadow-dropdown rounded-l rounded-tl-none z-10 transition -translate-y-48 duration-300 right-0">
-      {/* <Link className="avatar new-elm flex items-center border-b border-solid border-hr_gray" to="/ayarlar">
-        <div className="h-full mask mask-squircle w-1/5">
-          <img src="https://placeimg.com/192/192/people" />
-        </div>
-        <span className='w-4/5 truncate pl-2'>
-          Hakan Temur
-        </span>
+      <Link className="avatar new-elm flex items-center border-b border-solid border-hr_gray" to="/ayarlar">
+        <i className="fa-solid fa-user w-1/5 text-center text-lg ml-[-1px]"></i>
+        <span className='w-4/5 truncate pl-2'>Hesap Bilgileri</span>
       </Link>
-      <label className="swap swap-rotate new-elm items-center justify-start flex transition duration-500">
-        <input type="checkbox" />
-        <i className="fa-solid fa-sun swap-on fill-current w-1/5 text-center text-lg"></i>
-        <i className="fa-solid fa-moon swap-off fill-current absolute text-center translate-x-[15px] text-lg"></i>
-        <span className='w-4/5 pl-2'>Açık/Koyu Tema</span>
-      </label> */}
+      {/*
+        <label className="swap swap-rotate new-elm items-center justify-start flex transition duration-500">
+          <input type="checkbox" />
+          <i className="fa-solid fa-sun swap-on fill-current w-1/5 text-center text-lg"></i>
+          <i className="fa-solid fa-moon swap-off fill-current absolute text-center translate-x-[15px] text-lg"></i>
+          <span className='w-4/5 pl-2'>Açık/Koyu Tema</span>
+        </label>
+      */}
       <a href="/giris">
-        <button className='new-elm rounded-l rounded-tl-none'><i className="fa-solid fa-right-from-bracket w-1/5 text-center text-lg"></i><span className='w-4/5 pl-2'>Çıkış Yap</span></button>
+        <button className='new-elm rounded-l rounded-tl-none'>
+          <i className="fa-solid fa-right-from-bracket w-1/5 text-center text-lg"></i>
+          <span className='w-4/5 pl-2'>Çıkış Yap</span>
+        </button>
       </a>
     </div>
 

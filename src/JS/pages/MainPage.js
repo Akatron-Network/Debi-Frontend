@@ -29,7 +29,9 @@ export default function MainPage() {
   const [deleteItemRef, setDeleteItemRef] = useState({});
   const [deleteItemType, setDeleteItemType] = useState('');
   const [modalChecked, setModalChecked] = useState(false);
+  const [unionEditChecked, setUnionEditChecked] = useState(false);
   const [modalType, setModalType] = useState({});
+  const [unionInformations, setUnionInformations] = useState({});
 
   const [treeCollections, setTreeCollections] = useState({owned: []});
 	
@@ -215,15 +217,20 @@ export default function MainPage() {
 
   const modal_data = {
     modalChecked,
+    unionEditChecked,
     modalList,
     modalType,
+    unionInformations,
     unionList,
     deleteModel,
     deleteUnion,
     getList,
     getUnions,
     setModalChecked,
+    setUnionEditChecked,
+    setUnionInformations,
     setModalType,
+    setUnionList,
   }
 
   //* Panel Data Funcs------------------------------------------/
