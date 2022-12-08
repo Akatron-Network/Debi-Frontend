@@ -281,16 +281,30 @@ export default function MainPage() {
   }
 
   const modelNameSelect = (id) => {
-    id = parseInt(id);
+    console.log(id);
+    let first_id = id;
     let query = {};
     let colList_temp = [];
 
-    for(let a of modalList) { if (a.model_id === id) { query = a } }
+    if (first_id.includes("Union")) { // Union mu yoksa düz model mi diye kontrol ediyoruz
+
+      id = parseInt(id);
+      for(let a of unionList) { if (a.union_id === id) { query = a } }
+      var keyMain = Object.keys(query.columns)
+      var valueMain = Object.values(query.columns)
+
+    } else {
+
+      id = parseInt(id);
+      for(let a of modalList) { if (a.model_id === id) { query = a } }
+      var keyMain = Object.keys(query.query.select)
+      var valueMain = Object.values(query.query.select)
+
+    }
+
     console.log(query);
 
     let arrMain = [];
-    let keyMain = Object.keys(query.query.select)
-    let valueMain = Object.values(query.query.select)
     for (let v in valueMain) {
       //* Toplam vb işlemler için kolonları 3 e bölerek isimlendirdik. Valuesi true gelenler, sum-min vs gelenler bir de içerisinde {} bulunduranlar olarak.
       if (valueMain[v] === true) {
@@ -301,27 +315,28 @@ export default function MainPage() {
         arrMain.push(keyMain[v] + "_" + valueMain[v])
       }
     }
-    colList_temp = [{[query.query.table] : {columns: arrMain , alias: query.query.alias}}];
 
-    for(let b of query.query.includes) {
-      let arrAlias = [];
-      let valueAlias =Object.values(b.select);
-      let keyAlias =Object.keys(b.select);
+    if (first_id.includes("Union")) { // Union mu yoksa düz model mi diye kontrol ediyoruz
+      colList_temp = [{[query.union_name] : {columns: arrMain , alias: query.union_id}}];
+    } else {
+      colList_temp = [{[query.query.table] : {columns: arrMain , alias: query.query.alias}}];
 
-      for (let v in valueAlias) {
-        console.log(valueAlias[v])
-        console.log(keyAlias[v])
-        if (valueAlias[v] === true) {
-          arrAlias.push(keyAlias[v])
-        } else if (keyAlias[v].includes("{")) {
-          arrAlias.push(keyAlias[v].replaceAll("{" , "").replaceAll("}" , ""))
-        } else {
-          arrAlias.push(keyAlias[v] + "_" + valueAlias[v])
+      for(let b of query.query.includes) {
+        let arrAlias = [];
+        let valueAlias =Object.values(b.select);
+        let keyAlias =Object.keys(b.select);
+  
+        for (let v in valueAlias) {
+          if (valueAlias[v] === true) {
+            arrAlias.push(keyAlias[v])
+          } else if (keyAlias[v].includes("{")) {
+            arrAlias.push(keyAlias[v].replaceAll("{" , "").replaceAll("}" , ""))
+          } else {
+            arrAlias.push(keyAlias[v] + "_" + valueAlias[v])
+          }
         }
+        colList_temp.push({[b.table] : {columns: arrAlias , alias: b.alias}});
       }
-      console.log(arrAlias)
-      colList_temp.push({[b.table] : {columns: arrAlias , alias: b.alias}});
-      console.log(colList_temp);
     }
     console.log(colList_temp);
     
@@ -599,6 +614,7 @@ export default function MainPage() {
     if (panel === "") {
       lastPanelID = getAlias(panelIDs);
     }
+    
 
     setPageContent({
       ...pageContent,
@@ -610,7 +626,7 @@ export default function MainPage() {
             PanelID: lastPanelID,
             PanelType: panelType,
             PanelName: panelNameRef.current.value,
-            ModelID: parseInt(modelNameRef.current.value),
+            ModelID: modelNameRef.current.value,
             SelColumns: selColumns,
             Coordinates: coordinates,
           }
@@ -627,7 +643,7 @@ export default function MainPage() {
             PanelID: lastPanelID,
             PanelType: panelType,
             PanelName: panelNameRef.current.value,
-            ModelID: parseInt(modelNameRef.current.value),
+            ModelID: modelNameRef.current.value,
             SelColumns: selColumns,
             Coordinates: coordinates,
           }

@@ -128,6 +128,17 @@ class Data {
     return resp;
   }
 
+  static async putUnion(union_id, data) {
+    let putUnion_req = new Requests("data", "union");
+
+    var resp = await putUnion_req.put({
+      union_id: union_id,
+      values: data,
+    });
+
+    return resp;
+  }
+
   static async dltUnion(id) {
     let dltUnion_req = new Requests("data", "union");
 

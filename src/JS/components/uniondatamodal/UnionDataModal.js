@@ -15,7 +15,7 @@ export default function UnionDataModal() {
   console.log(modal_data)
 
   const [collections, setCollections] = useState([]);
-  const [sourceColumns, setSourceColumns] = useState([]);
+  const [sourceColumns, setSourceColumns] = useState({});
   const [executeUnionCols, setExecuteUnionCols] = useState([]);
   const [executeUnionRows, setExecuteUnionRows] = useState([]);
 
@@ -262,7 +262,7 @@ export default function UnionDataModal() {
       }
     )
     
-    if (val !== undefined) renderSourceColumnsOptions(val);
+    if (val !== undefined) renderSourceColumnsOptions(val, index);
   }
 
   const sourceName = (index) => {
@@ -292,11 +292,11 @@ export default function UnionDataModal() {
     )
   }
 
-  const renderSourceColumnsOptions = (modelID) => {
+  const renderSourceColumnsOptions = (modelID, index) => {
 
     console.log(modelID);
     let columns = [];
-    let columns_option = [];
+    let columns_option = {...sourceColumns};
     let i = 0;
 
     for (let m of modal_data.modalList) { // Model ID si aynı olanların içerisindeki query'den table, alias ve kolon isimlerini alıp bir liste oluşturduk.
@@ -311,16 +311,17 @@ export default function UnionDataModal() {
           for (let q of m.query.includes) {
             for (let ins of Object.keys(q.select)) {
               // columns.push(q.alias + "/" + q.table + "/" + ins) - İleride gerekirse bunu kullanabiliriz örn: O/TBLCAHAR/CARI_KOD
-              columns.push(ins)
+              columns.push(ins) // Örnek çıktı: ["ISLETME_KODU", "CARI_TEL"]
             }
           }
         }
-        console.log(columns)  // Örnek çıktı: ["ISLETME_KODU", "CARI_TEL"]
+        console.log(columns)
       }
     }
 
+    columns_option[index] = []; // Burada tüm kaynakların kendi aliası yani indexi olduğu için şöyle bir şey oluşturduk 
     for (let c of columns) {
-      columns_option.push(<option key={i} value={c}>{c}</option>) //İleride eğer O/TBLCAHAR/CARI_KOD gibi bir value gelirse ayırmak için {c.split("/")[1]} - {c.split("/")[2]} kullanılabilir
+      columns_option[index].push(<option key={i} value={c}>{c}</option>) // İleride eğer O/TBLCAHAR/CARI_KOD gibi bir value gelirse ayırmak için {c.split("/")[1]} - {c.split("/")[2]} kullanılabilir
       i++;
     }
     console.log(columns_option);
@@ -350,7 +351,7 @@ export default function UnionDataModal() {
     for (let c of collections) {
       if (c.collection_id === parseInt(unionCollectionNameRef.current.value)) gateway = c.connector.gateway_host
     }
-
+    console.log(last_JSON);
     let resp = await Data.postExecute(last_JSON, gateway);
     console.log(resp)
 
@@ -378,8 +379,24 @@ export default function UnionDataModal() {
 
     last_JSON.columns = last_columns;
 
-    let resp = await Data.postUnion(last_JSON);
-    console.log(resp)
+    let resp = {};
+    if (!modal_data.unionEditChecked) {  // Şu an düzenlemede mi yoksa değil mi diye kontrol ediyoruz
+      resp = await Data.postUnion(last_JSON);
+      console.log(resp)
+
+    } else {
+      let union_id = unionJSON.union_id;  // Union_ID yi çektik
+
+      delete last_JSON.union_id           // Eğer düzenleme yapılıyorsa put isteği yollarken içerisindeki
+      for (let js of last_JSON.childs) {  // bazı şeyleri silmmeiz gerekiyordu
+        delete js.union_child_id
+        delete js.union_id
+      }
+
+      resp = await Data.putUnion(union_id, last_JSON);
+      console.log(resp)
+
+    }
 
     if (resp.Success === true) {
       document.getElementById("unionmodal").checked = false;
@@ -393,12 +410,12 @@ export default function UnionDataModal() {
     unionExplanationRef.current.value = "";
     setExecuteUnionCols([]);
     setExecuteUnionRows([]);
+    setSourceColumns({});
     unionSourceColumnSelectRef.current = [];
     
     if(modal_data.unionEditChecked === true) {
       modal_data.setUnionEditChecked(false);
       modal_data.setUnionInformations({});
-      modal_data.setUnionList([]);
     }
 
     setUnionJSON(
@@ -457,16 +474,11 @@ export default function UnionDataModal() {
         setTimeout(() => {  // Yukarıdaki fonksiyonun bitmesini bekleyeceğiz. Yoksa kolonlar oluşturulması geciktiğinden geç dolduruluyor
           let arr = [];
           for (let col in unionJSON.childs[child].columns) {
-            console.log(unionSourceColumnSelectRef.current[child + "_" + col]);
-
             if (unionSourceColumnSelectRef.current[child + "_" + col] === undefined || unionSourceColumnSelectRef.current[child + "_" + col] === null) {
-              // unionJSON.childs[child].columns.splice(col, 1)
               arr.push(col);
               continue;
             }
-
             unionSourceColumnSelectRef.current[child + "_" + col].value = unionJSON.childs[child].columns[col]
-            console.log(unionSourceColumnSelectRef.current[child + "_" + col].value)
           }
 
           //+ Burada bir sıkıntı var o yüzden hardfix attım. Sıkıntı da şu editlerken kolon ekliyorum ama kaydetmiyorum ve sonrasında kapatıp tekrar editlemek için açtığımda eski kolonlar yerinde kalıyor gitmiyordu. Ben de hepsini sil diyorum
@@ -475,7 +487,6 @@ export default function UnionDataModal() {
         }, 1000);
       }
 
-      modal_data.setUnionEditChecked(false); //Tüm bilgileri dolduruktan sonra artık false haline getirsin
     }
   }, [unionJSON])
   

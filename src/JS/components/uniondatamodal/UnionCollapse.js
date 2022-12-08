@@ -58,9 +58,9 @@ export default function UnionCollapse(props) {
                 <option disabled value="default">
                   {index + 1}. Kolon seçin...
                 </option>
-                {union_data.sourceColumns.map(el => {
+                {(union_data.sourceColumns[props.index] !== undefined) ? union_data.sourceColumns[props.index].map(el => {
                   return (el)
-                })}
+                }) : undefined}
               </select>
             )
           })}

@@ -18,6 +18,7 @@ export default function ChartChoose() {
 
   useEffect(() => {
     modal_data.getList();
+    modal_data.getUnions();
   }, [])
 
   return (
@@ -93,7 +94,7 @@ export default function ChartChoose() {
                   </option>
                 ))}
                 {modal_data.unionList.map((union) => (
-                  <option key={union.union_id.toString()} value={union.union_id}>
+                  <option key={union.union_id.toString()} value={union.union_id + "_Union"}>
                     {union.union_name + " (Birleşik Model)"}
                   </option>
                 ))}

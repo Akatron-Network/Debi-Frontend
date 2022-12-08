@@ -6,6 +6,7 @@ import {ChartContext} from '../components/context';
 
 const Page = (props) => {
   const chart_data = useContext(ChartContext);
+  console.log(props);
 
   const [options, setOptions] = useState({});
   var xAxisData = [];
@@ -16,11 +17,21 @@ const Page = (props) => {
   }, [chart_data.pageContent.page_data])
 
   const getData = async () => {
-    console.log("a")
-    let resp = await Data.getModel(props.modelID);
+    //* Eski yöntem
+    // let resp = await Data.getModel(props.modelID);
+    // let query = resp.Data.query;
+    // let respData = await Data.postExecute({query: query , collection_id: chart_data.pageContent.collection_id}, col.Data.connector.gateway_host);
+    
     let col = await WorkspaceAll.getCollections(chart_data.pageContent.collection_id); //! Get Gateway host
-    let query = resp.Data.query;
-    let respData = await Data.postExecute({query: query , collection_id: chart_data.pageContent.collection_id}, col.Data.connector.gateway_host);
+
+    // Burada union mu değil mi diye kontrol ettik ve ona göre bir istek yolladık execute olarak
+    if (props.modelID.includes("Union")) {
+      var respData = await Data.postExecute({union_id: props.modelID , collection_id: chart_data.pageContent.collection_id}, col.Data.connector.gateway_host);
+    } else {
+      var respData = await Data.postExecute({model_id: props.modelID , collection_id: chart_data.pageContent.collection_id}, col.Data.connector.gateway_host);
+    }
+
+    console.log(respData);
 
     let xAxis = {};
     let yAxis = {};
