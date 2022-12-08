@@ -6,6 +6,7 @@ import debi_logo from '../../img/ico.png';
 import Service from '../libraries/categories/Service';
 
 export default function LoginPage() {
+  var navigate = useNavigate();
 
   const cheackWarn = () => {
     
@@ -38,12 +39,9 @@ export default function LoginPage() {
     overlayRight.classList.toggle("translate-x-[20%]");
   }
 
-
-  var navigate = useNavigate();
-  
   const register_nicknameRef = useRef(null);
   const register_emailRef = useRef(null);
-  const register_phoneRef = useRef(null);
+  const register_keygenRef = useRef(null);
   const register_passRef = useRef(null);
   const register_passAgainRef = useRef(null);
   
@@ -51,17 +49,21 @@ export default function LoginPage() {
     e.preventDefault();
 
     //* IF Control for empty inputs
-    if (register_nicknameRef.current.value === '' || register_emailRef.current.value === '' || register_passRef.current.value === '' || register_passAgainRef.current.value === '') {
-      
+    if (register_nicknameRef.current.value === '' || register_emailRef.current.value === '' || register_passRef.current.value === '' || register_passAgainRef.current.value === '' || register_keygenRef.current.value === "") {
       document.getElementById('warn_1').classList.remove('hidden');
     }
     else {
-      await Service.register(register_nicknameRef.current.value , register_emailRef.current.value , register_phoneRef.current.value , register_passRef.current.value)
-      navigate("/");
+      let resp = await Service.register(register_nicknameRef.current.value, register_passRef.current.value, register_emailRef.current.value , register_keygenRef.current.value)
+      console.log(resp);
+      if (resp) {
+        navigate("/");
+      } else {
+        document.getElementById('warn_1').classList.add('hidden');
+        document.getElementById('warn_4').classList.remove('hidden');
+      }
     }
       
   }
-
 
   const login_nicknameRef = useRef(null);
   const login_passRef = useRef(null);
@@ -93,13 +95,12 @@ export default function LoginPage() {
 
   }
 
-
   return (
     <>
       <ParticlesComponent />
 
       <div className='flex flex-col items-center justify-center bg-darkest_jet h-screen overflow-hidden'>
-        <div className="shadow-loginContainer h-[60%] rounded relative overflow-hidden w-[768px] max-w-full min-h-[480px] bg-darker_jet" id="container">
+        <div className="shadow-loginContainer h-[60%] rounded-lg relative overflow-hidden w-[768px] max-w-full min-h-[480px] bg-darker_jet" id="container">
           <div className="form-container left-0 w-1/2 opacity-0 z-1" id='sign-up-container'>
             <form className='form' action="#">
               <h1 className='font-bold m-0 text-[2.5rem]'>Hesap Oluştur</h1>
@@ -107,11 +108,12 @@ export default function LoginPage() {
               <span className='text-xs'>ya da kayıt olmak için kendi email adresini kullanabilirsin</span> */}
               <input className='input placeholder:opacity-50 w-3/4' type="text" placeholder="Kullanıcı Adı*" ref={register_nicknameRef} />
               <input className='input placeholder:opacity-50 w-3/4' type="email" placeholder="Email*" ref={register_emailRef} />
-              <input className='input placeholder:opacity-50 w-3/4' type="tel" placeholder="Telefon (Zorunlu Değil)" ref={register_phoneRef} />
+              <input className='input placeholder:opacity-50 w-3/4' type="text" placeholder="Üyelik Anahtar Kodu*" ref={register_keygenRef} />
               <input className='input placeholder:opacity-50 w-3/4' type="password" placeholder="Şifre*" ref={register_passRef} />
               <input className='input placeholder:opacity-50 w-3/4' type="password" placeholder="Şifre Tekrar*" ref={register_passAgainRef} />
               <div id='registerWarns'>
                 <span id='warn_1' className='text-sm text-red-600 hidden'>Lütfen tüm gerekli bilgileri doldurun!</span>
+                <span id='warn_4' className='text-sm text-red-600 hidden'>Bilgilerinizde yanlışlık var. Lütfen tekrar gözden geçirin!</span>
               </div>
               <button className='button mt-2' onClick={register}>Kayıt Ol</button>
             </form>

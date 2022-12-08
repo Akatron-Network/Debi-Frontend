@@ -25,7 +25,7 @@ export default function UnionTable(props) {
 
     pagination: {
       enabled: props.pagination,
-      limit: 100,
+      limit: 2000,
     },
     className: {
       table: '!w-full !bg-darker_jet !table-auto',

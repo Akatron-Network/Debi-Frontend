@@ -19,7 +19,6 @@ const Page = (props) => {
   }, [chart_data.pageContent.page_data])
 
   const getData = async () => {
-    console.log(props);
     // let resp = await Data.getModel(props.modelID);
     // console.log(resp)
     // let query = resp.Data.query;

@@ -27,7 +27,7 @@ class Service {
         return true
     }
 
-    static async register(username , password , email , phone = "") {
+    static async register(username , password , email , key) {
         let register_req = new Requests("service" , "register")
         
         try {
@@ -35,9 +35,9 @@ class Service {
             let resp = await register_req.post({
                 username: username,
                 password: password,
+                key: key,
                 details:{
                         email: email,
-                        phone: phone,
                         }
             })
             console.log(resp);

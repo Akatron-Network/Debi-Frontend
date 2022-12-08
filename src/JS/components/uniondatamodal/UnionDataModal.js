@@ -292,34 +292,56 @@ export default function UnionDataModal() {
     )
   }
 
-  const renderSourceColumnsOptions = (modelID, index) => {
+  const renderSourceColumnsOptions = (modelID, index, extraColOpts = {}) => {
 
     console.log(modelID);
     let columns = [];
-    let columns_option = {...sourceColumns};
+    let columns_option = {...sourceColumns, ...extraColOpts};
     let i = 0;
 
     for (let m of modal_data.modalList) { // Model ID si aynı olanların içerisindeki query'den table, alias ve kolon isimlerini alıp bir liste oluşturduk.
       if (m.model_id === parseInt(modelID)) {
 
-        for (let s of Object.keys(m.query.select)) {
           // columns.push(m.query.alias + "/" + m.query.table + "/" + s) - İleride gerekirse bunu kullanabiliriz örn: O/TBLCAHAR/CARI_KOD
-          columns.push(s)
-        }
+          var keyMain = Object.keys(m.query.select)
+          var valueMain = Object.values(m.query.select)
+
+          let arrMain = [];
+          for (let v in valueMain) {
+            //* Toplam vb işlemler için kolonları 3 e bölerek isimlendirdik. Valuesi true gelenler, sum-min vs gelenler bir de içerisinde {} bulunduranlar olarak.
+            if (valueMain[v] === true) {
+              arrMain.push(keyMain[v])
+            } else if (keyMain[v].includes("{")) {
+              arrMain.push(keyMain[v].replaceAll("{" , "").replaceAll("}" , ""))
+            } else {
+              arrMain.push(keyMain[v] + "_" + valueMain[v])
+            }
+          }
+          columns = columns.concat(arrMain)
 
         if (m.query.includes.length > 0) {
           for (let q of m.query.includes) {
-            for (let ins of Object.keys(q.select)) {
-              // columns.push(q.alias + "/" + q.table + "/" + ins) - İleride gerekirse bunu kullanabiliriz örn: O/TBLCAHAR/CARI_KOD
-              columns.push(ins) // Örnek çıktı: ["ISLETME_KODU", "CARI_TEL"]
+            let arrAlias = [];
+            let valueAlias =Object.values(q.select);
+            let keyAlias =Object.keys(q.select);
+      
+            for (let v in valueAlias) {
+              if (valueAlias[v] === true) {
+                arrAlias.push(keyAlias[v])
+              } else if (keyAlias[v].includes("{")) {
+                arrAlias.push(keyAlias[v].replaceAll("{" , "").replaceAll("}" , ""))
+              } else {
+                arrAlias.push(keyAlias[v] + "_" + valueAlias[v])
+              }
             }
+            columns = columns.concat(arrAlias)
           }
         }
         console.log(columns)
       }
     }
 
-    columns_option[index] = []; // Burada tüm kaynakların kendi aliası yani indexi olduğu için şöyle bir şey oluşturduk 
+    columns_option[index] = []; // Burada tüm kaynakların kendi aliası yani indexi olduğu için şöyle bir şey oluşturduk
     for (let c of columns) {
       columns_option[index].push(<option key={i} value={c}>{c}</option>) // İleride eğer O/TBLCAHAR/CARI_KOD gibi bir value gelirse ayırmak için {c.split("/")[1]} - {c.split("/")[2]} kullanılabilir
       i++;
@@ -327,6 +349,8 @@ export default function UnionDataModal() {
     console.log(columns_option);
 
     setSourceColumns(columns_option);
+
+    return columns_option // Çıkan sonucu setSourceColumns u beklememek için direkt yolladık ve 
   }
   //? --------------------------------------------------
 
@@ -400,6 +424,7 @@ export default function UnionDataModal() {
 
     if (resp.Success === true) {
       document.getElementById("unionmodal").checked = false;
+      modal_data.getUnions();
       clearUnionInputs();
     }
   }
@@ -464,31 +489,37 @@ export default function UnionDataModal() {
         unionColumnsNameRef.current[c].value = unionJSON.columns[c]
       }
 
+      let extraColOpts = {}
       for (let child in unionJSON.childs) {
         unionSourceTitleNameRef.current[child].innerHTML = " (" + unionJSON.childs[child].child_name + ")";
         unionSourceModelSelectRef.current[child].value = unionJSON.childs[child].child_id;
         unionSourceNameRef.current[child].value = unionJSON.childs[child].child_name;
 
-        renderSourceColumnsOptions(unionJSON.childs[child].child_id);
-
-        setTimeout(() => {  // Yukarıdaki fonksiyonun bitmesini bekleyeceğiz. Yoksa kolonlar oluşturulması geciktiğinden geç dolduruluyor
-          let arr = [];
-          for (let col in unionJSON.childs[child].columns) {
-            if (unionSourceColumnSelectRef.current[child + "_" + col] === undefined || unionSourceColumnSelectRef.current[child + "_" + col] === null) {
-              arr.push(col);
-              continue;
-            }
-            unionSourceColumnSelectRef.current[child + "_" + col].value = unionJSON.childs[child].columns[col]
-          }
-
-          //+ Burada bir sıkıntı var o yüzden hardfix attım. Sıkıntı da şu editlerken kolon ekliyorum ama kaydetmiyorum ve sonrasında kapatıp tekrar editlemek için açtığımda eski kolonlar yerinde kalıyor gitmiyordu. Ben de hepsini sil diyorum
-          unionJSON.childs[child].columns.splice(arr[0], (unionJSON.childs[child].columns.length - parseInt(arr[0])))
-
-        }, 1000);
+        // render içerisine en sonda extra parametresi yolladık. Bu parametre ile setSourceColumns beklememize gerek kalmayacak.
+        let ex = renderSourceColumnsOptions(unionJSON.childs[child].child_id, child, extraColOpts);
+        extraColOpts = {...ex}
       }
-
     }
   }, [unionJSON])
+  
+  useEffect(() => { // sourceColumns değiştiinde buraya girecek ve gerekli kolonları dolduracak
+    if (modal_data.unionEditChecked) { // Editchecked true iken çalıştıracak
+      let arr = [];
+
+      for (let child in unionJSON.childs) {
+        for (let col in unionJSON.childs[child].columns) {
+          if (unionSourceColumnSelectRef.current[child + "_" + col] === undefined || unionSourceColumnSelectRef.current[child + "_" + col] === null) {
+            arr.push(col);
+            continue;
+          }
+          unionSourceColumnSelectRef.current[child + "_" + col].value = unionJSON.childs[child].columns[col]
+        }
+  
+        //+ Burada bir sıkıntı var o yüzden hardfix attım. Sıkıntı da şu editlerken kolon ekliyorum ama kaydetmiyorum ve sonrasında kapatıp tekrar editlemek için açtığımda eski kolonlar yerinde kalıyor gitmiyordu. Ben de hepsini sil diyorum
+        unionJSON.childs[child].columns.splice(arr[0], (unionJSON.childs[child].columns.length - parseInt(arr[0])))
+      }
+    }
+  }, [sourceColumns])
   
   //? --------------------------------------------------
 

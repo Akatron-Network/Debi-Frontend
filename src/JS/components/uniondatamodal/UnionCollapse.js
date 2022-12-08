@@ -4,7 +4,6 @@ import { UnionDataModalContext , ModalContext } from '../context'
 export default function UnionCollapse(props) {
   const union_data = useContext(UnionDataModalContext);
   const modal_data = useContext(ModalContext);
-  console.log(props);
 
   return (
     

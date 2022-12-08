@@ -6,7 +6,6 @@ import {ChartContext} from '../components/context';
 
 const Page = (props) => {
   const chart_data = useContext(ChartContext);
-  console.log(props);
 
   const [options, setOptions] = useState({});
   var xAxisData = [];
