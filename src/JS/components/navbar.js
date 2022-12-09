@@ -1,11 +1,13 @@
 import React , { useEffect, useRef, useContext } from 'react'
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import debi_logo from '../../img/icon2.png';
 import ChartChoose from './panels/ChartChoose';
 import { ChartContext } from './context';
-import avatar from '../../img/ico.png'
+import Service from '../libraries/categories/Service'
 
 export default function Navbar(props) {
+  var navigate = useNavigate();
+
   const chart_data = useContext(ChartContext);
 
   useEffect(() => {
@@ -35,6 +37,13 @@ export default function Navbar(props) {
     }
   }
   
+  const logout = async () => {
+    let resp = await Service.logout();
+    console.log(resp);
+
+    navigate("/giris");
+  }
+
   return (
     
    <>
@@ -91,8 +100,8 @@ export default function Navbar(props) {
           <span className='w-4/5 pl-2'>Açık/Koyu Tema</span>
         </label>
       */}
-      <a href="/giris">
-        <button className='new-elm rounded-l rounded-tl-none'>
+      <a>
+        <button className='new-elm rounded-l rounded-tl-none' onClick={logout}>
           <i className="fa-solid fa-right-from-bracket w-1/5 text-center text-lg"></i>
           <span className='w-4/5 pl-2'>Çıkış Yap</span>
         </button>

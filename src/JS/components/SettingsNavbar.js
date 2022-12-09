@@ -1,8 +1,10 @@
 import React , { useEffect, useRef } from 'react'
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import debi_logo from '../../img/icon2.png';
+import Service from '../libraries/categories/Service'
 
 export default function Navbar(props) {
+  var navigate = useNavigate();
 
   useEffect(() => {
     document.addEventListener('click' , clickOutside , true)
@@ -29,6 +31,13 @@ export default function Navbar(props) {
     else if(refMenu.current.contains(e.target)) { //? Click inside
       menu_page.classList.toggle("!-translate-y-0");
     }
+  }
+  
+  const logout = async () => {
+    let resp = await Service.logout();
+    console.log(resp);
+
+    navigate("/giris");
   }
   
   return (
@@ -69,23 +78,24 @@ export default function Navbar(props) {
       <label className='new-elm items-center inline-flex cursor-pointer' htmlFor="chart_choose">&nbsp;<i className="fas fa-columns" aria-hidden="true"></i>&nbsp;&nbsp;Yeni Panel</label>
     </div> */}
 
-    <div id='menu_page' className="fixed top-11 w-64 bg-earie_black shadow-dropdown z-10 transition -translate-y-48 duration-300 right-0">
+    <div id='menu_page' className="fixed top-11 w-64 bg-earie_black shadow-dropdown rounded-l rounded-tl-none z-10 transition -translate-y-48 duration-300 right-0">
       <Link className="avatar new-elm flex items-center border-b border-solid border-hr_gray" to="/ayarlar">
-        <div className="h-full mask mask-squircle w-1/5">
-          <img src="https://placeimg.com/192/192/people" />
-        </div>
-        <span className='w-4/5 truncate pl-2'>
-          Hakan Temur
-        </span>
+        <i className="fa-solid fa-user w-1/5 text-center text-lg ml-[-1px]"></i>
+        <span className='w-4/5 truncate pl-2'>Hesap Bilgileri</span>
       </Link>
-      <label className="swap swap-rotate new-elm items-center justify-start flex transition duration-500">
-        <input type="checkbox" />
-        <i className="fa-solid fa-sun swap-on fill-current w-1/5 text-center text-lg"></i>
-        <i className="fa-solid fa-moon swap-off fill-current absolute text-center translate-x-[15px] text-lg"></i>
-        <span className='w-4/5 pl-2'>Açık/Koyu Tema</span>
-      </label>
-      <a href="/giris">
-        <button className='new-elm'><i className="fa-solid fa-right-from-bracket w-1/5 text-center text-lg"></i><span className='w-4/5 pl-2'>Çıkış Yap</span></button>
+      {/*
+        <label className="swap swap-rotate new-elm items-center justify-start flex transition duration-500">
+          <input type="checkbox" />
+          <i className="fa-solid fa-sun swap-on fill-current w-1/5 text-center text-lg"></i>
+          <i className="fa-solid fa-moon swap-off fill-current absolute text-center translate-x-[15px] text-lg"></i>
+          <span className='w-4/5 pl-2'>Açık/Koyu Tema</span>
+        </label>
+      */}
+      <a>
+        <button className='new-elm rounded-l rounded-tl-none' onClick={logout}>
+          <i className="fa-solid fa-right-from-bracket w-1/5 text-center text-lg"></i>
+          <span className='w-4/5 pl-2'>Çıkış Yap</span>
+        </button>
       </a>
     </div>
 

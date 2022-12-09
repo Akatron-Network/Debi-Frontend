@@ -49,6 +49,46 @@ class Service {
 
         return true
     }
+
+    static async logout() {
+        let logout_req = new Requests("service" , "auth");
+
+        try {
+            
+            let resp = await logout_req.delete({
+                    Token: localStorage.getItem("Token"),
+            })
+            console.log(resp);
+
+            localStorage.clear();
+            
+        } catch (err) {
+            
+            console.log(err.response.data)
+
+            return false;
+        }
+
+        return true
+    }
+
+    static async getProfile() {
+      let getProfile_req = new Requests("service" , "profile");
+
+      let resp = await getProfile_req.get()
+      console.log(resp);
+
+      return resp
+    }
+
+    static async postProfile(data) {
+      let postProfile_req = new Requests("service" , "profile");
+
+      let resp = await postProfile_req.post(data)
+      console.log(resp);
+
+      return resp
+    }
 }
 
 export default Service;
