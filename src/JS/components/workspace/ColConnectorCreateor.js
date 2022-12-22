@@ -147,10 +147,10 @@ export default function ColConnectorCreateor() {
           <Input value={"Sunucu Adresi"} refName={data.colServerRef}/>
           <Input value={"Port"} refName={data.colPortRef}/>
 
-          {/* <div className='inline-flex w-full items-center p-1'>
+          <div className='inline-flex w-full items-center p-1'>
             <input type="checkbox" id='checkedConnector' className="checkbox mr-2 transition duration-300 hover:border-onyx_middle h-4 w-4" checked={data.checkedConnector} onChange={() => data.setCheckedConnector(!data.checkedConnector)} />
             <span className='text-[14px] text-grayXgray'>Ağ geçidi kullanmak istiyorum.</span>
-          </div> */}
+          </div>
 
           <div className={data.checkedConnector ? "block mt-2" : "hidden" }><Input value={"Geçit Adresi"} refName={data.colConnectorServerRef}/></div>
 

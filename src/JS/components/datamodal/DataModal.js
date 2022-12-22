@@ -397,7 +397,9 @@ export default function DataModal() {
 
   const colNameSelect = async (id) => {
     let col = await WorkspaceAll.getCollections(id); //! Get Gateway host
+    console.log(col)
     let resp = await Data.getExplorer(id, col.Data.connector.gateway_host);
+    console.log(resp)
 
     source_table();
 
@@ -649,6 +651,7 @@ export default function DataModal() {
   }
 
   const refreshTable = async () => {
+
     let dt = {...dataJSON};
     dt.query['includes'] = Object.values(dt.query['includes']);
     console.log(dt);
@@ -660,6 +663,8 @@ export default function DataModal() {
     console.log(incold)
     dataJSON.query.includes = incold
     
+    dt.query["limit"] = 1000;
+    console.log(dt)
     let resp = await Data.postExecute(dt, gatewayHost);
     console.log(resp)
 
@@ -1113,11 +1118,11 @@ export default function DataModal() {
               Model Oluştur
             </h1>
 
-            <ColSelect />
+            <Input value={"Model Adı"} refName={dataModalName} />
 
             <hr className="my-3 border-1 w-4/5 relative left-1/2 -translate-x-1/2 border-hr_gray" />
 
-            <Input value={"Model Adı"} refName={dataModalName} />
+            <ColSelect />
 
             <SourceTable />
             

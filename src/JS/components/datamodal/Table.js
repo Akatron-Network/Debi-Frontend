@@ -21,10 +21,6 @@ export default function Table(props) {
     columns: data.executeCols,
     data:data.executeRows,
 
-    pagination: {
-      enabled: props.pagination,
-      limit: 100,
-    },
     className: {
       table: '!w-full !bg-darker_jet !table-auto',
       container: "table-wrapper"

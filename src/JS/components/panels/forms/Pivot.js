@@ -1,5 +1,6 @@
 import React , {useContext , useEffect} from 'react'
 import { ChartContext } from '../../context';
+import ConditionsAndSort from '../ConditionsAndSort';
 
 export default function Pivot() {
   const chart_data = useContext(ChartContext);
@@ -167,6 +168,8 @@ export default function Pivot() {
           <div className='w-full'><button className="green-btn relative left-1/2 !-translate-x-1/2" onClick={() => chart_data.addAxis("value")}><i className="fa-solid fa-plus mr-1"></i>Satır Ekle</button></div>
         </div>
       </div>
+
+      <ConditionsAndSort />
     </>
   )
 }

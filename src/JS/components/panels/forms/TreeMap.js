@@ -1,5 +1,6 @@
 import React , {useContext , useEffect} from 'react'
 import { ChartContext } from '../../context';
+import ConditionsAndSort from '../ConditionsAndSort';
 
 export default function TreeMap() {
   const chart_data = useContext(ChartContext);
@@ -99,7 +100,8 @@ export default function TreeMap() {
       )})}
 
       <div className='w-full'><button className="green-btn !ml-[25%] !-translate-x-1/2" onClick={chart_data.addAxis}><i className="fa-solid fa-plus mr-1"></i>Dikey Eksen Ekle</button></div>
-          
+
+      <ConditionsAndSort />
     </>
   )
 }

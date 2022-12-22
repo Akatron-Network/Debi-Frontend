@@ -41,9 +41,12 @@ export default function PivotTableCharts(props) {
 
     let proData = respData.Data[0]
 
+    console.log(proData)
     for(let p of chart_data.pageContent.page_data.panels) {
       if (props.panelID === p.PanelID) {
         for (let x of p.SelColumns.xAxis) {
+          console.log(proData[x.col])
+          console.log(typeof(proData[x.col]))
           fields.push({
             area: 'column',
             dataField: x.col,

@@ -17,6 +17,8 @@ import Mark from '../components/panels/forms/Mark';
 import Pie from '../components/panels/forms/Pie';
 import Table from '../components/panels/forms/Table';
 import Pivot from '../components/panels/forms/Pivot';
+import Error from '../components/Error'
+import Loading from '../components/Loading'
 
 
 export default function MainPage() {
@@ -732,6 +734,11 @@ export default function MainPage() {
     }, 5000);
   }
 
+  const [error, setError] = useState("Hata")
+  const errorHandler = (err) => {
+    setError(err)
+  }
+
   const chart_data = {
     allAxis,
     chartForms,
@@ -775,6 +782,8 @@ export default function MainPage() {
 
             <DataModal />
             <UnionDataModal />
+            <Loading />
+            {/* <Error err={error} /> */}
         </ChartContext.Provider>
       </ModalContext.Provider>
     </MainContext.Provider >

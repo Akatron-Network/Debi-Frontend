@@ -1,5 +1,6 @@
 import React , {useContext} from 'react'
 import { ChartContext } from '../../context';
+import ConditionsAndSort from '../ConditionsAndSort';
 
 export default function Line() {
   const chart_data = useContext(ChartContext);
@@ -61,6 +62,8 @@ export default function Line() {
           </div>
         </div>
       </div>
+
+      <ConditionsAndSort />
     </>
   )
 }

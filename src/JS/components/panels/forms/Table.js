@@ -1,5 +1,6 @@
 import React , {useContext , useEffect} from 'react'
 import { ChartContext } from '../../context';
+import ConditionsAndSort from '../ConditionsAndSort';
 
 export default function TreeMap() {
   const chart_data = useContext(ChartContext);
@@ -106,7 +107,7 @@ export default function TreeMap() {
       </div>
 
       
-          
+      <ConditionsAndSort />
     </>
   )
 }
