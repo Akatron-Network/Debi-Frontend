@@ -7,9 +7,14 @@ export default function Line() {
 
   return (
     <>
-      <h1 className="text-base text-platinium mt-1 ml-[1px] drop-shadow">
-        Kolonlar
-      </h1>
+        
+      <div className='flex mt-3'>
+        <h1 className="text-base text-platinium mt-1 ml-[1px] drop-shadow">
+          Kolonlar
+        </h1>
+
+        <hr className="mb-3 mt-4 border-1 w-full ml-3 border-hr_gray" />
+      </div>
 
       <div className='flex mt-2'>
 

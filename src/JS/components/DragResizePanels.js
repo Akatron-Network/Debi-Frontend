@@ -72,7 +72,7 @@ export default class ResponsiveLocalStorageLayout extends React.PureComponent {
                       <label htmlFor="chart_choose" className="danger-btn float-right bg-yellow-700 hover:bg-yellow-600 w-8" onClick={() => value.editPanel(panel.PanelID)}><i className="fa-solid fa-pen-to-square"></i></label>
                     </div>
                   </div>
-                  <span><AxisAlignWithTick modelID={panel.ModelID} panelID={panel.PanelID} /></span>
+                  <span><AxisAlignWithTick modelID={panel.ModelID} panelID={panel.PanelID} wherePlain={panel.WherePlain} order={panel.Order} /></span>
                 </div>
               )
             } else if (panel.PanelType === "treemap") {
@@ -85,7 +85,7 @@ export default class ResponsiveLocalStorageLayout extends React.PureComponent {
                       <label htmlFor="chart_choose" className="danger-btn float-right bg-yellow-700 hover:bg-yellow-600 w-8" onClick={() => value.editPanel(panel.PanelID)}><i className="fa-solid fa-pen-to-square"></i></label>
                     </div>
                   </div>
-                  <span><BarLabelRotation modelID={panel.ModelID} panelID={panel.PanelID} /></span>
+                  <span><BarLabelRotation modelID={panel.ModelID} panelID={panel.PanelID} wherePlain={panel.WherePlain} order={panel.Order} /></span>
                 </div>
               )
             } else if (panel.PanelType === "line") {
@@ -98,7 +98,7 @@ export default class ResponsiveLocalStorageLayout extends React.PureComponent {
                       <label htmlFor="chart_choose" className="danger-btn float-right bg-yellow-700 hover:bg-yellow-600 w-8" onClick={() => value.editPanel(panel.PanelID)}><i className="fa-solid fa-pen-to-square"></i></label>
                     </div>
                   </div>
-                  <span><BasicLineCharts modelID={panel.ModelID} panelID={panel.PanelID} /></span>
+                  <span><BasicLineCharts modelID={panel.ModelID} panelID={panel.PanelID} wherePlain={panel.WherePlain} order={panel.Order} /></span>
                 </div>
               )
             } else if (panel.PanelType === "mark") {
@@ -111,7 +111,7 @@ export default class ResponsiveLocalStorageLayout extends React.PureComponent {
                       <label htmlFor="chart_choose" className="danger-btn float-right bg-yellow-700 hover:bg-yellow-600 w-8" onClick={() => value.editPanel(panel.PanelID)}><i className="fa-solid fa-pen-to-square"></i></label>
                     </div>
                   </div>
-                  <span><StackedLineCharts modelID={panel.ModelID} panelID={panel.PanelID} /></span>
+                  <span><StackedLineCharts modelID={panel.ModelID} panelID={panel.PanelID} wherePlain={panel.WherePlain} order={panel.Order} /></span>
                 </div>
               )
             } else if (panel.PanelType === "pie") {
@@ -124,7 +124,7 @@ export default class ResponsiveLocalStorageLayout extends React.PureComponent {
                       <label htmlFor="chart_choose" className="danger-btn float-right bg-yellow-700 hover:bg-yellow-600 w-8" onClick={() => value.editPanel(panel.PanelID)}><i className="fa-solid fa-pen-to-square"></i></label>
                     </div>
                   </div>
-                  <span><PieChart modelID={panel.ModelID} panelID={panel.PanelID} /></span>
+                  <span><PieChart modelID={panel.ModelID} panelID={panel.PanelID} wherePlain={panel.WherePlain} order={panel.Order} /></span>
                 </div>
               )
             } else if (panel.PanelType === "table") {
@@ -138,7 +138,7 @@ export default class ResponsiveLocalStorageLayout extends React.PureComponent {
                       <label htmlFor="chart_choose" className="danger-btn float-right bg-yellow-700 hover:bg-yellow-600 w-8" onClick={() => value.editPanel(panel.PanelID)}><i className="fa-solid fa-pen-to-square"></i></label>
                     </div>
                     </div>
-                    <span className="relative top-[54px] left-[1px]"><TableChart modelID={panel.ModelID} panelID={panel.PanelID} /></span>
+                    <span className="relative top-[54px] left-[1px]"><TableChart modelID={panel.ModelID} panelID={panel.PanelID} wherePlain={panel.WherePlain} order={panel.Order} /></span>
                   </div>
                 </div>
               )
@@ -153,7 +153,7 @@ export default class ResponsiveLocalStorageLayout extends React.PureComponent {
                       <label htmlFor="chart_choose" className="danger-btn float-right bg-yellow-700 hover:bg-yellow-600 w-8" onClick={() => value.editPanel(panel.PanelID)}><i className="fa-solid fa-pen-to-square"></i></label>
                     </div>
                     </div>
-                    <span className="relative top-[54px] left-[1px]"><PivotTableChart modelID={panel.ModelID} panelID={panel.PanelID} /></span>
+                    <span className="relative top-[54px] left-[1px]"><PivotTableChart modelID={panel.ModelID} panelID={panel.PanelID} wherePlain={panel.WherePlain} order={panel.Order} /></span>
                   </div>
                 </div>
               )

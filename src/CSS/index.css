@@ -859,7 +859,8 @@
       text-grayXgray
       hover:text-platinium
       col-span-12 lg:col-span-4
-      px-2
+      pl-2
+      pr-7
   }
 
   .condition_input{

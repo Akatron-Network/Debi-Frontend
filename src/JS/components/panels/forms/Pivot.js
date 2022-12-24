@@ -14,9 +14,14 @@ export default function Pivot() {
 
   return (
     <>
-      <h1 className="text-base text-platinium mt-1 ml-[1px] drop-shadow">
-        Kolonlar
-      </h1>
+        
+      <div className='flex mt-3'>
+        <h1 className="text-base text-platinium mt-1 ml-[1px] drop-shadow">
+          Kolonlar
+        </h1>
+
+        <hr className="mb-3 mt-4 border-1 w-full ml-3 border-hr_gray" />
+      </div>
 
       <div className='grid grid-cols-2 mt-2'>
 
@@ -24,7 +29,7 @@ export default function Pivot() {
           <div className="form-control mb-2 w-full">
             <div className="input-group shadow-md">
               <span className="bg-black_light text-grayXgray px-2 py-[7px] !rounded-l border border-jet_mid justify-center min-w-[35%] xl:truncate">
-                Sütun #1
+                1. Sütun
               </span>
               <select
                 defaultValue="default"
@@ -53,7 +58,7 @@ export default function Pivot() {
                 <div className="form-control mb-2 w-full">
                   <div className="input-group shadow-md">
                     <span className="bg-black_light text-grayXgray px-2 py-[7px] !rounded-l border border-jet_mid justify-center min-w-[35%] xl:truncate">
-                      Sütun #{chart_data.titleAxis.indexOf(alias) + 2}
+                    {chart_data.titleAxis.indexOf(alias) + 2}. Sütun
                     </span>
                     <select
                       defaultValue="default"
@@ -77,14 +82,14 @@ export default function Pivot() {
               </div>
           )})}
 
-          <div className='w-full'><button className="green-btn relative left-1/2 !-translate-x-1/2" onClick={() => chart_data.addAxis("title")}><i className="fa-solid fa-plus mr-1"></i>Sütun Ekle</button></div>
+          <div className='w-full'><button className="green-btn relative left-1/2 !-translate-x-1/2 w-1/2 mt-1" onClick={() => chart_data.addAxis("title")}><i className="fa-solid fa-plus mr-1"></i>Yeni Sütun Ekle</button></div>
         </div>
 
         <div className='col-span-1 ml-[6px]'>
             <div className="form-control mb-2">
               <div className="input-group shadow-md">
                 <span className="bg-black_light text-grayXgray px-2 py-[7px] !rounded-l border border-jet_mid justify-center min-w-[35%] xl:truncate">
-                  Satır #1
+                  1. Satır
                 </span>
                 <select
                   defaultValue="default"
@@ -127,7 +132,7 @@ export default function Pivot() {
                   <div className="form-control mb-2">
                     <div className="input-group shadow-md">
                       <span className="bg-black_light text-grayXgray px-2 py-[7px] !rounded-l border border-jet_mid justify-center min-w-[35%] xl:truncate">
-                        Satır #{chart_data.valueAxis.indexOf(alias) + 2}
+                      {chart_data.valueAxis.indexOf(alias) + 2}. Satır
                       </span>
                       <select
                         defaultValue="default"
@@ -165,7 +170,7 @@ export default function Pivot() {
                 </div>
             )})}
 
-          <div className='w-full'><button className="green-btn relative left-1/2 !-translate-x-1/2" onClick={() => chart_data.addAxis("value")}><i className="fa-solid fa-plus mr-1"></i>Satır Ekle</button></div>
+          <div className='w-full'><button className="green-btn relative left-1/2 !-translate-x-1/2 w-1/2 mt-1" onClick={() => chart_data.addAxis("value")}><i className="fa-solid fa-plus mr-1"></i>Yeni Satır Ekle</button></div>
         </div>
       </div>
 

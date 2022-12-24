@@ -241,6 +241,11 @@ export default function MainPage() {
   const modelNameRef = useRef("");
   const xColSelRef = useRef("default");
   const yColSelRef = useRef("default");
+  const conditionInput = useRef([]);
+  const conditionColumnSelect = useRef([]);
+  const conditionTransactionSelect = useRef([]);
+  const sortColumnSelect = useRef([]);
+  const sortColumnTypeSelect = useRef([]);
 
   const [colList, setColList] = useState([]);
   const [panelType, setPanelType] = useState("");
@@ -248,18 +253,20 @@ export default function MainPage() {
   const [allAxis, setAllAxis] = useState([]);
   const [titleAxis, setTitleAxis] = useState([]);
   const [valueAxis, setValueAxis] = useState([]);
+  const [conditions, setConditions] = useState([]);
+  const [panelSort, setPanelSort] = useState([]);
   const [panel, setPanel] = useState("");
   const [pageContent, setPageContent] = useState({page_data : {panels: []}});
 
   var ch_cards = ["bar", "treemap", "line", "mark", "gauge", "pie", "table", "pivot"];
   const chooseChart = (type) => {
+    clearPanelInputs();
     setPanel("");
     let card = document.getElementById(type + "_card");
     let panel_form = document.getElementById('panelForm')
 
     if(panel_form.classList.contains('hidden')) {
       panel_form.classList.remove('hidden')
-      panel_form.classList.add('flex')
     }
 
     for(let a of ch_cards) {
@@ -471,6 +478,47 @@ export default function MainPage() {
     return selColumns;
   }
 
+  const addCondition = () => {
+    var con = "";
+
+    con = getAlias(conditions);
+    if (conditions.length > 0) {
+      setConditions([...conditions, "AND", con]);
+    } else {
+      setConditions([...conditions, con]);
+    }
+  }
+
+  const deleteCondition = (alias) => {
+    let cond = [...conditions];
+    
+    // Bir indeks belirledik ve duruma göre bu indexleri diziden çıkardık. filter metodu yerine bunu kullandık çünkü AND leri de silmeliydik
+    const index = cond.indexOf(alias);
+    if (index > -1) {
+
+      if (index === 0) {
+        cond.splice((index), 2);
+      } else {
+        cond.splice(index, 1);
+        cond.splice((index - 1), 1);
+      }
+    }
+
+    setConditions(cond)
+    // setConditions(conditions.filter(item => item !== alias))
+  }
+
+  const addSort = () => {
+    var sort = "";
+
+    sort = getAlias(panelSort);
+    setPanelSort([...panelSort, sort]);
+  }
+
+  const deleteSort = (alias) => {
+    setPanelSort(panelSort.filter(item => item !== alias))
+  }
+
   //Edit Panel-----------------------------------------------------------------------------------------------------------------
   let als = [];
   let alX = [];
@@ -479,18 +527,17 @@ export default function MainPage() {
     console.log(panelID)
     for(let p of pageContent.page_data.panels) {
       if(p.PanelID === panelID) {
-        //Chart choose
+        // Chart choose
         chooseChart(p.PanelType);
 
-        //ModelName
+        // ModelName
         modelNameRef.current.value = p.ModelID
         modelNameSelect(p.ModelID);
 
-        //X-Y Axis (We use setTimeout because chooseChart sometimes came with delay)
+        setPanel(panelID);
+        // X-Y Axis (We use setTimeout because chooseChart sometimes came with delay)
         setTimeout(() => {
-          setPanel(panelID);
           if (p.PanelType === "bar" || p.PanelType === "line" || p.PanelType === "pie") {
-            console.log("a")
 
             xColSelRef.current.value = p.SelColumns.xAxis.alias + "/" + p.SelColumns.xAxis.table + "/" + p.SelColumns.xAxis.col
             yColSelRef.current.value = p.SelColumns.yAxis.alias + "/" + p.SelColumns.yAxis.table + "/" + p.SelColumns.yAxis.col
@@ -532,12 +579,34 @@ export default function MainPage() {
 
           }
         }, 300);
+
+        // Koşullar
+        let plainAlias = [];
+        for (let cond of p.WherePlain) {
+          let con = getAlias(plainAlias);
+
+          if (cond === "AND") {
+            plainAlias.push("AND")
+          } else {
+            plainAlias.push(con)
+          }
+
+        }
+        console.log(plainAlias)
+        setConditions(plainAlias);
+
+        // Sıralama
+        let sortAlias = [];
+        for (let sort of Object.keys(p.Order)) {
+          let al = getAlias(sortAlias);
+          sortAlias.push(al)
+        }
+        setPanelSort(sortAlias);
       }
     }
   }
 
   useEffect(() => { //We use useEffect because in editPanel setAllAxis etc. async. Didn't refresh immediately. When (allAxis , titleAxis , valueAxis) change, run this useEffect
-    
     if (panel !== "" && allAxis.length > 0) { //If Panel and AllAxis aren't empty
       for (let p of pageContent.page_data.panels) {
         if (p.PanelID === panel) {
@@ -565,8 +634,34 @@ export default function MainPage() {
       }
     }
 
-    
-  }, [allAxis , titleAxis , valueAxis])
+    if (panel !== "" && conditions.length > 0) {
+      for (let p of pageContent.page_data.panels) {
+        if (p.PanelID === panel) {
+
+          setTimeout(() => {
+            for (let cond in conditions) { //+ Burada 2 kere dönüyor. İleride daha iyi yazabilir misin bak
+              if (conditions[cond] !== "AND") {
+                for (let wp in p.WherePlain){
+                  if (cond > p.WherePlain.length) return; // Conditions daha fazla elemana sahip olursa diye bir kontrol koyduk. Böylelikle whereplain' in uzunluğu kadar döndürecek döngüyü
+
+                  conditionColumnSelect.current[conditions[cond]].value = Object.keys(p.WherePlain[cond])[0]; // Kolonları bulduk
+                  conditionTransactionSelect.current[conditions[cond]].value = Object.keys(Object.values(p.WherePlain[cond])[0])[0]; // Kolonların işlemlerini bulduk
+                  conditionInput.current[conditions[cond]].value = Object.values(Object.values(p.WherePlain[cond])[0])[0]; // Kolonların işlem değerlerini bulduk
+                }
+              }
+            }
+  
+            for (let sort in panelSort) {
+              sortColumnSelect.current[panelSort[sort]].value = Object.keys(p.Order)[sort]        //Kolon adını bulduk
+              sortColumnTypeSelect.current[panelSort[sort]].value = Object.values(p.Order)[sort]  // Kolonların sıralamalarını bulduk
+            }
+            
+          }, 300);
+        }
+      }
+    }
+
+  }, [allAxis , titleAxis , valueAxis , conditions , panelSort])
   //-------------------------------------------------------------------------------------------------------------------------------
   
   const dltPanel = (panelID) => {
@@ -606,6 +701,8 @@ export default function MainPage() {
     let selColumns = axisSel(panelType);
     let panelIDs = [];
     let lastPanelID = panel;
+    let wherePlain = [];
+    let order = {};
 
     for(let p of pageContent.page_data.panels) {
       panelIDs.push(p.PanelID);
@@ -616,8 +713,35 @@ export default function MainPage() {
     if (panel === "") {
       lastPanelID = getAlias(panelIDs);
     }
-    
 
+    // WherePlain i çekmek için burada gerekli şeyleri belirledik ve listeye dahil ettik
+    for (let c of conditions) {
+      if (c !== "AND") { // "" yani AND olanlar için kontrol
+        let sel = conditionColumnSelect.current[c].value //.split("/")[2]
+        let tr = conditionTransactionSelect.current[c].value
+        let inp = conditionInput.current[c].value
+  
+        let wp = {[sel] : {[tr] : inp}}; // Örn: where_plain: [{"BORC_SUM": {"bte": 2000}}]
+        wherePlain.push(wp);
+      } else {
+        wherePlain.push("AND")
+      }
+    }
+    console.log(wherePlain)
+    console.log(Object.keys(wherePlain[0]))
+    console.log(Object.values(wherePlain[0]))
+
+    // Order' ı çekmek için burada gerekli şeyleri belirledik ve order objesini oluşturduk
+    for (let o of panelSort) {
+      let col = sortColumnSelect.current[o].value //.split("/")[2]
+      let type = sortColumnTypeSelect.current[o].value
+      order = {
+        ...order,
+        [col] : type
+      }
+    }
+    console.log(order);
+  
     setPageContent({
       ...pageContent,
       page_data: {
@@ -631,6 +755,8 @@ export default function MainPage() {
             ModelID: modelNameRef.current.value,
             SelColumns: selColumns,
             Coordinates: coordinates,
+            WherePlain: wherePlain,
+            Order: order,
           }
         ]
       }
@@ -648,6 +774,8 @@ export default function MainPage() {
             ModelID: modelNameRef.current.value,
             SelColumns: selColumns,
             Coordinates: coordinates,
+            WherePlain: wherePlain,
+            Order: order,
           }
         ]
       }
@@ -661,14 +789,24 @@ export default function MainPage() {
     setPanel('');
     setChartForms(null);
 
+    //Koşul listesini sıfırladık
+    setConditions([]);
+    conditionInput.current = [];
+    conditionColumnSelect.current = [];
+    conditionTransactionSelect.current = [];
+
+    //Sıralama listesini sıfırladık
+    setPanelSort([]);
+    sortColumnSelect.current = [];
+    sortColumnTypeSelect.current = [];
+
     //Kolon listesi sıfırladık
     setColList([]);
 
     //Panel Form Listesini kaldırdık
     let panel_form = document.getElementById('panelForm')
-    if(panel_form.classList.contains('flex')) {
+    if(!panel_form.classList.contains('hidden')) {
       panel_form.classList.add('hidden');
-      panel_form.classList.remove('flex');
     }
 
     //Panel Form inputlarını sıfırladık
@@ -743,18 +881,31 @@ export default function MainPage() {
     allAxis,
     chartForms,
     colList,
+    conditions,
+    pageContent,
+    panelSort,
+    titleAxis,
+    valueAxis,
+    panel,
+
+    conditionColumnSelect,
+    conditionInput,
+    conditionTransactionSelect,
     xColSelRef,
     yColSelRef,
     modelNameRef,
     panelNameRef,
-    pageContent,
-    titleAxis,
-    valueAxis,
-    panel,
+    sortColumnSelect,
+    sortColumnTypeSelect,
+
     addAxis,
+    addCondition,
+    addSort,
     axisSel,
     chooseChart,
     clearPanelInputs,
+    deleteCondition,
+    deleteSort,
     dltAxis,
     dltPanel,
     editPanel,
@@ -782,7 +933,7 @@ export default function MainPage() {
 
             <DataModal />
             <UnionDataModal />
-            <Loading />
+            {/* <Loading /> */}
             {/* <Error err={error} /> */}
         </ChartContext.Provider>
       </ModalContext.Provider>

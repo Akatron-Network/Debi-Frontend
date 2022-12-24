@@ -6,6 +6,7 @@ import {ChartContext} from '../components/context';
 
 const Page = (props) => {
   const chart_data = useContext(ChartContext);
+  console.log(props);
 
   const [options, setOptions] = useState({});
   var xAxisData = [];
@@ -23,11 +24,37 @@ const Page = (props) => {
     
     let col = await WorkspaceAll.getCollections(chart_data.pageContent.collection_id); //! Get Gateway host
 
+    let where_plain = []
+    for (let wp of props.wherePlain) {              // İlk başta propstan wherePlain ham halini aldık yani O/TBLCAHAR/BORC gibi halini.
+      if (wp !== "AND") {                              // Sonrasında sadece BORC kısmını ayırıp where_plain içerisine yolladık
+        let split = Object.keys(wp)[0].split("/")[2];
+        let js = {[split] : Object.values(wp)[0]}
+        where_plain.push(js)
+      } else {
+        where_plain.push("AND")
+      }
+    }
+    console.log(where_plain)
+
+    let order = {}
+    for (let keys in Object.keys(props.order)) {        // İlk başta keys kısmını döndürdük sonra içerisinde values döndürdük ve eşleştirdik
+      for (let values in Object.values(props.order)){   // Daha sonra gerekli kısmı split ederek ortaya istediğimiz sonucu çıkardık
+        order = {
+          ...order,
+          [Object.keys(props.order)[keys].split("/")[2]]: Object.values(props.order)[keys]
+        }
+      }
+    }
+
+    if (Object.keys(order).length === 0) order = undefined;
+    console.log(order);
+
     // Burada union mu değil mi diye kontrol ettik ve ona göre bir istek yolladık execute olarak
     if (props.modelID.includes("Union")) {
-      var respData = await Data.postExecute({union_id: props.modelID , collection_id: chart_data.pageContent.collection_id}, col.Data.connector.gateway_host);
+      let union_id = props.modelID.replace("_Union" , "")
+      var respData = await Data.postExecute({union_id: union_id , collection_id: chart_data.pageContent.collection_id, where_plain: where_plain, order: order}, col.Data.connector.gateway_host);
     } else {
-      var respData = await Data.postExecute({model_id: props.modelID , collection_id: chart_data.pageContent.collection_id}, col.Data.connector.gateway_host);
+      var respData = await Data.postExecute({model_id: props.modelID , collection_id: chart_data.pageContent.collection_id, where_plain: where_plain, order: order}, col.Data.connector.gateway_host);
     }
 
     console.log(respData);

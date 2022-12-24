@@ -13,9 +13,14 @@ export default function TreeMap() {
 
   return (
     <>
-      <h1 className="text-base text-platinium mt-1 ml-[1px] drop-shadow">
-        Kolonlar
-      </h1>
+        
+      <div className='flex mt-3'>
+        <h1 className="text-base text-platinium mt-1 ml-[1px] drop-shadow">
+          Kolonlar
+        </h1>
+
+        <hr className="mb-3 mt-4 border-1 w-full ml-3 border-hr_gray" />
+      </div>
 
       <div className='flex mt-2'>
 
@@ -99,7 +104,7 @@ export default function TreeMap() {
           </div>
       )})}
 
-      <div className='w-full'><button className="green-btn !ml-[25%] !-translate-x-1/2" onClick={chart_data.addAxis}><i className="fa-solid fa-plus mr-1"></i>Dikey Eksen Ekle</button></div>
+      <div className='w-full'><button className="green-btn !ml-[24.5%] mt-1 !-translate-x-1/2 w-1/4" onClick={chart_data.addAxis}><i className="fa-solid fa-plus mr-1"></i>Dikey Eksen Ekle</button></div>
 
       <ConditionsAndSort />
     </>
