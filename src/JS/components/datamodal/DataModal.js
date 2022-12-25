@@ -29,6 +29,8 @@ export default function DataModal() {
   const modalSourceTableInputRef = useRef({ value: "" });
   const referencedColsRef = useRef("");
   const sourceColsRef = useRef("");
+  const renamedTitleRef = useRef([]);
+  const renamedInputRef = useRef([]);
 
   const [chosenTables, setChosenTables] = useState([]);
   const [allTransCols, setAllTransCols] = useState([])
@@ -48,6 +50,7 @@ export default function DataModal() {
   const [tables, setTables] = useState({});
   const [modalTables, setModalTables] = useState({});
   const [conditionsJSON, setConditionsJSON] = useState([]);
+  const [renameState, setRenameState] = useState("");
 
   const [dataJSON, setDataJSON] = useState({
     collection_id: "",
@@ -555,10 +558,22 @@ export default function DataModal() {
       if (!datepart.classList.contains("!bg-onyx_light")) { //Eğer tarihi parçala dediysem ve normalde kolon seçiliyse hiçbir şey silmeyecek. Sadece gidip tarihleri de dataJSON a ekleyecek
 
         if(main === "main") {
-          delete dataJSON.query.select[col_name];
+          if (renamedTitleRef.current[main + "-" + col_name].innerHTML !== "") { // Eğer yeniden adlandırıldıysa yeniden adlandırılanı silecek
+            let title = col_name + "|"  + renamedTitleRef.current[main + "-" + col_name].innerHTML.replace("(" , "").replace(")" , "")
+            console.log(title)
+            delete dataJSON.query.select[title];
+          } else {
+            delete dataJSON.query.select[col_name];
+          }
         }
         else {
-          delete dataJSON.query.includes[main].select[col_name];
+          if (renamedTitleRef.current[main + "-" + col_name].innerHTML !== "") { // Eğer yeniden adlandırıldıysa yeniden adlandırılanı silecek
+            let title = col_name + "|"  + renamedTitleRef.current[main + "-" + col_name].innerHTML.replace("(" , "").replace(")" , "")
+            console.log(title)
+            delete dataJSON.query.includes[main].select[title];
+          } else {
+            delete dataJSON.query.includes[main].select[col_name];
+          }
         }
       }
     }
@@ -604,12 +619,22 @@ export default function DataModal() {
     }
     else {
       document.getElementById("sel_" + main + "_" + index).classList.toggle("hidden")
+      document.getElementById("rename_" + main + "_" + index).classList.toggle("hidden")
       elm_main.classList.toggle("border-sea_green")
       elm_main.classList.toggle("bg-middle_black")
     }
   }
 
   const selColGroups = (main , col_name , index) => {
+    let name = "";
+    if (renamedTitleRef.current[main + "-" + col_name].innerHTML !== "") {
+      let title = renamedTitleRef.current[main + "-" + col_name].innerHTML.replace("(" , "").replace(")" , "")
+      console.log(title)
+      name = col_name + "|" + title
+    } else {
+      name = col_name;
+    }
+    console.log(name);
 
     let selID = document.getElementById("sel_" + main + "_" + index);
     let group = selID.value;
@@ -625,7 +650,7 @@ export default function DataModal() {
           ...dataJSON.query,
           select: {
             ...dataJSON.query.select,
-            [col_name]: group,
+            [name]: group,
           },
         }
       });
@@ -640,7 +665,7 @@ export default function DataModal() {
               ...dataJSON.query.includes[main],
               select: {
                 ...dataJSON.query.includes[main].select,
-                [col_name]: group,
+                [name]: group,
               }
             }
           }
@@ -886,6 +911,8 @@ export default function DataModal() {
     setCalcModalCols({});
     setAllTransCols([]);
     setInEdit(false);
+    renamedInputRef.current = [];
+    renamedTitleRef.current = [];
   }
 
   const datepart = (col_name , alias , index) => {
@@ -966,24 +993,34 @@ export default function DataModal() {
     }
 
     let transaction = calcRef.current.value;
-    let convertedTransaction = ""
+    // let convertedTransaction = ""
 
-    for (var l in transaction) {
-      let letter = transaction[l]
-      if (calcCols.includes(letter)) { //Eğer calcCols yazılan harflerden birini içeriyorsa
-        let realcol = calcColRef.current[letter].value
-        if (calcColTrRef.current[letter].value !== "default") { //Eğer işlem default değilse
-          realcol = calcColTrRef.current[letter].value + "(" + realcol + ")"
-        }
-        convertedTransaction += realcol
-      } else {
-        convertedTransaction += letter
+    // for (var l in transaction) {
+    //   let letter = transaction[l]
+    //   if (calcCols.includes(letter)) { //Eğer calcCols yazılan harflerden birini içeriyorsa
+    //     let realcol = calcColRef.current[letter].value
+    //     if (calcColTrRef.current[letter].value !== "default") { //Eğer işlem default değilse
+    //       realcol = calcColTrRef.current[letter].value + "(" + realcol + ")"
+    //     }
+    //     convertedTransaction += realcol
+    //   } else {
+    //     convertedTransaction += letter
+    //   }
+    // }
+
+    for (let i in calcCols) { // Harfleri {} içerisinde yazıdırıyoruz. {} içinde olanları işleme alacak
+      let l = calcCols[i];
+      if (calcColTrRef.current[l].value !== "default") {
+        transaction = transaction.replaceAll("{" + l + "}", calcColTrRef.current[l].value + "(" + calcColRef.current[l].value + ")")
+      }
+      else {
+        transaction = transaction.replaceAll("{" + l + "}", calcColRef.current[l].value)
       }
     }
 
     setAllTransCols([
       ...allTransCols ,
-      {["{" + calcColNameRef.current.value + "}"] : convertedTransaction}
+      {["{" + calcColNameRef.current.value + "}"] : transaction}
     ])
 
     setDataJSON({
@@ -992,7 +1029,7 @@ export default function DataModal() {
         ...dataJSON.query,
         select: {
           ...dataJSON.query.select,
-          ["{" + calcColNameRef.current.value + "}"] : convertedTransaction,
+          ["{" + calcColNameRef.current.value + "}"] : transaction,
         },
       }
     });
@@ -1047,6 +1084,27 @@ export default function DataModal() {
     setModalRelations({ inner: [], outer: [] });
   }
 
+  const renameColumns = () => {
+    renamedTitleRef.current[renameState].innerHTML = "(" + renamedInputRef.current[renameState].value + ")";
+
+    let alias = renameState.split("-")[0]
+    let column = renameState.split("-")[1]
+
+    let dt = {...dataJSON}
+
+    if (alias === "main") {
+      console.log(dt.query.select[column]);
+      dt.query.select[column + "|" + renamedInputRef.current[renameState].value] = dt.query.select[column];
+      delete dt.query.select[column];
+    } else {
+
+    }
+    console.log(dt)
+    setDataJSON(dt);
+
+    document.getElementById('renameColumns').checked = false;
+  }
+
   const cV = () => {
     //Bunu sadece value değiştirirken kullandım hata veriyordu. AllTrans kısmında
   }
@@ -1076,9 +1134,12 @@ export default function DataModal() {
     sourceTableInputRef,
     sourceColsRef,
     referencedColsRef,
+    renamedTitleRef,
     miscIncludes,
     tables,
     modalTables,
+    renameState,
+    renamedInputRef,
     addColumns,
     addCondition,
     addRelatedTable,
@@ -1096,12 +1157,14 @@ export default function DataModal() {
     getColSelect, //Bunu daha detaylı düşün
     open_s_tbl,
     removeCondition,
+    renameColumns,
     saveCalcCol,
     saveManRelTbl,
     selColGroups,
     setDataJSON,
     setCalcCols,
     setCalcModalCols,
+    setRenameState,
     show_info,
     source_table,
     sourceTablesJSON,

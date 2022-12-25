@@ -326,7 +326,7 @@ export default function MainPage() {
     }
 
     if (first_id.includes("Union")) { // Union mu yoksa düz model mi diye kontrol ediyoruz
-      colList_temp = [{[query.union_name] : {columns: arrMain , alias: query.union_id}}];
+      colList_temp = [{[query.union_name] : {columns: [...valueMain, "CATEGORY"] , alias: query.union_id}}];
     } else {
       colList_temp = [{[query.query.table] : {columns: arrMain , alias: query.query.alias}}];
 
@@ -728,8 +728,6 @@ export default function MainPage() {
       }
     }
     console.log(wherePlain)
-    console.log(Object.keys(wherePlain[0]))
-    console.log(Object.values(wherePlain[0]))
 
     // Order' ı çekmek için burada gerekli şeyleri belirledik ve order objesini oluşturduk
     for (let o of panelSort) {

@@ -365,12 +365,12 @@ export default function UnionDataModal() {
     };
     let gateway = "";
 
-    for (let c of columns) {  // unionJSON içerisindeki Columns u JSON a çeviriyoruz yani
-      last_columns[c] = true; // ["Cari_Kod", "Cari_Isim"] -> {"Cari_Kod": true, "Cari_Isim": true} gibi olacak
-    }
+    // for (let c of columns) {  // unionJSON içerisindeki Columns u JSON a çeviriyoruz yani
+    //   last_columns[c] = true; // ["Cari_Kod", "Cari_Isim"] -> {"Cari_Kod": true, "Cari_Isim": true} gibi olacak
+    // }
 
     last_JSON.collection_id = unionCollectionNameRef.current.value
-    last_JSON.union.columns = last_columns;
+    last_JSON.union.columns = columns;
 
     for (let c of collections) {
       if (c.collection_id === parseInt(unionCollectionNameRef.current.value)) gateway = c.connector.gateway_host
@@ -397,14 +397,15 @@ export default function UnionDataModal() {
     let last_columns = {};
     let last_JSON = {...unionJSON};
 
-    for (let c of columns) {  // unionJSON içerisindeki Columns u JSON a çeviriyoruz yani
-      last_columns[c] = true; // ["Cari_Kod", "Cari_Isim"] -> {"Cari_Kod": true, "Cari_Isim": true} gibi olacak
-    }
+    // for (let c of columns) {  // unionJSON içerisindeki Columns u JSON a çeviriyoruz yani
+    //   last_columns[c] = true; // ["Cari_Kod", "Cari_Isim"] -> {"Cari_Kod": true, "Cari_Isim": true} gibi olacak
+    // }
 
-    last_JSON.columns = last_columns;
+    last_JSON.columns = columns; //columns u direkt olarak yolladık
 
     let resp = {};
     if (!modal_data.unionEditChecked) {  // Şu an düzenlemede mi yoksa değil mi diye kontrol ediyoruz
+      console.log(last_JSON);
       resp = await Data.postUnion(last_JSON);
       console.log(resp)
 
@@ -416,6 +417,7 @@ export default function UnionDataModal() {
         delete js.union_child_id
         delete js.union_id
       }
+      console.log(last_JSON);
 
       resp = await Data.putUnion(union_id, last_JSON);
       console.log(resp)
@@ -471,7 +473,7 @@ export default function UnionDataModal() {
       }
     }
     console.log(js);
-    js.columns = Object.keys(js.columns);
+    // js.columns = Object.keys(js.columns);
     setUnionJSON(js);
   }
 
@@ -486,6 +488,7 @@ export default function UnionDataModal() {
       unionExplanationRef.current.value = unionJSON.union_expl
 
       for (let c in unionJSON.columns) {
+        console.log(unionJSON.columns)
         unionColumnsNameRef.current[c].value = unionJSON.columns[c]
       }
 

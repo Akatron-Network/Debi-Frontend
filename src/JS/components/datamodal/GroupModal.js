@@ -35,7 +35,7 @@ export default function GroupModal() {
               <div key={calc} id={"calc_" + calc} className="form-control mb-2 w-full">
                 <div className="input-group shadow-md">
                   <span className="bg-black_light text-grayXgray px-2 py-[7px] !rounded-l border border-jet_mid justify-center w-[50%]  min-w-[35%] xl:truncate">
-                    {calc}
+                    {"{" + calc + "}"}
                   </span>
                   <select
                     defaultValue="default"

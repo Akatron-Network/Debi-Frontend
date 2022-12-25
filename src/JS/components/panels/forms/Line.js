@@ -36,7 +36,7 @@ export default function Line() {
               {chart_data.colList.map((tbi) => {
                 let table = Object.keys(tbi)[0];
                 return (tbi[table].columns.map((col , index) => {
-                  return (<option key={index} value={tbi[table].alias + "/" + table + "/" + col}>{table} - {col}</option>)
+                  return (<option key={index} value={tbi[table].alias + "/" + table + "/" + col}>{col}</option>) // {table} - {col}
                 }))
               })}
             </select>
@@ -60,7 +60,7 @@ export default function Line() {
               {chart_data.colList.map((tbi) => {
                 let table = Object.keys(tbi)[0]
                 return (tbi[table].columns.map((col , index) => {
-                  return (<option key={index} value={tbi[table].alias + "/" +table + "/" + col}>{table} - {col}</option>)
+                  return (<option key={index} value={tbi[table].alias + "/" +table + "/" + col}>{col}</option>) // {table} - {col}
                 }))
               })}
             </select>

@@ -35,8 +35,6 @@ export default function Collapses(props) {
 
   
   const getconds = () => {
-    console.log(data.dataJSON)
-    console.log(props.main);
     let ret = []
     if (props.main === 'main') {
       let conj = undefined
@@ -67,84 +65,101 @@ export default function Collapses(props) {
   }
 
   return (
-    <div
-      id={"collapse_" + props.main}
-      className={"collapse collapse-plus collapse_extra " + (checkbox ? "bg-jet" : null)}
-      
-    >
-      <input type="checkbox" className="!min-h-0 !py-2 !px-4" onClick={() => setCheckbox(!checkbox)} />
-      <div className="collapse-title text-base font-medium !min-h-0 !py-2 !px-4 text-grayXgray">
-        {props.data.source_table.name}
-        <span className="text-onyx_light">
-        {props.main !== "main" ? " (" + props.data.source_table.table + ") (#" + props.main + ")" : " (" + props.data.source_table.table + ") (#O)"}
-        </span>
-      </div>
+    <>
+      <div
+        id={"collapse_" + props.main}
+        className={"collapse collapse-plus collapse_extra " + (checkbox ? "bg-jet" : null)}
+        
+      >
+        <input type="checkbox" className="!min-h-0 !py-2 !px-4" onClick={() => setCheckbox(!checkbox)} />
+        <div className="collapse-title text-base font-medium !min-h-0 !py-2 !px-4 text-grayXgray">
+          {props.data.source_table.name}
+          <span className="text-onyx_light">
+          {props.main !== "main" ? " (" + props.data.source_table.table + ") (#" + props.main + ")" : " (" + props.data.source_table.table + ") (#O)"}
+          </span>
+        </div>
 
-      <div className="collapse-content text-graysix">
-        <h1 className="text-lg text-grayXgray mt-2 drop-shadow">
-          Kolonlar
-        </h1>
-        <div className="table_layout max-h-72">
-          {props.data.source_table.columns.map((col, index) => (
-            <div className="table_col_cards inline-grid relative" key={index} id={"elm_" + props.main + "_" + index}>
-              <div onClick={() => data.addColumns(props.main, col.name, index)} className="w-full h-full inline-grid">
-                <h4 className="text-sm text-sea_green truncate">{col.name}</h4>
-                <span className="text-xs text-grayXgray truncate">
-                  {col.details}
-                </span>
-                {(col.type === "datetime") ? (
-                  <button className='gray-btn mt-1' id={'datepart_' + index} onClick={() => data.datepart(col.name , props.main , index)}>Tarihi Parçala</button>)
-                : undefined}
+        <div className="collapse-content text-graysix">
+          <h1 className="text-lg text-grayXgray mt-2 drop-shadow">
+            Kolonlar
+          </h1>
+          <div className="table_layout max-h-72">
+            {props.data.source_table.columns.map((col, index) => (
+              <div className="table_col_cards inline-grid relative" key={index} id={"elm_" + props.main + "_" + index}>
+                <div onClick={() => data.addColumns(props.main, col.name, index)} className="w-full h-full inline-grid">
+                  <h4 className="text-sm text-sea_green truncate pr-7">{col.name} <span className='text-onyx_light' ref={(el) => {data.renamedTitleRef.current[props.main + "-" + col.name] = el}}></span></h4>
+                  <span className="text-xs text-grayXgray truncate">
+                    {col.details}
+                  </span>
+                  {(col.type === "datetime") ? (
+                    <button className='gray-btn mt-1' id={'datepart_' + index} onClick={() => data.datepart(col.name , props.main , index)}>Tarihi Parçala</button>)
+                  : undefined}
+                </div>
+
+                <div id={"rename_" + props.main + "_" + index} className="tooltip tooltip-left hidden absolute top-2 right-2" data-tip="Yeniden İsimlendir">
+                  <label htmlFor="renameColumns" className='gray-btn min-h-[20px] text-xs px-[6px]' onClick={() => data.setRenameState(props.main + "-" + col.name)}><i className="fa-solid fa-pen"></i></label>
+                </div>
+
+                <select
+                  id={"sel_" + props.main + "_" + index}
+                  defaultValue="default"
+                  className="select hidden mt-1 min-h-0 w-fit h-8 max-h-10 !rounded focus:outline-none focus:border-onyx_light focus:bg-onyx bg-jet_mid text-grayXgray hover:text-platinium"
+                  onChange={() => data.selColGroups(props.main, col.name, index)}
+                >
+                  <option value="default">
+                    Direkt
+                  </option>
+                  <option value="SUM">
+                    Toplam
+                  </option>
+                  <option value="AVG">
+                    Ortalama
+                  </option>
+                  <option value="MAX">
+                    Maksimum
+                  </option>
+                  <option value="MIN">
+                    Minimum
+                  </option>
+                </select>
               </div>
+            ))}
+          </div>
 
-              <select
-                id={"sel_" + props.main + "_" + index}
-                // ref={(el) => {if (data.colSelRef.current !== null) data.colSelRef.current[props.main + index] = el}}
-                defaultValue="default"
-                className="select hidden mt-1 min-h-0 w-fit h-8 max-h-10 !rounded focus:outline-none focus:border-onyx_light focus:bg-onyx bg-jet_mid text-grayXgray hover:text-platinium"
-                onChange={() => data.selColGroups(props.main, col.name, index)}
-              >
-                <option value="default">
-                  Direkt
-                </option>
-                <option value="SUM">
-                  Toplam
-                </option>
-                <option value="AVG">
-                  Ortalama
-                </option>
-                <option value="MAX">
-                  Maksimum
-                </option>
-                <option value="MIN">
-                  Minimum
-                </option>
-              </select>
+          <div className="table_layout mt-6 max-h-[465px]">
+            {conds}
+            
+            <div className="col-span-12 text-center">
+              <button className="green-btn" onClick={() => data.addCondition(props.main)}>
+                <i className="fa-solid fa-plus mr-2"></i>Koşul Ekle
+              </button>
             </div>
-          ))}
+          </div>
+
+          {mainDlt ? null : (
+            <div className="text-right">
+              <button
+                className="green-btn bg-danger hover:bg-danger_light"
+                onClick={() => data.dltRelatedTable(props.main , props.keyID)}
+              >
+                <i className="fa-solid fa-xmark mr-2"></i>Tabloyu Sil
+              </button>
+            </div>
+          )}
         </div>
 
-        <div className="table_layout mt-6 max-h-[465px]">
-          {conds}
-          
-          <div className="col-span-12 text-center">
-            <button className="green-btn" onClick={() => data.addCondition(props.main)}>
-              <i className="fa-solid fa-plus mr-2"></i>Koşul Ekle
-            </button>
-          </div>
-        </div>
-
-        {mainDlt ? null : (
-          <div className="text-right">
-            <button
-              className="green-btn bg-danger hover:bg-danger_light"
-              onClick={() => data.dltRelatedTable(props.main , props.keyID)}
-            >
-              <i className="fa-solid fa-xmark mr-2"></i>Tabloyu Sil
-            </button>
-          </div>
-        )}
       </div>
-    </div>
+      
+      <input type="checkbox" id="renameColumns" className="modal-toggle" />
+      <label htmlFor="renameColumns" className="modal bg-modal_back">
+        <label className="modal-box relative max-w-[25%] h-fit p-3 bg-black_light rounded" htmlFor="renameColumns">
+        <h2 className="text-xl mb-3 text-platinium">Kolon Adı Değiştir</h2>
+          <h3 className="text-lg">Lütfen yeni <span className='font-bold text-sea_green'>kolon</span> adı girin.</h3>
+            <input className='input placeholder:opacity-50 w-full' type="text" placeholder="Buraya girin..." ref={(el) => {if (data.renameState !== "") data.renamedInputRef.current[data.renameState] = el}} />
+            <span id='renameColumnWarn' className='text-sm text-red-600 hidden'>Lütfen gerekli bilgileri doldurun!</span>
+            <button className='green-btn float-right mt-3' onClick={() => data.renameColumns()}>Kaydet</button>
+        </label>
+      </label>
+    </>
   );
 }
