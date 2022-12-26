@@ -12,6 +12,7 @@ import { getAlias , getKeyID } from '../../libraries/misc';
 import ColSelect from './ColSelect';
 import GroupModal from './GroupModal';
 import ManuelRelatedTable from './ManuelRelatedTable';
+import RenameColumns from './RenameColumns';
 
 export default function DataModal() {
   const modal_data = useContext(ModalContext);
@@ -30,7 +31,7 @@ export default function DataModal() {
   const referencedColsRef = useRef("");
   const sourceColsRef = useRef("");
   const renamedTitleRef = useRef([]);
-  const renamedInputRef = useRef([]);
+  const renamedInputRef = useRef("");
 
   const [chosenTables, setChosenTables] = useState([]);
   const [allTransCols, setAllTransCols] = useState([])
@@ -51,6 +52,8 @@ export default function DataModal() {
   const [modalTables, setModalTables] = useState({});
   const [conditionsJSON, setConditionsJSON] = useState([]);
   const [renameState, setRenameState] = useState("");
+  const [renameInputState, setRenameInputState] = useState("");
+
 
   const [dataJSON, setDataJSON] = useState({
     collection_id: "",
@@ -548,13 +551,13 @@ export default function DataModal() {
   }
 
   const addColumns = async (main , col_name , index) => {
-    //+ ToDO Bu FONKSİYONU KOMPLE BAŞTAN YAZZ! DatePart'a main de ekle yani "datepart_" + main + "_" + index olsun
+    //+ DatePart'a main de ekle yani "datepart_" + main + "_" + index olsun
     let datepart = document.getElementById('datepart_' + index);
     let elm_main = document.getElementById("elm_" + main + "_" + index);
     
     if (datepart === null) {datepart = {classList: {contains: () => {}, toggle: () => {}}}}
 
-    if (elm_main.classList.contains("border-sea_green") && datepart !== null) {
+    if (elm_main.classList.contains("border-sea_green") && datepart !== null) { //! SEÇİLİ HALDEYSE YANİ SEÇİM KALDIRILIYORSA
       if (!datepart.classList.contains("!bg-onyx_light")) { //Eğer tarihi parçala dediysem ve normalde kolon seçiliyse hiçbir şey silmeyecek. Sadece gidip tarihleri de dataJSON a ekleyecek
 
         if(main === "main") {
@@ -577,7 +580,7 @@ export default function DataModal() {
         }
       }
     }
-    else {
+    else { //! SEÇİLİ HALDE DEĞİLSE YANİ YENİ SEÇİLDİYSE
 
       if (datepart === null || (datepart !== null && !datepart.classList.contains("!bg-onyx_light"))) {
   
@@ -622,6 +625,8 @@ export default function DataModal() {
       document.getElementById("rename_" + main + "_" + index).classList.toggle("hidden")
       elm_main.classList.toggle("border-sea_green")
       elm_main.classList.toggle("bg-middle_black")
+
+      if (renamedTitleRef.current[main + "-" + col_name].innerHTML !== "") { renamedTitleRef.current[main + "-" + col_name].innerHTML = ""}
     }
   }
 
@@ -911,8 +916,12 @@ export default function DataModal() {
     setCalcModalCols({});
     setAllTransCols([]);
     setInEdit(false);
-    renamedInputRef.current = [];
+    setRenameState("");
+    setRenameInputState("");
     renamedTitleRef.current = [];
+    renamedInputRef.current.value = "";
+
+
   }
 
   const datepart = (col_name , alias , index) => {
@@ -1084,24 +1093,39 @@ export default function DataModal() {
     setModalRelations({ inner: [], outer: [] });
   }
 
-  const renameColumns = () => {
-    renamedTitleRef.current[renameState].innerHTML = "(" + renamedInputRef.current[renameState].value + ")";
+  const openRenameModal = (main, col_name) => {
+    renamedInputRef.current.value = renamedTitleRef.current[main + "-" + col_name].innerHTML.replace("(" , "").replace(")" , "")
+    console.log(renamedInputRef.current.value);
+    setRenameState(main + "-" + col_name);
+    setRenameInputState(renamedInputRef.current.value);
+  }
 
+  const renameColumns = () => {
+    let dt = {...dataJSON}
     let alias = renameState.split("-")[0]
     let column = renameState.split("-")[1]
-
-    let dt = {...dataJSON}
-
-    if (alias === "main") {
-      console.log(dt.query.select[column]);
-      dt.query.select[column + "|" + renamedInputRef.current[renameState].value] = dt.query.select[column];
-      delete dt.query.select[column];
+  
+    if (alias === "main") { // Aliasına göre yolunu belirledik
+      var path = dt.query.select;
     } else {
+      var path = dt.query.includes[alias].select
+    }
+    console.log(renamedInputRef)
+    if (renamedInputRef.current.value === "") { //* Input eğer boş gönderiliyorsa
+
+      renamedTitleRef.current[renameState].innerHTML = "";
+      path[column] = path[column + "|" + renameInputState]  // Boş gönderildiğinde ek ismi kaldırıp eski halini koyduk yani CARI_KOD = true oldu
+      delete path[column + "|" + renameInputState]; // Boş gönderdiğinde önceden oluşturulan örn: CARI_KOD|DENEME = true nesnesini siliyoruz
+
+    } else {  //* Eğer input doluysa gönderiliyorsa
+
+      renamedTitleRef.current[renameState].innerHTML = "(" + renamedInputRef.current.value + ")"; //renamedInputRef.current[renameState].value
+      path[column + "|" + renamedInputRef.current.value] = path[column]; //renamedInputRef.current[renameState].value
+      delete path[column];
 
     }
-    console.log(dt)
-    setDataJSON(dt);
 
+    setDataJSON(dt);
     document.getElementById('renameColumns').checked = false;
   }
 
@@ -1140,6 +1164,7 @@ export default function DataModal() {
     modalTables,
     renameState,
     renamedInputRef,
+    renameInputState,
     addColumns,
     addCondition,
     addRelatedTable,
@@ -1168,6 +1193,7 @@ export default function DataModal() {
     show_info,
     source_table,
     sourceTablesJSON,
+    openRenameModal,
   };
 
 
@@ -1266,6 +1292,7 @@ export default function DataModal() {
             </div>
           </div>
 
+          <RenameColumns />
           <RelationsAbsolute />
           <GroupModal />
           <ManuelRelatedTable />
