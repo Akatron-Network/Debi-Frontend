@@ -36,6 +36,10 @@ export default function Line() {
               {chart_data.colList.map((tbi) => {
                 let table = Object.keys(tbi)[0];
                 return (tbi[table].columns.map((col , index) => {
+                  
+                  if (col.includes("|")) {
+                    col = col.split("|")[1]
+                  }
                   return (<option key={index} value={tbi[table].alias + "/" + table + "/" + col}>{col}</option>) // {table} - {col}
                 }))
               })}
@@ -60,6 +64,10 @@ export default function Line() {
               {chart_data.colList.map((tbi) => {
                 let table = Object.keys(tbi)[0]
                 return (tbi[table].columns.map((col , index) => {
+                  
+                  if (col.includes("|")) {
+                    col = col.split("|")[1]
+                  }
                   return (<option key={index} value={tbi[table].alias + "/" +table + "/" + col}>{col}</option>) // {table} - {col}
                 }))
               })}

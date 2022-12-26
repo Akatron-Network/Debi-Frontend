@@ -248,7 +248,7 @@ export default function UnionDataModal() {
     return ret;
   }
 
-  const sourceModelSelect = (index) => { //+ ToDo
+  const sourceModelSelect = (index) => { //+
     let val = unionSourceModelSelectRef.current[index].value
     let new_childs = [...unionJSON.childs]
 
@@ -343,6 +343,9 @@ export default function UnionDataModal() {
 
     columns_option[index] = []; // Burada tüm kaynakların kendi aliası yani indexi olduğu için şöyle bir şey oluşturduk
     for (let c of columns) {
+      if (c.includes("|")) { // Buraya gelen
+        c = c.split("|")[1]
+      }
       columns_option[index].push(<option key={i} value={c}>{c}</option>) // İleride eğer O/TBLCAHAR/CARI_KOD gibi bir value gelirse ayırmak için {c.split("/")[1]} - {c.split("/")[2]} kullanılabilir
       i++;
     }

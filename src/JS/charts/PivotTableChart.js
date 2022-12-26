@@ -43,7 +43,6 @@ export default function PivotTableCharts(props) {
         where_plain.push("AND")
       }
     }
-    console.log(where_plain)
 
     let order = {}
     for (let keys in Object.keys(props.order)) {        // İlk başta keys kısmını döndürdük sonra içerisinde values döndürdük ve eşleştirdik
@@ -57,6 +56,9 @@ export default function PivotTableCharts(props) {
 
     if (Object.keys(order).length === 0) order = undefined;
     console.log(order);
+
+    if (where_plain.length === 0) where_plain = undefined;
+    console.log(where_plain)
 
     // Burada union mu değil mi diye kontrol ettik ve ona göre bir istek yolladık execute olarak
     if (props.modelID.includes("Union")) {
@@ -80,6 +82,7 @@ export default function PivotTableCharts(props) {
             caption: x.col,
             dataType: (typeof(proData[x.col]) === 'number') ? 'number' : undefined,
             summaryType: (typeof(proData[x.col]) === 'number') ? 'sum' : undefined,
+            format: (typeof(proData[x.col]) === 'number') ? 'currency' : undefined,
           })
         }
         for (let y of p.SelColumns.yAxis) {
@@ -89,10 +92,13 @@ export default function PivotTableCharts(props) {
             caption: y.col,
             dataType: (typeof(proData[y.col]) === 'number') ? 'number' : undefined,
             summaryType: (typeof(proData[y.col]) === 'number') ? 'sum' : undefined,
+            format: (typeof(proData[y.col]) === 'number') ? 'currency' : undefined, //+ format={{ currency: 'EUR', maximumFractionDigits: 2 }}
           })
         }
       }
     }
+
+    console.log(fields);
 
     setAllData(new PivotGridDataSource({
       fields: fields,

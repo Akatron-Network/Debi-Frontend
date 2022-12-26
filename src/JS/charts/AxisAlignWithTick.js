@@ -49,6 +49,10 @@ const Page = (props) => {
     if (Object.keys(order).length === 0) order = undefined;
     console.log(order);
 
+    if (where_plain.length === 0) where_plain = undefined;
+    console.log(where_plain)
+
+
     // Burada union mu değil mi diye kontrol ettik ve ona göre bir istek yolladık execute olarak
     if (props.modelID.includes("Union")) {
       let union_id = props.modelID.replace("_Union" , "")

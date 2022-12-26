@@ -148,16 +148,27 @@ export default function DataModal() {
     for (let c in modal_data.modalType.query.select) {  //* for selected columns in source table
       let cval = modal_data.modalType.query.select[c]   //* column's val (true, 'sum' etc)
       let cindex = 0                                    //* Column's index in all columns of table
-      for (let ac in chsCols['O']) { if (chsCols['O'][ac].name === c) cindex = ac }    //* set c index
+      for (let ac in chsCols['O']) {
+
+        if (c.includes("|")) { //* Eğer yeniden isimlendirilen bir tabloysa
+          c = c.split("|")[0]
+        }
+
+        if (chsCols['O'][ac].name === c) { //* set c index
+          cindex = ac
+        }
+      }
 
       if (!c.includes('{')) {
         document.getElementById('elm_main_' + cindex).classList.add("border-sea_green")
         document.getElementById("sel_main_" + cindex).classList.remove("hidden")
+        document.getElementById("rename_main_" + cindex).classList.remove("hidden")
 
         if (cval !== true) {
           document.getElementById("sel_main_" + cindex).value = cval;
         }
-      } else {
+      }
+      else {
         transColTemp.push({[c] : cval})
       }
     }
@@ -168,11 +179,21 @@ export default function DataModal() {
       for (let c in incObj.select) {
         let cval = incObj.select[c]
         let cindex = 0
-        for (let ac in chsCols[incAlias]) { if (chsCols[incAlias][ac].name === c) cindex = ac }
+        for (let ac in chsCols[incAlias]) {
+
+          if (c.includes("|")) { //* Eğer yeniden isimlendirilen bir tabloysa
+            c = c.split("|")[0]
+          }
+
+          if (chsCols[incAlias][ac].name === c) {
+            cindex = ac
+          }
+        }
   
         if (!c.includes('{')) {
           document.getElementById('elm_'+ incAlias +'_' + cindex).classList.add("border-sea_green")
           document.getElementById("sel_" + incAlias + "_" + cindex).classList.remove("hidden")
+          document.getElementById("rename_" + incAlias + "_" + cindex).classList.remove("hidden")
 
           if (cval !== true) {
             document.getElementById("sel_" + incAlias + "_" + cindex).value = cval;
@@ -187,6 +208,40 @@ export default function DataModal() {
 
     // console.log("a")
     // document.getElementById('elm_main_0').classList.add("hidden");
+
+    console.log(dataJSON)
+    //* Yeniden adlandırılmış bir kolon varsa yanına yazdırmak için
+    let alias = "";
+    // renamedTitleRef.current[props.main + "-" + col.name]
+    if (Object.keys(dataJSON.query.select).length > 0) {
+      alias = "main";
+      for (let s of Object.keys(dataJSON.query.select)) {
+        console.log(s)
+        if (s.includes("|")) {
+          let column = s.split("|")[0]
+          let rename = s.split("|")[1]
+          console.log(s.split("|")[0]);
+          console.log(s.split("|")[1]);
+
+          renamedTitleRef.current[alias + "-" + column].innerHTML = "(" + rename + ")";
+        }
+      }
+    }
+
+    for (let inc of Object.keys(dataJSON.query.includes)) {
+      if (Object.keys(dataJSON.query.includes[inc].select).length > 0) {
+        alias = inc;
+        for (let s of Object.keys(dataJSON.query.includes[inc].select)) {
+          if (s.includes("|")) {
+            let columns = s.split("|")[0];
+            let rename = s.split("|")[1];
+
+            renamedTitleRef.current[alias + "-" + columns].innerHTML = "(" + rename + ")";
+          }
+        }
+      }
+    }
+    
   
   }, [chsCols])
   
@@ -500,7 +555,7 @@ export default function DataModal() {
       false
     ); //! Get table relations
     
-    const alias = getAlias(miscIncludes);
+    const alias = getAlias([...Object.keys(dataJSON.query.includes), "O"]);
     setMiscIncludes([...miscIncludes , alias]);
 
     let keyID = getKeyID(chosenTables);
@@ -1117,11 +1172,20 @@ export default function DataModal() {
       path[column] = path[column + "|" + renameInputState]  // Boş gönderildiğinde ek ismi kaldırıp eski halini koyduk yani CARI_KOD = true oldu
       delete path[column + "|" + renameInputState]; // Boş gönderdiğinde önceden oluşturulan örn: CARI_KOD|DENEME = true nesnesini siliyoruz
 
-    } else {  //* Eğer input doluysa gönderiliyorsa
+    }
+    else {  //* Eğer input doluysa gönderiliyorsa
+
+      if (renamedTitleRef.current[renameState].innerHTML !== "") { // Eğer daha öncesinde yazılan bir şeyin üzerine yazılıyorsa yani CARI_KOD|A yerine CARI_KOD|AAA yapılacaksa
+        console.log("a");
+        path[column + "|" + renamedInputRef.current.value] = path[column + "|" + renameInputState];
+        delete path[column + "|" + renameInputState];
+      }
+      else { // Eğer daha öncesinde yazılan bir şeyin yoksa ve üzerine yazılıyorsa
+        path[column + "|" + renamedInputRef.current.value] = path[column]; //renamedInputRef.current[renameState].value
+        delete path[column];
+      }
 
       renamedTitleRef.current[renameState].innerHTML = "(" + renamedInputRef.current.value + ")"; //renamedInputRef.current[renameState].value
-      path[column + "|" + renamedInputRef.current.value] = path[column]; //renamedInputRef.current[renameState].value
-      delete path[column];
 
     }
 

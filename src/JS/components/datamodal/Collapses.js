@@ -87,7 +87,7 @@ export default function Collapses(props) {
             {props.data.source_table.columns.map((col, index) => (
               <div className="table_col_cards inline-grid relative" key={index} id={"elm_" + props.main + "_" + index}>
                 <div onClick={() => data.addColumns(props.main, col.name, index)} className="w-full h-full inline-grid">
-                  <h4 className="text-sm text-sea_green truncate pr-7">{col.name} <span className='text-onyx_light' ref={(el) => {data.renamedTitleRef.current[props.main + "-" + col.name] = el}}></span></h4>
+                  <h4 className="text-sm text-sea_green truncate pr-7">{col.name} <span className='text-onyx_light text-xs' ref={(el) => {data.renamedTitleRef.current[props.main + "-" + col.name] = el}}></span></h4>
                   <span className="text-xs text-grayXgray truncate">
                     {col.details}
                   </span>
