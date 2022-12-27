@@ -69,7 +69,7 @@ export default function ConditionsAndSort() {
         <div className='grid grid-cols-2 gap-3 my-2'>
           {chart_data.panelSort.map((sort, index) => {
             return(
-              <div key={index} className="form-control w-full col-span-1">
+              <div key={index} className="form-control w-full col-span-1 max-w-[423px]">
                 <div className="input-group shadow-md">
     
                   <span className="bg-black_light text-grayXgray px-2 py-[7px] !rounded-l border border-jet_mid justify-center min-w-[21%] xl:truncate">

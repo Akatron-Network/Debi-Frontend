@@ -44,6 +44,7 @@ export default function SettingPage() {
   }, [])
 
   const getUserInformations = async () => {
+
     let resp = await Service.getProfile();
     let user = resp.Data.User;
 

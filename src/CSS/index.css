@@ -1056,25 +1056,25 @@
   }
 
   ::-webkit-scrollbar-track {
-    background: #292929;
+    background: #1B1B1B;
   }
 
   ::-webkit-scrollbar-thumb {
-    background-color: #1B1B1B;
+    background-color: #292929;
     border: 1px solid transparent;
     border-radius: 4px;
     background-clip: content-box;
   }
 
   ::-webkit-scrollbar-thumb:hover {
-    background-color: #181818;
+    background-color: #333333;
     border: 1px solid transparent;
     border-radius: 4px;
     background-clip: content-box;
   }
 
   ::-webkit-scrollbar-corner{
-    background: #222222;
+    background: #202020;
   }
 
   

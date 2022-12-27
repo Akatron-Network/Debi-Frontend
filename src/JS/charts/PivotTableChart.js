@@ -82,7 +82,7 @@ export default function PivotTableCharts(props) {
             caption: x.col,
             dataType: (typeof(proData[x.col]) === 'number') ? 'number' : undefined,
             summaryType: (typeof(proData[x.col]) === 'number') ? 'sum' : undefined,
-            format: (typeof(proData[x.col]) === 'number') ? 'currency' : undefined,
+            format: (typeof(proData[x.col]) === 'number') ? { type: 'fixedPoint', precision: 2 } : undefined, // Format Tipleri --> https://js.devexpress.com/Documentation/22_1/ApiReference/Common/Object_Structures/Format/#formatter
           })
         }
         for (let y of p.SelColumns.yAxis) {
@@ -92,7 +92,8 @@ export default function PivotTableCharts(props) {
             caption: y.col,
             dataType: (typeof(proData[y.col]) === 'number') ? 'number' : undefined,
             summaryType: (typeof(proData[y.col]) === 'number') ? 'sum' : undefined,
-            format: (typeof(proData[y.col]) === 'number') ? 'currency' : undefined, //+ format={{ currency: 'EUR', maximumFractionDigits: 2 }}
+            // format: (typeof(proData[y.col]) === 'number') ? 'currency' : undefined, //+ format={{ currency: 'EUR', maximumFractionDigits: 2 }}
+            format: (typeof(proData[y.col]) === 'number') ? { type: 'fixedPoint', precision: 2 } : undefined, // Format Tipleri --> https://js.devexpress.com/Documentation/22_1/ApiReference/Common/Object_Structures/Format/#formatter
           })
         }
       }

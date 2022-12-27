@@ -360,6 +360,8 @@ export default function UnionDataModal() {
 
   //? Others -------------------------------------------
   const refreshUnionTable = async () => {
+    document.getElementById('loadingScreen').checked = true;
+
     let columns = [...unionJSON.columns];
     let last_columns = {};
     let last_JSON = {
@@ -393,9 +395,13 @@ export default function UnionDataModal() {
       }))
       setExecuteUnionRows(resp.Data.map((rows) => (Object.values(rows))))
     }
+    
+    document.getElementById('loadingScreen').checked = false;
   }
 
   const saveUnion = async () => {
+    document.getElementById('loadingScreen').checked = true;
+
     let columns = [...unionJSON.columns];
     let last_columns = {};
     let last_JSON = {...unionJSON};
@@ -432,6 +438,8 @@ export default function UnionDataModal() {
       modal_data.getUnions();
       clearUnionInputs();
     }
+    
+    document.getElementById('loadingScreen').checked = false;
   }
 
   const clearUnionInputs = () => {
@@ -468,6 +476,8 @@ export default function UnionDataModal() {
   }, [modal_data.unionEditChecked])
 
   const editUnionModel = () => {
+    document.getElementById('loadingScreen').checked = true;
+
     let js = {};
 
     for (let u of modal_data.unionList) {
@@ -525,6 +535,8 @@ export default function UnionDataModal() {
         unionJSON.childs[child].columns.splice(arr[0], (unionJSON.childs[child].columns.length - parseInt(arr[0])))
       }
     }
+    
+    document.getElementById('loadingScreen').checked = false;
   }, [sourceColumns])
   
   //? --------------------------------------------------

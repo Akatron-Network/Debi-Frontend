@@ -242,6 +242,7 @@ export default function DataModal() {
       }
     }
     
+    document.getElementById('loadingScreen').checked = false;
   
   }, [chsCols])
   
@@ -457,6 +458,8 @@ export default function DataModal() {
   };
 
   const colNameSelect = async (id) => {
+    document.getElementById('loadingScreen').checked = true;
+
     let col = await WorkspaceAll.getCollections(id); //! Get Gateway host
     console.log(col)
     let resp = await Data.getExplorer(id, col.Data.connector.gateway_host);
@@ -469,6 +472,7 @@ export default function DataModal() {
     setFilteredData(resp.Data); //!We create filteredData for filtered datas, because we don't want change sourcetable
     setDataJSON({...dataJSON, collection_id: id})
 
+    document.getElementById('loadingScreen').checked = false;
     return [col.Data.connector.gateway_host , resp.Data];
   };
 
@@ -491,6 +495,8 @@ export default function DataModal() {
   };
 
   const chooseSource = async (table, category = "", nameTable = "" , gatewayHost , type , edit = false) => {
+    document.getElementById('loadingScreen').checked = true;
+
     //! Get table relations
     var resp = await Data.getExplorer(
       dataColSelectRef.current.value,
@@ -545,9 +551,13 @@ export default function DataModal() {
   
     close_s_tbl(type);
     setFilteredData(sourceTable); // soruceTablesJSON(yani kaynak tabloları arattığımız yer) sıfırlamak için yapıyoruz
+    
+    document.getElementById('loadingScreen').checked = false;
   };
 
   const addRelatedTable = async (table , rel_definition = "" , gatewayHost , edit = false, sAlias) => {
+    document.getElementById('loadingScreen').checked = true;
+
     let resp = await Data.getExplorer(
       dataColSelectRef.current.value,
       gatewayHost,
@@ -594,6 +604,8 @@ export default function DataModal() {
         includes: {...dataJSON.query.includes , [alias]: includesJSON},
       },
     });
+    
+    document.getElementById('loadingScreen').checked = false;
   };
 
   const dltRelatedTable = async (alias , keyID) => {
@@ -736,6 +748,7 @@ export default function DataModal() {
   }
 
   const refreshTable = async () => {
+    document.getElementById('loadingScreen').checked = true;
 
     let dt = {...dataJSON};
     dt.query['includes'] = Object.values(dt.query['includes']);
@@ -757,6 +770,8 @@ export default function DataModal() {
     if (resp.Data.length > 0) setExecuteCols(Object.keys(resp.Data[0]).map((cols) => ({name: cols})))
     //* boş veri döndü hatası döndür
     setExecuteRows(resp.Data.map((rows) => (Object.values(rows))))
+    
+    document.getElementById('loadingScreen').checked = false;
   }
 
   const addCondition = (main) => {
@@ -902,6 +917,8 @@ export default function DataModal() {
   };
 
   const saveDataJSON = async () => {
+    document.getElementById('loadingScreen').checked = true;
+
     console.log(inEdit)
     let dt = {...dataJSON};
     dt.query['includes'] = Object.values(dt.query['includes']);
@@ -930,6 +947,7 @@ export default function DataModal() {
       clearModelInputs();
     }
 
+    document.getElementById('loadingScreen').checked = false;
   }
 
   const clearModelInputs = () => {

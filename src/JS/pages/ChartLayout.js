@@ -20,10 +20,12 @@ export default function ChartLayout() {
     return () => {
       console.log(fileID);
 
-      document.getElementById('file_path_top').style.display = "block";
-      document.getElementById('new_btn').style.display = "none";
-      // document.getElementById('page-btn').style.display = "none";
-      document.getElementById('save-page-btn').style.display = "none";
+      if (document.getElementById('file_path_top') !== null) { // Panel ekranında çıkış yaparken hata verebiliyor. O yüzden koydum
+        document.getElementById('file_path_top').style.display = "block";
+        document.getElementById('new_btn').style.display = "none";
+        // document.getElementById('page-btn').style.display = "none";
+        document.getElementById('save-page-btn').style.display = "none";
+      }
     }
   }, [fileID])
 

@@ -38,7 +38,6 @@ export default function DataModalList() {
     }
 
     modal_data.setModalType(modal_type);
-    console.log(modal_type)
   }
 
   const openUnionModal = (union_type) => { //!Önizleme için gerekiyor

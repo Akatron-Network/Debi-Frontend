@@ -53,6 +53,8 @@ export default function ColConnectorCreateor() {
   }
 
   const testConnection = async () => {
+    document.getElementById('loadingScreen').checked = true;
+
     if(data.colWorksSelectRef.current.value !== "default" && data.colWorksNickRef.current.value !== "" && data.colWorksPassRef.current.value !== "" && data.colWorksDBRef.current.value !== "" && data.colServerRef.current.value !== "" && data.colPortRef.current.value !== "") {
       
       var connectionContent = createContent();
@@ -78,9 +80,12 @@ export default function ColConnectorCreateor() {
 
     } else {checkWarn(1)}
 
+    document.getElementById('loadingScreen').checked = false;
   }
  
   const addWorksApply = async () => {
+    document.getElementById('loadingScreen').checked = true;
+
     if(data.colWorksSelectRef.current.value !== "default" && data.colNameRef.current.value !== "" && data.colWorksNickRef.current.value !== "" && data.colWorksPassRef.current.value !== "" && data.colWorksDBRef.current.value !== "" && data.colServerRef.current.value !== "" && data.colPortRef.current.value !== "") {
       var connectResp = await testConnection();
       console.log(connectResp);
@@ -105,6 +110,8 @@ export default function ColConnectorCreateor() {
       }
 
     } else {checkWarn(1)}
+
+    document.getElementById('loadingScreen').checked = false;
   }
 
   // const checkConnector = () => {

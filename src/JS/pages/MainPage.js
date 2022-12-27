@@ -698,6 +698,8 @@ export default function MainPage() {
   }
 
   const savePanel = () => {
+    document.getElementById('loadingScreen').checked = true;
+
     let selColumns = axisSel(panelType);
     let panelIDs = [];
     let lastPanelID = panel;
@@ -781,6 +783,8 @@ export default function MainPage() {
 
     document.getElementById('chart_choose').checked = false;
     clearPanelInputs();
+    
+    document.getElementById('loadingScreen').checked = false;
   }
 
   const clearPanelInputs = () => {
@@ -931,7 +935,7 @@ export default function MainPage() {
 
             <DataModal />
             <UnionDataModal />
-            {/* <Loading /> */}
+            <Loading />
             {/* <Error err={error} /> */}
         </ChartContext.Provider>
       </ModalContext.Provider>
