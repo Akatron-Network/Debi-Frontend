@@ -70,9 +70,11 @@ export default function ColConnectorCreateor() {
         checkWarn(3);
         data.setDbSchemas(Object.keys(connectResp.Data.scheme_similarity))
         data.setCheckedConnection(true);
+        document.getElementById('loadingScreen').checked = false;
         return connectResp;
 
       } catch (error) {
+        document.getElementById('loadingScreen').checked = false;
         console.log(error);
         checkWarn(2)
       }
