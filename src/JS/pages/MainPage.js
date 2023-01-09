@@ -173,6 +173,32 @@ export default function MainPage() {
     getUnions();
   }
 
+  const [viewList, setViewList] = useState([]);
+
+  const getViews = async (col_id) => {
+    console.log(col_id)
+    
+    let resp = await WorkspaceAll.getCollections(col_id);
+    console.log(resp)
+
+    if (resp.Data.owned_collections) return;
+    let gateway = resp.Data.connector.gateway_host;
+    console.log(gateway)
+
+    let view_resp = await Data.getExplorer(col_id, gateway, undefined, false, true, true);
+    console.log(view_resp.Data)
+
+    let tempViews = []
+
+    for (let tbl of view_resp.Data) {
+      if (tbl.type === 'VIEW') tempViews.push(tbl)
+    }
+
+    console.log(tempViews)
+
+    setViewList(tempViews);
+  }
+
   const maincontext_data = {
     collections,
     dbSchemas,
@@ -224,15 +250,18 @@ export default function MainPage() {
     modalType,
     unionInformations,
     unionList,
+    viewList,
     deleteModel,
     deleteUnion,
     getList,
     getUnions,
+    getViews,
     setModalChecked,
     setUnionEditChecked,
     setUnionInformations,
     setModalType,
     setUnionList,
+    setViewList,
   }
 
   //* Panel Data Funcs------------------------------------------/
@@ -302,6 +331,19 @@ export default function MainPage() {
       var keyMain = Object.keys(query.columns)
       var valueMain = Object.values(query.columns)
 
+    } else if (first_id.includes("View")) {
+      let arr = [];
+
+      id = id.split("_View")[0]
+      for(let a of viewList) { if (a.table === id) { query = a } }
+      
+      for(let b of query.columns) {
+        arr.push(b.name)
+      }
+      
+      var keyMain = Object.keys(arr)
+      var valueMain = Object.values(arr)
+
     } else {
 
       id = parseInt(id);
@@ -325,8 +367,11 @@ export default function MainPage() {
       }
     }
 
+    console.log(valueMain)
     if (first_id.includes("Union")) { // Union mu yoksa düz model mi diye kontrol ediyoruz
       colList_temp = [{[query.union_name] : {columns: [...valueMain, "CATEGORY"] , alias: query.union_id}}];
+    } else if (first_id.includes("View")) {
+      colList_temp = [{[query.table] : {columns: [...valueMain, "CATEGORY"] , alias: query.table}}];
     } else {
       colList_temp = [{[query.query.table] : {columns: arrMain , alias: query.query.alias}}];
 

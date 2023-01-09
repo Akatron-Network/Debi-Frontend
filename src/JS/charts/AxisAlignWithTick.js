@@ -25,8 +25,8 @@ const Page = (props) => {
     let col = await WorkspaceAll.getCollections(chart_data.pageContent.collection_id); //! Get Gateway host
 
     let where_plain = []
-    for (let wp of props.wherePlain) {              // İlk başta propstan wherePlain ham halini aldık yani O/TBLCAHAR/BORC gibi halini.
-      if (wp !== "AND") {                              // Sonrasında sadece BORC kısmını ayırıp where_plain içerisine yolladık
+    for (let wp of props.wherePlain) {   // İlk başta propstan wherePlain ham halini aldık yani O/TBLCAHAR/BORC gibi halini.
+      if (wp !== "AND") {                // Sonrasında sadece BORC kısmını ayırıp where_plain içerisine yolladık
         let split = Object.keys(wp)[0].split("/")[2];
         let js = {[split] : Object.values(wp)[0]}
         where_plain.push(js)
@@ -52,11 +52,16 @@ const Page = (props) => {
     if (where_plain.length === 0) where_plain = undefined;
     console.log(where_plain)
 
-
     // Burada union mu değil mi diye kontrol ettik ve ona göre bir istek yolladık execute olarak
     if (props.modelID.includes("Union")) {
       let union_id = props.modelID.replace("_Union" , "")
       var respData = await Data.postExecute({union_id: union_id , collection_id: chart_data.pageContent.collection_id, where_plain: where_plain, order: order}, col.Data.connector.gateway_host);
+    } else if (props.modelID.includes("View")) {
+
+      let view_id = props.modelID.replace("_View" , "")
+      let query = {table: view_id , where_plain: where_plain, order: order}
+      var respData = await Data.postExecute({collection_id: chart_data.pageContent.collection_id, query}, col.Data.connector.gateway_host);
+    
     } else {
       var respData = await Data.postExecute({model_id: props.modelID , collection_id: chart_data.pageContent.collection_id, where_plain: where_plain, order: order}, col.Data.connector.gateway_host);
     }

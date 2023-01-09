@@ -35,6 +35,7 @@ export default function Bar() {
               </option>
 
               {chart_data.colList.map((tbi) => {
+                console.log(tbi)
                 let table = Object.keys(tbi)[0];
                 return (tbi[table].columns.map((col , index) => {
                   console.log(col)

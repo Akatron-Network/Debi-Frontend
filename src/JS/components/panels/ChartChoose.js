@@ -13,13 +13,18 @@ import Input from '../Input'
 export default function ChartChoose() {
   const chart_data = useContext(ChartContext);
   const modal_data = useContext(ModalContext);
-
-  console.log(chart_data)
+  console.log(chart_data);
+  console.log(modal_data);
 
   useEffect(() => {
     modal_data.getList();
     modal_data.getUnions();
   }, [])
+
+  useEffect(() => {
+    modal_data.getViews(chart_data.pageContent.collection_id);
+  }, [chart_data.pageContent.collection_id])
+  
 
   return (
   <>
@@ -99,9 +104,16 @@ export default function ChartChoose() {
                         {modal.model_name}
                       </option>
                     ))}
+                    <option disabled value="hr_2">------------------------------</option>
                     {modal_data.unionList.map((union) => (
                       <option key={union.union_id.toString()} value={union.union_id + "_Union"}>
                         {union.union_name + " (Birleşik Model)"}
+                      </option>
+                    ))}
+                    <option disabled value="hr_2">------------------------------</option>
+                    {modal_data.viewList.map((view) => (
+                      <option key={view.table.toString()} value={view.table + "_View"}>
+                        {view.table + " (View)"}
                       </option>
                     ))}
                   </select>
