@@ -54,6 +54,12 @@ const Page = (props) => {
     if (props.modelID.includes("Union")) {
       let union_id = props.modelID.replace("_Union" , "")
       var respData = await Data.postExecute({union_id: union_id , collection_id: chart_data.pageContent.collection_id, where_plain: where_plain, order: order}, col.Data.connector.gateway_host);
+    } else if (props.modelID.includes("View")) {
+
+      let view_id = props.modelID.replace("_View" , "")
+      let query = {table: view_id , where_plain: where_plain, order: order, select: props.select}
+      var respData = await Data.postExecute({collection_id: chart_data.pageContent.collection_id, query}, col.Data.connector.gateway_host);
+    
     } else {
       var respData = await Data.postExecute({model_id: props.modelID , collection_id: chart_data.pageContent.collection_id, where_plain: where_plain, order: order}, col.Data.connector.gateway_host);
     }

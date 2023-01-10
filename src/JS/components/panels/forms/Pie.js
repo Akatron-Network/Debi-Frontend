@@ -25,7 +25,7 @@ export default function Pie() {
             </span>
             <select
               defaultValue="default"
-              className="condition_select max-w-[65%] !rounded-l-none"
+              className="condition_select max-w-[40%] !rounded-l-none"
               ref={chart_data.xColSelRef}
               // onChange={() => chart_data.axisSel(chart_data.xColSelRef.current.value)}
             >
@@ -44,6 +44,28 @@ export default function Pie() {
                 }))
               })}
             </select>
+            <select
+              defaultValue="default"
+              className="condition_select max-w-[25%] rounded"
+              ref={chart_data.xColSelGroupRef}
+              // onChange={() => chart_data.axisSel(chart_data.yColSelRef.current.value)}
+            >
+              <option value="default">
+                Direkt
+              </option>
+              <option value="SUM">
+                Toplam
+              </option>
+              <option value="AVG">
+                Ortalama
+              </option>
+              <option value="MAX">
+                Maksimum
+              </option>
+              <option value="MIN">
+                Minimum
+              </option>
+            </select>
           </div>
         </div>
 
@@ -54,7 +76,7 @@ export default function Pie() {
             </span>
             <select
               defaultValue="default"
-              className="condition_select max-w-[65%] !rounded-l-none"
+              className="condition_select max-w-[40%] !rounded-l-none"
               ref={chart_data.yColSelRef}
               // onChange={() => chart_data.axisSel(chart_data.yColSelRef.current.value)}
             >
@@ -71,6 +93,28 @@ export default function Pie() {
                   return (<option key={index} value={tbi[table].alias + "/" +table + "/" + col}>{col}</option>) // {table} - {col}
                 }))
               })}
+            </select>
+            <select
+              defaultValue="default"
+              className="condition_select max-w-[25%] rounded"
+              ref={chart_data.yColSelGroupRef}
+              // onChange={() => chart_data.axisSel(chart_data.yColSelRef.current.value)}
+            >
+              <option value="default">
+                Direkt
+              </option>
+              <option value="SUM">
+                Toplam
+              </option>
+              <option value="AVG">
+                Ortalama
+              </option>
+              <option value="MAX">
+                Maksimum
+              </option>
+              <option value="MIN">
+                Minimum
+              </option>
             </select>
           </div>
         </div>

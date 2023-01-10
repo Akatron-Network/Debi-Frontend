@@ -33,7 +33,7 @@ export default function Pivot() {
               </span>
               <select
                 defaultValue="default"
-                className="condition_select max-w-[65%] !rounded-l-none"
+                className="condition_select max-w-[40%] !rounded-l-none"
                 ref={chart_data.xColSelRef}
                 // onChange={() => chart_data.axisSel(chart_data.xColSelRef.current.value)}
               >
@@ -52,6 +52,28 @@ export default function Pivot() {
                   }))
                 })}
               </select>
+              <select
+                defaultValue="default"
+                className="condition_select max-w-[25%] rounded"
+                ref={chart_data.xColSelGroupRef}
+                // onChange={() => chart_data.axisSel(chart_data.yColSelRef.current.value)}
+              >
+                <option value="default">
+                  Direkt
+                </option>
+                <option value="SUM">
+                  Toplam
+                </option>
+                <option value="AVG">
+                  Ortalama
+                </option>
+                <option value="MAX">
+                  Maksimum
+                </option>
+                <option value="MIN">
+                  Minimum
+                </option>
+              </select>
             </div>
           </div>
 
@@ -66,7 +88,7 @@ export default function Pivot() {
                     </span>
                     <select
                       defaultValue="default"
-                      className="condition_select max-w-[58%] !rounded-none"
+                      className="condition_select max-w-[33%] !rounded-l-none"
                       ref={(el) => {if (chart_data.xColSelRef.current !== null) chart_data.xColSelRef.current[alias] = el}}
                     >
                       <option disabled value="default">
@@ -77,12 +99,34 @@ export default function Pivot() {
                         let table = Object.keys(tbi)[0];
                         return (tbi[table].columns.map((col , index) => {
                           
-                  if (col.includes("|")) {
-                    col = col.split("|")[1]
-                  }
+                          if (col.includes("|")) {
+                            col = col.split("|")[1]
+                          }
                           return (<option key={index} value={tbi[table].alias + "/" + table + "/" + col}>{col}</option>) // {table} - {col}
                         }))
                       })}
+                    </select>
+                    <select
+                      defaultValue="default"
+                      className="condition_select max-w-[25%] rounded"
+                      ref={(el) => {if (chart_data.xColSelGroupRef.current !== null) chart_data.xColSelGroupRef.current[alias] = el}}
+                      // onChange={() => chart_data.axisSel(chart_data.yColSelRef.current.value)}
+                    >
+                      <option value="default">
+                        Direkt
+                      </option>
+                      <option value="SUM">
+                        Toplam
+                      </option>
+                      <option value="AVG">
+                        Ortalama
+                      </option>
+                      <option value="MAX">
+                        Maksimum
+                      </option>
+                      <option value="MIN">
+                        Minimum
+                      </option>
                     </select>
                     <button className="danger-btn h-auto w-[7%] !rounded-l-none !rounded-r" onClick={() => chart_data.dltAxis(alias , "title")}><i className="fa-solid fa-xmark"></i></button>
                   </div>
@@ -101,7 +145,7 @@ export default function Pivot() {
                 </span>
                 <select
                   defaultValue="default"
-                  className="condition_select max-w-[65%] !rounded-l-none"
+                  className="condition_select max-w-[40%] !rounded-l-none"
                   ref={chart_data.yColSelRef}
                 >
                   <option disabled value="default">
@@ -117,6 +161,28 @@ export default function Pivot() {
                       return (<option key={index} value={tbi[table].alias + "/" +table + "/" + col}>{col}</option>) // {table} - {col}
                     }))
                   })}
+                </select>
+                <select
+                  defaultValue="default"
+                  className="condition_select max-w-[25%] rounded"
+                  ref={chart_data.yColSelGroupRef}
+                  // onChange={() => chart_data.axisSel(chart_data.yColSelRef.current.value)}
+                >
+                  <option value="default">
+                    Direkt
+                  </option>
+                  <option value="SUM">
+                    Toplam
+                  </option>
+                  <option value="AVG">
+                    Ortalama
+                  </option>
+                  <option value="MAX">
+                    Maksimum
+                  </option>
+                  <option value="MIN">
+                    Minimum
+                  </option>
                 </select>
                 {/* <select
                   defaultValue="default"
@@ -148,7 +214,7 @@ export default function Pivot() {
                       </span>
                       <select
                         defaultValue="default"
-                        className="condition_select max-w-[58%] !rounded-none"
+                        className="condition_select max-w-[33%] !rounded-l-none"
                         ref={(el) => {if (chart_data.yColSelRef.current !== null) chart_data.yColSelRef.current[alias] = el}}
                       >
                         <option disabled value="default">
@@ -158,12 +224,34 @@ export default function Pivot() {
                           let table = Object.keys(tbi)[0]
                           return (tbi[table].columns.map((col , index) => {
                             
-                  if (col.includes("|")) {
-                    col = col.split("|")[1]
-                  }
+                            if (col.includes("|")) {
+                              col = col.split("|")[1]
+                            }
                             return (<option key={index} value={tbi[table].alias + "/" +table + "/" + col}>{col}</option>) // {table} - {col}
                           }))
                         })}
+                      </select>
+                      <select
+                        defaultValue="default"
+                        className="condition_select max-w-[25%] rounded"
+                        ref={(el) => {if (chart_data.yColSelGroupRef.current !== null) chart_data.yColSelGroupRef.current[alias] = el}}
+                        // onChange={() => chart_data.axisSel(chart_data.yColSelRef.current.value)}
+                      >
+                        <option value="default">
+                          Direkt
+                        </option>
+                        <option value="SUM">
+                          Toplam
+                        </option>
+                        <option value="AVG">
+                          Ortalama
+                        </option>
+                        <option value="MAX">
+                          Maksimum
+                        </option>
+                        <option value="MIN">
+                          Minimum
+                        </option>
                       </select>
                       {/* <select
                         defaultValue="default"

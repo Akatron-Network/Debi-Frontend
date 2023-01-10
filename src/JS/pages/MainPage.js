@@ -270,6 +270,8 @@ export default function MainPage() {
   const modelNameRef = useRef("");
   const xColSelRef = useRef("default");
   const yColSelRef = useRef("default");
+  const xColSelGroupRef = useRef("default");
+  const yColSelGroupRef = useRef("default");
   const conditionInput = useRef([]);
   const conditionColumnSelect = useRef([]);
   const conditionTransactionSelect = useRef([]);
@@ -371,7 +373,7 @@ export default function MainPage() {
     if (first_id.includes("Union")) { // Union mu yoksa düz model mi diye kontrol ediyoruz
       colList_temp = [{[query.union_name] : {columns: [...valueMain, "CATEGORY"] , alias: query.union_id}}];
     } else if (first_id.includes("View")) {
-      colList_temp = [{[query.table] : {columns: [...valueMain, "CATEGORY"] , alias: query.table}}];
+      colList_temp = [{[query.table] : {columns: [...valueMain] , alias: query.table}}];
     } else {
       colList_temp = [{[query.query.table] : {columns: arrMain , alias: query.query.alias}}];
 
@@ -432,12 +434,12 @@ export default function MainPage() {
         xAxis:{
           alias: chart_data.xColSelRef.current.value.split("/")[0],
           table: chart_data.xColSelRef.current.value.split("/")[1],
-          col: chart_data.xColSelRef.current.value.split("/")[2],
+          col: (chart_data.xColSelGroupRef.current.value === "default") ? chart_data.xColSelRef.current.value.split("/")[2] : chart_data.xColSelRef.current.value.split("/")[2] + "_" + chart_data.xColSelGroupRef.current.value,
         },
         yAxis:{
           alias: chart_data.yColSelRef.current.value.split("/")[0],
           table: chart_data.yColSelRef.current.value.split("/")[1],
-          col: chart_data.yColSelRef.current.value.split("/")[2],
+          col: (chart_data.yColSelGroupRef.current.value === "default") ? chart_data.yColSelRef.current.value.split("/")[2] : chart_data.yColSelRef.current.value.split("/")[2] + "_" + chart_data.yColSelGroupRef.current.value,
         }
       }
     } else if (paneltype === "treemap" || paneltype === "mark" || paneltype === "table") {
@@ -446,7 +448,7 @@ export default function MainPage() {
         {
           alias: chart_data.yColSelRef.current.value.split("/")[0],
           table: chart_data.yColSelRef.current.value.split("/")[1],
-          col: chart_data.yColSelRef.current.value.split("/")[2],
+          col: (chart_data.yColSelGroupRef.current.value === "default") ? chart_data.yColSelRef.current.value.split("/")[2] : chart_data.yColSelRef.current.value.split("/")[2] + "_" + chart_data.yColSelGroupRef.current.value,
         }
       ];
 
@@ -455,7 +457,7 @@ export default function MainPage() {
           ax.push({
             alias: chart_data.yColSelRef.current[a].value.split("/")[0],
             table: chart_data.yColSelRef.current[a].value.split("/")[1],
-            col: chart_data.yColSelRef.current[a].value.split("/")[2],
+            col: (chart_data.yColSelGroupRef.current[a].value === "default") ? chart_data.yColSelRef.current[a].value.split("/")[2] : chart_data.yColSelRef.current[a].value.split("/")[2] + "_" + chart_data.yColSelGroupRef.current[a].value,
           })
         }
       }
@@ -471,7 +473,7 @@ export default function MainPage() {
           xAxis:{
             alias: chart_data.xColSelRef.current.value.split("/")[0],
             table: chart_data.xColSelRef.current.value.split("/")[1],
-            col: chart_data.xColSelRef.current.value.split("/")[2],
+            col: (chart_data.xColSelGroupRef.current.value === "default") ? chart_data.xColSelRef.current.value.split("/")[2] : chart_data.xColSelRef.current.value.split("/")[2] + "_" + chart_data.xColSelGroupRef.current.value,
           }
         }
       }
@@ -480,7 +482,7 @@ export default function MainPage() {
         {
           alias: chart_data.xColSelRef.current.value.split("/")[0],
           table: chart_data.xColSelRef.current.value.split("/")[1],
-          col: chart_data.xColSelRef.current.value.split("/")[2],
+          col: (chart_data.xColSelGroupRef.current.value === "default") ? chart_data.xColSelRef.current.value.split("/")[2] : chart_data.xColSelRef.current.value.split("/")[2] + "_" + chart_data.xColSelGroupRef.current.value,
         }
       ];
       
@@ -488,7 +490,7 @@ export default function MainPage() {
         {
           alias: chart_data.yColSelRef.current.value.split("/")[0],
           table: chart_data.yColSelRef.current.value.split("/")[1],
-          col: chart_data.yColSelRef.current.value.split("/")[2],
+          col: (chart_data.yColSelGroupRef.current.value === "default") ? chart_data.yColSelRef.current.value.split("/")[2] : chart_data.yColSelRef.current.value.split("/")[2] + "_" + chart_data.yColSelGroupRef.current.value,
         }
       ];
 
@@ -497,7 +499,7 @@ export default function MainPage() {
           ax.push({
             alias: chart_data.xColSelRef.current[a].value.split("/")[0],
             table: chart_data.xColSelRef.current[a].value.split("/")[1],
-            col: chart_data.xColSelRef.current[a].value.split("/")[2],
+            col: (chart_data.xColSelGroupRef.current[a].value === "default") ? chart_data.xColSelRef.current[a].value.split("/")[2] : chart_data.xColSelRef.current[a].value.split("/")[2] + "_" + chart_data.xColSelGroupRef.current[a].value,
           })
         }
       }
@@ -507,7 +509,7 @@ export default function MainPage() {
           ay.push({
             alias: chart_data.yColSelRef.current[a].value.split("/")[0],
             table: chart_data.yColSelRef.current[a].value.split("/")[1],
-            col: chart_data.yColSelRef.current[a].value.split("/")[2],
+            col: (chart_data.yColSelGroupRef.current[a].value === "default") ? chart_data.yColSelRef.current[a].value.split("/")[2] : chart_data.yColSelRef.current[a].value.split("/")[2] + "_" + chart_data.yColSelGroupRef.current[a].value,
           })
         }
       }
@@ -521,6 +523,74 @@ export default function MainPage() {
     console.log(selColumns);
 
     return selColumns;
+  }
+
+  const axisGroupSel = (paneltype) => {
+    let selGroups = {};
+
+    if (paneltype === "bar" || paneltype === "line" || paneltype === "pie") {
+      selGroups = {
+        [chart_data.xColSelRef.current.value.split("/")[2]]: (chart_data.xColSelGroupRef.current.value === "default") ? true : chart_data.xColSelGroupRef.current.value,
+        [chart_data.yColSelRef.current.value.split("/")[2]]: (chart_data.yColSelGroupRef.current.value === "default") ? true : chart_data.yColSelGroupRef.current.value
+      }
+    } else if (paneltype === "treemap" || paneltype === "mark" || paneltype === "table") {
+      //* Burada toplu olarak Y ekseni değerlerini topladık. İlk başta ana yColRef kullandığımız için daha sonrasında eklenen eksen varsa diye bi if koyduk
+
+      if (paneltype === "table") {
+        selGroups = {
+          [chart_data.yColSelRef.current.value.split("/")[2]]: (chart_data.yColSelGroupRef.current.value === "default") ? true : chart_data.yColSelGroupRef.current.value
+        }
+
+        for(var a of allAxis) {
+          selGroups = {
+            ...selGroups,
+            [chart_data.yColSelRef.current[a].value.split("/")[2]]: (chart_data.yColSelGroupRef.current[a].value === "default") ? true : chart_data.yColSelGroupRef.current[a].value,
+          }
+        }
+
+      } else {
+        selGroups = {
+          [chart_data.xColSelRef.current.value.split("/")[2]]: (chart_data.xColSelGroupRef.current.value === "default") ? true : chart_data.xColSelGroupRef.current.value,
+          [chart_data.yColSelRef.current.value.split("/")[2]]: (chart_data.yColSelGroupRef.current.value === "default") ? true : chart_data.yColSelGroupRef.current.value
+        }
+
+        for(var a of allAxis) {
+          selGroups = {
+            ...selGroups,
+            [chart_data.yColSelRef.current[a].value.split("/")[2]]: (chart_data.yColSelGroupRef.current[a].value === "default") ? true : chart_data.yColSelGroupRef.current[a].value,
+          }
+        }
+      }
+    } 
+    else if (paneltype === "pivot") {
+
+      selGroups = {
+        [chart_data.xColSelRef.current.value.split("/")[2]]: (chart_data.xColSelGroupRef.current.value === "default") ? true : chart_data.xColSelGroupRef.current.value,
+        [chart_data.yColSelRef.current.value.split("/")[2]]: (chart_data.yColSelGroupRef.current.value === "default") ? true : chart_data.yColSelGroupRef.current.value
+      }
+      
+      if(titleAxis.length > 0) {
+        for(var a of titleAxis) {
+          selGroups = {
+            ...selGroups,
+            [chart_data.xColSelRef.current[a].value.split("/")[2]]: (chart_data.xColSelGroupRef.current[a].value === "default") ? true : chart_data.xColSelGroupRef.current[a].value,
+          }
+        }
+      }
+    
+      if(valueAxis.length > 0) {
+        for(var a of valueAxis) {
+          selGroups = {
+            ...selGroups,
+            [chart_data.yColSelRef.current[a].value.split("/")[2]]: (chart_data.yColSelGroupRef.current[a].value === "default") ? true : chart_data.yColSelGroupRef.current[a].value,
+          }
+        }
+      }
+    }
+
+    console.log(selGroups);
+
+    return selGroups;
   }
 
   const addCondition = () => {
@@ -743,6 +813,10 @@ export default function MainPage() {
   }
 
   const savePanel = () => {
+
+    // GroupSelect' i çekmek için
+    let selGroup = axisGroupSel(panelType)
+    console.log(selGroup)
     document.getElementById('loadingScreen').checked = true;
 
     let selColumns = axisSel(panelType);
@@ -756,7 +830,7 @@ export default function MainPage() {
     }
 
     let coordinates = getCoordinates();
-    
+  
     if (panel === "") {
       lastPanelID = getAlias(panelIDs);
     }
@@ -802,6 +876,7 @@ export default function MainPage() {
             Coordinates: coordinates,
             WherePlain: wherePlain,
             Order: order,
+            GroupSelect: selGroup,
           }
         ]
       }
@@ -821,6 +896,7 @@ export default function MainPage() {
             Coordinates: coordinates,
             WherePlain: wherePlain,
             Order: order,
+            GroupSelect: selGroup,
           }
         ]
       }
@@ -828,7 +904,7 @@ export default function MainPage() {
 
     document.getElementById('chart_choose').checked = false;
     clearPanelInputs();
-    
+  
     document.getElementById('loadingScreen').checked = false;
   }
 
@@ -940,6 +1016,8 @@ export default function MainPage() {
     conditionTransactionSelect,
     xColSelRef,
     yColSelRef,
+    xColSelGroupRef,
+    yColSelGroupRef,
     modelNameRef,
     panelNameRef,
     sortColumnSelect,

@@ -26,7 +26,7 @@ export default function Bar() {
             </span>
             <select
               defaultValue="default"
-              className="condition_select max-w-[65%] !rounded-l-none"
+              className="condition_select max-w-[40%] !rounded-l-none"
               ref={chart_data.xColSelRef}
               // onChange={() => chart_data.axisSel(chart_data.xColSelRef.current.value)}
             >
@@ -35,7 +35,6 @@ export default function Bar() {
               </option>
 
               {chart_data.colList.map((tbi) => {
-                console.log(tbi)
                 let table = Object.keys(tbi)[0];
                 return (tbi[table].columns.map((col , index) => {
                   console.log(col)
@@ -47,6 +46,28 @@ export default function Bar() {
                 }))
               })}
             </select>
+            <select
+              defaultValue="default"
+              className="condition_select max-w-[25%] rounded"
+              ref={chart_data.xColSelGroupRef}
+              // onChange={() => chart_data.axisSel(chart_data.yColSelRef.current.value)}
+            >
+              <option value="default">
+                Direkt
+              </option>
+              <option value="SUM">
+                Toplam
+              </option>
+              <option value="AVG">
+                Ortalama
+              </option>
+              <option value="MAX">
+                Maksimum
+              </option>
+              <option value="MIN">
+                Minimum
+              </option>
+            </select>
           </div>
         </div>
 
@@ -57,7 +78,7 @@ export default function Bar() {
             </span>
             <select
               defaultValue="default"
-              className="condition_select max-w-[65%] !rounded-l-none"
+              className="condition_select max-w-[40%] !rounded-l-none"
               ref={chart_data.yColSelRef}
               // onChange={() => chart_data.axisSel(chart_data.yColSelRef.current.value)}
             >
@@ -73,6 +94,28 @@ export default function Bar() {
                   return (<option key={index} value={tbi[table].alias + "/" +table + "/" + col}>{col}</option>) // {table} - {col}
                 }))
               })}
+            </select>
+            <select
+              defaultValue="default"
+              className="condition_select max-w-[25%] rounded"
+              ref={chart_data.yColSelGroupRef}
+              // onChange={() => chart_data.axisSel(chart_data.yColSelRef.current.value)}
+            >
+              <option value="default">
+                Direkt
+              </option>
+              <option value="SUM">
+                Toplam
+              </option>
+              <option value="AVG">
+                Ortalama
+              </option>
+              <option value="MAX">
+                Maksimum
+              </option>
+              <option value="MIN">
+                Minimum
+              </option>
             </select>
           </div>
         </div>

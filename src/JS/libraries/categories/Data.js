@@ -33,7 +33,7 @@ class Data {
     return resp;
   }
 
-  static async getExplorer(id, host, tbl_name = "", rel = false, view = false, col = false) {
+  static async getExplorer(id, host, tbl_name = "", rel = false, view = false, col = true) {
     let getExplorer_req = new Requests("data", "explorer", (host) ? host + ":8001" : undefined);
 
     var resp = await getExplorer_req.get(
