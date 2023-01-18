@@ -12,11 +12,11 @@ export default function Table(props) {
     sort: true,
     fixedHeader: true,
     // search: true,
-    language: {
-      noRecordsFound: 'Herhangi bir kayıt bulunamadı!',
-      loading: 'Yükleniyor...',
-      error: 'Veriler alınırken bir hata oluştu!',
-    },
+    // language: {
+    //   noRecordsFound: 'Herhangi bir kayıt bulunamadı!',
+    //   loading: 'Yükleniyor...',
+    //   error: 'Veriler alınırken bir hata oluştu!',
+    // },
 
     columns: data.executeCols,
     data:data.executeRows,

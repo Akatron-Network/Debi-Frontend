@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactECharts from 'echarts-for-react';
 
-const Page: React.FC = () => {
+const Page = () => {
   const options = {
   
     grid: {

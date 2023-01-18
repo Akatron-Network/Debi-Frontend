@@ -1,5 +1,5 @@
+import React from 'react'
 import AllRoutes from './components/Routes';
-
 
 function App() {
   return (

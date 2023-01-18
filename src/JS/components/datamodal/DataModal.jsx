@@ -1143,7 +1143,7 @@ export default function DataModal() {
       name: modalTables.O.source_table.name,
       priority: modalTables.O.source_table.priority,
       table: modalTables.O.source_table.table,
-      table: modalTables.O.source_table.table,
+      // table: modalTables.O.source_table.table,
       relation_definition: {
         referenced_column: referencedColsRef.current.value,
         single_record: true,

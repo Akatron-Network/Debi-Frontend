@@ -14,11 +14,11 @@ export default function UnionTable(props) {
     
     sort: true,
     fixedHeader: true,
-    language: {
-      noRecordsFound: 'Herhangi bir kayıt bulunamadı!',
-      loading: 'Yükleniyor...',
-      error: 'Veriler alınırken bir hata oluştu!',
-    },
+    // language: {
+    //   noRecordsFound: 'Herhangi bir kayıt bulunamadı!',
+    //   loading: 'Yükleniyor...',
+    //   error: 'Veriler alınırken bir hata oluştu!',
+    // },
 
     columns: union_data.executeUnionCols,
     data:  union_data.executeUnionRows,

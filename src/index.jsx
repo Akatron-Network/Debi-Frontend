@@ -6,7 +6,6 @@ import '../src/CSS/loading.css';
 import App from './JS/App';
 import { BrowserRouter } from 'react-router-dom';
 
-
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
 

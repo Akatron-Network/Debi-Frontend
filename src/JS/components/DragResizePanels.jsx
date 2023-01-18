@@ -3,7 +3,7 @@ import PieChart from '../charts/PieChart'
 import BasicLineCharts from '../charts/BasicLineCharts'
 import AxisAlignWithTick from '../charts/AxisAlignWithTick'
 import StackedLineCharts from '../charts/StackedLineCharts'
-import TemperatureGauge from '../charts/TemperatureGauge'
+// import TemperatureGauge from '../charts/TemperatureGauge'
 import BarLabelRotation from '../charts/BarLabelRotation'
 import TableChart from '../charts/TableChart'
 import PivotTableChart from '../charts/PivotTableChart'
@@ -168,9 +168,9 @@ export default class ResponsiveLocalStorageLayout extends React.PureComponent {
 
 function getFromLS(key) {
   let ls = {};
-  if (global.localStorage) {
+  if (localStorage) {
     try {
-      ls = JSON.parse(global.localStorage.getItem("rgl-8")) || {};
+      ls = JSON.parse(localStorage.getItem("rgl-8")) || {};
     } catch (e) {
       /*Ignore*/
     }
@@ -179,8 +179,8 @@ function getFromLS(key) {
 }
 
 function saveToLS(key, value) {
-  if (global.localStorage) {
-    global.localStorage.setItem(
+  if (localStorage) {
+    localStorage.setItem(
       "rgl-8",
       JSON.stringify({
         [key]: value

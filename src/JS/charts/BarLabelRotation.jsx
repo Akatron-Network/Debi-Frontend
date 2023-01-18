@@ -168,7 +168,7 @@ const getData = async () => {
     xAxis: {
       type: 'category',
       data: xAxisData,
-      axisTick: { show: false },
+      // axisTick: { show: false },
       
       axisLine: {
         lineStyle: {
@@ -177,7 +177,8 @@ const getData = async () => {
       },
       axisTick: {
         length: 6,
-        alignWithLabel: true
+        alignWithLabel: true,
+        show: false,
       },
       axisLabel: {
         show: true,
