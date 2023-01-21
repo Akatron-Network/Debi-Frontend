@@ -1,4 +1,4 @@
-import React from "react";
+import React , { useMemo } from "react";
 import PieChart from '../charts/PieChart'
 import BasicLineCharts from '../charts/BasicLineCharts'
 import AxisAlignWithTick from '../charts/AxisAlignWithTick'

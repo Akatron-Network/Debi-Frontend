@@ -477,7 +477,6 @@
       rounded
       bg-middle_black
       shadow-md
-      hover:bg-side_black
       !transition !duration-300
   }
 
@@ -487,11 +486,13 @@
       pl-6
       pr-3
       flex
+      h-[54px]
       text-xl
       absolute
       cursor-default
       text-cultured
       justify-between
+      hover:bg-side_black
       z-10
   }
 

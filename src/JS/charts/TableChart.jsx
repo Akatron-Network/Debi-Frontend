@@ -33,7 +33,6 @@ export default function TableChart(props) {
         where_plain.push("AND")
       }
     }
-    console.log(where_plain)
 
     let order = {}
     for (let keys in Object.keys(props.order)) {        // İlk başta keys kısmını döndürdük sonra içerisinde values döndürdük ve eşleştirdik
@@ -46,10 +45,8 @@ export default function TableChart(props) {
     }
 
     if (Object.keys(order).length === 0) order = undefined;
-    console.log(order);
 
     if (where_plain.length === 0) where_plain = undefined;
-    console.log(where_plain)
 
     // Burada union mu değil mi diye kontrol ettik ve ona göre bir istek yolladık execute olarak
     if (props.modelID.includes("Union")) {
@@ -90,29 +87,34 @@ export default function TableChart(props) {
     setYAxis(yAxisTemp)
   }
 
-  var grid = new Grid({
-    sort: true,
-    fixedHeader: true,
-    // search: true,
-    language: {
-      noRecordsFound: 'Herhangi bir kayıt bulunamadı!',
-      loading: 'Yükleniyor...',
-      error: 'Veriler alınırken bir hata oluştu!',
-    },
-
-    columns: yAxis,
-    data: yDatas,
-
-    className: {
-      table: '!w-full !bg-darker_jet !table-auto',
-      container: "table-wrapper"
-    }
-  });
-
-
   return (
-      <Grid {...grid.props}/>
-  );
+    <div className="relative overflow-x-auto shadow-md">
+      <table className="w-full text-sm text-left text-grayXgray">
+        <thead className="text-xs text-cultured uppercase bg-darkest_jet border-b border-onyx">
+          <tr>
+            {yAxis.map((col, index) => {
+              return(
+                <th key={index} scope="col" className="px-2 py-3">{col}</th>
+              )
+            })}
+          </tr>
+        </thead>
+        <tbody>
+          {yDatas.map((row, index) => {
+            return(
+              <tr key={index} className="bg-jet border-b border-onyx transition duration-200 hover:bg-onyx hover:text-platinium">
+                {row.map((rowInside, index) => {
+                  return(
+                    <th key={index} className="px-2 py-1">{rowInside}</th>
+                  )
+                })}
+              </tr>
+            )
+          })}
+        </tbody>
+      </table>
+    </div>
+  )
 }
 
 

@@ -1,4 +1,4 @@
-import React , { useState , useRef , useEffect } from 'react'
+import React , { useState , useRef , useEffect , useMemo } from 'react'
 import { MainContext, ModalContext, ChartContext, UnionDataModalContext } from '../components/context'
 import WorkspaceAll from '../libraries/categories/Workspace';
 import Data from '../libraries/categories/Data';
@@ -639,7 +639,6 @@ export default function MainPage() {
   let alX = [];
   let alY = [];
   const editPanel = (panelID) => {
-    console.log(panelID)
     for(let p of pageContent.page_data.panels) {
       if(p.PanelID === panelID) {
         // Chart choose
@@ -1000,6 +999,7 @@ export default function MainPage() {
     setError(err)
   }
 
+
   const chart_data = {
     allAxis,
     chartForms,
@@ -1042,6 +1042,8 @@ export default function MainPage() {
     setTitleAxis,
     setValueAxis,
   }
+
+  // const memoValue = useMemo(() => (chart_data) , [])
   //* ----------------------------------------------------------/
 
   return (

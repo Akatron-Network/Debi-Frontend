@@ -26,7 +26,7 @@
   },
   "scripts": {
     "analyze": "source-map-explorer 'build/static/js/*.js'",
-    "vite": "vite --open",
+    "vite": "vite",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "winBuild": "set \"GENERATE_SOURCEMAP=false\" && react-scripts build",

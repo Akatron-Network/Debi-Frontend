@@ -5,5 +5,9 @@ export default defineConfig({
   plugins: [reactRefresh()],
   define: {
     'process.env': {}
-  }
+  },
+  // server: {
+  //   port: 80,
+  //   host: '93.180.133.185',
+  // }
 })
