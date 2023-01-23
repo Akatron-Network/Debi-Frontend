@@ -28,9 +28,13 @@ export default function Pivot() {
         <div className='col-span-1 mr-[6px]'>
           <div className="form-control mb-2 w-full">
             <div className="input-group shadow-md">
-              <span className="bg-black_light text-grayXgray px-2 py-[7px] !rounded-l border border-jet_mid justify-center min-w-[35%] xl:truncate">
+              <span className="bg-black_light text-grayXgray px-2 py-[7px] !rounded-l border border-jet_mid border-r-0 justify-center min-w-[26%] xl:truncate">
                 1. Sütun
               </span>
+              
+              <div onClick={() => chart_data.dataColumnSelect("O")} ref={chart_data.dataColumnRef} className="tooltip tooltip-top bg-black_light text-grayXgray cursor-pointer px-1 py-[7px] border border-jet_mid justify-center min-w-[9%] hover:bg-middle_black hover:text-platinium transition duration-200" data-tip="Veri Kolonu">
+                <button><i className="fa-solid fa-square-root-variable"></i></button>
+              </div>
               <select
                 defaultValue="default"
                 className="condition_select max-w-[40%] !rounded-l-none"
@@ -83,9 +87,12 @@ export default function Pivot() {
               <div key={alias} className='col-span-1'>
                 <div className="form-control mb-2 w-full">
                   <div className="input-group shadow-md">
-                    <span className="bg-black_light text-grayXgray px-2 py-[7px] !rounded-l border border-jet_mid justify-center min-w-[35%] xl:truncate">
+                    <span className="bg-black_light text-grayXgray px-2 py-[7px] !rounded-l border border-jet_mid border-r-0 justify-center min-w-[26%] xl:truncate">
                     {chart_data.titleAxis.indexOf(alias) + 2}. Sütun
                     </span>
+                    <div onClick={() => chart_data.dataColumnSelect(alias)} ref={(el) => {if (chart_data.dataColumnRef.current !== null) chart_data.dataColumnRef.current[alias] = el}} className="tooltip tooltip-top bg-black_light text-grayXgray cursor-pointer px-1 py-[7px] border border-jet_mid justify-center min-w-[9%] hover:bg-middle_black hover:text-platinium transition duration-200" data-tip="Veri Kolonu">
+                      <button><i className="fa-solid fa-square-root-variable"></i></button>
+                    </div>
                     <select
                       defaultValue="default"
                       className="condition_select max-w-[33%] !rounded-l-none"
@@ -108,7 +115,7 @@ export default function Pivot() {
                     </select>
                     <select
                       defaultValue="default"
-                      className="condition_select max-w-[25%] rounded"
+                      className="condition_select max-w-[25%] rounded !rounded-r-none"
                       ref={(el) => {if (chart_data.xColSelGroupRef.current !== null) chart_data.xColSelGroupRef.current[alias] = el}}
                       // onChange={() => chart_data.axisSel(chart_data.yColSelRef.current.value)}
                     >
@@ -233,7 +240,7 @@ export default function Pivot() {
                       </select>
                       <select
                         defaultValue="default"
-                        className="condition_select max-w-[25%] rounded"
+                        className="condition_select max-w-[25%] rounded !rounded-r-none"
                         ref={(el) => {if (chart_data.yColSelGroupRef.current !== null) chart_data.yColSelGroupRef.current[alias] = el}}
                         // onChange={() => chart_data.axisSel(chart_data.yColSelRef.current.value)}
                       >

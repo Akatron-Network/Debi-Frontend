@@ -80,16 +80,26 @@ export default function PivotTableCharts(props) {
     for(let p of chart_data.pageContent.page_data.panels) {
       if (props.panelID === p.PanelID) {
         for (let x of p.SelColumns.xAxis) {
-          console.log(proData[x.col])
-          console.log(typeof(proData[x.col]))
-          fields.push({
-            area: 'column',
-            dataField: x.col,
-            caption: x.col,
-            dataType: (typeof(proData[x.col]) === 'number') ? 'number' : undefined,
-            summaryType: (typeof(proData[x.col]) === 'number') ? 'sum' : undefined,
-            format: (typeof(proData[x.col]) === 'number') ? { type: 'fixedPoint', precision: 2 } : undefined, // Format Tipleri --> https://js.devexpress.com/Documentation/22_1/ApiReference/Common/Object_Structures/Format/#formatter
-          })
+          if (x.dataColumn === true) { // Eğer dataColumn true ise veri kolonları kısmına atacağız bu bilgileri
+            fields.push({
+              area: 'data',
+              dataField: x.col,
+              caption: x.col,
+              dataType: (typeof(proData[x.col]) === 'number') ? 'number' : undefined,
+              summaryType: (typeof(proData[x.col]) === 'number') ? 'sum' : undefined,
+              format: (typeof(proData[x.col]) === 'number') ? { type: 'fixedPoint', precision: 2 } : undefined, // Format Tipleri --> https://js.devexpress.com/Documentation/22_1/ApiReference/Common/Object_Structures/Format/#formatter
+            })
+          }
+          else {
+            fields.push({
+              area: 'column',
+              dataField: x.col,
+              caption: x.col,
+              dataType: (typeof(proData[x.col]) === 'number') ? 'number' : undefined,
+              summaryType: (typeof(proData[x.col]) === 'number') ? 'sum' : undefined,
+              format: (typeof(proData[x.col]) === 'number') ? { type: 'fixedPoint', precision: 2 } : undefined, // Format Tipleri --> https://js.devexpress.com/Documentation/22_1/ApiReference/Common/Object_Structures/Format/#formatter
+            })
+          }
         }
         for (let y of p.SelColumns.yAxis) {
           fields.push({
@@ -157,7 +167,7 @@ export default function PivotTableCharts(props) {
           showBorders={true}
         >
           <FieldChooser
-            enabled={true}
+            enabled={false}
             allowSearch={true}
           />
         </PivotGrid>

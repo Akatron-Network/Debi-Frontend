@@ -88,7 +88,7 @@ export default function TableChart(props) {
   }
 
   return (
-    <div className="relative overflow-x-auto shadow-md">
+    <div className="relative shadow-md">
       <table className="w-full text-sm text-left text-grayXgray">
         <thead className="text-xs text-cultured uppercase bg-darkest_jet border-b border-onyx">
           <tr>
@@ -105,7 +105,7 @@ export default function TableChart(props) {
               <tr key={index} className="bg-jet border-b border-onyx transition duration-200 hover:bg-onyx hover:text-platinium">
                 {row.map((rowInside, index) => {
                   return(
-                    <th key={index} className="px-2 py-1">{rowInside}</th>
+                    <th key={index} className="px-2 py-1 truncate">{rowInside}</th>
                   )
                 })}
               </tr>

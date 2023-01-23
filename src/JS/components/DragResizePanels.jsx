@@ -41,7 +41,7 @@ export default class ResponsiveLocalStorageLayout extends React.PureComponent {
 
   onLayoutChange(layout, layouts) {
     saveToLS("layouts", layouts);
-    this.setState({ layouts });
+    // this.setState({ layouts });
   }
 
   render() {
@@ -57,7 +57,9 @@ export default class ResponsiveLocalStorageLayout extends React.PureComponent {
           layouts={this.state.layouts}
           onLayoutChange={(layout, layouts) => this.onLayoutChange(layout, layouts)}
           resizeHandles={[ "se" ]}
+          draggableHandle={'.panels-title'}
           autoSize={true}
+          margin={[16, 16]} 
           {...this.props}
           // isBounded={true}
         >

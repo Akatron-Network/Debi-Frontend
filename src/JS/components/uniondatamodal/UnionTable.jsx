@@ -6,9 +6,6 @@ export default function UnionTable(props) {
   const union_data = useContext(UnionDataModalContext)
   console.log(union_data)
 
-  console.log(union_data.executeUnionCols)
-  console.log(union_data.executeUnionRows)
-
   
   return (
     
@@ -29,7 +26,7 @@ export default function UnionTable(props) {
               <tr key={index} className="bg-jet border-b border-onyx transition duration-200 hover:bg-onyx hover:text-platinium">
                 {row.map((rowInside, index) => {
                   return(
-                    <th key={index} className="px-2 py-1">{rowInside}</th>
+                    <th key={index} className="px-2 py-1 truncate">{rowInside}</th>
                   )
                 })}
               </tr>

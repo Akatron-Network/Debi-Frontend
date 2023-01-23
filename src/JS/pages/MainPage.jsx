@@ -277,6 +277,7 @@ export default function MainPage() {
   const conditionTransactionSelect = useRef([]);
   const sortColumnSelect = useRef([]);
   const sortColumnTypeSelect = useRef([]);
+  const dataColumnRef = useRef([]);
 
   const [colList, setColList] = useState([]);
   const [panelType, setPanelType] = useState("");
@@ -288,6 +289,7 @@ export default function MainPage() {
   const [panelSort, setPanelSort] = useState([]);
   const [panel, setPanel] = useState("");
   const [pageContent, setPageContent] = useState({page_data : {panels: []}});
+  const [panelEdit, setPanelEdit] = useState(false);
 
   var ch_cards = ["bar", "treemap", "line", "mark", "gauge", "pie", "table", "pivot"];
   const chooseChart = (type) => {
@@ -432,32 +434,32 @@ export default function MainPage() {
     if (paneltype === "bar" || paneltype === "line" || paneltype === "pie") {
       selColumns = {
         xAxis:{
-          alias: chart_data.xColSelRef.current.value.split("/")[0],
-          table: chart_data.xColSelRef.current.value.split("/")[1],
-          col: (chart_data.xColSelGroupRef.current.value === "default") ? chart_data.xColSelRef.current.value.split("/")[2] : chart_data.xColSelRef.current.value.split("/")[2] + "_" + chart_data.xColSelGroupRef.current.value,
+          alias: xColSelRef.current.value.split("/")[0],
+          table: xColSelRef.current.value.split("/")[1],
+          col: (xColSelGroupRef.current.value === "default") ? xColSelRef.current.value.split("/")[2] : xColSelRef.current.value.split("/")[2] + "_" + xColSelGroupRef.current.value,
         },
         yAxis:{
-          alias: chart_data.yColSelRef.current.value.split("/")[0],
-          table: chart_data.yColSelRef.current.value.split("/")[1],
-          col: (chart_data.yColSelGroupRef.current.value === "default") ? chart_data.yColSelRef.current.value.split("/")[2] : chart_data.yColSelRef.current.value.split("/")[2] + "_" + chart_data.yColSelGroupRef.current.value,
+          alias: yColSelRef.current.value.split("/")[0],
+          table: yColSelRef.current.value.split("/")[1],
+          col: (yColSelGroupRef.current.value === "default") ? yColSelRef.current.value.split("/")[2] : yColSelRef.current.value.split("/")[2] + "_" + yColSelGroupRef.current.value,
         }
       }
     } else if (paneltype === "treemap" || paneltype === "mark" || paneltype === "table") {
       //* Burada toplu olarak Y ekseni değerlerini topladık. İlk başta ana yColRef kullandığımız için daha sonrasında eklenen eksen varsa diye bi if koyduk
       let ax = [
         {
-          alias: chart_data.yColSelRef.current.value.split("/")[0],
-          table: chart_data.yColSelRef.current.value.split("/")[1],
-          col: (chart_data.yColSelGroupRef.current.value === "default") ? chart_data.yColSelRef.current.value.split("/")[2] : chart_data.yColSelRef.current.value.split("/")[2] + "_" + chart_data.yColSelGroupRef.current.value,
+          alias: yColSelRef.current.value.split("/")[0],
+          table: yColSelRef.current.value.split("/")[1],
+          col: (yColSelGroupRef.current.value === "default") ? yColSelRef.current.value.split("/")[2] : yColSelRef.current.value.split("/")[2] + "_" + yColSelGroupRef.current.value,
         }
       ];
 
       if (allAxis.length > 0) {
         for(var a of allAxis) {
           ax.push({
-            alias: chart_data.yColSelRef.current[a].value.split("/")[0],
-            table: chart_data.yColSelRef.current[a].value.split("/")[1],
-            col: (chart_data.yColSelGroupRef.current[a].value === "default") ? chart_data.yColSelRef.current[a].value.split("/")[2] : chart_data.yColSelRef.current[a].value.split("/")[2] + "_" + chart_data.yColSelGroupRef.current[a].value,
+            alias: yColSelRef.current[a].value.split("/")[0],
+            table: yColSelRef.current[a].value.split("/")[1],
+            col: (yColSelGroupRef.current[a].value === "default") ? yColSelRef.current[a].value.split("/")[2] : yColSelRef.current[a].value.split("/")[2] + "_" + yColSelGroupRef.current[a].value,
           })
         }
       }
@@ -471,45 +473,70 @@ export default function MainPage() {
         selColumns = {
           yAxis:ax,
           xAxis:{
-            alias: chart_data.xColSelRef.current.value.split("/")[0],
-            table: chart_data.xColSelRef.current.value.split("/")[1],
-            col: (chart_data.xColSelGroupRef.current.value === "default") ? chart_data.xColSelRef.current.value.split("/")[2] : chart_data.xColSelRef.current.value.split("/")[2] + "_" + chart_data.xColSelGroupRef.current.value,
+            alias: xColSelRef.current.value.split("/")[0],
+            table: xColSelRef.current.value.split("/")[1],
+            col: (xColSelGroupRef.current.value === "default") ? xColSelRef.current.value.split("/")[2] : xColSelRef.current.value.split("/")[2] + "_" + xColSelGroupRef.current.value,
           }
         }
       }
     } else if (paneltype === "pivot") {
-      let ax = [
-        {
-          alias: chart_data.xColSelRef.current.value.split("/")[0],
-          table: chart_data.xColSelRef.current.value.split("/")[1],
-          col: (chart_data.xColSelGroupRef.current.value === "default") ? chart_data.xColSelRef.current.value.split("/")[2] : chart_data.xColSelRef.current.value.split("/")[2] + "_" + chart_data.xColSelGroupRef.current.value,
-        }
-      ];
+
+      if (dataColumnRef.current.classList.contains('!border-sea_green')) {
+        var ax = [
+          {
+            alias: xColSelRef.current.value.split("/")[0],
+            table: xColSelRef.current.value.split("/")[1],
+            col: (xColSelGroupRef.current.value === "default") ? xColSelRef.current.value.split("/")[2] : xColSelRef.current.value.split("/")[2] + "_" + xColSelGroupRef.current.value,
+            dataColumn: true,
+          }
+        ];
+      }
+      else {
+        var ax = [
+          {
+            alias: xColSelRef.current.value.split("/")[0],
+            table: xColSelRef.current.value.split("/")[1],
+            col: (xColSelGroupRef.current.value === "default") ? xColSelRef.current.value.split("/")[2] : xColSelRef.current.value.split("/")[2] + "_" + xColSelGroupRef.current.value,
+            dataColumn: false,
+          }
+        ];
+      }
       
       let ay = [
         {
-          alias: chart_data.yColSelRef.current.value.split("/")[0],
-          table: chart_data.yColSelRef.current.value.split("/")[1],
-          col: (chart_data.yColSelGroupRef.current.value === "default") ? chart_data.yColSelRef.current.value.split("/")[2] : chart_data.yColSelRef.current.value.split("/")[2] + "_" + chart_data.yColSelGroupRef.current.value,
+          alias: yColSelRef.current.value.split("/")[0],
+          table: yColSelRef.current.value.split("/")[1],
+          col: (yColSelGroupRef.current.value === "default") ? yColSelRef.current.value.split("/")[2] : yColSelRef.current.value.split("/")[2] + "_" + yColSelGroupRef.current.value,
         }
       ];
 
       if(titleAxis.length > 0) {
         for(var a of titleAxis) {
-          ax.push({
-            alias: chart_data.xColSelRef.current[a].value.split("/")[0],
-            table: chart_data.xColSelRef.current[a].value.split("/")[1],
-            col: (chart_data.xColSelGroupRef.current[a].value === "default") ? chart_data.xColSelRef.current[a].value.split("/")[2] : chart_data.xColSelRef.current[a].value.split("/")[2] + "_" + chart_data.xColSelGroupRef.current[a].value,
-          })
+          if (dataColumnRef.current[a].classList.contains('!border-sea_green')) {
+            ax.push({
+              alias: xColSelRef.current[a].value.split("/")[0],
+              table: xColSelRef.current[a].value.split("/")[1],
+              col: (xColSelGroupRef.current[a].value === "default") ? xColSelRef.current[a].value.split("/")[2] : xColSelRef.current[a].value.split("/")[2] + "_" + xColSelGroupRef.current[a].value,
+              dataColumn: true,
+            })
+          }
+          else {
+            ax.push({
+              alias: xColSelRef.current[a].value.split("/")[0],
+              table: xColSelRef.current[a].value.split("/")[1],
+              col: (xColSelGroupRef.current[a].value === "default") ? xColSelRef.current[a].value.split("/")[2] : xColSelRef.current[a].value.split("/")[2] + "_" + xColSelGroupRef.current[a].value,
+              dataColumn: false,
+            })            
+          }
         }
       }
       
       if(valueAxis.length > 0) {
         for(var a of valueAxis) {
           ay.push({
-            alias: chart_data.yColSelRef.current[a].value.split("/")[0],
-            table: chart_data.yColSelRef.current[a].value.split("/")[1],
-            col: (chart_data.yColSelGroupRef.current[a].value === "default") ? chart_data.yColSelRef.current[a].value.split("/")[2] : chart_data.yColSelRef.current[a].value.split("/")[2] + "_" + chart_data.yColSelGroupRef.current[a].value,
+            alias: yColSelRef.current[a].value.split("/")[0],
+            table: yColSelRef.current[a].value.split("/")[1],
+            col: (yColSelGroupRef.current[a].value === "default") ? yColSelRef.current[a].value.split("/")[2] : yColSelRef.current[a].value.split("/")[2] + "_" + yColSelGroupRef.current[a].value,
           })
         }
       }
@@ -530,34 +557,35 @@ export default function MainPage() {
 
     if (paneltype === "bar" || paneltype === "line" || paneltype === "pie") {
       selGroups = {
-        [chart_data.xColSelRef.current.value.split("/")[2]]: (chart_data.xColSelGroupRef.current.value === "default") ? true : chart_data.xColSelGroupRef.current.value,
-        [chart_data.yColSelRef.current.value.split("/")[2]]: (chart_data.yColSelGroupRef.current.value === "default") ? true : chart_data.yColSelGroupRef.current.value
+        [xColSelRef.current.value.split("/")[2]]: (xColSelGroupRef.current.value === "default") ? true : xColSelGroupRef.current.value,
+        [yColSelRef.current.value.split("/")[2]]: (yColSelGroupRef.current.value === "default") ? true : yColSelGroupRef.current.value
       }
-    } else if (paneltype === "treemap" || paneltype === "mark" || paneltype === "table") {
+    } 
+    else if (paneltype === "treemap" || paneltype === "mark" || paneltype === "table") {
       //* Burada toplu olarak Y ekseni değerlerini topladık. İlk başta ana yColRef kullandığımız için daha sonrasında eklenen eksen varsa diye bi if koyduk
 
       if (paneltype === "table") {
         selGroups = {
-          [chart_data.yColSelRef.current.value.split("/")[2]]: (chart_data.yColSelGroupRef.current.value === "default") ? true : chart_data.yColSelGroupRef.current.value
+          [yColSelRef.current.value.split("/")[2]]: (yColSelGroupRef.current.value === "default") ? true : yColSelGroupRef.current.value
         }
 
         for(var a of allAxis) {
           selGroups = {
             ...selGroups,
-            [chart_data.yColSelRef.current[a].value.split("/")[2]]: (chart_data.yColSelGroupRef.current[a].value === "default") ? true : chart_data.yColSelGroupRef.current[a].value,
+            [yColSelRef.current[a].value.split("/")[2]]: (yColSelGroupRef.current[a].value === "default") ? true : yColSelGroupRef.current[a].value,
           }
         }
 
       } else {
         selGroups = {
-          [chart_data.xColSelRef.current.value.split("/")[2]]: (chart_data.xColSelGroupRef.current.value === "default") ? true : chart_data.xColSelGroupRef.current.value,
-          [chart_data.yColSelRef.current.value.split("/")[2]]: (chart_data.yColSelGroupRef.current.value === "default") ? true : chart_data.yColSelGroupRef.current.value
+          [xColSelRef.current.value.split("/")[2]]: (xColSelGroupRef.current.value === "default") ? true : xColSelGroupRef.current.value,
+          [yColSelRef.current.value.split("/")[2]]: (yColSelGroupRef.current.value === "default") ? true : yColSelGroupRef.current.value
         }
 
         for(var a of allAxis) {
           selGroups = {
             ...selGroups,
-            [chart_data.yColSelRef.current[a].value.split("/")[2]]: (chart_data.yColSelGroupRef.current[a].value === "default") ? true : chart_data.yColSelGroupRef.current[a].value,
+            [yColSelRef.current[a].value.split("/")[2]]: (yColSelGroupRef.current[a].value === "default") ? true : yColSelGroupRef.current[a].value,
           }
         }
       }
@@ -565,15 +593,15 @@ export default function MainPage() {
     else if (paneltype === "pivot") {
 
       selGroups = {
-        [chart_data.xColSelRef.current.value.split("/")[2]]: (chart_data.xColSelGroupRef.current.value === "default") ? true : chart_data.xColSelGroupRef.current.value,
-        [chart_data.yColSelRef.current.value.split("/")[2]]: (chart_data.yColSelGroupRef.current.value === "default") ? true : chart_data.yColSelGroupRef.current.value
+        [xColSelRef.current.value.split("/")[2]]: (xColSelGroupRef.current.value === "default") ? true : xColSelGroupRef.current.value,
+        [yColSelRef.current.value.split("/")[2]]: (yColSelGroupRef.current.value === "default") ? true : yColSelGroupRef.current.value
       }
       
       if(titleAxis.length > 0) {
         for(var a of titleAxis) {
           selGroups = {
             ...selGroups,
-            [chart_data.xColSelRef.current[a].value.split("/")[2]]: (chart_data.xColSelGroupRef.current[a].value === "default") ? true : chart_data.xColSelGroupRef.current[a].value,
+            [xColSelRef.current[a].value.split("/")[2]]: (xColSelGroupRef.current[a].value === "default") ? true : xColSelGroupRef.current[a].value,
           }
         }
       }
@@ -582,7 +610,7 @@ export default function MainPage() {
         for(var a of valueAxis) {
           selGroups = {
             ...selGroups,
-            [chart_data.yColSelRef.current[a].value.split("/")[2]]: (chart_data.yColSelGroupRef.current[a].value === "default") ? true : chart_data.yColSelGroupRef.current[a].value,
+            [yColSelRef.current[a].value.split("/")[2]]: (yColSelGroupRef.current[a].value === "default") ? true : yColSelGroupRef.current[a].value,
           }
         }
       }
@@ -634,6 +662,16 @@ export default function MainPage() {
     setPanelSort(panelSort.filter(item => item !== alias))
   }
 
+  const dataColumnSelect = (alias) => {
+    // Veri Kolonu olacaksa eğer butonun çevresi yeşil yanacak
+    if (alias !== "O") {
+      dataColumnRef.current[alias].classList.toggle('!border-sea_green')
+    }
+    else {
+      dataColumnRef.current.classList.toggle('!border-sea_green')
+    }
+  }
+
   //Edit Panel-----------------------------------------------------------------------------------------------------------------
   let als = [];
   let alX = [];
@@ -641,8 +679,15 @@ export default function MainPage() {
   const editPanel = (panelID) => {
     for(let p of pageContent.page_data.panels) {
       if(p.PanelID === panelID) {
+        document.getElementById('loadingScreen').checked = true;
+        
+        setPanelEdit(true); // For using useState
+
         // Chart choose
         chooseChart(p.PanelType);
+
+        //PanelName
+        panelNameRef.current.value = p.PanelName;
 
         // ModelName
         modelNameRef.current.value = p.ModelID
@@ -657,7 +702,6 @@ export default function MainPage() {
             yColSelRef.current.value = p.SelColumns.yAxis.alias + "/" + p.SelColumns.yAxis.table + "/" + p.SelColumns.yAxis.col
             
           } else if (p.PanelType === "treemap" || p.PanelType === "mark" || p.PanelType === 'table') {
-            // setPanel(panelID);
 
             //Eğer table ise x olmuyor. Diğerlerinde ise ilk elemanı yazıyoruz daha sonra useeffect kısmında geri kalanı dolduruyoruz
             if (p.PanelType !== "table") { xColSelRef.current.value = p.SelColumns.xAxis.alias + "/" + p.SelColumns.xAxis.table + "/" + p.SelColumns.xAxis.col }
@@ -669,9 +713,7 @@ export default function MainPage() {
               }
             }
             setAllAxis(als);
-          } else if (p.PanelType === "pivot") {
-            // setPanel(panelID);
-            
+          } else if (p.PanelType === "pivot") {            
             //İlk başta ilk elemanları dolduruyoruz daha sonrasında ise useEffect kısmında eğer varsa gerisini dolduruyoruz
             xColSelRef.current.value = p.SelColumns.xAxis[0].alias + "/" + p.SelColumns.xAxis[0].table + "/" + p.SelColumns.xAxis[0].col
             yColSelRef.current.value = p.SelColumns.yAxis[0].alias + "/" + p.SelColumns.yAxis[0].table + "/" + p.SelColumns.yAxis[0].col
@@ -689,7 +731,6 @@ export default function MainPage() {
               }
             }
             setValueAxis(alY);
-
 
           }
         }, 300);
@@ -720,7 +761,8 @@ export default function MainPage() {
     }
   }
 
-  useEffect(() => { //We use useEffect because in editPanel setAllAxis etc. async. Didn't refresh immediately. When (allAxis , titleAxis , valueAxis) change, run this useEffect
+  useEffect(() => {//+ToDo(inside) ----- We use useEffect because in editPanel setAllAxis etc. async. Didn't refresh immediately. When (panelEdit) change, run this useEffect
+    console.log(panelEdit);
     if (panel !== "" && allAxis.length > 0) { //If Panel and AllAxis aren't empty
       for (let p of pageContent.page_data.panels) {
         if (p.PanelID === panel) {
@@ -731,13 +773,23 @@ export default function MainPage() {
           }
         }
       }
-    } else if (panel !== "" && (titleAxis.length > 0 || valueAxis.length > 0)) { //If titleAxis and valueAxis aren't empty
+    } 
+    else if (panel !== "" && (titleAxis.length > 0 || valueAxis.length > 0)) { //If titleAxis and valueAxis aren't empty
       for (let p of pageContent.page_data.panels) {
         if (p.PanelID === panel) {
 
           for (let x in p.SelColumns.xAxis) {
-            if (parseInt(x) === 0) {continue;}
+            if (parseInt(x) === 0) {continue;}            
             xColSelRef.current[titleAxis[parseInt(x) - 1]].value = p.SelColumns.xAxis[parseInt(x)].alias + "/" + p.SelColumns.xAxis[parseInt(x)].table + "/" + p.SelColumns.xAxis[parseInt(x)].col
+            
+            if (p.SelColumns.xAxis[0].dataColumn === true) {
+              dataColumnRef.current.classList.remove('!border-jet_mid')
+              dataColumnRef.current.classList.add('!border-sea_green')
+            }
+            if (p.SelColumns.xAxis[parseInt(x)].dataColumn === true) {
+              dataColumnRef.current[titleAxis[parseInt(x) - 1]].classList.remove('!border-jet_mid')
+              dataColumnRef.current[titleAxis[parseInt(x) - 1]].classList.add('!border-sea_green')
+            }
           }
 
           for (let y in p.SelColumns.yAxis) {
@@ -775,7 +827,13 @@ export default function MainPage() {
       }
     }
 
-  }, [allAxis , titleAxis , valueAxis , conditions , panelSort])
+    setTimeout(() => { //+ When we set panelEdit false, useEffect run again.
+      setPanelEdit(false);
+      document.getElementById('loadingScreen').checked = false;
+    }, 500);
+
+  }, [panelEdit]) // Eğer allAxis , titleAxis , valueAxis , conditions , panelSort koyarsan bir şey silindiğinde çöküyor
+                  // O yüzden panelEdit koyman lazım fakat o zaman da başka hata veriyor
   //-------------------------------------------------------------------------------------------------------------------------------
   
   const dltPanel = (panelID) => {
@@ -812,11 +870,10 @@ export default function MainPage() {
   }
 
   const savePanel = () => {
+    document.getElementById('loadingScreen').checked = true;
 
     // GroupSelect' i çekmek için
     let selGroup = axisGroupSel(panelType)
-    console.log(selGroup)
-    document.getElementById('loadingScreen').checked = true;
 
     let selColumns = axisSel(panelType);
     let panelIDs = [];
@@ -828,11 +885,32 @@ export default function MainPage() {
       panelIDs.push(p.PanelID);
     }
 
-    let coordinates = getCoordinates();
-  
-    if (panel === "") {
+    // Düzenleme yapılınca ve tekrar kaydedilince koordinatların son yerlerini de kaydediyoruz
+    if (panel !== "") {
+      let parse = JSON.parse(localStorage["rgl-8"])
+
+      for (let b of parse.layouts.lg) {
+        for(let p of pageContent.page_data.panels) {
+          if(p.PanelID === b.i) {
+            let crd = {
+              w: b.w,
+              h: b.h,
+              x: b.x,
+              y: b.y,
+              minW: b.minW,
+              minH:	b.minH,
+            }
+            var coordinates = crd;
+          }
+        }
+      }
+    }
+    else {
+      var coordinates = getCoordinates();
       lastPanelID = getAlias(panelIDs);
     }
+
+    console.log(coordinates)
 
     // WherePlain i çekmek için burada gerekli şeyleri belirledik ve listeye dahil ettik
     for (let c of conditions) {
@@ -1014,6 +1092,7 @@ export default function MainPage() {
     conditionColumnSelect,
     conditionInput,
     conditionTransactionSelect,
+    dataColumnRef,
     xColSelRef,
     yColSelRef,
     xColSelGroupRef,
@@ -1029,6 +1108,7 @@ export default function MainPage() {
     axisSel,
     chooseChart,
     clearPanelInputs,
+    dataColumnSelect,
     deleteCondition,
     deleteSort,
     dltAxis,

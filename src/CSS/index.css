@@ -477,7 +477,6 @@
       rounded
       bg-middle_black
       shadow-md
-      !transition !duration-300
   }
 
   .panels-title {
@@ -493,13 +492,15 @@
       text-cultured
       justify-between
       hover:bg-side_black
+      rounded
       z-10
+      !transition !duration-300
   }
 
-  #pivotGrid {
+  /* #pivotGrid {
     @apply
       h-screen
-  }
+  } */
   /*! -------------------------------------------------------------  */
 
   /*! MODAL CREATE-------------------------------------------------  */
@@ -1076,7 +1077,6 @@
   ::-webkit-scrollbar-corner{
     background: #202020;
   }
-
   
 
 }
