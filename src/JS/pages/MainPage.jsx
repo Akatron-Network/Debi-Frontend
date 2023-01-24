@@ -19,6 +19,7 @@ import Table from '../components/panels/forms/Table';
 import Pivot from '../components/panels/forms/Pivot';
 import Error from '../components/Error'
 import Loading from '../components/Loading'
+import ShareModal from '../components/share/ShareModal';
 
 
 export default function MainPage() {
@@ -1140,6 +1141,7 @@ export default function MainPage() {
 
             <DataModal />
             <UnionDataModal />
+            <ShareModal />
             <Loading />
             {/* <Error err={error} /> */}
         </ChartContext.Provider>
