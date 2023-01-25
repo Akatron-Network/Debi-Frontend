@@ -21,16 +21,20 @@ export default function Collections() {
 			{data.collections.map((collection) => (
 					<div key={collection.collection_id} className="col-card col-span-1">
 						<div className="card">
-							<label htmlFor="dltWorks" className="dlt-btn cursor-pointer" onClick={() => {data.setDeleteItemRef(collection) ; data.setDeleteItemType("koleksiyon")}} >
-								<i className="fa-solid fa-xmark"></i>
-							</label>
+							<div className='flex z-2 pt-[6px] justify-end gap-3 pr-2'>
+								<label htmlFor="sharemodal" className="dlt-btn cursor-pointer">
+									<i className="fa-solid fa-share-nodes"></i>
+								</label>
+								<label htmlFor="dltWorks" className="dlt-btn cursor-pointer" onClick={() => {data.setDeleteItemRef(collection) ; data.setDeleteItemType("koleksiyon")}} >
+									<i className="fa-solid fa-xmark"></i>
+								</label>
+							</div>
               <Link className='link-title' to={collection.collection_id.toString()}>
                 <div className="col-content">
 								  <h4>{collection.collection_name}</h4>
 							  </div>
               </Link>
 							<div className="card-bg" />
-							
 						</div>
 					</div>
 			))}

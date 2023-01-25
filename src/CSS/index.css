@@ -376,7 +376,6 @@
       h-full
       absolute
       bg-[url('/src/img/card-wp6.png')]
-      bg-center
       bg-cover
       opacity-80
       hover:scale-125
@@ -1035,13 +1034,8 @@
 
   .dlt-btn {
     @apply
-      absolute
-      right-0
       leading-none
-      pr-2
-      pt-1
       text-platinium
-      z-2
       opacity-50
       transition duration-300
       hover:scale-125

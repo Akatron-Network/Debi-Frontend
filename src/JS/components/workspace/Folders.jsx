@@ -32,9 +32,14 @@ export default function Folders() {
 					
 						<div key={folder.directory_id} className="fold-card col-span-1">
 							<div className="card">
-								<label htmlFor="dltWorks" className="dlt-btn cursor-pointer" onClick={() => {data.setDeleteItemRef(folder) ; data.setDeleteItemType("klasör")}}>
-									<i className="fa-solid fa-xmark"></i>
-								</label>
+								<div className='flex z-2 pt-[6px] justify-end gap-3 pr-2'>
+									<label htmlFor="sharemodal" className="dlt-btn cursor-pointer">
+										<i className="fa-solid fa-share-nodes"></i>
+									</label>
+									<label htmlFor="dltWorks" className="dlt-btn cursor-pointer" onClick={() => {data.setDeleteItemRef(folder) ; data.setDeleteItemType("klasör")}}>
+										<i className="fa-solid fa-xmark"></i>
+									</label>
+								</div>
 								<Link className='link-title' to={folder.directory_id.toString()}>
 									<div className="col-content fold-content">
 										<h5>{folder.directory_name}</h5>

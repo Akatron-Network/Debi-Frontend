@@ -3,7 +3,6 @@ import { UnionDataModalContext } from "../context";
 
 export default function UnionCollectionSelect() {
   const union_data = useContext(UnionDataModalContext)
-  console.log(union_data)
 
   return (
     <div className="form-control mb-2">

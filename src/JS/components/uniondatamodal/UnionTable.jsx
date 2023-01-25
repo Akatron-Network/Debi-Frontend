@@ -4,8 +4,6 @@ import "gridjs/dist/theme/mermaid.min.css";
 
 export default function UnionTable(props) {
   const union_data = useContext(UnionDataModalContext)
-  console.log(union_data)
-
   
   return (
     

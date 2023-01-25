@@ -169,7 +169,23 @@ class WorkspaceAll {
         }
     }
 
-    
+    static async postShare(itemType , itemID , sharedTo , editable) {
+        let postShare_req = new Requests("workspace" , "share");
+
+        try {
+            let resp = await postShare_req.post({
+                shared_item_type: itemType,
+                shared_item_id: itemID,
+                shared_to: sharedTo,
+                editable: editable
+            });
+            
+            return resp;
+        } catch (err) {
+            console.log(err);
+            
+        }
+    }
 
 }
 

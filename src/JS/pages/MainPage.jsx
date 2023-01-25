@@ -1,5 +1,5 @@
-import React , { useState , useRef , useEffect , useMemo } from 'react'
-import { MainContext, ModalContext, ChartContext, UnionDataModalContext } from '../components/context'
+import React , { useState , useRef , useEffect } from 'react'
+import { MainContext, ModalContext, ChartContext, ShareContext } from '../components/context'
 import WorkspaceAll from '../libraries/categories/Workspace';
 import Data from '../libraries/categories/Data';
 import { Outlet } from 'react-router-dom';
@@ -200,71 +200,6 @@ export default function MainPage() {
     setViewList(tempViews);
   }
 
-  const maincontext_data = {
-    collections,
-    dbSchemas,
-    folders,
-    files,
-    filesChildDirs,
-    colNameRef,
-    choosenSchema,
-    checkDBSchemaRef,
-    foldNameRef,
-    fileNameRef,
-    checkedConnector,
-    checkedConnection,
-    checkedExpress,
-    colConnectorServerRef,
-    colPortRef,
-    colServerRef,
-    colWorksNameRef,
-    colWorksNickRef,
-    colWorksPassRef,
-    colWorksDBRef,
-    colWorksSelectRef,
-    filepath,
-    deleteItemRef,
-    deleteItemType,
-    clearRefs,
-    deleteItems,
-    getColWorks,
-    getFileWorks,
-    getFolderWorks,
-    setCheckedConnector,
-    setCheckedConnection,
-    setCheckedExpress,
-    setDeleteItemRef,
-    setDeleteItemType,
-    setDbSchemas,
-    setChoosenSchema,
-    setFilePath,
-
-    treeCollections,
-    getTreeCollections,
-    setTreeCollections,
-  }
-
-  const modal_data = {
-    modalChecked,
-    unionEditChecked,
-    modalList,
-    modalType,
-    unionInformations,
-    unionList,
-    viewList,
-    deleteModel,
-    deleteUnion,
-    getList,
-    getUnions,
-    getViews,
-    setModalChecked,
-    setUnionEditChecked,
-    setUnionInformations,
-    setModalType,
-    setUnionList,
-    setViewList,
-  }
-
   //* Panel Data Funcs------------------------------------------/
 
   const panelNameRef = useRef("");
@@ -291,6 +226,7 @@ export default function MainPage() {
   const [panel, setPanel] = useState("");
   const [pageContent, setPageContent] = useState({page_data : {panels: []}});
   const [panelEdit, setPanelEdit] = useState(false);
+  const [error, setError] = useState("Hata")
 
   var ch_cards = ["bar", "treemap", "line", "mark", "gauge", "pie", "table", "pivot"];
   const chooseChart = (type) => {
@@ -673,7 +609,7 @@ export default function MainPage() {
     }
   }
 
-  //Edit Panel-----------------------------------------------------------------------------------------------------------------
+  //* Edit Panel-----------------------------------------------------------------------------------------------------------------
   let als = [];
   let alX = [];
   let alY = [];
@@ -835,7 +771,7 @@ export default function MainPage() {
 
   }, [panelEdit]) // Eğer allAxis , titleAxis , valueAxis , conditions , panelSort koyarsan bir şey silindiğinde çöküyor
                   // O yüzden panelEdit koyman lazım fakat o zaman da başka hata veriyor
-  //-------------------------------------------------------------------------------------------------------------------------------
+  //* ---------------------------------------------------------------------------------------------------------------------------
   
   const dltPanel = (panelID) => {
     for (var p of pageContent.page_data.panels) {
@@ -1026,7 +962,7 @@ export default function MainPage() {
 
   const savePage = async () => {
     
-    document.getElementById('save-page-btn').innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i>';
+    document.getElementById('save-page-btn').innerHTML = '<i className="fa-solid fa-circle-notch fa-spin"></i>';
     document.getElementById('save-page-btn').disabled = true;
 
     let parse = JSON.parse(localStorage["rgl-8"])
@@ -1065,19 +1001,98 @@ export default function MainPage() {
       }
     }
 
-    document.getElementById('save-page-btn').innerHTML = '<i class="fa-solid fa-check text-green_pantone"></i>';
+    document.getElementById('save-page-btn').innerHTML = '<i className="fa-solid fa-check text-green_pantone"></i>';
 
     setTimeout(() => {
-      document.getElementById('save-page-btn').innerHTML = '<i class="fa-solid fa-floppy-disk"></i>';
+      document.getElementById('save-page-btn').innerHTML = '<i className="fa-solid fa-floppy-disk"></i>';
       document.getElementById('save-page-btn').disabled = false;
     }, 5000);
   }
 
-  const [error, setError] = useState("Hata")
   const errorHandler = (err) => {
     setError(err)
   }
 
+  //* ----------------------------------------------------------/
+
+  //* SHARE ----------------------------------------------------/
+  const shareUsernameRef = useRef("");
+
+  const [shareItemType, setShareItemType] = useState("");
+
+  const postShare = () => {
+
+  }
+
+  //* ----------------------------------------------------------/
+
+  //* CONTEXT DATAS ----------------------------------------------------/ 
+
+  const maincontext_data = {
+    collections,
+    dbSchemas,
+    folders,
+    files,
+    filesChildDirs,
+    colNameRef,
+    choosenSchema,
+    checkDBSchemaRef,
+    foldNameRef,
+    fileNameRef,
+    checkedConnector,
+    checkedConnection,
+    checkedExpress,
+    colConnectorServerRef,
+    colPortRef,
+    colServerRef,
+    colWorksNameRef,
+    colWorksNickRef,
+    colWorksPassRef,
+    colWorksDBRef,
+    colWorksSelectRef,
+    filepath,
+    deleteItemRef,
+    deleteItemType,
+    clearRefs,
+    deleteItems,
+    getColWorks,
+    getFileWorks,
+    getFolderWorks,
+    setCheckedConnector,
+    setCheckedConnection,
+    setCheckedExpress,
+    setDeleteItemRef,
+    setDeleteItemType,
+    setDbSchemas,
+    setChoosenSchema,
+    setFilePath,
+    setShareItemType,
+
+    treeCollections,
+    getTreeCollections,
+    setTreeCollections,
+  }
+
+  const modal_data = {
+    modalChecked,
+    unionEditChecked,
+    modalList,
+    modalType,
+    unionInformations,
+    unionList,
+    viewList,
+    deleteModel,
+    deleteUnion,
+    getList,
+    getUnions,
+    getViews,
+    setModalChecked,
+    setUnionEditChecked,
+    setUnionInformations,
+    setModalType,
+    setUnionList,
+    setViewList,
+  }
 
   const chart_data = {
     allAxis,
@@ -1124,13 +1139,19 @@ export default function MainPage() {
     setValueAxis,
   }
 
-  // const memoValue = useMemo(() => (chart_data) , [])
+  const share_data = {
+    shareUsernameRef,
+
+    postShare,
+  }
+
   //* ----------------------------------------------------------/
 
   return (
     <MainContext.Provider value={maincontext_data}>
       <ModalContext.Provider value={modal_data}>
         <ChartContext.Provider value={chart_data}>
+          <ShareContext.Provider value={share_data}>
             <Navbar new_btn={"hidden"} page_btn={"hidden"} save_page_btn={"hidden"} />
             <Sidebar />
             <Filepath />
@@ -1144,6 +1165,7 @@ export default function MainPage() {
             <ShareModal />
             <Loading />
             {/* <Error err={error} /> */}
+          </ShareContext.Provider>
         </ChartContext.Provider>
       </ModalContext.Provider>
     </MainContext.Provider >

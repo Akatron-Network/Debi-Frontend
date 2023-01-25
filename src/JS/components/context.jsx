@@ -6,7 +6,7 @@ export const DataModalContext = createContext();
 export const UnionDataModalContext = createContext();
 export const ModalContext = createContext();
 export const ChartContext = createContext();
-export const ShareModalContext = createContext();
+export const ShareContext = createContext();
 
 
 

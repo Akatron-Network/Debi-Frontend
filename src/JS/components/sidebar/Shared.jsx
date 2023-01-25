@@ -1,6 +1,9 @@
-import React from 'react'
+import React , { useContext } from 'react'
+import { ShareContext } from '../context'
 
 export default function Shared() {
+  const share_data = useContext(ShareContext);
+	console.log(share_data)
   return (
 		<>
 			<div className='hrLine'>

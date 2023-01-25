@@ -432,12 +432,12 @@ export default function DataModal() {
 
       let ht = "";
 
-      ht += "<div id='chooseColor_t" +  tbl + "c" + card + "' class='choose_color'><ul>";
-      ht += "<h1 class='pb-1 pl-2 text-lg text-platinium'>Grupla</h1>";
-      ht += "<hr class='border-1 pb-1 w-4/5 relative left-1/2 -translate-x-1/2 border-hr_gray'/>";
-      ht += "<li class='group-btn'><button>Kolon-1</button></li>";
-      ht += "<li class='group-btn'><button>Kolon-2</button></li>";
-      ht += "<li class='group-btn'><button>Kolon-3</button></li></ul></div>";
+      ht += "<div id='chooseColor_t" +  tbl + "c" + card + "' className='choose_color'><ul>";
+      ht += "<h1 className='pb-1 pl-2 text-lg text-platinium'>Grupla</h1>";
+      ht += "<hr className='border-1 pb-1 w-4/5 relative left-1/2 -translate-x-1/2 border-hr_gray'/>";
+      ht += "<li className='group-btn'><button>Kolon-1</button></li>";
+      ht += "<li className='group-btn'><button>Kolon-2</button></li>";
+      ht += "<li className='group-btn'><button>Kolon-3</button></li></ul></div>";
 
       elm.insertAdjacentHTML("beforeend", ht);
 

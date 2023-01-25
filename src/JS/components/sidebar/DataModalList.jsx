@@ -1,5 +1,5 @@
 import React , { useContext , useEffect } from 'react'
-import { UnionDataModalContext , ModalContext } from '../context'
+import { ModalContext } from '../context'
 
 export default function DataModalList() {
   const modal_data = useContext(ModalContext);

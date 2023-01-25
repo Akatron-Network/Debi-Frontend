@@ -35,9 +35,14 @@ export default function Files() {
 					
 						<div key={folder.directory_id} className="fold-card col-span-1">
 							<div className="card">
-								<label htmlFor="dltWorks" className="dlt-btn cursor-pointer"  onClick={() => {data.setDeleteItemRef(folder) ; data.setDeleteItemType("klasör")}}>
+								<div className='flex z-2 pt-[6px] justify-end gap-3 pr-2'>
+									<label htmlFor="sharemodal" className="dlt-btn cursor-pointer">
+										<i className="fa-solid fa-share-nodes"></i>
+									</label>
+									<label htmlFor="dltWorks" className="dlt-btn cursor-pointer"  onClick={() => {data.setDeleteItemRef(folder) ; data.setDeleteItemType("klasör")}}>
 										<i className="fa-solid fa-xmark"></i>
-								</label>
+									</label>
+								</div>
 								<Link className='link-title' to={"/" + folder.collection_id.toString() + "/" + folder.directory_id.toString()}>
 									<div className="col-content fold-content">
 										<h5>{folder.directory_name}</h5>
@@ -67,9 +72,14 @@ export default function Files() {
 					
 						<div key={file.page_id} className="fold-card  col-span-1">
 							<div className="card">
-								<label htmlFor="dltWorks" className="dlt-btn cursor-pointer" onClick={() => {data.setDeleteItemRef(file) ; data.setDeleteItemType("sayfa")}}>
+								<div className='flex z-2 pt-[6px] justify-end gap-3 pr-2'>
+									<label htmlFor="sharemodal" className="dlt-btn cursor-pointer">
+										<i className="fa-solid fa-share-nodes"></i>
+									</label>
+									<label htmlFor="dltWorks" className="dlt-btn cursor-pointer" onClick={() => {data.setDeleteItemRef(file) ; data.setDeleteItemType("sayfa")}}>
 										<i className="fa-solid fa-xmark"></i>
-								</label>
+									</label>
+								</div>
 								<div className="card-bg file-bg"></div>
 								<Link className='link-title' to={file.page_id.toString()}>
 									<div className="col-content fold-content">

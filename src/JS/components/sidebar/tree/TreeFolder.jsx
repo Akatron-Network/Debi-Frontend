@@ -20,6 +20,9 @@ export default function TreeFolder(props) {
             <Link to={data.url.toString()} className='w-full flex items-center ml-[34.75px]' onClick={treeData.fn}>
               <i className="fa-solid fa-folder mr-[6px]"></i>{data.name}
             </Link>
+            <label htmlFor="sharemodal" className="cursor-pointer tree-cursor m-0">
+              <i className="fa-solid fa-share-nodes"></i>
+            </label>
           </div>
 
           <div id={"fold_" + data.id} className="hidden">
