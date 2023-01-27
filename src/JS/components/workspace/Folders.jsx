@@ -33,7 +33,7 @@ export default function Folders() {
 						<div key={folder.directory_id} className="fold-card col-span-1">
 							<div className="card">
 								<div className='flex z-2 pt-[6px] justify-end gap-3 pr-2'>
-									<label htmlFor="sharemodal" className="dlt-btn cursor-pointer">
+									<label htmlFor="sharemodal" className="dlt-btn cursor-pointer" onClick={() => data.openShareModal("DIRECTORY" , folder.directory_id)}>
 										<i className="fa-solid fa-share-nodes"></i>
 									</label>
 									<label htmlFor="dltWorks" className="dlt-btn cursor-pointer" onClick={() => {data.setDeleteItemRef(folder) ; data.setDeleteItemType("klasör")}}>

@@ -16,6 +16,7 @@ class Service {
             localStorage.clear();
             localStorage.setItem('Token' , resp.Token);
             localStorage.setItem('RefreshToken' , resp.Data.refresh_token);
+            localStorage.setItem('Username' , username)
             
         } catch (err) {
             

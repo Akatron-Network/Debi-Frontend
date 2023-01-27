@@ -114,7 +114,7 @@
   .hrLine {
     @apply
       border-b
-      w-[90%]
+      w-[94%]
       border-sea_green
       border-opacity-40
   }

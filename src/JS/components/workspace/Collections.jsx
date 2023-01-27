@@ -5,7 +5,6 @@ import { MainContext } from '../context'
 import ColConnectorCreateor from './ColConnectorCreateor';
 
 export default function Collections() {
-
   const data = useContext(MainContext);
 
   useEffect(() => {
@@ -22,7 +21,7 @@ export default function Collections() {
 					<div key={collection.collection_id} className="col-card col-span-1">
 						<div className="card">
 							<div className='flex z-2 pt-[6px] justify-end gap-3 pr-2'>
-								<label htmlFor="sharemodal" className="dlt-btn cursor-pointer">
+								<label htmlFor="sharemodal" className="dlt-btn cursor-pointer" onClick={() => data.openShareModal("COLLECTION" , collection.collection_id)}>
 									<i className="fa-solid fa-share-nodes"></i>
 								</label>
 								<label htmlFor="dltWorks" className="dlt-btn cursor-pointer" onClick={() => {data.setDeleteItemRef(collection) ; data.setDeleteItemType("koleksiyon")}} >

@@ -30,9 +30,9 @@ export default function TreeCollection() {
             <Link className='w-full flex items-center ml-[34.75px]' to={treeCollection.id.toString()} onClick={treeData.fn}>
               <i className="fa-solid fa-folder-tree mr-[6px] text-lg"></i>{treeCollection.name}
             </Link>
-            <label htmlFor="sharemodal" className="cursor-pointer tree-cursor m-0">
+            {/* <label htmlFor="sharemodal" className="cursor-pointer tree-cursor m-0" onClick={() => data.setShareItemInfo({shared_item_type: "COLLECTION" , shared_item_id: treeCollection.id})}>
               <i className="fa-solid fa-share-nodes"></i>
-            </label>
+            </label> */}
           </div>
         
           <div id={"col_" + treeCollection.id} className="hidden">

@@ -1017,11 +1017,63 @@ export default function MainPage() {
 
   //* SHARE ----------------------------------------------------/
   const shareUsernameRef = useRef("");
+  const shareAuthRef = useRef("");
 
-  const [shareItemType, setShareItemType] = useState("");
+  const [sharedCollections, setSharedCollections] = useState([]);
+  const [sharedDirectories, setSharedDirectories] = useState([]);
+  const [sharedPages, setSharedPages] = useState([]);
+  const [shareItemInfo, setShareItemInfo] = useState(
+    {
+      shared_item_type: "",
+      shared_item_id: undefined,
+    }
+  );
+  
+  const [iShareItems, setIShareItems] = useState(
+    {
+      shared_collections: [],
+      shared_directories: [],
+      shared_pages: [],
+    }
+  );
+  
+  const getShare = async () => {
+    let col = await WorkspaceAll.getCollections();
+    let dir = await WorkspaceAll.getFolders();
+    let page = await WorkspaceAll.getFiles();
 
-  const postShare = () => {
+    setSharedCollections(col.Data.shared_collections)
+    setSharedDirectories(dir.Data.shared_directories)
+    setSharedPages(page.Data.shared_pages)
+  }
 
+  const postShare = async () => {
+    if (shareUsernameRef.current.value !== "") {  //. Checked Username Input 
+      let resp = await WorkspaceAll.postShare(shareItemInfo.shared_item_type , shareItemInfo.shared_item_id , shareUsernameRef.current.value , shareAuthRef.current.checked)
+      console.log(resp);
+    }
+  }
+
+  const getIShare = async () => {
+    let resp = await WorkspaceAll.getShare();
+    console.log(resp.Data);
+
+    setIShareItems(
+      {
+        shared_collections: resp.Data.shared_collections,
+        shared_directories: resp.Data.shared_directories ,
+        shared_pages: resp.Data.shared_pages ,
+      }
+    )
+  }
+
+  const openShareModal = (type, id) => {
+    setShareItemInfo(
+      {
+        shared_item_type: type,
+        shared_item_id: id,
+      }
+    )
   }
 
   //* ----------------------------------------------------------/
@@ -1053,6 +1105,7 @@ export default function MainPage() {
     filepath,
     deleteItemRef,
     deleteItemType,
+    shareItemInfo,
     clearRefs,
     deleteItems,
     getColWorks,
@@ -1066,7 +1119,7 @@ export default function MainPage() {
     setDbSchemas,
     setChoosenSchema,
     setFilePath,
-    setShareItemType,
+    openShareModal,
 
     treeCollections,
     getTreeCollections,
@@ -1140,9 +1193,19 @@ export default function MainPage() {
   }
 
   const share_data = {
-    shareUsernameRef,
+    sharedCollections,
+    sharedDirectories,
+    sharedPages,
+    shareItemInfo,
+    iShareItems,
 
+    shareUsernameRef,
+    shareAuthRef,
+
+    getIShare,
+    getShare,
     postShare,
+    openShareModal,
   }
 
   //* ----------------------------------------------------------/

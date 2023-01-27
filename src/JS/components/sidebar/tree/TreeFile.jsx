@@ -11,9 +11,9 @@ export default function TreeFile(props) {
       return (
         <div className='tree-elm' style={{paddingLeft: (props.padding + 51.75) + "px"}}>
           <Link to={data.url.toString()} className='w-full flex items-center' onClick={treeData.fn}><i className="fa-solid fa-file mr-[6px]"></i>{data.name}</Link>
-          <label htmlFor="sharemodal" className="cursor-pointer tree-cursor m-0">
+          {/* <label htmlFor="sharemodal" className="cursor-pointer tree-cursor m-0" onClick={() => data.setShareItemInfo({shared_item_type: "PAGE" , shared_item_id: data.id})}>
             <i className="fa-solid fa-share-nodes"></i>
-          </label>
+          </label> */}
         </div>
         )
     }
@@ -25,9 +25,9 @@ export default function TreeFile(props) {
             <Link to={data.url.toString()} className='w-full flex items-center ml-[34.75px]' onClick={treeData.fn}>
               <i className="fa-solid fa-folder mr-[6px]"></i>{data.name}
             </Link>
-            <label htmlFor="sharemodal" className="cursor-pointer tree-cursor m-0">
+            {/* <label htmlFor="sharemodal" className="cursor-pointer tree-cursor m-0" onClick={() => data.setShareItemInfo({shared_item_type: "DIRECTORY" , shared_item_id: data.id})}>
               <i className="fa-solid fa-share-nodes"></i>
-            </label>
+            </label> */}
           </div>
 
           <div id={"fold_" + data.id} className="hidden">

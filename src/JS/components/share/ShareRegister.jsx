@@ -9,7 +9,7 @@ export default function ShareRegister() {
       <Input value={"Kullanıcı Adı"} refName={share_data.shareUsernameRef} />
 
       <div className='inline-flex w-full items-center p-1'>
-        <input type="checkbox" id='checkedExpress' className="checkbox mr-2 transition duration-300 hover:border-onyx_middle h-4 w-4"/>
+        <input type="checkbox" ref={share_data.shareAuthRef} className="checkbox mr-2 transition duration-300 hover:border-onyx_middle h-4 w-4"/>
         <span className='text-[14px] text-grayXgray'>Düzenleme <span className='text-xs text-onyx_light'>(Bu şık işaretlenmezse sadece <span className='text-graysix font-bold'>görüntüleme</span> yetkisine sahip olacaktır.)</span></span>
       </div>
 

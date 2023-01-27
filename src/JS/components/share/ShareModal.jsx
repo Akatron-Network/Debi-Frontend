@@ -1,4 +1,4 @@
-import React , { useContext } from 'react'
+import React , { useContext , useEffect } from 'react'
 import { ShareContext } from '../context'
 import ShareRegister from './ShareRegister';
 import ShareTable from './ShareTable';
@@ -6,6 +6,12 @@ import ShareTable from './ShareTable';
 export default function ShareModal() {
   const share_data = useContext(ShareContext);
 	console.log(share_data)
+  
+  useEffect(() => {
+    console.log("aaaaaaaa");
+    share_data.getIShare();
+  }, [])
+  
 
   return (
     <>
