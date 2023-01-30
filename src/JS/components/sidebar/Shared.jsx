@@ -32,7 +32,7 @@ export default function Shared() {
 					return(
 						<Link to={url} className='mb-1' key={index}>
 							<div className='tree-elm pl-3'>
-								<label htmlFor="sharemodal" className="w-[200px] cursor-pointer truncate flex items-center"><i className="fa-solid fa-folder-tree mr-2 p-[5px]"></i>{col.collection.collection_name} <span className='text-onyx_middle text-[13px]'> &nbsp; (Paylaşan: <span className='text-onyx_light'>{col.shared_from}</span>)</span> </label>
+								<label htmlFor="sharemodal" onClick={() => share_data.opClSideBar()} className="w-[200px] cursor-pointer truncate flex items-center"><i className="fa-solid fa-folder-tree mr-2 p-[5px]"></i>{col.collection.collection_name} <span className='text-onyx_middle text-[13px]'> &nbsp; (Paylaşan: <span className='text-onyx_light'>{col.shared_from}</span>)</span> </label>
 								<i className="fa-solid fa-xmark tree-cursor absolute right-3 mr-0 hover:text-red-600"></i>
 							</div>
 						</Link>
@@ -52,7 +52,7 @@ export default function Shared() {
 					return(
 						<Link to={url} className='mb-1' key={index}>
 							<div className='tree-elm pl-3'>
-								<label htmlFor="sharemodal" className="w-[200px] cursor-pointer truncate flex items-center"><i className="fa-solid fa-folder mr-2 p-[5px]"></i>{dir.directory.directory_name} <span className='text-onyx_middle text-[13px]'> &nbsp; (Paylaşan: <span className='text-onyx_light'>{dir.shared_from}</span>)</span> </label>
+								<label htmlFor="sharemodal" onClick={() => share_data.opClSideBar()} className="w-[200px] cursor-pointer truncate flex items-center"><i className="fa-solid fa-folder mr-2 p-[5px]"></i>{dir.directory.directory_name} <span className='text-onyx_middle text-[13px]'> &nbsp; (Paylaşan: <span className='text-onyx_light'>{dir.shared_from}</span>)</span> </label>
 								<i className="fa-solid fa-xmark tree-cursor absolute right-3 mr-0 hover:text-red-600"></i>
 							</div>
 						</Link>
@@ -73,7 +73,7 @@ export default function Shared() {
 					return(
 						<Link to={url} className='mb-1' key={index}>
 							<div className='tree-elm pl-3'>
-								<label htmlFor="sharemodal" className="w-[200px] cursor-pointer truncate flex items-center"><i className="fa-solid fa-file mr-2 p-[5px]"></i>{page.page.page_name} <span className='text-onyx_middle text-[13px]'> &nbsp; (Paylaşan: <span className='text-onyx_light'>{page.shared_from}</span>)</span> </label>
+								<label htmlFor="sharemodal" onClick={() => share_data.opClSideBar()} className="w-[200px] cursor-pointer truncate flex items-center"><i className="fa-solid fa-file mr-2 p-[5px]"></i>{page.page.page_name} <span className='text-onyx_middle text-[13px]'> &nbsp; (Paylaşan: <span className='text-onyx_light'>{page.shared_from}</span>)</span> </label>
 								<i className="fa-solid fa-xmark tree-cursor absolute right-3 mr-0 hover:text-red-600"></i>
 							</div>
 						</Link>

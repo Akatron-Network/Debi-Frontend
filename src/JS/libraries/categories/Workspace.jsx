@@ -200,6 +200,21 @@ class WorkspaceAll {
         }
     }
 
+    static async deleteShare(type, id) {
+        let deleteShare_req = new Requests("workspace" , "share");
+
+        try {
+            let resp = await deleteShare_req.delete({
+                [type + "_share_id"] : id,
+            });
+            
+            return resp;
+        } catch (err) {
+            console.log(err);
+            
+        }
+    }
+
 }
 
 export default WorkspaceAll;

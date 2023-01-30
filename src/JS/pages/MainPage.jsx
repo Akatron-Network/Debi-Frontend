@@ -1015,13 +1015,38 @@ export default function MainPage() {
 
   //* ----------------------------------------------------------/
 
+  //* OPEN-CLOSE SIDEBAR ---------------------------------------/
+
+	const opClSideBar = () => {
+	
+		let allsidepanel = document.getElementById('allsidepanel');
+		let open_close_btn = document.getElementById('open_close_btn');
+	
+			if(open_close_btn.style.transform === 'rotateZ(180deg)') {
+				allsidepanel.style.transform = 'translateX(0px)';
+				allsidepanel.classList.remove("w-full" , "!bg-none_opacity");
+				open_close_btn.style.transform = 'rotateZ(0deg)';
+			}
+	
+			else {
+				allsidepanel.style.transform = 'translateX(250px)';
+				allsidepanel.classList.add("w-full" , "!bg-none_opacity");
+				open_close_btn.style.transform = 'rotateZ(180deg)';
+			}
+	}
+
+  //* ----------------------------------------------------------/
+
   //* SHARE ----------------------------------------------------/
   const shareUsernameRef = useRef("");
   const shareAuthRef = useRef("");
+  const shareItemRef = useRef("");
 
   const [sharedCollections, setSharedCollections] = useState([]);
   const [sharedDirectories, setSharedDirectories] = useState([]);
   const [sharedPages, setSharedPages] = useState([]);
+  const [shareModalOPCL, setShareModalOPCL] = useState(false);
+  const [table, setTable] = useState([]);
   const [shareItemInfo, setShareItemInfo] = useState(
     {
       shared_item_type: "",
@@ -1049,9 +1074,90 @@ export default function MainPage() {
 
   const postShare = async () => {
     if (shareUsernameRef.current.value !== "") {  //. Checked Username Input 
+      document.getElementById('loadingScreen').checked = true;
+
       let resp = await WorkspaceAll.postShare(shareItemInfo.shared_item_type , shareItemInfo.shared_item_id , shareUsernameRef.current.value , shareAuthRef.current.checked)
       console.log(resp);
+
+      await getIShare();
+
+      clearShareModal();
     }
+  }
+
+  const deleteShare = async (type, id) => {
+    document.getElementById('loadingScreen').checked = true;
+
+    let resp = await WorkspaceAll.deleteShare(type, id);
+    console.log(resp)
+
+    await getIShare();
+  }
+
+  const getTable = () => { //. Check type, get jsx and set result in setTable
+    let dt = shareItemInfo;
+    let resp = [];
+
+    if (dt.shared_item_type === "COLLECTION") {
+            
+      iShareItems.shared_collections.map((col, index) => {
+
+        if (dt.shared_item_id === col.collection.collection_id) {
+          resp.push(
+            <tr key={index} className="bg-earie_black border-b border-jet_mid transition duration-200 hover:bg-darker_jet hover:text-platinium">
+              <th className="px-2 py-1 truncate">{col.shared_to}</th>
+              <th className="px-2 py-1 truncate text-right">
+                {/* <button onClick={() => editShare("collection", col.collection_share_id)} className='hover:text-sea_green transition duration-300 px-1 mr-1'><i className="fa-solid fa-pen-to-square"></i></button> */}
+                <button onClick={() => deleteShare("collection", col.collection_share_id)} className='hover:text-red-600 transition duration-300 px-1'><i className="fa-solid fa-xmark"></i></button>
+              </th>
+            </tr>
+          )
+        }
+
+      })
+
+    }
+    else if (dt.shared_item_type === "DIRECTORY") {
+            
+      iShareItems.shared_directories.map((dir, index) => {
+
+        if (dt.shared_item_id === dir.directory.directory_id) {
+          resp.push(
+            <tr key={index} className="bg-earie_black border-b border-jet_mid transition duration-200 hover:bg-darker_jet hover:text-platinium">
+              <th className="px-2 py-1 truncate">{dir.shared_to}</th>
+              <th className="px-2 py-1 truncate text-right">
+                {/* <button onClick={() => editShare("directory", dir.directory_share_id)} className='hover:text-sea_green transition duration-300 px-1 mr-1'><i className="fa-solid fa-pen-to-square"></i></button> */}
+                <button onClick={() => deleteShare("directory", dir.directory_share_id)} className='hover:text-red-600 transition duration-300 px-1'><i className="fa-solid fa-xmark"></i></button>
+              </th>
+            </tr>
+          )
+        }
+
+      })
+      
+    }
+    else if (dt.shared_item_type === "PAGE") {
+            
+      iShareItems.shared_pages.map((page, index) => {
+
+        if (dt.shared_item_id === page.page.page_id) {
+          resp.push(
+            <tr key={index} className="bg-earie_black border-b border-jet_mid transition duration-200 hover:bg-darker_jet hover:text-platinium">
+              <th className="px-2 py-1 truncate">{page.shared_to}</th>
+              <th className="px-2 py-1 truncate text-right">
+                {/* <button onClick={() => editShare("page", page.page_share_id)} className='hover:text-sea_green transition duration-300 px-1 mr-1'><i className="fa-solid fa-pen-to-square"></i></button> */}
+                <button onClick={() => deleteShare("page", page.page_share_id)} className='hover:text-red-600 transition duration-300 px-1'><i className="fa-solid fa-xmark"></i></button>
+              </th>
+            </tr>
+          )
+        }
+
+      })      
+      
+    }
+
+    setTable(resp);
+    document.getElementById('loadingScreen').checked = false;
   }
 
   const getIShare = async () => {
@@ -1067,15 +1173,44 @@ export default function MainPage() {
     )
   }
 
-  const openShareModal = (type, id) => {
+  useEffect(() => { //. use useEffect because iShareItems neccesary for getTable
+    getTable();
+  }, [iShareItems])
+  
+  const openShareModal = (type, id, name) => {
+    document.getElementById('loadingScreen').checked = true;
+
+    if (type === "COLLECTION") {
+      shareItemRef.current.innerHTML = " (" + name + " - Koleksiyon)"
+    }
+    else if (type === "DIRECTORY") {
+      shareItemRef.current.innerHTML = " (" + name + " - Dosya)"
+    }
+    else if (type === "PAGE") {
+      shareItemRef.current.innerHTML = " (" + name + " - Sayfa)"
+    }
+
+    getIShare();
+
     setShareItemInfo(
       {
         shared_item_type: type,
         shared_item_id: id,
       }
     )
+
+    setShareModalOPCL(true); //. Check share modal open-close
+  }
+  
+  const clearShareModal = () => {
+    shareUsernameRef.current.value = "";
+    shareAuthRef.current.checked = false;
   }
 
+  const closeShareModal = () => {
+    setShareModalOPCL(false); //. Check share modal open-close
+    clearShareModal();
+  }
   //* ----------------------------------------------------------/
 
   //* CONTEXT DATAS ----------------------------------------------------/ 
@@ -1193,19 +1328,24 @@ export default function MainPage() {
   }
 
   const share_data = {
+    shareModalOPCL,
+    iShareItems,
     sharedCollections,
     sharedDirectories,
-    sharedPages,
     shareItemInfo,
-    iShareItems,
+    sharedPages,
+    table,
 
-    shareUsernameRef,
     shareAuthRef,
+    shareItemRef,
+    shareUsernameRef,
 
+    closeShareModal,
     getIShare,
     getShare,
-    postShare,
+    opClSideBar,
     openShareModal,
+    postShare,
   }
 
   //* ----------------------------------------------------------/

@@ -1,17 +1,11 @@
-import React , { useContext , useEffect } from 'react'
+import React , { useContext } from 'react'
 import { ShareContext } from '../context'
 import ShareRegister from './ShareRegister';
 import ShareTable from './ShareTable';
 
 export default function ShareModal() {
   const share_data = useContext(ShareContext);
-	console.log(share_data)
-  
-  useEffect(() => {
-    console.log("aaaaaaaa");
-    share_data.getIShare();
-  }, [])
-  
+	console.log(share_data)  
 
   return (
     <>
@@ -22,6 +16,7 @@ export default function ShareModal() {
           <div className='col-span-3'>
             <h1 className="text-lg text-platinium mb-2 drop-shadow">
               Paylaş
+              <span ref={share_data.shareItemRef} className='text-base text-graysix'></span>
             </h1>
             
             <ShareRegister />
@@ -36,7 +31,7 @@ export default function ShareModal() {
             <ShareTable />
 
             <div className='w-full text-right mt-2'>
-              <label htmlFor="sharemodal" className="gray-btn">Kapat</label>
+              <label onClick={() => share_data.closeShareModal()} htmlFor="sharemodal" className="gray-btn">Kapat</label>
             </div>
           </div>
           
