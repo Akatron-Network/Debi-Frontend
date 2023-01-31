@@ -1,4 +1,4 @@
-import React , { useMemo } from "react";
+import React , { useContext } from "react";
 import PieChart from '../charts/PieChart'
 import BasicLineCharts from '../charts/BasicLineCharts'
 import AxisAlignWithTick from '../charts/AxisAlignWithTick'
@@ -11,7 +11,7 @@ import PivotTableChart from '../charts/PivotTableChart'
 import { WidthProvider, Responsive } from "react-grid-layout";
 import 'react-resizable/css/styles.css';
 import 'react-grid-layout/css/styles.css';
-import { ChartContext } from '../components/context';
+import { ChartContext , ShareContext } from '../components/context';
 
 const ResponsiveReactGridLayout = WidthProvider(Responsive);
 const originalLayouts = getFromLS("layouts") || {};
@@ -45,6 +45,7 @@ export default class ResponsiveLocalStorageLayout extends React.PureComponent {
   }
 
   render() {
+    
     let value = this.context;
     return (
       <div className="overflow-hidden">
@@ -69,10 +70,12 @@ export default class ResponsiveLocalStorageLayout extends React.PureComponent {
                 <div className="panels" key={panel.PanelID} data-grid={panel.Coordinates}>
                   <div className="panels-title w-full">
                     <h1>{panel.PanelName}</h1>
-                    <div>
-                      <button className="danger-btn float-right w-6 ml-[2px] bg-transparent shadow-none border-none hover:bg-middle_black text-[17px]" onClick={() => value.dltPanel(panel.PanelID)}><i className="fa-solid fa-xmark"></i></button>
-                      <label htmlFor="chart_choose" className="danger-btn float-right w-6 bg-transparent shadow-none border-none hover:bg-middle_black text-base" onClick={() => value.editPanel(panel.PanelID)}><i className="fa-solid fa-pen-to-square"></i></label>
-                    </div>
+                    {value.btnShowHide === true ?
+                      <div>
+                        <button className="danger-btn float-right w-6 ml-[2px] bg-transparent shadow-none border-none hover:bg-middle_black text-[17px]" onClick={() => value.dltPanel(panel.PanelID)}><i className="fa-solid fa-xmark"></i></button>
+                        <label htmlFor="chart_choose" className="danger-btn float-right w-6 bg-transparent shadow-none border-none hover:bg-middle_black text-base" onClick={() => value.editPanel(panel.PanelID)}><i className="fa-solid fa-pen-to-square"></i></label>
+                      </div>
+                    : undefined}
                   </div>
                   <span><AxisAlignWithTick modelID={panel.ModelID} panelID={panel.PanelID} wherePlain={panel.WherePlain} order={panel.Order} select={panel.GroupSelect} /></span>
                 </div>
@@ -82,10 +85,12 @@ export default class ResponsiveLocalStorageLayout extends React.PureComponent {
                 <div className="panels" key={panel.PanelID} data-grid={panel.Coordinates}>
                   <div className="panels-title w-full">
                     <h1>{panel.PanelName}</h1>
-                    <div>
-                      <button className="danger-btn float-right w-6 ml-[2px] bg-transparent shadow-none border-none hover:bg-middle_black text-[17px]" onClick={() => value.dltPanel(panel.PanelID)}><i className="fa-solid fa-xmark"></i></button>
-                      <label htmlFor="chart_choose" className="danger-btn float-right w-6 bg-transparent shadow-none border-none hover:bg-middle_black text-base" onClick={() => value.editPanel(panel.PanelID)}><i className="fa-solid fa-pen-to-square"></i></label>
-                    </div>
+                    {value.btnShowHide === true ?
+                      <div>
+                        <button className="danger-btn float-right w-6 ml-[2px] bg-transparent shadow-none border-none hover:bg-middle_black text-[17px]" onClick={() => value.dltPanel(panel.PanelID)}><i className="fa-solid fa-xmark"></i></button>
+                        <label htmlFor="chart_choose" className="danger-btn float-right w-6 bg-transparent shadow-none border-none hover:bg-middle_black text-base" onClick={() => value.editPanel(panel.PanelID)}><i className="fa-solid fa-pen-to-square"></i></label>
+                      </div>
+                    : undefined}
                   </div>
                   <span><BarLabelRotation modelID={panel.ModelID} panelID={panel.PanelID} wherePlain={panel.WherePlain} order={panel.Order} select={panel.GroupSelect} /></span>
                 </div>
@@ -95,10 +100,12 @@ export default class ResponsiveLocalStorageLayout extends React.PureComponent {
                 <div className="panels" key={panel.PanelID} data-grid={panel.Coordinates}>
                   <div className="panels-title w-full">
                     <h1>{panel.PanelName}</h1>
-                    <div>
-                      <button className="danger-btn float-right w-6 ml-[2px] bg-transparent shadow-none border-none hover:bg-middle_black text-[17px]" onClick={() => value.dltPanel(panel.PanelID)}><i className="fa-solid fa-xmark"></i></button>
-                      <label htmlFor="chart_choose" className="danger-btn float-right w-6 bg-transparent shadow-none border-none hover:bg-middle_black text-base" onClick={() => value.editPanel(panel.PanelID)}><i className="fa-solid fa-pen-to-square"></i></label>
-                    </div>
+                    {value.btnShowHide === true ?
+                      <div>
+                        <button className="danger-btn float-right w-6 ml-[2px] bg-transparent shadow-none border-none hover:bg-middle_black text-[17px]" onClick={() => value.dltPanel(panel.PanelID)}><i className="fa-solid fa-xmark"></i></button>
+                        <label htmlFor="chart_choose" className="danger-btn float-right w-6 bg-transparent shadow-none border-none hover:bg-middle_black text-base" onClick={() => value.editPanel(panel.PanelID)}><i className="fa-solid fa-pen-to-square"></i></label>
+                      </div>
+                    : undefined}
                   </div>
                   <span><BasicLineCharts modelID={panel.ModelID} panelID={panel.PanelID} wherePlain={panel.WherePlain} order={panel.Order} select={panel.GroupSelect} /></span>
                 </div>
@@ -108,10 +115,12 @@ export default class ResponsiveLocalStorageLayout extends React.PureComponent {
                 <div className="panels" key={panel.PanelID} data-grid={panel.Coordinates}>
                   <div className="panels-title w-full">
                     <h1>{panel.PanelName}</h1>
-                    <div>
-                      <button className="danger-btn float-right w-6 ml-[2px] bg-transparent shadow-none border-none hover:bg-middle_black text-[17px]" onClick={() => value.dltPanel(panel.PanelID)}><i className="fa-solid fa-xmark"></i></button>
-                      <label htmlFor="chart_choose" className="danger-btn float-right w-6 bg-transparent shadow-none border-none hover:bg-middle_black text-base" onClick={() => value.editPanel(panel.PanelID)}><i className="fa-solid fa-pen-to-square"></i></label>
-                    </div>
+                    {value.btnShowHide === true ?
+                      <div>
+                        <button className="danger-btn float-right w-6 ml-[2px] bg-transparent shadow-none border-none hover:bg-middle_black text-[17px]" onClick={() => value.dltPanel(panel.PanelID)}><i className="fa-solid fa-xmark"></i></button>
+                        <label htmlFor="chart_choose" className="danger-btn float-right w-6 bg-transparent shadow-none border-none hover:bg-middle_black text-base" onClick={() => value.editPanel(panel.PanelID)}><i className="fa-solid fa-pen-to-square"></i></label>
+                      </div>
+                    : undefined}
                   </div>
                   <span><StackedLineCharts modelID={panel.ModelID} panelID={panel.PanelID} wherePlain={panel.WherePlain} order={panel.Order} select={panel.GroupSelect} /></span>
                 </div>
@@ -121,10 +130,12 @@ export default class ResponsiveLocalStorageLayout extends React.PureComponent {
                 <div className="panels" key={panel.PanelID} data-grid={panel.Coordinates}>
                   <div className="panels-title w-full">
                     <h1>{panel.PanelName}</h1>
-                    <div>
-                      <button className="danger-btn float-right w-6 ml-[2px] bg-transparent shadow-none border-none hover:bg-middle_black text-[17px]" onClick={() => value.dltPanel(panel.PanelID)}><i className="fa-solid fa-xmark"></i></button>
-                      <label htmlFor="chart_choose" className="danger-btn float-right w-6 bg-transparent shadow-none border-none hover:bg-middle_black text-base" onClick={() => value.editPanel(panel.PanelID)}><i className="fa-solid fa-pen-to-square"></i></label>
-                    </div>
+                    {value.btnShowHide === true ?
+                      <div>
+                        <button className="danger-btn float-right w-6 ml-[2px] bg-transparent shadow-none border-none hover:bg-middle_black text-[17px]" onClick={() => value.dltPanel(panel.PanelID)}><i className="fa-solid fa-xmark"></i></button>
+                        <label htmlFor="chart_choose" className="danger-btn float-right w-6 bg-transparent shadow-none border-none hover:bg-middle_black text-base" onClick={() => value.editPanel(panel.PanelID)}><i className="fa-solid fa-pen-to-square"></i></label>
+                      </div>
+                    : undefined}
                   </div>
                   <span><PieChart modelID={panel.ModelID} panelID={panel.PanelID} wherePlain={panel.WherePlain} order={panel.Order} select={panel.GroupSelect} /></span>
                 </div>
@@ -135,10 +146,12 @@ export default class ResponsiveLocalStorageLayout extends React.PureComponent {
                   <div className="overflow-auto h-[inherit]">
                     <div className="panels-title pb-3 bg-middle_black shadow-md hover:bg-side_black transition duration-300 w-[calc(100%_-_12px)]">
                       <h1>{panel.PanelName}</h1>
-                    <div>
-                      <button className="danger-btn float-right w-6 ml-[2px] bg-transparent shadow-none border-none hover:bg-middle_black text-[17px]" onClick={() => value.dltPanel(panel.PanelID)}><i className="fa-solid fa-xmark"></i></button>
-                      <label htmlFor="chart_choose" className="danger-btn float-right w-6 bg-transparent shadow-none border-none hover:bg-middle_black text-base" onClick={() => value.editPanel(panel.PanelID)}><i className="fa-solid fa-pen-to-square"></i></label>
-                    </div>
+                    {value.btnShowHide === true ?
+                      <div>
+                        <button className="danger-btn float-right w-6 ml-[2px] bg-transparent shadow-none border-none hover:bg-middle_black text-[17px]" onClick={() => value.dltPanel(panel.PanelID)}><i className="fa-solid fa-xmark"></i></button>
+                        <label htmlFor="chart_choose" className="danger-btn float-right w-6 bg-transparent shadow-none border-none hover:bg-middle_black text-base" onClick={() => value.editPanel(panel.PanelID)}><i className="fa-solid fa-pen-to-square"></i></label>
+                      </div>
+                    : undefined}
                     </div>
                     <span className="relative top-[54px] left-[1px]"><TableChart modelID={panel.ModelID} panelID={panel.PanelID} wherePlain={panel.WherePlain} order={panel.Order} select={panel.GroupSelect} /></span>
                   </div>
@@ -150,10 +163,12 @@ export default class ResponsiveLocalStorageLayout extends React.PureComponent {
                   <div className="overflow-auto h-[inherit]">
                     <div className="panels-title pb-3 bg-middle_black shadow-md hover:bg-side_black transition duration-300 w-[calc(100%_-_12px)]">
                       <h1>{panel.PanelName}</h1>
-                    <div>
-                      <button className="danger-btn float-right w-6 ml-[2px] bg-transparent shadow-none border-none hover:bg-middle_black text-[17px]" onClick={() => value.dltPanel(panel.PanelID)}><i className="fa-solid fa-xmark"></i></button>
-                      <label htmlFor="chart_choose" className="danger-btn float-right w-6 bg-transparent shadow-none border-none hover:bg-middle_black text-base" onClick={() => value.editPanel(panel.PanelID)}><i className="fa-solid fa-pen-to-square"></i></label>
-                    </div>
+                    {value.btnShowHide === true ?
+                      <div>
+                        <button className="danger-btn float-right w-6 ml-[2px] bg-transparent shadow-none border-none hover:bg-middle_black text-[17px]" onClick={() => value.dltPanel(panel.PanelID)}><i className="fa-solid fa-xmark"></i></button>
+                        <label htmlFor="chart_choose" className="danger-btn float-right w-6 bg-transparent shadow-none border-none hover:bg-middle_black text-base" onClick={() => value.editPanel(panel.PanelID)}><i className="fa-solid fa-pen-to-square"></i></label>
+                      </div>
+                    : undefined}
                     </div>
                     <span className="relative top-[54px] left-[1px]"><PivotTableChart modelID={panel.ModelID} panelID={panel.PanelID} wherePlain={panel.WherePlain} order={panel.Order} select={panel.GroupSelect} /></span>
                   </div>

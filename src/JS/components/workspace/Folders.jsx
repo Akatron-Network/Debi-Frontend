@@ -28,7 +28,7 @@ export default function Folders() {
 			if (col.collection_id === parseInt(colID)) {
 				if (col.editable === false) {	//. Check editable
 					share_data.setBtnShowHide(false);
-					break;
+					return;
 				}
 			}
 			else {
@@ -77,13 +77,15 @@ export default function Folders() {
 						</div>
 				))}
 
-				<label htmlFor="addWorksFold" className="fold-card add col-span-1" onClick={() => data.clearRefs("klasör")}>
-					<div className="card">
-						<div className="col-content">
-							<i className="fas fa-plus" style={{fontSize: '60px', color: 'var(--platinium)'}} />
+				{share_data.btnShowHide === true ?
+					<label htmlFor="addWorksFold" className="fold-card add col-span-1" onClick={() => data.clearRefs("klasör")}>
+						<div className="card">
+							<div className="col-content">
+								<i className="fas fa-plus" style={{fontSize: '60px', color: 'var(--platinium)'}} />
+							</div>
 						</div>
-					</div>
-				</label>
+					</label>
+				: undefined}
 
 			</div>
 

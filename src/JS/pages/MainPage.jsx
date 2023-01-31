@@ -1304,6 +1304,7 @@ export default function MainPage() {
     titleAxis,
     valueAxis,
     panel,
+    btnShowHide,
 
     conditionColumnSelect,
     conditionInput,

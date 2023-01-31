@@ -32,11 +32,11 @@ export default function Files() {
 				if (dir.directory_id === parseInt(foldID)) {
 					if (col.editable === false) {	//. Check editable
 						share_data.setBtnShowHide(false);
-						break;
+						return;
 					}
 				}
 				else {
-					share_data.setBtnShowHide(true);
+					share_data.setBtnShowHide(share_data.btnShowHide);
 				}
 
 			}
@@ -59,39 +59,40 @@ export default function Files() {
 			<div className="grid xl:grid-cols-10 sm:grid-cols-4 grid-cols-2 grid-flow-row auto-rows-max gap-4 pl-[10px]">
 
 				{data.filesChildDirs.child_dirs.map((folder) => (
-					
-					
-						<div key={folder.directory_id} className="fold-card col-span-1">
-							<div className="card">
 
-								{share_data.btnShowHide === true ?
-									<div className='flex z-2 pt-[6px] justify-end gap-3 pr-2'>
-										<label htmlFor="sharemodal" className="dlt-btn cursor-pointer" onClick={() => data.openShareModal("DIRECTORY" , folder.directory_id, folder.directory_name)}>
-											<i className="fa-solid fa-share-nodes"></i>
-										</label>
-										<label htmlFor="dltWorks" className="dlt-btn cursor-pointer"  onClick={() => {data.setDeleteItemRef(folder) ; data.setDeleteItemType("klasör")}}>
-											<i className="fa-solid fa-xmark"></i>
-										</label>
-									</div>
-								: undefined}
+					<div key={folder.directory_id} className="fold-card col-span-1">
+						<div className="card">
 
-								<Link className='link-title' to={"/" + folder.collection_id.toString() + "/" + folder.directory_id.toString()}>
-									<div className="col-content fold-content">
-										<h5>{folder.directory_name}</h5>
-									</div>
-								</Link>
-								<div className="card-bg fold-bg"></div>
-							</div>
-						</div>
-				))}
+							{share_data.btnShowHide === true ?
+								<div className='flex z-2 pt-[6px] justify-end gap-3 pr-2'>
+									<label htmlFor="sharemodal" className="dlt-btn cursor-pointer" onClick={() => data.openShareModal("DIRECTORY" , folder.directory_id, folder.directory_name)}>
+										<i className="fa-solid fa-share-nodes"></i>
+									</label>
+									<label htmlFor="dltWorks" className="dlt-btn cursor-pointer"  onClick={() => {data.setDeleteItemRef(folder) ; data.setDeleteItemType("klasör")}}>
+										<i className="fa-solid fa-xmark"></i>
+									</label>
+								</div>
+							: undefined}
 
-				<label htmlFor="addWorksFold" className="fold-card add col-span-1"  onClick={() => data.clearRefs("klasör")}>
-					<div className="card">
-						<div className="col-content">
-							<i className="fas fa-plus" style={{fontSize: '60px', color: 'var(--platinium)'}} />
+							<Link className='link-title' to={"/" + folder.collection_id.toString() + "/" + folder.directory_id.toString()}>
+								<div className="col-content fold-content">
+									<h5>{folder.directory_name}</h5>
+								</div>
+							</Link>
+							<div className="card-bg fold-bg"></div>
 						</div>
 					</div>
-				</label>
+				))}
+
+				{share_data.btnShowHide === true ?
+					<label htmlFor="addWorksFold" className="fold-card add col-span-1"  onClick={() => data.clearRefs("klasör")}>
+						<div className="card">
+							<div className="col-content">
+								<i className="fas fa-plus" style={{fontSize: '60px', color: 'var(--platinium)'}} />
+							</div>
+						</div>
+					</label>
+				: undefined}
 
 			</div>
 
@@ -101,38 +102,39 @@ export default function Files() {
 			<div className="grid xl:grid-cols-10 sm:grid-cols-4 grid-cols-2 grid-flow-row auto-rows-max gap-4 pl-[10px]">
 				{data.files.pages.map((file) => (
 
-					
-						<div key={file.page_id} className="fold-card  col-span-1">
-							<div className="card">
+					<div key={file.page_id} className="fold-card  col-span-1">
+						<div className="card">
 
-								{share_data.btnShowHide === true ?
-									<div className='flex z-2 pt-[6px] justify-end gap-3 pr-2'>
-										<label htmlFor="sharemodal" className="dlt-btn cursor-pointer" onClick={() => data.openShareModal("PAGE" , file.page_id, file.page_name)}>
-											<i className="fa-solid fa-share-nodes"></i>
-										</label>
-										<label htmlFor="dltWorks" className="dlt-btn cursor-pointer" onClick={() => {data.setDeleteItemRef(file) ; data.setDeleteItemType("sayfa")}}>
-											<i className="fa-solid fa-xmark"></i>
-										</label>
-									</div>
-								: undefined}
-								
-								<div className="card-bg file-bg"></div>
-								<Link className='link-title' to={file.page_id.toString()}>
-									<div className="col-content fold-content">
-										<h5>{file.page_name}</h5>
-									</div>
-								</Link>
-							</div>
-						</div>
-				))}
-				
-				<label htmlFor="addWorksFile" className="fold-card add col-span-1"  onClick={() => data.clearRefs("sayfa")}>
-					<div className="card">
-						<div className="col-content">
-							<i className="fas fa-plus" style={{fontSize: '60px', color: 'var(--platinium)'}} />
+							{share_data.btnShowHide === true ?
+								<div className='flex z-2 pt-[6px] justify-end gap-3 pr-2'>
+									<label htmlFor="sharemodal" className="dlt-btn cursor-pointer" onClick={() => data.openShareModal("PAGE" , file.page_id, file.page_name)}>
+										<i className="fa-solid fa-share-nodes"></i>
+									</label>
+									<label htmlFor="dltWorks" className="dlt-btn cursor-pointer" onClick={() => {data.setDeleteItemRef(file) ; data.setDeleteItemType("sayfa")}}>
+										<i className="fa-solid fa-xmark"></i>
+									</label>
+								</div>
+							: undefined}
+							
+							<div className="card-bg file-bg"></div>
+							<Link className='link-title' to={file.page_id.toString()}>
+								<div className="col-content fold-content">
+									<h5>{file.page_name}</h5>
+								</div>
+							</Link>
 						</div>
 					</div>
-				</label>
+				))}
+
+				{share_data.btnShowHide === true ?
+					<label htmlFor="addWorksFile" className="fold-card add col-span-1"  onClick={() => data.clearRefs("sayfa")}>
+						<div className="card">
+							<div className="col-content">
+								<i className="fas fa-plus" style={{fontSize: '60px', color: 'var(--platinium)'}} />
+							</div>
+						</div>
+					</label>
+				: undefined}
 			</div>
 
 			<hr className="hrCols"></hr>
