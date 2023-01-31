@@ -1,19 +1,42 @@
 import React , { useContext , useEffect } from 'react'
 import { Link , useParams } from "react-router-dom";
 import DeleteApply from './DeleteApply';
-import { MainContext } from '../context'
+import { MainContext , ShareContext } from '../context'
 import FoldCreator from './FoldCreator';
 
 export default function Folders() {
-
 	const data = useContext(MainContext);
-	
+  const share_data = useContext(ShareContext);
 	const { colID } = useParams();
 
-	useEffect(() => {
+	useEffect(() => {		//. First check sharedCollections. Then if it equals to 0 run getShare func. Then run check func and show-hide check.
 		data.getFolderWorks(parseInt(colID));
+
+		if (share_data.sharedCollections.length === 0) {
+			share_data.getShare();
+		}
+		else { check() }
 	}, [colID])
 
+	useEffect(() => {
+		check();
+	}, [share_data.sharedCollections])
+
+	const check = () => {
+
+		for (let col of share_data.sharedCollections) {
+			if (col.collection_id === parseInt(colID)) {
+				if (col.editable === false) {	//. Check editable
+					share_data.setBtnShowHide(false);
+					break;
+				}
+			}
+			else {
+				share_data.setBtnShowHide(true);
+			}
+		}
+	}
+	
 	// const [ownColData, setownColData] = useState({directories: []}) //* ColID 'ye sahip olan koleksiyonun içerisindeki dosyaları çekmek için bunu oluşturduk
 
 	// const getOwnCol = async (col_id = undefined) => { //*col_id ile hangi koleksiyonun içerisindeyse ondaki dosyaları getirmeyi amaçladık
@@ -32,14 +55,18 @@ export default function Folders() {
 					
 						<div key={folder.directory_id} className="fold-card col-span-1">
 							<div className="card">
-								<div className='flex z-2 pt-[6px] justify-end gap-3 pr-2'>
-									<label htmlFor="sharemodal" className="dlt-btn cursor-pointer" onClick={() => data.openShareModal("DIRECTORY" , folder.directory_id, folder.directory_name)}>
-										<i className="fa-solid fa-share-nodes"></i>
-									</label>
-									<label htmlFor="dltWorks" className="dlt-btn cursor-pointer" onClick={() => {data.setDeleteItemRef(folder) ; data.setDeleteItemType("klasör")}}>
-										<i className="fa-solid fa-xmark"></i>
-									</label>
-								</div>
+
+								{share_data.btnShowHide === true ?
+									<div className='flex z-2 pt-[6px] justify-end gap-3 pr-2'>
+										<label htmlFor="sharemodal" className="dlt-btn cursor-pointer" onClick={() => data.openShareModal("DIRECTORY" , folder.directory_id, folder.directory_name)}>
+											<i className="fa-solid fa-share-nodes"></i>
+										</label>
+										<label htmlFor="dltWorks" className="dlt-btn cursor-pointer" onClick={() => {data.setDeleteItemRef(folder) ; data.setDeleteItemType("klasör")}}>
+											<i className="fa-solid fa-xmark"></i>
+										</label>
+									</div>
+								: undefined}
+
 								<Link className='link-title' to={folder.directory_id.toString()}>
 									<div className="col-content fold-content">
 										<h5>{folder.directory_name}</h5>

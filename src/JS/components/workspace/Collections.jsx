@@ -10,6 +10,7 @@ export default function Collections() {
   useEffect(() => {
     data.getColWorks();
 		data.setFilePath([]);
+		console.log("a")
   }, [])
 
   return (

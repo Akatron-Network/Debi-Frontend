@@ -47,22 +47,34 @@ export default function MainPage() {
   }
 
   const getColWorks = async (col_id = undefined) => {
+    document.getElementById('loadingScreen').checked = true;
+
     let resp = await WorkspaceAll.getCollections(col_id);
     setCollections(resp.Data.owned_collections);
+    
+    document.getElementById('loadingScreen').checked = false;
   }
   
   const getFolderWorks = async (col_id = undefined) => {
+    document.getElementById('loadingScreen').checked = true;
+
     let resp = await WorkspaceAll.getCollections(col_id);
     setFolders(resp.Data);
     setFilePath([{id: col_id, name: resp.Data.collection_name, url: "/" + col_id}]);
+
+    document.getElementById('loadingScreen').checked = false;
   }
 
 	const getFileWorks = async (fold_id = undefined) => {
+    document.getElementById('loadingScreen').checked = true;
+
     let resp = await WorkspaceAll.getFolders(fold_id);
     console.log(resp);
 		setFilesChildDirs(resp.Data)
 		setFiles(resp.Data)
 		setFilePath(resp.Data.path)
+    
+    document.getElementById('loadingScreen').checked = false;
   }
 
   const deleteItems = async (del_type , id) => {
@@ -1046,6 +1058,7 @@ export default function MainPage() {
   const [sharedDirectories, setSharedDirectories] = useState([]);
   const [sharedPages, setSharedPages] = useState([]);
   const [shareModalOPCL, setShareModalOPCL] = useState(false);
+  const [btnShowHide, setBtnShowHide] = useState(true);
   const [table, setTable] = useState([]);
   const [shareItemInfo, setShareItemInfo] = useState(
     {
@@ -1053,7 +1066,6 @@ export default function MainPage() {
       shared_item_id: undefined,
     }
   );
-  
   const [iShareItems, setIShareItems] = useState(
     {
       shared_collections: [],
@@ -1330,6 +1342,7 @@ export default function MainPage() {
   const share_data = {
     shareModalOPCL,
     iShareItems,
+    btnShowHide,
     sharedCollections,
     sharedDirectories,
     shareItemInfo,
@@ -1346,6 +1359,7 @@ export default function MainPage() {
     opClSideBar,
     openShareModal,
     postShare,
+    setBtnShowHide,
   }
 
   //* ----------------------------------------------------------/

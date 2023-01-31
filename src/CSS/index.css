@@ -434,7 +434,7 @@
       text-right
       py-[5px]
       text-xl
-      break-all
+      break-normal
   }
 
   .add .card {
