@@ -70,7 +70,7 @@ export default function Navbar(props) {
 
           <nav id='nav-right' className="col-span-2 flex items-center text-base justify-end">
             <div className="tooltip tooltip-bottom" data-tip="Kaydet">
-              <button id="save-page-btn" className={"nav-btn max-w-[55px] border-r-0 border-l items-center " + props.save_page_btn} onClick={chart_data.savePage}><i className="fa-solid fa-floppy-disk"></i></button>
+              <button type='button' id="save-page-btn" className={"nav-btn max-w-[55px] border-r-0 border-l items-center " + props.save_page_btn} onClick={chart_data.savePage}><i className="fa-solid fa-floppy-disk"></i></button>
             </div>
             <div className="tooltip tooltip-bottom" data-tip="Menü">
               <button id="menu-btn" ref={refMenu} className={"nav-btn border-r-0 border-l items-center " + props.menu_btn}><i className="fa-solid fa-bars"></i></button>

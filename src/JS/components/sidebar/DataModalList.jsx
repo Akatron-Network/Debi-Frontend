@@ -9,7 +9,7 @@ export default function DataModalList() {
     modal_data.getUnions();
   }, [])
 
-  const openModal = (modal_type) => { //!Önizleme için gerekiyor
+  const openModal = (modal_type, type) => { //!Önizleme için gerekiyor
     setTimeout(() => {
       let review_btn = document.getElementById('closeModalBtn');
       let review = document.getElementById('review');
@@ -38,6 +38,9 @@ export default function DataModalList() {
     }
 
     modal_data.setModalType(modal_type);
+
+    if (type === "public") { modal_data.setPublicCheck(true) }
+    else { modal_data.setPublicCheck(false) }
   }
 
   const openUnionModal = (union_type) => { //!Önizleme için gerekiyor
@@ -84,17 +87,25 @@ export default function DataModalList() {
 
       <div className='my-4'>
 
+        <div className='flex pl-[0.7rem] w-[94%] mt-4'>
+					<h1 className='text-graysix'>Veri Modelleri</h1>
+					<hr className="my-3 ml-2 border-1 w-[55%] border-onyx" />
+				</div>
+
         {modal_data.modalList.map((list , index) => (
           <div className='mb-1' key={index}>
             <div className='tree-elm pl-3'>
-              <label htmlFor="datamodal" className="w-[200px] cursor-pointer truncate flex items-center" onClick={() => openModal(list)}><i className="fa-solid fa-chart-line mr-2 p-[5px]"></i>{list.model_name}</label>
+              <label htmlFor="datamodal" className="w-[200px] cursor-pointer truncate flex items-center" onClick={() => openModal(list, "basic")}><i className="fa-solid fa-chart-line mr-2 p-[5px]"></i>{list.model_name}</label>
               <i className="fa-solid fa-xmark tree-cursor absolute right-3 mr-0 hover:text-red-600" onClick={() => modal_data.deleteModel(list.model_id)}></i>
             </div>
           </div>
         ))}
         <label htmlFor="datamodal" className="btn tree-elm px-3 text-sea_green hover:text-green_pantone" onClick={() => openModal("new")}><i className="fa-solid fa-plus mr-2 p-[5px]"></i>Yeni Veri Modeli Ekle</label>
         
-        <hr className="my-3 border-1 w-[88%] relative left-1/2 -translate-x-1/2 border-hr_gray" />
+				<div className='flex pl-[0.7rem] w-[94%] mt-4'>
+					<h1 className='text-graysix'>Birleşik Modeller</h1>
+					<hr className="my-3 ml-2 border-1 w-[47%] border-onyx" />
+				</div>
 
         {modal_data.unionList.map((list , index) => (
           <div className='mb-1' key={index}>
@@ -105,6 +116,24 @@ export default function DataModalList() {
           </div>
         ))}
         <label htmlFor="unionmodal" className="btn tree-elm px-3 text-sea_green hover:text-green_pantone" onClick={() => openUnionModal("new")}><i className="fa-solid fa-plus mr-2 p-[5px]"></i>Yeni Birleşik Model Ekle</label>
+      
+				<div className='flex pl-[0.7rem] w-[94%] mt-4'>
+					<h1 className='text-graysix'>Hazır Modeller</h1>
+					<hr className="my-3 ml-2 border-1 w-[52%] border-onyx" />
+				</div>
+
+        {modal_data.publicModalList.map((list , index) => (
+          <div className='mb-1' key={index}>
+            <div className='tree-elm pl-3'>
+              <label htmlFor="datamodal" className="w-[200px] cursor-pointer truncate flex items-center" onClick={() => openModal(list, "public")}>
+                <i className="fa-solid fa-chart-line mr-2 p-[5px]"></i>
+                {list.model_name}
+                <span className='text-xs text-onyx_light'>&nbsp; ({list.db_scheme_id})</span>
+              </label>
+              {/* <i className="fa-solid fa-xmark tree-cursor absolute right-3 mr-0 hover:text-red-600" onClick={() => modal_data.deleteModel(list.model_id)}></i> */}
+            </div>
+          </div>
+        ))}
       </div>
     </>
   )

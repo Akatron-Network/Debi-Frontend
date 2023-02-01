@@ -120,6 +120,7 @@ export default function MainPage() {
   const [checkedConnector , setCheckedConnector] = useState(false);
   const [checkedExpress , setCheckedExpress] = useState(false);
   const [checkedConnection, setCheckedConnection] = useState(false)
+  const [publicCheck, setPublicCheck] = useState(false);
 
   const clearRefs = (type) => {
     if(type === "koleksiyon") {
@@ -161,11 +162,13 @@ export default function MainPage() {
   }
   
   const [modalList, setModalList] = useState([]);
+  const [publicModalList, setPublicModalList] = useState([]);
 
   const getList = async () => {
     let resp = await Data.getModalList();
     console.log(resp)
     setModalList(resp.Data.owned_models);
+    setPublicModalList(resp.Data.public_models);
   }
 
   const deleteModel = async (id) => {
@@ -297,6 +300,13 @@ export default function MainPage() {
       var keyMain = Object.keys(arr)
       var valueMain = Object.values(arr)
 
+    } else if (first_id.includes("Public")) {
+
+      id = parseInt(id);
+      for(let a of publicModalList) { if (a.model_id === id) { query = a } }
+      var keyMain = Object.keys(query.query.select)
+      var valueMain = Object.values(query.query.select)
+    
     } else {
 
       id = parseInt(id);
@@ -974,49 +984,51 @@ export default function MainPage() {
 
   const savePage = async () => {
     
-    document.getElementById('save-page-btn').innerHTML = '<i className="fa-solid fa-circle-notch fa-spin"></i>';
+    document.getElementById('save-page-btn').innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i>';
     document.getElementById('save-page-btn').disabled = true;
 
-    let parse = JSON.parse(localStorage["rgl-8"])
-    console.log(parse)
+    if (localStorage["rgl-8"] !== undefined) {
+      let parse = JSON.parse(localStorage["rgl-8"])
+      console.log(parse)
 
-    let panels = [...pageContent.page_data.panels]
-
-    for (let [index , a] of pageContent.page_data.panels.entries()) {
-      for (let b of parse.layouts.lg) {
-
-        if(a.PanelID === b.i) {
-
-          panels[index] = {
-            ...pageContent.page_data.panels[index],
-            Coordinates: {
-              w: b.w,
-              h: b.h,
-              x: b.x,
-              y: b.y,
-              minW: b.minW,
-              minH:	b.minH,
-
+      let panels = [...pageContent.page_data.panels]
+  
+      for (let [index , a] of pageContent.page_data.panels.entries()) {
+        for (let b of parse.layouts.lg) {
+  
+          if(a.PanelID === b.i) {
+  
+            panels[index] = {
+              ...pageContent.page_data.panels[index],
+              Coordinates: {
+                w: b.w,
+                h: b.h,
+                x: b.x,
+                y: b.y,
+                minW: b.minW,
+                minH:	b.minH,
+  
+              }
             }
+  
+            await WorkspaceAll.putFiles(pageContent.page_id, {page_data: {panels: panels}})
+  
+            setPageContent({
+              ...pageContent,
+              page_data: {
+                ...pageContent.page_data,
+                panels: panels
+              }
+            })
           }
-
-          await WorkspaceAll.putFiles(pageContent.page_id, {page_data: {panels: panels}})
-
-          setPageContent({
-            ...pageContent,
-            page_data: {
-              ...pageContent.page_data,
-              panels: panels
-            }
-          })
         }
       }
     }
 
-    document.getElementById('save-page-btn').innerHTML = '<i className="fa-solid fa-check text-green_pantone"></i>';
+    document.getElementById('save-page-btn').innerHTML = '<i class="fa-solid fa-check text-green_pantone"></i>';
 
     setTimeout(() => {
-      document.getElementById('save-page-btn').innerHTML = '<i className="fa-solid fa-floppy-disk"></i>';
+      document.getElementById('save-page-btn').innerHTML = '<i class="fa-solid fa-floppy-disk"></i>';
       document.getElementById('save-page-btn').disabled = false;
     }, 5000);
   }
@@ -1277,16 +1289,19 @@ export default function MainPage() {
     modalChecked,
     unionEditChecked,
     modalList,
+    publicModalList,
     modalType,
     unionInformations,
     unionList,
     viewList,
+    publicCheck,
     deleteModel,
     deleteUnion,
     getList,
     getUnions,
     getViews,
     setModalChecked,
+    setPublicCheck,
     setUnionEditChecked,
     setUnionInformations,
     setModalType,

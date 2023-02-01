@@ -45,6 +45,8 @@ module.exports = {
           danger_light: "#861E27",
           like_trans: "#1b151545",
           none_opacity: "#0000009e",
+          purple: "#2D3254",
+          purple_light: "#404877",
       },
 
       boxShadow: {

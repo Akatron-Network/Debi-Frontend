@@ -98,20 +98,27 @@ export default function ChartChoose() {
                       Bir model seçin...
                     </option>
 
-                    {modal_data.modalList.map((modal) => (
-                      <option key={modal.model_id.toString()} value={modal.model_id}>
+                    <option disabled value="hr_2">Modeller ------------------------------------</option>
+                    {modal_data.modalList.map((modal, index) => (
+                      <option key={index} value={modal.model_id}>
                         {modal.model_name}
                       </option>
                     ))}
-                    <option disabled value="hr_2">------------------------------</option>
-                    {modal_data.unionList.map((union) => (
-                      <option key={union.union_id.toString()} value={union.union_id + "_Union"}>
+                    <option disabled value="hr_2">Birleşik Modeller ---------------------------</option>
+                    {modal_data.unionList.map((union, index) => (
+                      <option key={index} value={union.union_id + "_Union"}>
                         {union.union_name + " (Birleşik Model)"}
                       </option>
                     ))}
-                    <option disabled value="hr_2">------------------------------</option>
-                    {modal_data.viewList.map((view) => (
-                      <option key={view.table.toString()} value={view.table + "_View"}>
+                    <option disabled value="hr_2">Hazır Modeller ------------------------------</option>
+                    {modal_data.publicModalList.map((pmodal, index) => (
+                      <option key={index} value={pmodal.model_id + "_Public"}>
+                        {pmodal.model_name + " (Hazır Model)"}
+                      </option>
+                    ))}
+                    <option disabled value="hr_2">Viewlar ------------------------------</option>
+                    {modal_data.viewList.map((view, index) => (
+                      <option key={index} value={view.table + "_View"}>
                         {view.table + " (View)"}
                       </option>
                     ))}

@@ -13,6 +13,8 @@ import ColSelect from './ColSelect';
 import GroupModal from './GroupModal';
 import ManuelRelatedTable from './ManuelRelatedTable';
 import RenameColumns from './RenameColumns';
+import SaveAsNameModal from './SaveAsNameModal';
+            
 
 export default function DataModal() {
   const modal_data = useContext(ModalContext);
@@ -32,6 +34,7 @@ export default function DataModal() {
   const sourceColsRef = useRef("");
   const renamedTitleRef = useRef([]);
   const renamedInputRef = useRef("");
+  const saveAsNameRef = useRef("");
 
   const [chosenTables, setChosenTables] = useState([]);
   const [allTransCols, setAllTransCols] = useState([])
@@ -53,8 +56,6 @@ export default function DataModal() {
   const [conditionsJSON, setConditionsJSON] = useState([]);
   const [renameState, setRenameState] = useState("");
   const [renameInputState, setRenameInputState] = useState("");
-
-
   const [dataJSON, setDataJSON] = useState({
     collection_id: "",
     query: {
@@ -92,7 +93,6 @@ export default function DataModal() {
     }
   }, [modal_data.modalChecked])
   
-
   const [chsCols, setChsCols] = useState({})
   const [inEdit, setInEdit] = useState(false);
   const editModal = async () => {
@@ -216,12 +216,9 @@ export default function DataModal() {
     if (Object.keys(dataJSON.query.select).length > 0) {
       alias = "main";
       for (let s of Object.keys(dataJSON.query.select)) {
-        console.log(s)
         if (s.includes("|")) {
           let column = s.split("|")[0]
           let rename = s.split("|")[1]
-          console.log(s.split("|")[0]);
-          console.log(s.split("|")[1]);
 
           renamedTitleRef.current[alias + "-" + column].innerHTML = "(" + rename + ")";
         }
@@ -245,7 +242,6 @@ export default function DataModal() {
     document.getElementById('loadingScreen').checked = false;
   
   }, [chsCols])
-  
 
   const resize = (id) => {
     setTimeout(function () {
@@ -950,6 +946,42 @@ export default function DataModal() {
     document.getElementById('loadingScreen').checked = false;
   }
 
+  const saveAsDataJSON = async () => {
+    document.getElementById('loadingScreen').checked = true;
+
+    for (let mn of modal_data.modalList) {
+
+      if (saveAsNameRef.current.value === mn.model_name) {
+        document.getElementById('saveAsWarn').classList.remove('hidden');
+        break;
+      }
+      else {  
+        let dt = {...dataJSON};
+        dt.query['includes'] = Object.values(dt.query['includes']);
+    
+        var sch_id = "";
+        for (let id of collections) {
+          if (id.collection_id === parseInt(dt.collection_id)) { sch_id = id.db_scheme_id }
+        }
+    
+        var resp = await Data.postModel(saveAsNameRef.current.value ,dataJSON.query.table , sch_id , dt.query);
+        console.log(resp)
+    
+        if(resp.Success === true) {
+          //Modal oluşturma ekranını kapat, modal listesini yenile
+          document.getElementById('datamodal').checked = false;
+          modal_data.setModalChecked(false);
+          modal_data.getList();
+          clearModelInputs();
+        }
+        
+        break;
+      }
+    }
+
+    document.getElementById('loadingScreen').checked = false;
+  }
+
   const clearModelInputs = () => {
     //Modal ekleme ekranını kapattık
     modal_data.setModalChecked(false);
@@ -1247,6 +1279,7 @@ export default function DataModal() {
     renameState,
     renamedInputRef,
     renameInputState,
+    saveAsNameRef,
     addColumns,
     addCondition,
     addRelatedTable,
@@ -1276,8 +1309,8 @@ export default function DataModal() {
     source_table,
     sourceTablesJSON,
     openRenameModal,
+    saveAsDataJSON,
   };
-
 
   return (
     <DataModalContext.Provider value={data}>
@@ -1289,7 +1322,13 @@ export default function DataModal() {
               Model Oluştur
             </h1>
 
-            <Input value={"Model Adı"} refName={dataModalName} />
+            <div className="form-control mb-2">
+              <div className="input-group shadow-md">
+                <span className='bg-black_light text-grayXgray px-2 py-[7px] !rounded-l border border-jet_mid justify-center min-w-[35%] xl:truncate'>Model Adı</span>
+                {modal_data.publicCheck ? <input disabled type="text" placeholder="Model Adı girin" className="input my-0 input-bordered !rounded-r w-full h-auto" ref={dataModalName} /> 
+                : <input type="text" placeholder="Model Adı girin" className="input my-0 input-bordered !rounded-r w-full h-auto" ref={dataModalName} />}
+              </div>
+            </div>
 
             <hr className="my-3 border-1 w-4/5 relative left-1/2 -translate-x-1/2 border-hr_gray" />
 
@@ -1370,7 +1409,12 @@ export default function DataModal() {
               <label htmlFor="datamodal" onClick={clearModelInputs} className="gray-btn mr-2">
                 Kapat
               </label>
-              <button onClick={() => saveDataJSON()} className="green-btn">Kaydet</button>
+              <label htmlFor="saveAsNameModal" className="purple-btn mr-2">
+                Farklı Kaydet
+              </label>
+              {/* <button onClick={() => saveAsDataJSON()}></button> */}
+              {modal_data.publicCheck ? <button onClick={() => saveDataJSON()} className="green-btn" disabled>Kaydet</button>
+              : <button onClick={() => saveDataJSON()} className="green-btn">Kaydet</button>}              
             </div>
           </div>
 
@@ -1378,6 +1422,7 @@ export default function DataModal() {
           <RelationsAbsolute />
           <GroupModal />
           <ManuelRelatedTable />
+          <SaveAsNameModal />
         </div>
       </div>
     </DataModalContext.Provider>

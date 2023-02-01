@@ -280,6 +280,15 @@
       h-10
   }
 
+  .input-disabled, .input[disabled] {
+    @apply
+      opacity-60
+      bg-jet_shadow
+      text-grayXgray
+      border-[1px]
+      border-transparent
+  }
+
   .button {
     @apply
       rounded
@@ -945,6 +954,30 @@
       transition-all
       duration-300
       hover:bg-green_pantone
+      hover:text-platinium
+      normal-case
+      w-max
+      text-sm
+      px-2
+      font-light
+      leading-none
+      h-fit
+      min-h-[30px]
+      shadow-md
+      focus-visible:outline-onyx_light
+      focus-visible:outline-offset-0
+  }
+
+  .purple-btn {
+    @apply
+      btn
+      font-righteous
+      bg-purple
+      rounded
+      text-grayXgray
+      transition-all
+      duration-300
+      hover:bg-purple_light
       hover:text-platinium
       normal-case
       w-max
