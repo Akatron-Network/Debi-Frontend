@@ -1090,6 +1090,8 @@ export default function MainPage() {
     let col = await WorkspaceAll.getCollections();
     let dir = await WorkspaceAll.getFolders();
     let page = await WorkspaceAll.getFiles();
+    console.log(dir);
+    console.log(page);
 
     setSharedCollections(col.Data.shared_collections)
     setSharedDirectories(dir.Data.shared_directories)

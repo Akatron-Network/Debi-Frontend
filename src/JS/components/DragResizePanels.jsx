@@ -47,6 +47,7 @@ export default class ResponsiveLocalStorageLayout extends React.PureComponent {
   render() {
     
     let value = this.context;
+    console.log(value);
     return (
       <div className="overflow-hidden">
         {/* <button className="btn ml-[10px]" onClick={() => this.resetLayout()}>Reset Layout</button> */}
