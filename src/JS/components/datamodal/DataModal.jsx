@@ -586,7 +586,7 @@ export default function DataModal() {
       alias: alias,
       type: "FULL OUTER",
       on: {
-        [rel_definition.referenced_column]: rel_definition.source_column
+        [rel_definition.source_column] : rel_definition.referenced_column
       },
       select: {
       },
@@ -1177,9 +1177,9 @@ export default function DataModal() {
       table: modalTables.O.source_table.table,
       // table: modalTables.O.source_table.table,
       relation_definition: {
-        referenced_column: referencedColsRef.current.value,
+        referenced_column: sourceColsRef.current.value,
         single_record: true,
-        source_column: sourceColsRef.current.value,
+        source_column: referencedColsRef.current.value,
       }
     }
 
