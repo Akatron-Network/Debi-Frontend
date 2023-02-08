@@ -584,7 +584,7 @@ export default function DataModal() {
     const includesJSON = {
       table: resp.Data.source_table.table,
       alias: alias,
-      type: "INNER",
+      type: "FULL OUTER",
       on: {
         [rel_definition.referenced_column]: rel_definition.source_column
       },
