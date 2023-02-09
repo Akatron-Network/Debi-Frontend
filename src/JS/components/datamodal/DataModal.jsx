@@ -771,6 +771,7 @@ export default function DataModal() {
   }
 
   const addCondition = (main) => {
+    console.log(main)
     if (main === "main") {
       if (dataJSON.query.where_plain.length === 0) {
         setDataJSON({
@@ -780,7 +781,8 @@ export default function DataModal() {
             where_plain: [{}],
           },
         });
-      } else {
+      }
+      else {
         setDataJSON({
           ...dataJSON,
           query: {
@@ -789,7 +791,8 @@ export default function DataModal() {
           },
         });
       }
-    } else {
+    }
+    else {
       if (dataJSON.query.includes[main].where_plain.length === 0) {
         setDataJSON({
           ...dataJSON,
@@ -804,7 +807,8 @@ export default function DataModal() {
             },
           },
         });
-      } else {
+      }
+      else {
         setDataJSON({
           ...dataJSON,
           query: {
@@ -813,7 +817,7 @@ export default function DataModal() {
               ...dataJSON.query.includes,
               [main]: {
                 ...dataJSON.query.includes[main],
-                where_plain: [...dataJSON.query.includes[main].where_plain , "", {}],
+                where_plain: [...dataJSON.query.includes[main].where_plain , "AND", {}],
               },
             },
           },
