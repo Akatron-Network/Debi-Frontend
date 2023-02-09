@@ -584,7 +584,7 @@ export default function DataModal() {
     const includesJSON = {
       table: resp.Data.source_table.table,
       alias: alias,
-      type: "FULL OUTER",
+      type: "LEFT OUTER",
       on: {
         [rel_definition.source_column] : rel_definition.referenced_column
       },
@@ -918,12 +918,11 @@ export default function DataModal() {
     console.log(inEdit)
     let dt = {...dataJSON};
     dt.query['includes'] = Object.values(dt.query['includes']);
+    delete dt.query.limit
     console.log(dt)
 
     var sch_id = "";
     for (let id of collections) {
-      console.log(id.collection_id)
-      console.log(parseInt(dt.collection_id))
       if (id.collection_id === parseInt(dt.collection_id)) { sch_id = id.db_scheme_id }
     }
 

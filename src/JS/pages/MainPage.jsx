@@ -635,6 +635,7 @@ export default function MainPage() {
   let als = [];
   let alX = [];
   let alY = [];
+  let group = ["default", "SUM", "AVG", "MAX", "MIN"];
   const editPanel = (panelID) => {
     for(let p of pageContent.page_data.panels) {
       if(p.PanelID === panelID) {
@@ -657,14 +658,59 @@ export default function MainPage() {
         setTimeout(() => {
           if (p.PanelType === "bar" || p.PanelType === "line" || p.PanelType === "pie") {
 
-            xColSelRef.current.value = p.SelColumns.xAxis.alias + "/" + p.SelColumns.xAxis.table + "/" + p.SelColumns.xAxis.col
-            yColSelRef.current.value = p.SelColumns.yAxis.alias + "/" + p.SelColumns.yAxis.table + "/" + p.SelColumns.yAxis.col
+            for (let g of group) {
+              if(p.SelColumns.xAxis.col.includes("_" + g)) {
+                let newCol = p.SelColumns.xAxis.col
+                xColSelRef.current.value = p.SelColumns.xAxis.alias + "/" + p.SelColumns.xAxis.table + "/" + newCol
+                xColSelGroupRef.current.value = g
+                break;
+              }
+              else {
+                xColSelRef.current.value = p.SelColumns.xAxis.alias + "/" + p.SelColumns.xAxis.table + "/" + p.SelColumns.xAxis.col
+              }
+            }
             
-          } else if (p.PanelType === "treemap" || p.PanelType === "mark" || p.PanelType === 'table') {
+            for (let g of group) {
+              if(p.SelColumns.yAxis.col.includes("_" + g)) {
+                let newCol = p.SelColumns.yAxis.col
+                yColSelRef.current.value = p.SelColumns.yAxis.alias + "/" + p.SelColumns.yAxis.table + "/" + newCol
+                yColSelGroupRef.current.value = g
+                break;
+              }
+              else {
+                yColSelRef.current.value = p.SelColumns.yAxis.alias + "/" + p.SelColumns.yAxis.table + "/" + p.SelColumns.yAxis.col
+              }
+            }
+            
+          } 
+          else if (p.PanelType === "treemap" || p.PanelType === "mark" || p.PanelType === 'table') {
 
             //Eğer table ise x olmuyor. Diğerlerinde ise ilk elemanı yazıyoruz daha sonra useeffect kısmında geri kalanı dolduruyoruz
-            if (p.PanelType !== "table") { xColSelRef.current.value = p.SelColumns.xAxis.alias + "/" + p.SelColumns.xAxis.table + "/" + p.SelColumns.xAxis.col }
-            yColSelRef.current.value = p.SelColumns.yAxis[0].alias + "/" + p.SelColumns.yAxis[0].table + "/" + p.SelColumns.yAxis[0].col
+            if (p.PanelType !== "table") {
+              for (let g of group) {
+                if (p.SelColumns.xAxis.col.includes("_" + g)) {
+                  let newCol = p.SelColumns.xAxis.col
+                  xColSelRef.current.value = p.SelColumns.xAxis.alias + "/" + p.SelColumns.xAxis.table + "/" + newCol
+                  xColSelGroupRef.current.value = g
+                  break;
+                }
+                else {
+                  xColSelRef.current.value = p.SelColumns.xAxis.alias + "/" + p.SelColumns.xAxis.table + "/" + p.SelColumns.xAxis.col
+                }
+              }
+            }
+
+            for (let g of group) {
+              if(p.SelColumns.yAxis[0].col.includes("_" + g)) {
+                let newCol = p.SelColumns.yAxis[0].col.replace(("_" + g) , "")
+                yColSelRef.current.value = p.SelColumns.yAxis[0].alias + "/" + p.SelColumns.yAxis[0].table + "/" + newCol
+                yColSelGroupRef.current.value = g
+                break;
+              }
+              else {
+                yColSelRef.current.value = p.SelColumns.yAxis[0].alias + "/" + p.SelColumns.yAxis[0].table + "/" + p.SelColumns.yAxis[0].col
+              }
+            }
 
             for (let a of p.SelColumns.yAxis) {
               if (p.SelColumns.yAxis.length - 1 > als.length) { //Remove last alias
@@ -672,14 +718,49 @@ export default function MainPage() {
               }
             }
             setAllAxis(als);
-          } else if (p.PanelType === "pivot") {            
+          } 
+          else if (p.PanelType === "pivot") {            
             //İlk başta ilk elemanları dolduruyoruz daha sonrasında ise useEffect kısmında eğer varsa gerisini dolduruyoruz
-            xColSelRef.current.value = p.SelColumns.xAxis[0].alias + "/" + p.SelColumns.xAxis[0].table + "/" + p.SelColumns.xAxis[0].col
-            yColSelRef.current.value = p.SelColumns.yAxis[0].alias + "/" + p.SelColumns.yAxis[0].table + "/" + p.SelColumns.yAxis[0].col
+            for (let g of group) {
+              if(p.SelColumns.xAxis[0].col.includes("_" + g)) {
+                let newCol = p.SelColumns.xAxis[0].col.replace(("_" + g) , "")
+
+                xColSelRef.current.value = p.SelColumns.xAxis[0].alias + "/" + p.SelColumns.xAxis[0].table + "/" + newCol
+                xColSelGroupRef.current.value = g
+
+                break;
+              }
+              else {
+                xColSelRef.current.value = p.SelColumns.xAxis[0].alias + "/" + p.SelColumns.xAxis[0].table + "/" + p.SelColumns.xAxis[0].col
+              }
+            }
+
+            for (let g of group) {
+              if(p.SelColumns.yAxis[0].col.includes("_" + g)) {
+                let newCol = p.SelColumns.yAxis[0].col.replace(("_" + g) , "")
+
+                yColSelRef.current.value = p.SelColumns.yAxis[0].alias + "/" + p.SelColumns.yAxis[0].table + "/" + newCol
+                yColSelGroupRef.current.value = g
+
+                break;
+              }
+              else {
+                yColSelRef.current.value = p.SelColumns.yAxis[0].alias + "/" + p.SelColumns.yAxis[0].table + "/" + p.SelColumns.yAxis[0].col
+              }
+            }
 
             for (let x of p.SelColumns.xAxis) {
               if (p.SelColumns.xAxis.length - 1 > alX.length) { //Remove last alias
                 alX.push(getAlias(alX))
+              }
+
+              if (p.SelColumns.xAxis[0].dataColumn === true) {
+                dataColumnRef.current.classList.remove('!border-jet_mid')
+                dataColumnRef.current.classList.add('!border-sea_green')
+              }
+              if (p.SelColumns.xAxis[parseInt(x)].dataColumn === true) {
+                dataColumnRef.current[titleAxis[parseInt(x) - 1]].classList.remove('!border-jet_mid')
+                dataColumnRef.current[titleAxis[parseInt(x) - 1]].classList.add('!border-sea_green')
               }
             }
             setTitleAxis(alX);
@@ -687,6 +768,15 @@ export default function MainPage() {
             for (let y of p.SelColumns.yAxis) {
               if (p.SelColumns.yAxis.length - 1 > alY.length) { //Remove last alias
                 alY.push(getAlias(alY))
+              }
+
+              if (p.SelColumns.yAxis[0].dataColumn === true) {
+                dataColumnRef.current.classList.remove('!border-jet_mid')
+                dataColumnRef.current.classList.add('!border-sea_green')
+              }
+              if (p.SelColumns.yAxis[parseInt(y)].dataColumn === true) {
+                dataColumnRef.current[titleAxis[parseInt(y) - 1]].classList.remove('!border-jet_mid')
+                dataColumnRef.current[titleAxis[parseInt(y) - 1]].classList.add('!border-sea_green')
               }
             }
             setValueAxis(alY);
@@ -715,73 +805,138 @@ export default function MainPage() {
           let al = getAlias(sortAlias);
           sortAlias.push(al)
         }
+        console.log(sortAlias)
         setPanelSort(sortAlias);
       }
     }
   }
 
-  useEffect(() => {//+ToDo(inside) ----- We use useEffect because in editPanel setAllAxis etc. async. Didn't refresh immediately. When (panelEdit) change, run this useEffect
-    console.log(panelEdit);
-    if (panel !== "" && allAxis.length > 0) { //If Panel and AllAxis aren't empty
-      for (let p of pageContent.page_data.panels) {
-        if (p.PanelID === panel) {
+  useEffect(() => { //+ToDo(inside) ----- We use useEffect because in editPanel setAllAxis etc. async. Didn't refresh immediately. When (panelEdit) change, run this useEffect
+    if (panel !== "") {
+      if (allAxis.length > 0) { //If Panel and AllAxis aren't empty
+        for (let p of pageContent.page_data.panels) {
+          if (p.PanelID === panel) {
+  
+            for (let y in p.SelColumns.yAxis) {
+              if (parseInt(y) === 0) {continue;}
 
-          for (let y in p.SelColumns.yAxis) {
-            if (parseInt(y) === 0) {continue;}
-            yColSelRef.current[allAxis[parseInt(y) - 1]].value = p.SelColumns.yAxis[parseInt(y)].alias + "/" + p.SelColumns.yAxis[parseInt(y)].table + "/" + p.SelColumns.yAxis[parseInt(y)].col
-          }
-        }
-      }
-    } 
-    else if (panel !== "" && (titleAxis.length > 0 || valueAxis.length > 0)) { //If titleAxis and valueAxis aren't empty
-      for (let p of pageContent.page_data.panels) {
-        if (p.PanelID === panel) {
+              for (let g of group) {
 
-          for (let x in p.SelColumns.xAxis) {
-            if (parseInt(x) === 0) {continue;}            
-            xColSelRef.current[titleAxis[parseInt(x) - 1]].value = p.SelColumns.xAxis[parseInt(x)].alias + "/" + p.SelColumns.xAxis[parseInt(x)].table + "/" + p.SelColumns.xAxis[parseInt(x)].col
-            
-            if (p.SelColumns.xAxis[0].dataColumn === true) {
-              dataColumnRef.current.classList.remove('!border-jet_mid')
-              dataColumnRef.current.classList.add('!border-sea_green')
-            }
-            if (p.SelColumns.xAxis[parseInt(x)].dataColumn === true) {
-              dataColumnRef.current[titleAxis[parseInt(x) - 1]].classList.remove('!border-jet_mid')
-              dataColumnRef.current[titleAxis[parseInt(x) - 1]].classList.add('!border-sea_green')
+                if(p.SelColumns.yAxis[parseInt(y)].col.includes("_" + g)) {
+                  let newCol = p.SelColumns.yAxis[parseInt(y)].col.replace(("_" + g) , "")
+
+                  yColSelRef.current[allAxis[parseInt(y) - 1]].value = p.SelColumns.yAxis[parseInt(y)].alias + "/" + p.SelColumns.yAxis[parseInt(y)].table + "/" + newCol
+                  yColSelGroupRef.current[allAxis[parseInt(y) - 1]].value = g
+                  break;
+                }
+                else {
+                  yColSelRef.current[allAxis[parseInt(y) - 1]].value = p.SelColumns.yAxis[parseInt(y)].alias + "/" + p.SelColumns.yAxis[parseInt(y)].table + "/" + p.SelColumns.yAxis[parseInt(y)].col
+                }
+
+              }
             }
           }
-
-          for (let y in p.SelColumns.yAxis) {
-            if (parseInt(y) === 0) {continue;}
-            yColSelRef.current[valueAxis[parseInt(y) - 1]].value = p.SelColumns.yAxis[parseInt(y)].alias + "/" + p.SelColumns.yAxis[parseInt(y)].table + "/" + p.SelColumns.yAxis[parseInt(y)].col
-          }
         }
-      }
-    }
+      } 
+      else if (titleAxis.length > 0 || valueAxis.length > 0) { //If titleAxis and valueAxis aren't empty
+        for (let p of pageContent.page_data.panels) {
+          if (p.PanelID === panel) {
+  
+            for (let x in p.SelColumns.xAxis) {
+              if (parseInt(x) === 0) {continue;}
+              
+              for (let g of group) {
 
-    if (panel !== "" && conditions.length > 0) {
-      for (let p of pageContent.page_data.panels) {
-        if (p.PanelID === panel) {
-
-          setTimeout(() => {
-            for (let cond in conditions) { //+ Burada 2 kere dönüyor. İleride daha iyi yazabilir misin bak
-              if (conditions[cond] !== "AND") {
-                for (let wp in p.WherePlain){
-                  if (cond > p.WherePlain.length) return; // Conditions daha fazla elemana sahip olursa diye bir kontrol koyduk. Böylelikle whereplain' in uzunluğu kadar döndürecek döngüyü
-
-                  conditionColumnSelect.current[conditions[cond]].value = Object.keys(p.WherePlain[cond])[0]; // Kolonları bulduk
-                  conditionTransactionSelect.current[conditions[cond]].value = Object.keys(Object.values(p.WherePlain[cond])[0])[0]; // Kolonların işlemlerini bulduk
-                  conditionInput.current[conditions[cond]].value = Object.values(Object.values(p.WherePlain[cond])[0])[0]; // Kolonların işlem değerlerini bulduk
+                if(p.SelColumns.xAxis[parseInt(x)].col.includes("_" + g)) {
+                  let newCol = p.SelColumns.xAxis[parseInt(x)].col.replace(("_" + g) , "")
+                  xColSelRef.current[titleAxis[parseInt(x) - 1]].value = p.SelColumns.xAxis[parseInt(x)].alias + "/" + p.SelColumns.xAxis[parseInt(x)].table + "/" + newCol
+                  xColSelGroupRef.current[titleAxis[parseInt(x) - 1]].value = g
+                  
+                  if (p.SelColumns.xAxis[0].dataColumn === true) {
+                    dataColumnRef.current.classList.remove('!border-jet_mid')
+                    dataColumnRef.current.classList.add('!border-sea_green')
+                  }
+                  if (p.SelColumns.xAxis[parseInt(x)].dataColumn === true) {
+                    dataColumnRef.current[titleAxis[parseInt(x) - 1]].classList.remove('!border-jet_mid')
+                    dataColumnRef.current[titleAxis[parseInt(x) - 1]].classList.add('!border-sea_green')
+                  }
+                  break;
+                }
+                else {
+                  xColSelRef.current[titleAxis[parseInt(x) - 1]].value = p.SelColumns.xAxis[parseInt(x)].alias + "/" + p.SelColumns.xAxis[parseInt(x)].table + "/" + p.SelColumns.xAxis[parseInt(x)].col
                 }
               }
             }
   
-            for (let sort in panelSort) {
-              sortColumnSelect.current[panelSort[sort]].value = Object.keys(p.Order)[sort]        //Kolon adını bulduk
-              sortColumnTypeSelect.current[panelSort[sort]].value = Object.values(p.Order)[sort]  // Kolonların sıralamalarını bulduk
+            for (let y in p.SelColumns.yAxis) {
+              if (parseInt(y) === 0) {continue;}
+              
+              for (let g of group) {
+
+                if(p.SelColumns.yAxis[parseInt(y)].col.includes("_" + g)) {
+                  let newCol = p.SelColumns.yAxis[parseInt(y)].col.replace(("_" + g) , "")
+                  yColSelRef.current[valueAxis[parseInt(y) - 1]].value = p.SelColumns.yAxis[parseInt(y)].alias + "/" + p.SelColumns.yAxis[parseInt(y)].table + "/" + newCol
+                  yColSelGroupRef.current[valueAxis[parseInt(y) - 1]].value = g
+                  
+                  if (p.SelColumns.xAxis[0].dataColumn === true) {
+                    dataColumnRef.current.classList.remove('!border-jet_mid')
+                    dataColumnRef.current.classList.add('!border-sea_green')
+                  }
+                  if (p.SelColumns.xAxis[parseInt(x)].dataColumn === true) {
+                    dataColumnRef.current[titleAxis[parseInt(x) - 1]].classList.remove('!border-jet_mid')
+                    dataColumnRef.current[titleAxis[parseInt(x) - 1]].classList.add('!border-sea_green')
+                  }
+                  break;
+                }
+                else {
+                  yColSelRef.current[valueAxis[parseInt(y) - 1]].value = p.SelColumns.yAxis[parseInt(y)].alias + "/" + p.SelColumns.yAxis[parseInt(y)].table + "/" + p.SelColumns.yAxis[parseInt(y)].col
+                }
+              }
             }
-            
-          }, 300);
+          }
+        }
+      }
+  
+      if (conditions.length > 0) {
+        console.log("a")
+        for (let p of pageContent.page_data.panels) {
+          if (p.PanelID === panel) {
+            console.log("a")
+  
+            setTimeout(() => {
+              for (let cond in conditions) { //+ Burada 2 kere dönüyor. İleride daha iyi yazabilir misin bak
+                if (conditions[cond] !== "AND") {
+                  for (let wp in p.WherePlain){
+                    if (cond > p.WherePlain.length) return; // Conditions daha fazla elemana sahip olursa diye bir kontrol koyduk. Böylelikle whereplain' in uzunluğu kadar döndürecek döngüyü
+  
+                    conditionColumnSelect.current[conditions[cond]].value = Object.keys(p.WherePlain[cond])[0]; // Kolonları bulduk
+                    conditionTransactionSelect.current[conditions[cond]].value = Object.keys(Object.values(p.WherePlain[cond])[0])[0]; // Kolonların işlemlerini bulduk
+                    conditionInput.current[conditions[cond]].value = Object.values(Object.values(p.WherePlain[cond])[0])[0]; // Kolonların işlem değerlerini bulduk
+                  }
+                }
+              }
+    
+              for (let sort in panelSort) {
+                console.log(sort)
+                sortColumnSelect.current[panelSort[sort]].value = Object.keys(p.Order)[sort]        //Kolon adını bulduk
+                sortColumnTypeSelect.current[panelSort[sort]].value = Object.values(p.Order)[sort]  // Kolonların sıralamalarını bulduk
+              }
+              
+            }, 300);
+          }
+        }
+      }
+  
+      if (panelSort.length > 0) {
+        for (let p of pageContent.page_data.panels) {
+          if (p.PanelID === panel) {  
+            setTimeout(() => {  
+              for (let sort in panelSort) {
+                sortColumnSelect.current[panelSort[sort]].value = Object.keys(p.Order)[sort]        //Kolon adını bulduk
+                sortColumnTypeSelect.current[panelSort[sort]].value = Object.values(p.Order)[sort]  // Kolonların sıralamalarını bulduk
+              }            
+            }, 300);
+          }
         }
       }
     }
