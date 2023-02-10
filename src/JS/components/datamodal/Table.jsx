@@ -27,7 +27,7 @@ export default function Table(props) {
               <tr key={index} className="bg-jet border-b border-onyx transition duration-200 hover:bg-onyx hover:text-platinium">
                 {row.map((rowInside, index) => {
                   return(
-                    <th key={index} className="px-2 py-1 truncate">{rowInside}</th>
+                    <th key={index} className="px-2 py-1 font-normal truncate">{rowInside}</th>
                   )
                 })}
               </tr>

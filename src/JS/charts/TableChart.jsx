@@ -86,7 +86,10 @@ export default function TableChart(props) {
     setYDatas(data);
     setYAxis(yAxisTemp)
   }
-
+  function currencyFormat(num) {
+      return num.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
+      .replaceAll('.', '|').replaceAll(',', '.').replaceAll('|', ',')
+  }
   return (
     <div className="relative shadow-md">
       <table className="w-full text-sm text-left text-grayXgray">
@@ -105,7 +108,7 @@ export default function TableChart(props) {
               <tr key={index} className="bg-jet border-b border-onyx transition duration-200 hover:bg-onyx hover:text-platinium">
                 {row.map((rowInside, index) => {
                   return(
-                    <th key={index} className="px-2 py-1 truncate">{rowInside}</th>
+                    <th key={index} className="px-2 py-1 font-normal truncate">{(typeof(rowInside) === 'number') ? currencyFormat(rowInside) : rowInside}</th>
                   )
                 })}
               </tr>

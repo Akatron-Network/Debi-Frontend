@@ -12,10 +12,10 @@ import PivotGridDataSource from 'devextreme/ui/pivot_grid/data_source';
 import { BarGaugeTitleSubtitle } from 'devextreme-react/bar-gauge';
 
 export default function PivotTableCharts(props) {
-  //TR dil desteği için----
+  //, TR dil desteği için----
   loadMessages(trMessages);
   locale(navigator.language);
-  //-----------------------
+  //, -----------------------
   
   const [allData, setAllData] = useState(new PivotGridDataSource({}));
   var fields = [];
@@ -27,15 +27,15 @@ export default function PivotTableCharts(props) {
   }, [])
 
   const getData = async () => {
-    // let resp = await Data.getModel(props.modelID);
-    // let query = resp.Data.query;
-    // let respData = await Data.postExecute({query: query , collection_id: chart_data.pageContent.collection_id}, col.Data.connector.gateway_host);
+    //, let resp = await Data.getModel(props.modelID);
+    //, let query = resp.Data.query;
+    //, let respData = await Data.postExecute({query: query , collection_id: chart_data.pageContent.collection_id}, col.Data.connector.gateway_host);
     
     let col = await WorkspaceAll.getCollections(chart_data.pageContent.collection_id); //! Get Gateway host
     
     let where_plain = []
-    for (let wp of props.wherePlain) {              // İlk başta propstan wherePlain ham halini aldık yani O/TBLCAHAR/BORC gibi halini.
-      if (wp !== "AND") {                              // Sonrasında sadece BORC kısmını ayırıp where_plain içerisine yolladık
+    for (let wp of props.wherePlain) {                 //, İlk başta propstan wherePlain ham halini aldık yani O/TBLCAHAR/BORC gibi halini.
+      if (wp !== "AND") {                              //, Sonrasında sadece BORC kısmını ayırıp where_plain içerisine yolladık
         let split = Object.keys(wp)[0].split("/")[2];
         let js = {[split] : Object.values(wp)[0]}
         where_plain.push(js)
@@ -45,8 +45,8 @@ export default function PivotTableCharts(props) {
     }
 
     let order = {}
-    for (let keys in Object.keys(props.order)) {        // İlk başta keys kısmını döndürdük sonra içerisinde values döndürdük ve eşleştirdik
-      for (let values in Object.values(props.order)){   // Daha sonra gerekli kısmı split ederek ortaya istediğimiz sonucu çıkardık
+    for (let keys in Object.keys(props.order)) {        //, İlk başta keys kısmını döndürdük sonra içerisinde values döndürdük ve eşleştirdik
+      for (let values in Object.values(props.order)){   //, Daha sonra gerekli kısmı split ederek ortaya istediğimiz sonucu çıkardık
         order = {
           ...order,
           [Object.keys(props.order)[keys].split("/")[2]]: Object.values(props.order)[keys]
@@ -60,7 +60,7 @@ export default function PivotTableCharts(props) {
     if (where_plain.length === 0) where_plain = undefined;
     console.log(where_plain)
 
-    // Burada union mu değil mi diye kontrol ettik ve ona göre bir istek yolladık execute olarak
+    //, Burada union mu değil mi diye kontrol ettik ve ona göre bir istek yolladık execute olarak
     if (props.modelID.includes("Union")) {
       let union_id = props.modelID.replace("_Union" , "")
       var respData = await Data.postExecute({union_id: union_id , collection_id: chart_data.pageContent.collection_id, where_plain: where_plain, order: order}, col.Data.connector.gateway_host);
@@ -80,7 +80,7 @@ export default function PivotTableCharts(props) {
     for(let p of chart_data.pageContent.page_data.panels) {
       if (props.panelID === p.PanelID) {
         for (let x of p.SelColumns.xAxis) {
-          if (x.dataColumn === true) { // Eğer dataColumn true ise veri kolonları kısmına atacağız bu bilgileri
+          if (x.dataColumn === true) { //, Eğer dataColumn true ise veri kolonları kısmına atacağız bu bilgileri
             fields.push({
               area: 'data',
               dataField: x.col,
@@ -96,8 +96,8 @@ export default function PivotTableCharts(props) {
               dataField: x.col,
               caption: x.col,
               dataType: (typeof(proData[x.col]) === 'number') ? 'number' : undefined,
-              summaryType: (typeof(proData[x.col]) === 'number') ? 'sum' : undefined,
-              format: (typeof(proData[x.col]) === 'number') ? { type: 'fixedPoint', precision: 2 } : undefined, // Format Tipleri --> https://js.devexpress.com/Documentation/22_1/ApiReference/Common/Object_Structures/Format/#formatter
+              //, summaryType: (typeof(proData[x.col]) === 'number') ? 'sum' : undefined,
+              //, format: (typeof(proData[x.col]) === 'number') ? { type: 'fixedPoint', precision: 2 } : undefined, // Format Tipleri --> https://js.devexpress.com/Documentation/22_1/ApiReference/Common/Object_Structures/Format/#formatter
             })
           }
         }
@@ -108,8 +108,8 @@ export default function PivotTableCharts(props) {
             caption: y.col,
             dataType: (typeof(proData[y.col]) === 'number') ? 'number' : undefined,
             summaryType: (typeof(proData[y.col]) === 'number') ? 'sum' : undefined,
-            // format: (typeof(proData[y.col]) === 'number') ? 'currency' : undefined, //+ format={{ currency: 'EUR', maximumFractionDigits: 2 }}
-            format: (typeof(proData[y.col]) === 'number') ? { type: 'fixedPoint', precision: 2 } : undefined, // Format Tipleri --> https://js.devexpress.com/Documentation/22_1/ApiReference/Common/Object_Structures/Format/#formatter
+            //, format: (typeof(proData[y.col]) === 'number') ? 'currency' : undefined, //+ format={{ currency: 'EUR', maximumFractionDigits: 2 }}
+            //, format: (typeof(proData[y.col]) === 'number') ? { type: 'fixedPoint', precision: 2 } : undefined, // Format Tipleri --> https://js.devexpress.com/Documentation/22_1/ApiReference/Common/Object_Structures/Format/#formatter
           })
         }
       }
@@ -124,34 +124,34 @@ export default function PivotTableCharts(props) {
   }
 
   //* Data Example
-  // const dataSource = new PivotGridDataSource({
-  //   fields: [{
-  //     caption: 'Region',
-  //     width: 120,
-  //     dataField: 'region',
-  //     area: 'row',
-  //   }, {
-  //     caption: 'City',
-  //     dataField: 'city',
-  //     width: 150,
-  //     area: 'row',
-  //     selector(data) {
-  //       return `${data.city} (${data.country})`;
-  //     },
-  //   }, {
-  //     dataField: 'date',
-  //     dataType: 'date',
-  //     area: 'column',
-  //   }, {
-  //     caption: 'Sales',
-  //     dataField: 'amount',
-  //     dataType: 'number',
-  //     summaryType: 'sum',
-  //     format: 'currency',
-  //     area: 'data',
-  //   }],
-  //   store: allData
-  // });
+  //, const dataSource = new PivotGridDataSource({
+  //,   fields: [{
+  //,     caption: 'Region',
+  //,     width: 120,
+  //,     dataField: 'region',
+  //,     area: 'row',
+  //,   }, {
+  //,     caption: 'City',
+  //,     dataField: 'city',
+  //,     width: 150,
+  //,     area: 'row',
+  //,     selector(data) {
+  //,       return `${data.city} (${data.country})`;
+  //,     },
+  //,   }, {
+  //,     dataField: 'date',
+  //,     dataType: 'date',
+  //,     area: 'column',
+  //,   }, {
+  //,     caption: 'Sales',
+  //,     dataField: 'amount',
+  //,     dataType: 'number',
+  //,     summaryType: 'sum',
+  //,     format: 'currency',
+  //,     area: 'data',
+  //,   }],
+  //,   store: allData
+  //, });
   
 
   return (

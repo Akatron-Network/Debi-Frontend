@@ -758,10 +758,6 @@ export default function MainPage() {
                 dataColumnRef.current.classList.remove('!border-jet_mid')
                 dataColumnRef.current.classList.add('!border-sea_green')
               }
-              if (p.SelColumns.xAxis[parseInt(x)].dataColumn === true) {
-                dataColumnRef.current[titleAxis[parseInt(x) - 1]].classList.remove('!border-jet_mid')
-                dataColumnRef.current[titleAxis[parseInt(x) - 1]].classList.add('!border-sea_green')
-              }
             }
             setTitleAxis(alX);
 
@@ -773,10 +769,6 @@ export default function MainPage() {
               if (p.SelColumns.yAxis[0].dataColumn === true) {
                 dataColumnRef.current.classList.remove('!border-jet_mid')
                 dataColumnRef.current.classList.add('!border-sea_green')
-              }
-              if (p.SelColumns.yAxis[parseInt(y)].dataColumn === true) {
-                dataColumnRef.current[titleAxis[parseInt(y) - 1]].classList.remove('!border-jet_mid')
-                dataColumnRef.current[titleAxis[parseInt(y) - 1]].classList.add('!border-sea_green')
               }
             }
             setValueAxis(alY);
@@ -852,19 +844,17 @@ export default function MainPage() {
                   xColSelRef.current[titleAxis[parseInt(x) - 1]].value = p.SelColumns.xAxis[parseInt(x)].alias + "/" + p.SelColumns.xAxis[parseInt(x)].table + "/" + newCol
                   xColSelGroupRef.current[titleAxis[parseInt(x) - 1]].value = g
                   
-                  if (p.SelColumns.xAxis[0].dataColumn === true) {
-                    dataColumnRef.current.classList.remove('!border-jet_mid')
-                    dataColumnRef.current.classList.add('!border-sea_green')
-                  }
-                  if (p.SelColumns.xAxis[parseInt(x)].dataColumn === true) {
-                    dataColumnRef.current[titleAxis[parseInt(x) - 1]].classList.remove('!border-jet_mid')
-                    dataColumnRef.current[titleAxis[parseInt(x) - 1]].classList.add('!border-sea_green')
-                  }
                   break;
                 }
                 else {
                   xColSelRef.current[titleAxis[parseInt(x) - 1]].value = p.SelColumns.xAxis[parseInt(x)].alias + "/" + p.SelColumns.xAxis[parseInt(x)].table + "/" + p.SelColumns.xAxis[parseInt(x)].col
                 }
+              }
+              
+              if (p.SelColumns.xAxis[parseInt(x)].dataColumn === true) {
+                console.log(p.SelColumns.xAxis[parseInt(x)])
+                dataColumnRef.current[titleAxis[parseInt(x) - 1]].classList.remove('!border-jet_mid')
+                dataColumnRef.current[titleAxis[parseInt(x) - 1]].classList.add('!border-sea_green')
               }
             }
   
@@ -877,15 +867,6 @@ export default function MainPage() {
                   let newCol = p.SelColumns.yAxis[parseInt(y)].col.replace(("_" + g) , "")
                   yColSelRef.current[valueAxis[parseInt(y) - 1]].value = p.SelColumns.yAxis[parseInt(y)].alias + "/" + p.SelColumns.yAxis[parseInt(y)].table + "/" + newCol
                   yColSelGroupRef.current[valueAxis[parseInt(y) - 1]].value = g
-                  
-                  if (p.SelColumns.xAxis[0].dataColumn === true) {
-                    dataColumnRef.current.classList.remove('!border-jet_mid')
-                    dataColumnRef.current.classList.add('!border-sea_green')
-                  }
-                  if (p.SelColumns.xAxis[parseInt(x)].dataColumn === true) {
-                    dataColumnRef.current[titleAxis[parseInt(x) - 1]].classList.remove('!border-jet_mid')
-                    dataColumnRef.current[titleAxis[parseInt(x) - 1]].classList.add('!border-sea_green')
-                  }
                   break;
                 }
                 else {
