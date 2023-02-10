@@ -631,6 +631,25 @@ export default function MainPage() {
     }
   }
 
+  const getColList = (colList) => {
+    let cols = []
+    for (let t of colList) {
+      let t_name = Object.keys(t)[0]
+      let t_cols = t[Object.keys(t)[0]]['columns']
+      let t_als = t[Object.keys(t)[0]]['alias']
+
+      t_cols.map(c => {cols.push({
+        table_name: t_name,
+        column: (c.includes('|')) ? c.substring(c.indexOf('|') + 1) : c,
+        alias: t_als
+      })})
+
+    }
+    return cols.sort((a,b) => {
+      if (a.column < b.column) return -1
+    })
+  }
+
   //* Edit Panel-----------------------------------------------------------------------------------------------------------------
   let als = [];
   let alX = [];
@@ -1484,6 +1503,7 @@ export default function MainPage() {
     dltAxis,
     dltPanel,
     editPanel,
+    getColList,
     modelNameSelect,
     savePage,
     savePanel,

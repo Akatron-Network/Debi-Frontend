@@ -5,6 +5,25 @@ export default function ConditionsAndSort() {
   const chart_data = useContext(ChartContext);
   console.log(chart_data)
 
+  // const getColList = (colList) => {
+  //   let cols = []
+  //   for (let t of colList) {
+  //     let t_name = Object.keys(t)[0]
+  //     let t_cols = t[Object.keys(t)[0]]['columns']
+  //     let t_als = t[Object.keys(t)[0]]['alias']
+
+  //     t_cols.map(c => {cols.push({
+  //       table_name: t_name,
+  //       column: (c.includes('|')) ? c.substring(c.indexOf('|') + 1) : c,
+  //       alias: t_als
+  //     })})
+
+  //   }
+  //   return cols.sort((a,b) => {
+  //     if (a.column < b.column) return -1
+  //   })
+  // }
+
   return (
     <>
       <div className='flex mt-3'>
@@ -16,7 +35,6 @@ export default function ConditionsAndSort() {
       </div>
         
       <div className='grid grid-cols-2 gap-3 my-2'>
-
         {chart_data.conditions.map((cond, index) => {
           if (cond === "AND") return;
           else {
@@ -29,15 +47,8 @@ export default function ConditionsAndSort() {
   
                 <select defaultValue='default' className="condition_select xl:col-span-4" ref={(el) => {chart_data.conditionColumnSelect.current[cond] = el}}>
                   <option disabled value="default">Kolon Seçiniz</option>
-                  {chart_data.colList.map((tbi) => {
-                    let table = Object.keys(tbi)[0];
-                    return (tbi[table].columns.map((col , index) => {
-                      if (col.includes("|")) {
-                        col = col.split("|")[1]
-                      }
-
-                      return (<option key={index} value={tbi[table].alias + "/" + table + "/" + col}>{col}</option>)
-                    }))
+                  {chart_data.getColList(chart_data.colList).map((cobj, index) => {
+                      return (<option key={index} value={cobj.alias + "/" + cobj.table_name + "/" + cobj.column}>{cobj.column}</option>)
                   })}
                 </select>
   
@@ -82,26 +93,20 @@ export default function ConditionsAndSort() {
     
                   <select
                     defaultValue="default"
-                    className="condition_select max-w-[36%] !rounded-l-none"
+                    className="condition_select max-w-[47%] !rounded-l-none"
                     ref={(el) => {chart_data.sortColumnSelect.current[sort] = el}}
                   >
                     <option disabled value="default">
                       Bir kolon seçin...
                     </option>
-                    {chart_data.colList.map((tbi) => {
-                      let table = Object.keys(tbi)[0];
-                      return (tbi[table].columns.map((col , index) => {
-                        if (col.includes("|")) {
-                          col = col.split("|")[1]
-                        }
-                        return (<option key={index} value={tbi[table].alias + "/" + table + "/" + col}>{col}</option>)
-                      }))
+                    {chart_data.getColList(chart_data.colList).map((cobj, index) => {
+                      return (<option key={index} value={cobj.alias + "/" + cobj.table_name + "/" + cobj.column}>{cobj.column}</option>)
                     })}
                   </select>
     
                   <select
                     defaultValue="default"
-                    className="condition_select max-w-[36%] !rounded-r-none"
+                    className="condition_select max-w-[25%] !rounded-r-none"
                     ref={(el) => {chart_data.sortColumnTypeSelect.current[sort] = el}}
                   >
                     <option disabled value="default">

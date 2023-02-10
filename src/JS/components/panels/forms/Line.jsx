@@ -32,16 +32,8 @@ export default function Line() {
               <option disabled value="default">
                 Bir kolon seçin...
               </option>
-
-              {chart_data.colList.map((tbi) => {
-                let table = Object.keys(tbi)[0];
-                return (tbi[table].columns.map((col , index) => {
-                  
-                  if (col.includes("|")) {
-                    col = col.split("|")[1]
-                  }
-                  return (<option key={index} value={tbi[table].alias + "/" + table + "/" + col}>{col}</option>) // {table} - {col}
-                }))
+              {chart_data.getColList(chart_data.colList).map((cobj, index) => {
+                return (<option key={index} value={cobj.alias + "/" + cobj.table_name + "/" + cobj.column}>{cobj.column}</option>)
               })}
             </select>
             <select
@@ -83,15 +75,8 @@ export default function Line() {
               <option disabled value="default">
                 Bir kolon seçin...
               </option>
-              {chart_data.colList.map((tbi) => {
-                let table = Object.keys(tbi)[0]
-                return (tbi[table].columns.map((col , index) => {
-                  
-                  if (col.includes("|")) {
-                    col = col.split("|")[1]
-                  }
-                  return (<option key={index} value={tbi[table].alias + "/" +table + "/" + col}>{col}</option>) // {table} - {col}
-                }))
+              {chart_data.getColList(chart_data.colList).map((cobj, index) => {
+                return (<option key={index} value={cobj.alias + "/" + cobj.table_name + "/" + cobj.column}>{cobj.column}</option>)
               })}
             </select>
             <select
