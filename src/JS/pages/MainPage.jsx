@@ -679,7 +679,7 @@ export default function MainPage() {
 
             for (let g of group) {
               if(p.SelColumns.xAxis.col.includes("_" + g)) {
-                let newCol = p.SelColumns.xAxis.col
+                let newCol = p.SelColumns.xAxis.col.replace(("_" + g) , "")             
                 xColSelRef.current.value = p.SelColumns.xAxis.alias + "/" + p.SelColumns.xAxis.table + "/" + newCol
                 xColSelGroupRef.current.value = g
                 break;
@@ -690,8 +690,11 @@ export default function MainPage() {
             }
             
             for (let g of group) {
+              console.log(g)
+              console.log(p.SelColumns.yAxis.col)
               if(p.SelColumns.yAxis.col.includes("_" + g)) {
-                let newCol = p.SelColumns.yAxis.col
+                let newCol = p.SelColumns.yAxis.col.replace(("_" + g) , "")
+                console.log(newCol)
                 yColSelRef.current.value = p.SelColumns.yAxis.alias + "/" + p.SelColumns.yAxis.table + "/" + newCol
                 yColSelGroupRef.current.value = g
                 break;
@@ -708,7 +711,7 @@ export default function MainPage() {
             if (p.PanelType !== "table") {
               for (let g of group) {
                 if (p.SelColumns.xAxis.col.includes("_" + g)) {
-                  let newCol = p.SelColumns.xAxis.col
+                  let newCol = p.SelColumns.xAxis.col.replace(("_" + g) , "")
                   xColSelRef.current.value = p.SelColumns.xAxis.alias + "/" + p.SelColumns.xAxis.table + "/" + newCol
                   xColSelGroupRef.current.value = g
                   break;
