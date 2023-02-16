@@ -85,9 +85,9 @@ export default function PivotTableCharts(props) {
               area: 'data',
               dataField: x.col,
               caption: x.col,
-              dataType: (typeof(proData[x.col]) === 'number') ? 'number' : undefined,
-              summaryType: (typeof(proData[x.col]) === 'number') ? 'sum' : undefined,
-              format: (typeof(proData[x.col]) === 'number') ? { type: 'fixedPoint', precision: 2 } : undefined, // Format Tipleri --> https://js.devexpress.com/Documentation/22_1/ApiReference/Common/Object_Structures/Format/#formatter
+              dataType: 'number',
+              summaryType: 'sum',
+              format: { type: 'fixedPoint', precision: 2 }, // Format Tipleri --> https://js.devexpress.com/Documentation/22_1/ApiReference/Common/Object_Structures/Format/#formatter
             })
           }
           else {
