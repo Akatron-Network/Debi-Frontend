@@ -70,7 +70,7 @@ export default function Condition(props) {
     if (col_type === "smallint" || col_type === "tinyint" || col_type === "int") {
       setTypeInput("number"); //* Burada sadece int olmalı yani float almamalı patterni ona göre yap!
       setTypeLength("");
-    } else if (col_type === "decimal" || col_type === "varchar") {
+    } else if (col_type === "decimal") {
       setTypeInput("number"); //* Burada sadece float olmalı yani int almamalı patterni ona göre yap!
       setTypeLength("");
     } else if (col_type === "datetime") {

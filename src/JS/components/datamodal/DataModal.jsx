@@ -961,6 +961,7 @@ export default function DataModal() {
       else {  
         let dt = {...dataJSON};
         dt.query['includes'] = Object.values(dt.query['includes']);
+        delete dt.query.limit
     
         var sch_id = "";
         for (let id of collections) {
