@@ -4,6 +4,7 @@ import { MainContext } from './context'
 
 export default function Filepath() {
   const data = useContext(MainContext);
+  console.log(data);
 
   const [link, setLink] = useState("");
 

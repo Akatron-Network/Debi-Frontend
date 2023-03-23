@@ -14,7 +14,7 @@ export default function UnionCollectionSelect() {
           defaultValue="default"
           className="condition_select max-w-[65%] !rounded-l-none"
           ref={union_data.unionCollectionNameRef}
-          onClick={union_data.getCollections}
+          // onClick={union_data.getCollections}
           onChange={() => union_data.collectionSelect(union_data.unionCollectionNameRef.current.value)}
         >
           <option disabled value="default">

@@ -14,7 +14,7 @@ export default function ColSelect() {
           defaultValue="default"
           className="condition_select max-w-[65%] !rounded-l-none"
           ref={data.dataColSelectRef}
-          onClick={data.getColSelect}
+          // onClick={data.getColSelect}
           onChange={() => data.colNameSelect(data.dataColSelectRef.current.value)}
         >
           <option disabled value="default">

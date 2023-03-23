@@ -1,6 +1,5 @@
 import React , { useContext , useState , useEffect , useRef } from 'react'
 import Table from './Table';
-import Input from '../Input';
 import WorkspaceAll from '../../libraries/categories/Workspace';
 import Data from '../../libraries/categories/Data';
 import { DataModalContext , ModalContext } from '../context'
@@ -68,6 +67,7 @@ export default function DataModal() {
   });
 
   useEffect(() => {
+    console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
     getColSelect();
   }, []);
   

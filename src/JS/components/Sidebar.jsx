@@ -1,4 +1,4 @@
-import React , {useState} from 'react'
+import React , {useState, useEffect} from 'react'
 import MainTree from './sidebar/MainTree'
 import Shared from './sidebar/Shared'
 import Favorites from './sidebar/Favorites'
@@ -64,6 +64,19 @@ export default function Sidebar() {
 				open_close_btn.style.transform = 'rotateZ(180deg)';
 			}
 	}
+
+  useEffect(() => { //* When click outside the sidepanel close sidepanel
+    document.addEventListener('click', closeSidePanel)
+    return () => { document.removeEventListener('click', closeSidePanel) }
+  }, [])
+
+  const closeSidePanel = (e) => { //* For show-hide sidepanel
+    if (e.target.id === "allsidepanel") {
+					console.log("a");
+					openCloseSideBar();
+    }
+
+  }
 
 
   return (

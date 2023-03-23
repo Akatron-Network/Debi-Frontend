@@ -89,7 +89,7 @@ export default function DataModalList() {
 
         <div className='flex pl-[0.7rem] w-[94%] mt-4'>
 					<h1 className='text-graysix'>Veri Modelleri</h1>
-					<hr className="my-3 ml-2 border-1 w-[55%] border-onyx" />
+					<hr className="my-3 ml-2 border-1 w-[53%] border-onyx" />
 				</div>
 
         {modal_data.modalList.map((list , index) => (
@@ -104,7 +104,7 @@ export default function DataModalList() {
         
 				<div className='flex pl-[0.7rem] w-[94%] mt-4'>
 					<h1 className='text-graysix'>Birleşik Modeller</h1>
-					<hr className="my-3 ml-2 border-1 w-[47%] border-onyx" />
+					<hr className="my-3 ml-2 border-1 w-[44%] border-onyx" />
 				</div>
 
         {modal_data.unionList.map((list , index) => (
@@ -119,7 +119,7 @@ export default function DataModalList() {
       
 				<div className='flex pl-[0.7rem] w-[94%] mt-4'>
 					<h1 className='text-graysix'>Hazır Modeller</h1>
-					<hr className="my-3 ml-2 border-1 w-[52%] border-onyx" />
+					<hr className="my-3 ml-2 border-1 w-[50%] border-onyx" />
 				</div>
 
         {modal_data.publicModalList.map((list , index) => (

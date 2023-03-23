@@ -2,16 +2,17 @@ import React , {useContext , useEffect , useState} from 'react'
 import { useParams } from 'react-router-dom';
 import DragResizePanels from '../components/DragResizePanels';
 import WorkspaceAll from '../libraries/categories/Workspace'
-import {ChartContext , ShareContext} from '../components/context'
+import {ChartContext , MainContext, ShareContext} from '../components/context'
 
 export default function ChartLayout() {
   const chart_data = useContext(ChartContext);
   const share_data = useContext(ShareContext);
+  const { setFilePath } = useContext(MainContext);
 	const { fileID } = useParams();
   const [title, setTitle] = useState("");
 
   useEffect(() => {
-    document.getElementById('file_path_top').style.display = "none";
+    // document.getElementById('file_path_top').style.display = "none";
     document.getElementById('new_btn').style.display = "flex";
     // document.getElementById('page-btn').style.display = "flex";
     document.getElementById('save-page-btn').style.display = "flex";
@@ -72,16 +73,19 @@ export default function ChartLayout() {
     if(resp.Data.page_data === null) {
       resp.Data.page_data = { panels: [] }
     }
+    console.log(resp);
+    
+    setFilePath(resp.Data.path);
     chart_data.setPageContent(resp.Data);
     setTitle(resp.Data.page_name);
   }
   
 
   return (
-    <div className='-mt-[46px]'>
+    <>
 		  <h2 className="workspace-titles text-[1.3rem] mt-2 mb-0">{title}</h2>
 		  <hr className="hrCols mt-2 mb-0"></hr>
       <DragResizePanels />
-    </div>
+    </>
   )
 }

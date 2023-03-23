@@ -69,7 +69,6 @@ export default function MainPage() {
     document.getElementById('loadingScreen').checked = true;
 
     let resp = await WorkspaceAll.getFolders(fold_id);
-    console.log(resp);
 		setFilesChildDirs(resp.Data)
 		setFiles(resp.Data)
 		setFilePath(resp.Data.path)

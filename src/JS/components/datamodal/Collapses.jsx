@@ -84,46 +84,48 @@ export default function Collapses(props) {
             Kolonlar
           </h1>
           <div className="table_layout max-h-72">
-            {props.data.source_table.columns.map((col, index) => (
-              <div className="table_col_cards inline-grid relative" key={index} id={"elm_" + props.main + "_" + index}>
-                <div onClick={() => data.addColumns(props.main, col.name, index)} className="w-full h-full inline-grid">
-                  <h4 className="text-sm text-sea_green truncate pr-7">{col.name} <span className='text-onyx_light text-xs' ref={(el) => {data.renamedTitleRef.current[props.main + "-" + col.name] = el}}></span></h4>
-                  <span className="text-xs text-grayXgray truncate">
-                    {col.details}
-                  </span>
-                  {(col.type === "datetime") ? (
-                    <button className='gray-btn mt-1' id={'datepart_' + index} onClick={() => data.datepart(col.name , props.main , index)}>Tarihi Parçala</button>)
-                  : undefined}
+            {props.data.source_table.columns.map((col, index) => {
+              return(
+                <div className="table_col_cards inline-grid relative" key={index} id={"elm_" + props.main + "_" + index}>
+                  <div onClick={() => data.addColumns(props.main, col.name, index)} className="w-full h-full inline-grid">
+                    <h4 className="text-sm text-sea_green truncate pr-7">{col.name} <span className='text-onyx_light text-xs' ref={(el) => {data.renamedTitleRef.current[props.main + "-" + col.name] = el}}></span></h4>
+                    <span className="text-xs text-grayXgray truncate">
+                      {col.details}
+                    </span>
+                    {(col.type === "datetime") ? (
+                      <button className='gray-btn mt-1' id={'datepart_' + index} onClick={() => data.datepart(col.name , props.main , index)}>Tarihi Parçala</button>)
+                    : undefined}
+                  </div>
+  
+                  <div id={"rename_" + props.main + "_" + index} className="tooltip tooltip-left hidden absolute top-2 right-2" data-tip="Yeniden İsimlendir">
+                    <label htmlFor="renameColumns" className='gray-btn min-h-[20px] text-xs px-[6px]' onClick={() => data.openRenameModal(props.main, col.name)}><i className="fa-solid fa-pen"></i></label>
+                  </div>
+  
+                  <select
+                    id={"sel_" + props.main + "_" + index}
+                    defaultValue="default"
+                    className="select hidden mt-1 min-h-0 w-fit h-8 max-h-10 !rounded focus:outline-none focus:border-onyx_light focus:bg-onyx bg-jet_mid text-grayXgray hover:text-platinium"
+                    onChange={() => data.selColGroups(props.main, col.name, index)}
+                  >
+                    <option value="default">
+                      Direkt
+                    </option>
+                    <option value="SUM">
+                      Toplam
+                    </option>
+                    <option value="AVG">
+                      Ortalama
+                    </option>
+                    <option value="MAX">
+                      Maksimum
+                    </option>
+                    <option value="MIN">
+                      Minimum
+                    </option>
+                  </select>
                 </div>
-
-                <div id={"rename_" + props.main + "_" + index} className="tooltip tooltip-left hidden absolute top-2 right-2" data-tip="Yeniden İsimlendir">
-                  <label htmlFor="renameColumns" className='gray-btn min-h-[20px] text-xs px-[6px]' onClick={() => data.openRenameModal(props.main, col.name)}><i className="fa-solid fa-pen"></i></label>
-                </div>
-
-                <select
-                  id={"sel_" + props.main + "_" + index}
-                  defaultValue="default"
-                  className="select hidden mt-1 min-h-0 w-fit h-8 max-h-10 !rounded focus:outline-none focus:border-onyx_light focus:bg-onyx bg-jet_mid text-grayXgray hover:text-platinium"
-                  onChange={() => data.selColGroups(props.main, col.name, index)}
-                >
-                  <option value="default">
-                    Direkt
-                  </option>
-                  <option value="SUM">
-                    Toplam
-                  </option>
-                  <option value="AVG">
-                    Ortalama
-                  </option>
-                  <option value="MAX">
-                    Maksimum
-                  </option>
-                  <option value="MIN">
-                    Minimum
-                  </option>
-                </select>
-              </div>
-            ))}
+              )
+            })}
           </div>
 
           <div className="table_layout mt-6 max-h-[465px]">
