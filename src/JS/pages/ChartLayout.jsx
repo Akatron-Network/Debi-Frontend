@@ -7,30 +7,31 @@ import {ChartContext , MainContext, ShareContext} from '../components/context'
 export default function ChartLayout() {
   const chart_data = useContext(ChartContext);
   const share_data = useContext(ShareContext);
-  const { setFilePath } = useContext(MainContext);
+  const { setFilePath, setCheckInPage } = useContext(MainContext);
+
 	const { fileID } = useParams();
   const [title, setTitle] = useState("");
 
   useEffect(() => {
     // document.getElementById('file_path_top').style.display = "none";
-    document.getElementById('new_btn').style.display = "flex";
     // document.getElementById('page-btn').style.display = "flex";
-    document.getElementById('save-page-btn').style.display = "flex";
+    // document.getElementById('new_btn').style.display = "flex";
+    // document.getElementById('save-page-btn').style.display = "flex";
 
     getFiles(fileID);
     
 		if (share_data.sharedCollections.length === 0) {
 			share_data.getShare();
 		}
-		else { 
-      check() }
+		else { check() }
   
     return () => {      
       if (document.getElementById('file_path_top') !== null) { // Panel ekranında çıkış yaparken hata verebiliyor. O yüzden koydum
         document.getElementById('file_path_top').style.display = "block";
-        document.getElementById('new_btn').style.display = "none";
+        // document.getElementById('new_btn').style.display = "none";
         // document.getElementById('page-btn').style.display = "none";
-        document.getElementById('save-page-btn').style.display = "none";
+        // document.getElementById('save-page-btn').style.display = "none";
+        setCheckInPage(false);
       }
     }
   }, [fileID])
@@ -73,18 +74,17 @@ export default function ChartLayout() {
     if(resp.Data.page_data === null) {
       resp.Data.page_data = { panels: [] }
     }
-    console.log(resp);
     
     setFilePath(resp.Data.path);
     chart_data.setPageContent(resp.Data);
-    setTitle(resp.Data.page_name);
+    setCheckInPage(true);
+    // setTitle(resp.Data.page_name);
   }
   
-
   return (
     <>
-		  <h2 className="workspace-titles text-[1.3rem] mt-2 mb-0">{title}</h2>
-		  <hr className="hrCols mt-2 mb-0"></hr>
+		  {/* <h2 className="workspace-titles text-[1.3rem] mt-2 mb-0">{title}</h2>
+		  <hr className="hrCols mt-2 mb-0"></hr> */}
       <DragResizePanels />
     </>
   )

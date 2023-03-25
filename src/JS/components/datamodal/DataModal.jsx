@@ -67,12 +67,10 @@ export default function DataModal() {
   });
 
   useEffect(() => {
-    console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
     getColSelect();
   }, []);
   
   useEffect(() => {
-    console.log(dataJSON);
     //*Eğer modal açıldıysa burayı kontrol edecek ve ona göre editModal fonksiyonunda dataJSON düzenlenecek
     if (modal_data.modalChecked === true) {
       if (modal_data.modalType === "new") {
@@ -206,7 +204,6 @@ export default function DataModal() {
 
     setAllTransCols(transColTemp);
 
-    // console.log("a")
     // document.getElementById('elm_main_0').classList.add("hidden");
 
     console.log(dataJSON)
@@ -449,7 +446,6 @@ export default function DataModal() {
   const getColSelect = async () => {
     //! Get collections
     let resp = await WorkspaceAll.getCollections();
-    console.log(resp)
     setCollections(resp.Data.owned_collections);
   };
 
@@ -1230,7 +1226,6 @@ export default function DataModal() {
     else {  //* Eğer input doluysa gönderiliyorsa
 
       if (renamedTitleRef.current[renameState].innerHTML !== "") { // Eğer daha öncesinde yazılan bir şeyin üzerine yazılıyorsa yani CARI_KOD|A yerine CARI_KOD|AAA yapılacaksa
-        console.log("a");
         path[column + "|" + renamedInputRef.current.value] = path[column + "|" + renameInputState];
         delete path[column + "|" + renameInputState];
       }

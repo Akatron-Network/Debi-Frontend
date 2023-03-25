@@ -72,7 +72,6 @@ export default function Sidebar() {
 
   const closeSidePanel = (e) => { //* For show-hide sidepanel
     if (e.target.id === "allsidepanel") {
-					console.log("a");
 					openCloseSideBar();
     }
 

@@ -9,7 +9,7 @@ import PivotGrid, {
   FieldChooser,
 } from 'devextreme-react/pivot-grid';
 import PivotGridDataSource from 'devextreme/ui/pivot_grid/data_source';
-import { BarGaugeTitleSubtitle } from 'devextreme-react/bar-gauge';
+// import { BarGaugeTitleSubtitle } from 'devextreme-react/bar-gauge';
 
 export default function PivotTableCharts(props) {
   //, TR dil desteği için----
@@ -24,7 +24,7 @@ export default function PivotTableCharts(props) {
   
   useEffect(() => {
     getData();
-  }, [])
+  }, [chart_data.pageContent.page_data])
 
   const getData = async () => {
     //, let resp = await Data.getModel(props.modelID);
@@ -55,15 +55,14 @@ export default function PivotTableCharts(props) {
     }
 
     if (Object.keys(order).length === 0) order = undefined;
-    console.log(order);
 
     if (where_plain.length === 0) where_plain = undefined;
-    console.log(where_plain)
 
     //, Burada union mu değil mi diye kontrol ettik ve ona göre bir istek yolladık execute olarak
-    if (props.modelID.includes("Union")) {
-      let union_id = props.modelID.replace("_Union" , "")
-      var respData = await Data.postExecute({union_id: union_id , collection_id: chart_data.pageContent.collection_id, where_plain: where_plain, order: order}, col.Data.connector.gateway_host);
+    if (props.unionID !== undefined) {
+      
+      var respData = await Data.postExecute({union_id: props.unionID , collection_id: chart_data.pageContent.collection_id, where_plain: where_plain, order: order}, col.Data.connector.gateway_host);
+    
     } else if (props.modelID.includes("View")) {
 
       let view_id = props.modelID.replace("_View" , "")
@@ -76,7 +75,6 @@ export default function PivotTableCharts(props) {
 
     let proData = respData.Data[0]
 
-    console.log(proData)
     for(let p of chart_data.pageContent.page_data.panels) {
       if (props.panelID === p.PanelID) {
         for (let x of p.SelColumns.xAxis) {
@@ -114,8 +112,6 @@ export default function PivotTableCharts(props) {
         }
       }
     }
-
-    console.log(fields);
 
     setAllData(new PivotGridDataSource({
       fields: fields,

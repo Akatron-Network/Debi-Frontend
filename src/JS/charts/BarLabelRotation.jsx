@@ -24,7 +24,6 @@ const getData = async () => {
   // let respData = await Data.postExecute({query: query , collection_id: chart_data.pageContent.collection_id}, col.Data.connector.gateway_host);
 
   let col = await WorkspaceAll.getCollections(chart_data.pageContent.collection_id); //! Get Gateway host
-  console.log(col);
 
   let where_plain = []
   for (let wp of props.wherePlain) {              // İlk başta propstan wherePlain ham halini aldık yani O/TBLCAHAR/BORC gibi halini.
@@ -36,7 +35,6 @@ const getData = async () => {
       where_plain.push("AND")
     }
   }
-  console.log(where_plain)
 
   let order = {}
   for (let keys in Object.keys(props.order)) {        // İlk başta keys kısmını döndürdük sonra içerisinde values döndürdük ve eşleştirdik
@@ -49,33 +47,26 @@ const getData = async () => {
   }
 
   if (Object.keys(order).length === 0) order = undefined;
-  console.log(order);
 
   if (where_plain.length === 0) where_plain = undefined;
-  console.log(where_plain);
 
 
   // Burada union mu değil mi diye kontrol ettik ve ona göre bir istek yolladık execute olarak
-  if (props.modelID.includes("Union")) {
-    let union_id = props.modelID.replace("_Union" , "")
-    var respData = await Data.postExecute({union_id: union_id , collection_id: chart_data.pageContent.collection_id, where_plain: where_plain, order: order}, col.Data.connector.gateway_host);
-  } else if (props.modelID.includes("View")) {
+  if (props.unionID !== undefined) {
+    
+    var respData = await Data.postExecute({union_id: props.unionID , collection_id: chart_data.pageContent.collection_id, where_plain: where_plain, order: order}, col.Data.connector.gateway_host);
+  
+  } 
+  else if (props.modelID.includes("View")) {
 
     let view_id = props.modelID.replace("_View" , "")
     let query = {table: view_id , where_plain: where_plain, order: order, select: props.select}
     var respData = await Data.postExecute({collection_id: chart_data.pageContent.collection_id, query}, col.Data.connector.gateway_host);
   
-  } else {
+  } 
+  else {
     var respData = await Data.postExecute({model_id: props.modelID , collection_id: chart_data.pageContent.collection_id, where_plain: where_plain, order: order, columns: props.select}, col.Data.connector.gateway_host);
   }
-
-
-  // if (props.modelID.includes("Union")) {
-  //   let union_id = props.modelID.replace("_Union" , "")
-  //   var respData = await Data.postExecute({union_id: union_id , collection_id: chart_data.pageContent.collection_id}, col.Data.connector.gateway_host);
-  // } else {
-  //   var respData = await Data.postExecute({model_id: props.modelID , collection_id: chart_data.pageContent.collection_id}, col.Data.connector.gateway_host);
-  // }
 
   console.log(respData);
   xAxis = {};

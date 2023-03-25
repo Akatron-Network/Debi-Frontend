@@ -29,6 +29,7 @@ export default function MainPage() {
   const [filesChildDirs, setFilesChildDirs] = useState({child_dirs: []});
   const [files, setFiles] = useState({pages: []});
   const [filepath, setFilePath] = useState([]);
+  const [checkInPage, setCheckInPage] = useState(false);
   const [deleteItemRef, setDeleteItemRef] = useState({});
   const [deleteItemType, setDeleteItemType] = useState('');
   const [modalChecked, setModalChecked] = useState(false);
@@ -179,7 +180,6 @@ export default function MainPage() {
 
   const getUnions = async () => {
     let resp = await Data.getUnionList();
-    console.log(resp)
     setUnionList(resp.Data.owned_unions);
   }
 
@@ -190,26 +190,19 @@ export default function MainPage() {
 
   const [viewList, setViewList] = useState([]);
 
-  const getViews = async (col_id) => {
-    console.log(col_id)
-    
+  const getViews = async (col_id) => {    
     let resp = await WorkspaceAll.getCollections(col_id);
-    console.log(resp)
 
     if (resp.Data.owned_collections) return;
     let gateway = resp.Data.connector.gateway_host;
-    console.log(gateway)
 
     let view_resp = await Data.getExplorer(col_id, gateway, undefined, false, true, true);
-    console.log(view_resp.Data)
 
     let tempViews = []
 
     for (let tbl of view_resp.Data) {
       if (tbl.type === 'VIEW') tempViews.push(tbl)
     }
-
-    console.log(tempViews)
 
     setViewList(tempViews);
   }
@@ -315,8 +308,6 @@ export default function MainPage() {
 
     }
 
-    console.log(query);
-
     let arrMain = [];
     for (let v in valueMain) {
       //* Toplam vb işlemler için kolonları 3 e bölerek isimlendirdik. Valuesi true gelenler, sum-min vs gelenler bir de içerisinde {} bulunduranlar olarak.
@@ -329,7 +320,6 @@ export default function MainPage() {
       }
     }
 
-    console.log(valueMain)
     if (first_id.includes("Union")) { // Union mu yoksa düz model mi diye kontrol ediyoruz
       colList_temp = [{[query.union_name] : {columns: [...valueMain, "CATEGORY"] , alias: query.union_id}}];
     } else if (first_id.includes("View")) {
@@ -354,7 +344,6 @@ export default function MainPage() {
         colList_temp.push({[b.table] : {columns: arrAlias , alias: b.alias}});
       }
     }
-    console.log(colList_temp);
     
     setColList(colList_temp);
   }
@@ -689,8 +678,6 @@ export default function MainPage() {
             }
             
             for (let g of group) {
-              console.log(g)
-              console.log(p.SelColumns.yAxis.col)
               if(p.SelColumns.yAxis.col.includes("_" + g)) {
                 let newCol = p.SelColumns.yAxis.col.replace(("_" + g) , "")
                 console.log(newCol)
@@ -900,10 +887,8 @@ export default function MainPage() {
       }
   
       if (conditions.length > 0) {
-        console.log("a")
         for (let p of pageContent.page_data.panels) {
           if (p.PanelID === panel) {
-            console.log("a")
   
             setTimeout(() => {
               for (let cond in conditions) { //+ Burada 2 kere dönüyor. İleride daha iyi yazabilir misin bak
@@ -1026,8 +1011,6 @@ export default function MainPage() {
       lastPanelID = getAlias(panelIDs);
     }
 
-    console.log(coordinates)
-
     // WherePlain i çekmek için burada gerekli şeyleri belirledik ve listeye dahil ettik
     for (let c of conditions) {
       if (c !== "AND") { // "" yani AND olanlar için kontrol
@@ -1041,7 +1024,6 @@ export default function MainPage() {
         wherePlain.push("AND")
       }
     }
-    console.log(wherePlain)
 
     // Order' ı çekmek için burada gerekli şeyleri belirledik ve order objesini oluşturduk
     for (let o of panelSort) {
@@ -1052,7 +1034,32 @@ export default function MainPage() {
         [col] : type
       }
     }
-    console.log(order);
+
+    let last_dt = {
+      PanelID: lastPanelID,
+      PanelType: panelType,
+      PanelName: panelNameRef.current.value,
+      ModelID: modelNameRef.current.value,
+      SelColumns: selColumns,
+      Coordinates: coordinates,
+      WherePlain: wherePlain,
+      Order: order,
+      GroupSelect: selGroup,
+    }
+
+    if (modelNameRef.current.value.includes("Union")) {
+      last_dt = {
+        PanelID: lastPanelID,
+        PanelType: panelType,
+        PanelName: panelNameRef.current.value,
+        UnionID: modelNameRef.current.value.replace("_Union" , ""),
+        SelColumns: selColumns,
+        Coordinates: coordinates,
+        WherePlain: wherePlain,
+        Order: order,
+        GroupSelect: selGroup,
+      }
+    }
   
     setPageContent({
       ...pageContent,
@@ -1060,17 +1067,7 @@ export default function MainPage() {
         ...pageContent.page_data,
         panels: [
           ...pageContent.page_data.panels.filter(item => item.PanelID !== lastPanelID), //Son düzenleneni içerisinden çıkardık
-          {
-            PanelID: lastPanelID,
-            PanelType: panelType,
-            PanelName: panelNameRef.current.value,
-            ModelID: modelNameRef.current.value,
-            SelColumns: selColumns,
-            Coordinates: coordinates,
-            WherePlain: wherePlain,
-            Order: order,
-            GroupSelect: selGroup,
-          }
+          last_dt,
         ]
       }
     })
@@ -1080,17 +1077,7 @@ export default function MainPage() {
         ...pageContent.page_data,
         panels: [
           ...pageContent.page_data.panels.filter(item => item.PanelID !== lastPanelID), //Son düzenleneni içerisinden çıkardık
-          {
-            PanelID: lastPanelID,
-            PanelType: panelType,
-            PanelName: panelNameRef.current.value,
-            ModelID: modelNameRef.current.value,
-            SelColumns: selColumns,
-            Coordinates: coordinates,
-            WherePlain: wherePlain,
-            Order: order,
-            GroupSelect: selGroup,
-          }
+          last_dt,
         ]
       }
     });
@@ -1146,7 +1133,6 @@ export default function MainPage() {
 
     if (localStorage["rgl-8"] !== undefined) {
       let parse = JSON.parse(localStorage["rgl-8"])
-      console.log(parse)
 
       let panels = [...pageContent.page_data.panels]
   
@@ -1247,8 +1233,6 @@ export default function MainPage() {
     let col = await WorkspaceAll.getCollections();
     let dir = await WorkspaceAll.getFolders();
     let page = await WorkspaceAll.getFiles();
-    console.log(dir);
-    console.log(page);
 
     setSharedCollections(col.Data.shared_collections)
     setSharedDirectories(dir.Data.shared_directories)
@@ -1424,6 +1408,8 @@ export default function MainPage() {
     deleteItemRef,
     deleteItemType,
     shareItemInfo,
+    checkInPage,
+    setCheckInPage,
     clearRefs,
     deleteItems,
     getColWorks,
@@ -1545,11 +1531,11 @@ export default function MainPage() {
       <ModalContext.Provider value={modal_data}>
         <ChartContext.Provider value={chart_data}>
           <ShareContext.Provider value={share_data}>
-            <Navbar new_btn={"hidden"} page_btn={"hidden"} save_page_btn={"hidden"} />
+            <Navbar page_btn={"hidden"} save_page_btn={"hidden"} />
             <Sidebar />
-            <Filepath />
+            <Filepath/>
 
-            <div className="pt-[89px] pb-10 pl-[100px] pr-[10px]">
+            <div className="pt-[92px] pb-10 pl-[100px] pr-[10px]">
               <Outlet />
             </div>
 

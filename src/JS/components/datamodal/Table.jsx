@@ -6,8 +6,6 @@ import { trTR } from "gridjs/l10n";
 
 export default function Table(props) {
   const data = useContext(DataModalContext);
-  console.log(data.executeCols);
-  console.log(data.executeRows);
   
   return (
     <div className="relative overflow-x-auto shadow-md">

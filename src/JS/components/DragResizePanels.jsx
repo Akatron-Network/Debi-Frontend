@@ -67,6 +67,7 @@ export default class ResponsiveLocalStorageLayout extends React.PureComponent {
         >
           {value.pageContent.page_data.panels.map((panel) => {
             if (panel.PanelType === "bar") {
+              console.log(panel);
               return (
                 <div className="panels" key={panel.PanelID} data-grid={panel.Coordinates}>
                   <div className="panels-title w-full">
@@ -78,7 +79,7 @@ export default class ResponsiveLocalStorageLayout extends React.PureComponent {
                       </div>
                     : undefined}
                   </div>
-                  <span><AxisAlignWithTick modelID={panel.ModelID} panelID={panel.PanelID} wherePlain={panel.WherePlain} order={panel.Order} select={panel.GroupSelect} /></span>
+                  <span><AxisAlignWithTick modelID={panel.ModelID} unionID={panel.UnionID} panelID={panel.PanelID} wherePlain={panel.WherePlain} order={panel.Order} select={panel.GroupSelect} /></span>
                 </div>
               )
             } else if (panel.PanelType === "treemap") {
@@ -93,7 +94,7 @@ export default class ResponsiveLocalStorageLayout extends React.PureComponent {
                       </div>
                     : undefined}
                   </div>
-                  <span><BarLabelRotation modelID={panel.ModelID} panelID={panel.PanelID} wherePlain={panel.WherePlain} order={panel.Order} select={panel.GroupSelect} /></span>
+                  <span><BarLabelRotation modelID={panel.ModelID} unionID={panel.UnionID} panelID={panel.PanelID} wherePlain={panel.WherePlain} order={panel.Order} select={panel.GroupSelect} /></span>
                 </div>
               )
             } else if (panel.PanelType === "line") {
@@ -108,7 +109,7 @@ export default class ResponsiveLocalStorageLayout extends React.PureComponent {
                       </div>
                     : undefined}
                   </div>
-                  <span><BasicLineCharts modelID={panel.ModelID} panelID={panel.PanelID} wherePlain={panel.WherePlain} order={panel.Order} select={panel.GroupSelect} /></span>
+                  <span><BasicLineCharts modelID={panel.ModelID} unionID={panel.UnionID} panelID={panel.PanelID} wherePlain={panel.WherePlain} order={panel.Order} select={panel.GroupSelect} /></span>
                 </div>
               )
             } else if (panel.PanelType === "mark") {
@@ -123,7 +124,7 @@ export default class ResponsiveLocalStorageLayout extends React.PureComponent {
                       </div>
                     : undefined}
                   </div>
-                  <span><StackedLineCharts modelID={panel.ModelID} panelID={panel.PanelID} wherePlain={panel.WherePlain} order={panel.Order} select={panel.GroupSelect} /></span>
+                  <span><StackedLineCharts modelID={panel.ModelID} unionID={panel.UnionID} panelID={panel.PanelID} wherePlain={panel.WherePlain} order={panel.Order} select={panel.GroupSelect} /></span>
                 </div>
               )
             } else if (panel.PanelType === "pie") {
@@ -138,7 +139,7 @@ export default class ResponsiveLocalStorageLayout extends React.PureComponent {
                       </div>
                     : undefined}
                   </div>
-                  <span><PieChart modelID={panel.ModelID} panelID={panel.PanelID} wherePlain={panel.WherePlain} order={panel.Order} select={panel.GroupSelect} /></span>
+                  <span><PieChart modelID={panel.ModelID} unionID={panel.UnionID} panelID={panel.PanelID} wherePlain={panel.WherePlain} order={panel.Order} select={panel.GroupSelect} /></span>
                 </div>
               )
             } else if (panel.PanelType === "table") {
@@ -154,7 +155,7 @@ export default class ResponsiveLocalStorageLayout extends React.PureComponent {
                       </div>
                     : undefined}
                     </div>
-                    <span className="relative top-[54px] left-[1px]"><TableChart modelID={panel.ModelID} panelID={panel.PanelID} wherePlain={panel.WherePlain} order={panel.Order} select={panel.GroupSelect} /></span>
+                    <span className="relative top-[54px] left-[1px]"><TableChart modelID={panel.ModelID} unionID={panel.UnionID} panelID={panel.PanelID} wherePlain={panel.WherePlain} order={panel.Order} select={panel.GroupSelect} /></span>
                   </div>
                 </div>
               )
@@ -171,7 +172,7 @@ export default class ResponsiveLocalStorageLayout extends React.PureComponent {
                       </div>
                     : undefined}
                     </div>
-                    <span className="relative top-[54px] left-[1px]"><PivotTableChart modelID={panel.ModelID} panelID={panel.PanelID} wherePlain={panel.WherePlain} order={panel.Order} select={panel.GroupSelect} /></span>
+                    <span className="relative top-[54px] left-[1px]"><PivotTableChart modelID={panel.ModelID} unionID={panel.UnionID} panelID={panel.PanelID} wherePlain={panel.WherePlain} order={panel.Order} select={panel.GroupSelect} /></span>
                   </div>
                 </div>
               )

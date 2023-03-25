@@ -12,7 +12,6 @@ export default function UnionDataModal() {
   const modal_data = useContext(ModalContext);
   const maincontext_data = useContext(MainContext);
   console.log(maincontext_data);
-  console.log(modal_data)
 
   const [collections, setCollections] = useState([]);
   const [sourceColumns, setSourceColumns] = useState({});

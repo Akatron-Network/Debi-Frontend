@@ -11,7 +11,6 @@ class Service {
                     username: username,
                     password: password,
             })
-            console.log(resp);
 
             localStorage.clear();
             localStorage.setItem('Token' , resp.Token);
@@ -41,7 +40,7 @@ class Service {
                         email: email,
                         }
             })
-            console.log(resp);
+            
         }
         catch (err) {
             console.log(err.response.data)
@@ -59,7 +58,6 @@ class Service {
             let resp = await logout_req.delete({
                     Token: localStorage.getItem("Token"),
             })
-            console.log(resp);
 
             localStorage.clear();
             
@@ -77,7 +75,6 @@ class Service {
       let getProfile_req = new Requests("service" , "profile");
 
       let resp = await getProfile_req.get()
-      console.log(resp);
 
       return resp
     }
@@ -86,7 +83,6 @@ class Service {
       let postProfile_req = new Requests("service" , "profile");
 
       let resp = await postProfile_req.post(data)
-      console.log(resp);
 
       return resp
     }
