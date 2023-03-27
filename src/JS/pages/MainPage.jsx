@@ -101,6 +101,10 @@ export default function MainPage() {
     }, 750);
     
   }
+
+  const getCollectionDetails = async () => {
+
+  }
     
   const colWorksNameRef = useRef({value : ""});
   const colWorksNickRef = useRef({value : ""});
@@ -1412,6 +1416,7 @@ export default function MainPage() {
     setCheckInPage,
     clearRefs,
     deleteItems,
+    getCollectionDetails,
     getColWorks,
     getFileWorks,
     getFolderWorks,

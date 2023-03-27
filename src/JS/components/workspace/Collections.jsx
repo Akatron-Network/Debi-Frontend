@@ -18,13 +18,16 @@ export default function Collections() {
 		<div className="grid xl:grid-cols-10 sm:grid-cols-4 grid-cols-2 grid-flow-row auto-rows-max gap-4 pl-[10px]">
 
 			{data.collections.map((collection) => (
-					<div key={collection.collection_id} className="col-card col-span-1">
+					<div key={collection.collection_id} className={collection.connector.gateway_host === null ? "col-card col-span-1" : "col-card col-span-1 opacity-50 pointer-events-none"}>
 						<div className="card">
-							<div className='flex z-2 pt-[6px] justify-end gap-3 pr-2'>
-								<label htmlFor="sharemodal" className="dlt-btn cursor-pointer" onClick={() => data.openShareModal("COLLECTION", collection.collection_id, collection.collection_name)}>
+							<div className='flex z-2 justify-end'>
+								<label htmlFor="sharemodal" className="dlt-btn cursor-pointer w-7 h-7 flex justify-center items-center" onClick={() => data.openShareModal("COLLECTION", collection.collection_id, collection.collection_name)}>
 									<i className="fa-solid fa-share-nodes"></i>
 								</label>
-								<label htmlFor="dltWorks" className="dlt-btn cursor-pointer" onClick={() => {data.setDeleteItemRef(collection) ; data.setDeleteItemType("koleksiyon")}} >
+								<label htmlFor="addWorksCol" className="dlt-btn cursor-pointer w-7 h-7 flex justify-center items-center" onClick={() => data.getCollectionDetails(collection)} >
+									<i className="fa-solid fa-pen-to-square"></i>
+								</label>
+								<label htmlFor="dltWorks" className="dlt-btn cursor-pointer w-7 h-7 flex justify-center items-center" onClick={() => {data.setDeleteItemRef(collection) ; data.setDeleteItemType("koleksiyon")}} >
 									<i className="fa-solid fa-xmark"></i>
 								</label>
 							</div>
@@ -33,10 +36,15 @@ export default function Collections() {
 								  <h4>{collection.collection_name}</h4>
 							  </div>
               </Link>
+							{collection.connector.gateway_host !== null ? 
+								<span className='text-sm truncate bg-danger_light text-white z-2 absolute bottom-0 w-full text-center font-bold'>Gateway Gerektirir<br /></span> 
+								: undefined
+							}
 							<div className="card-bg" />
 						</div>
 					</div>
 			))}
+			{/* EDİTE BASINCA EDİT MODU AÇILSIN VE KOLEKSİYON OLUŞTURMA DOLDURULSUN */}
 
 			<label htmlFor="addWorksCol" onClick={() => data.clearRefs("koleksiyon")}>
 				<div className="col-card add col-span-1">

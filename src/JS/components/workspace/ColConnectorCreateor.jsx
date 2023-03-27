@@ -90,22 +90,22 @@ export default function ColConnectorCreateor() {
 
     if(data.colWorksSelectRef.current.value !== "default" && data.colNameRef.current.value !== "" && data.colWorksNickRef.current.value !== "" && data.colWorksPassRef.current.value !== "" && data.colWorksDBRef.current.value !== "" && data.colServerRef.current.value !== "" && data.colPortRef.current.value !== "") {
       var connectResp = await testConnection();
-      console.log(connectResp);
       var connectionContent = createContent();
 
-      if(connectResp.Success !== false) {
+      if(connectResp.Success === true) {
         const forColID = await WorkspaceAll.postCollections(data.colNameRef.current.value, data.choosenSchema);
         setTimeout(() => {
           data.getColWorks();
         }, 500);
 
-        if (data.checkConnector === true) {
+        if (data.checkedConnector === false) {
           const a = await Data.postConnector(forColID.Data.collection_id, data.colWorksSelectRef.current.value, false, undefined,  connectionContent);
           console.log(a)
-
-        } else {
+        } 
+        else {
           const a = await Data.postConnector(forColID.Data.collection_id, data.colWorksSelectRef.current.value, true, data.colConnectorServerRef.current.value,  connectionContent);
           console.log(a)
+          const sync = WorkspaceAll.postExplorerSync(forColID.Data.collection_id)
         }
         document.getElementById('addWorksCol').checked = false;
         data.getTreeCollections();
@@ -122,7 +122,6 @@ export default function ColConnectorCreateor() {
   // const checkExpress = () => {
   //   data.setCheckedExpress(!data.checkedExpress); //? datadaki checked burada her seferinde tam tersine dönüyor. checked ise unchecked değilse
   // }
-
 
   return (
     <div>
@@ -161,7 +160,16 @@ export default function ColConnectorCreateor() {
             <span className='text-[14px] text-grayXgray'>Ağ geçidi kullanmak istiyorum.</span>
           </div>
 
-          <div className={data.checkedConnector ? "block mt-2" : "hidden" }><Input value={"Geçit Adresi"} refName={data.colConnectorServerRef}/></div>
+          <div className={data.checkedConnector ? "block mt-2" : "hidden" }>
+            {/* <Input value={"Geçit Adresi"} refName={data.colConnectorServerRef}/> */}
+            
+            <div className="form-control mb-2">
+              <div className="input-group shadow-md">
+                <span className='bg-black_light text-grayXgray px-2 py-[7px] !rounded-l border border-jet_mid justify-center min-w-[35%] xl:truncate'>Geçit Adresi</span>
+                <input type="text" placeholder="Geçit Adresi girin" className="input my-0 input-bordered !rounded-r w-full h-auto" ref={data.colConnectorServerRef} value="127.0.0.1" onChange={() => {}} />
+              </div>
+            </div>
+          </div>
 
           <span id='colWarn1' className='text-sm p-1 text-red-600 hidden'>Lütfen gerekli bilgileri doldurun!</span>
           <span id='colWarn2' className='text-sm p-1 text-red-600 hidden'>Bağlantı bilgileri yanlış. Lütfen tekrar gözden geçirin.</span>

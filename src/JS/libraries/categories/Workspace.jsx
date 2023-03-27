@@ -76,6 +76,21 @@ class WorkspaceAll {
         }
     }
 
+    static async postExplorerSync(id) {
+        let postExplorerSync_req = new Requests("data" , "explorer_sync");
+
+        try {
+            let resp = await postExplorerSync_req.post({
+                collection_id: id,
+            });
+            
+            return resp;
+        } catch (err) {
+            console.log(err);
+            
+        }
+    }
+
     static async postFolders(colID , name , parent_dir) {
         let postFolders_req = new Requests("workspace" , "directories");
 
