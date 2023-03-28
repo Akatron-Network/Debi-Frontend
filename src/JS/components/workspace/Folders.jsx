@@ -57,11 +57,14 @@ export default function Folders() {
 							<div className="card">
 
 								{share_data.btnShowHide === true ?
-									<div className='flex z-2 pt-[6px] justify-end gap-3 pr-2'>
-										<label htmlFor="sharemodal" className="dlt-btn cursor-pointer" onClick={() => data.openShareModal("DIRECTORY" , folder.directory_id, folder.directory_name)}>
+									<div className='flex z-2 justify-end'>
+										<label htmlFor="sharemodal" className="dlt-btn cursor-pointer w-7 h-7 flex justify-center items-center" onClick={() => data.openShareModal("DIRECTORY" , folder.directory_id, folder.directory_name)}>
 											<i className="fa-solid fa-share-nodes"></i>
 										</label>
-										<label htmlFor="dltWorks" className="dlt-btn cursor-pointer" onClick={() => {data.setDeleteItemRef(folder) ; data.setDeleteItemType("klasör")}}>
+										<label htmlFor="addWorksFold" className="dlt-btn cursor-pointer w-7 h-7 flex justify-center items-center" onClick={() => data.getFolderDetails(folder)} >
+											<i className="fa-solid fa-pen-to-square"></i>
+										</label>
+										<label htmlFor="dltWorks" className="dlt-btn cursor-pointer w-7 h-7 flex justify-center items-center" onClick={() => {data.setDeleteItemRef(folder) ; data.setDeleteItemType("klasör")}}>
 											<i className="fa-solid fa-xmark"></i>
 										</label>
 									</div>

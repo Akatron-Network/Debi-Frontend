@@ -67,12 +67,25 @@ class WorkspaceAll {
                 collection_name: name,
                 db_scheme_id: scheme,
             });
-
             
             return resp;
         } catch (err) {
             console.log(err);
-            
+        }
+    }
+
+    static async putCollections(id , dt) {
+        let putCollections_req = new Requests("workspace" , "collections");
+
+        try {
+            let resp = await putCollections_req.put({
+                collection_id: id,
+                values: dt
+            });
+
+            return resp;
+        } catch (err) {
+            console.log(err);
         }
     }
 
@@ -110,6 +123,22 @@ class WorkspaceAll {
         }
     }
 
+    static async putFolders(id, dt) {
+        let putFolders_req = new Requests("workspace" , "directories");
+
+        try {
+            let resp = await putFolders_req.put({
+                directory_id: id,
+                values: dt,
+            });
+            
+            return resp;
+        } catch (err) {
+            console.log(err);
+            
+        }
+    }
+
     static async postFiles(colID , foldID , name) {
         let postFiles_req = new Requests("workspace" , "pages");
 
@@ -118,6 +147,22 @@ class WorkspaceAll {
                 collection_id: colID,
                 directory_id: foldID,
                 page_name: name,
+            });
+            
+            return resp;
+        } catch (err) {
+            console.log(err);
+            
+        }
+    }
+
+    static async putFiles(id, dt) {
+        let putFiles_req = new Requests("workspace" , "pages");
+
+        try {
+            let resp = await putFiles_req.put({
+                page_id: id,
+                values: dt,
             });
             
             return resp;

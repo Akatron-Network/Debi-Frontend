@@ -93,7 +93,14 @@ export default function ColConnectorCreateor() {
       var connectionContent = createContent();
 
       if(connectResp.Success === true) {
-        const forColID = await WorkspaceAll.postCollections(data.colNameRef.current.value, data.choosenSchema);
+        if (Object.keys(data.editCollectionDetails).length > 0) {
+          var forColID = await WorkspaceAll.putCollections(data.editCollectionDetails.collection_id, {collection_name: data.colNameRef.current.value, db_scheme_id: data.choosenSchema});
+          console.log(forColID);
+        }
+        else {
+          var forColID = await WorkspaceAll.postCollections(data.colNameRef.current.value, data.choosenSchema);
+        }
+
         setTimeout(() => {
           data.getColWorks();
         }, 500);
@@ -107,6 +114,7 @@ export default function ColConnectorCreateor() {
           console.log(a)
           const sync = WorkspaceAll.postExplorerSync(forColID.Data.collection_id)
         }
+
         document.getElementById('addWorksCol').checked = false;
         data.getTreeCollections();
       }
@@ -160,9 +168,7 @@ export default function ColConnectorCreateor() {
             <span className='text-[14px] text-grayXgray'>Ağ geçidi kullanmak istiyorum.</span>
           </div>
 
-          <div className={data.checkedConnector ? "block mt-2" : "hidden" }>
-            {/* <Input value={"Geçit Adresi"} refName={data.colConnectorServerRef}/> */}
-            
+          <div className={data.checkedConnector ? "block mt-2" : "hidden" }>            
             <div className="form-control mb-2">
               <div className="input-group shadow-md">
                 <span className='bg-black_light text-grayXgray px-2 py-[7px] !rounded-l border border-jet_mid justify-center min-w-[35%] xl:truncate'>Geçit Adresi</span>

@@ -37,6 +37,10 @@ export default function MainPage() {
   const [modalType, setModalType] = useState({});
   const [unionInformations, setUnionInformations] = useState({});
 
+  const [editCollectionDetails, setEditCollectionDetails] = useState({});
+  const [editFolderDetails, setEditFolderDetails] = useState({});
+  const [editFileDetails, setEditFileDetails] = useState({});
+
   const [treeCollections, setTreeCollections] = useState({owned: []});
 	
 	const getTreeCollections = async () => {
@@ -102,9 +106,43 @@ export default function MainPage() {
     
   }
 
-  const getCollectionDetails = async () => {
+  const getCollectionDetails = (dt) => {
+    setEditCollectionDetails(dt);
+    colNameRef.current.value = dt.collection_name;
+    colWorksSelectRef.current.value = dt.connector.connector_type;
+    colWorksNickRef.current.value = dt.connector.context.user;
+    colWorksPassRef.current.value = dt.connector.context.password;
+    colWorksDBRef.current.value = dt.connector.context.database;
+    colServerRef.current.value = dt.connector.context.server;
+    colPortRef.current.value = dt.connector.context.port;
 
+    if (dt.connector.context.options.instancename !== undefined) {
+      setCheckedExpress(true)
+    }
+
+    if (dt.connector.gateway_host !== null) {
+      setCheckedConnector(true)
+    }
   }
+
+  useEffect(() => {
+    if (Object.keys(editCollectionDetails).length > 0) {
+      if (editCollectionDetails.connector.gateway_host !== null) {
+        colConnectorServerRef.current.value = editCollectionDetails.connector.gateway_host;
+      }
+    }
+  }, [editCollectionDetails])
+  
+	const getFolderDetails = (dt) => {
+    setEditFolderDetails(dt);
+    foldNameRef.current.value = dt.directory_name		
+	}
+  
+	const getFileDetails = (dt) => {
+		console.log(dt);
+    setEditFileDetails(dt);
+    fileNameRef.current.value = dt.page_name		
+	}
     
   const colWorksNameRef = useRef({value : ""});
   const colWorksNickRef = useRef({value : ""});
@@ -142,6 +180,7 @@ export default function MainPage() {
       setCheckedConnector(false);
       setCheckedConnection(false);
       setCheckedExpress(false);
+      setEditCollectionDetails({})
 
       
       let warns = ["1" , "2" , "3"]
@@ -152,13 +191,15 @@ export default function MainPage() {
 
     }
     else if(type === "klasör") {
-      maincontext_data.foldNameRef.current.value = "";
+      setEditFolderDetails({})
+      foldNameRef.current.value = "";
       if(document.getElementById('foldWarn').classList.contains('!block')) {
         document.getElementById('foldWarn').classList.remove('!block');
       }
     }
     else if(type === "sayfa") {
-      maincontext_data.fileNameRef.current.value = "";
+      setEditFileDetails({})
+      fileNameRef.current.value = "";
       if(document.getElementById('fileWarn').classList.contains('!block')) {
         document.getElementById('fileWarn').classList.remove('!block');
       }
@@ -1411,12 +1452,17 @@ export default function MainPage() {
     filepath,
     deleteItemRef,
     deleteItemType,
+    editCollectionDetails,
+    editFolderDetails,
+    editFileDetails,
     shareItemInfo,
     checkInPage,
     setCheckInPage,
     clearRefs,
     deleteItems,
     getCollectionDetails,
+    getFolderDetails,
+    getFileDetails,
     getColWorks,
     getFileWorks,
     getFolderWorks,

@@ -44,7 +44,7 @@ export default function Collections() {
 						</div>
 					</div>
 			))}
-			{/* EDİTE BASINCA EDİT MODU AÇILSIN VE KOLEKSİYON OLUŞTURMA DOLDURULSUN */}
+			{/* EDİTE BASINCA EDİT MODU AÇILSIN VE KOLEKSİYON OLUŞTURMA DOLDURULSUN - EKSTRA SENKRONİZASYON DA DURUMUNU GÖSTER VE BUTONU KOY*/}
 
 			<label htmlFor="addWorksCol" onClick={() => data.clearRefs("koleksiyon")}>
 				<div className="col-card add col-span-1">

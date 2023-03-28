@@ -15,7 +15,12 @@ export default function FoldFileCreator() {
         parentdir = data.filepath[data.filepath.length - 1].id
       }
 
-      await WorkspaceAll.postFolders(data.filepath[0].id , data.foldNameRef.current.value , parentdir);
+      if (Object.keys(data.editFolderDetails).length > 0) {
+        await WorkspaceAll.putFolders(data.editFolderDetails.directory_id , {directory_name: data.foldNameRef.current.value});
+      }
+      else {
+        await WorkspaceAll.postFolders(data.filepath[0].id , data.foldNameRef.current.value , parentdir);
+      }
       
       
       if (data.filepath.length > 1) {
@@ -39,7 +44,7 @@ export default function FoldFileCreator() {
       <input type="checkbox" id="addWorksFold" className="modal-toggle" />
       <label htmlFor="addWorksFold" className="modal bg-modal_back">
         <label className="modal-box relative max-w-[25%] h-fit p-3 bg-black_light rounded" htmlFor="">
-        <h2 className="text-xl mb-3 text-platinium">Klasör Oluştur</h2>
+        <h2 className="text-xl mb-3 text-platinium">{Object.keys(data.editFolderDetails).length <= 0 ? "Klasör Oluştur" : "Klasörü Düzenle"}</h2>
           <h3 className="text-lg">Lütfen bir <span className='font-bold text-sea_green'>klasör</span> adı girin.</h3>
             <input className='input placeholder:opacity-50 w-full' type="text" placeholder="Buraya girin..." ref={data.foldNameRef} />
             <span id='foldWarn' className='text-sm text-red-600 hidden'>Lütfen gerekli bilgileri doldurun!</span>
