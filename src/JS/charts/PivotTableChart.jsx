@@ -27,9 +27,7 @@ export default function PivotTableCharts(props) {
   }, [chart_data.pageContent.page_data])
 
   const getData = async () => {
-    //, let resp = await Data.getModel(props.modelID);
-    //, let query = resp.Data.query;
-    //, let respData = await Data.postExecute({query: query , collection_id: chart_data.pageContent.collection_id}, col.Data.connector.gateway_host);
+    document.getElementById('loadingScreenPivot').checked = true;
     
     let col = await WorkspaceAll.getCollections(chart_data.pageContent.collection_id); //! Get Gateway host
     
@@ -117,6 +115,8 @@ export default function PivotTableCharts(props) {
       fields: fields,
       store: respData.Data,
     }))
+    
+    document.getElementById('loadingScreenPivot').checked = false;
   }
 
   //* Data Example
@@ -151,23 +151,35 @@ export default function PivotTableCharts(props) {
   
 
   return (
-    <div className="dx-viewport">
-      <React.Fragment>
-        <PivotGrid
-          id="sales"
-          dataSource={allData}
-          allowSortingBySummary={true}
-          allowSorting={true}
-          allowFiltering={true}
-          allowExpandAll={true}
-          showBorders={true}
-        >
-          <FieldChooser
-            enabled={false}
-            allowSearch={true}
-          />
-        </PivotGrid>
-      </React.Fragment>
-    </div>
+    <>
+      <div className="dx-viewport">
+        <React.Fragment>
+          <PivotGrid
+            id="sales"
+            dataSource={allData}
+            allowSortingBySummary={true}
+            allowSorting={true}
+            allowFiltering={true}
+            allowExpandAll={true}
+            showBorders={true}
+          >
+            <FieldChooser
+              enabled={false}
+              allowSearch={true}
+            />
+          </PivotGrid>
+        </React.Fragment>
+      </div>
+
+      <input type="checkbox" id="loadingScreenPivot" className="modal-toggle" />
+      <div className="modal bg-modal_back">
+        <div className="text-center">
+          <div className="lds-ring"><div></div><div></div><div></div><div></div></div>
+          <div className="modal-action justify-center">
+            <label htmlFor="loadingScreenPivot" className="gray-btn hidden">Kapat!</label>
+          </div>
+        </div>
+      </div>
+    </>
   )
 }

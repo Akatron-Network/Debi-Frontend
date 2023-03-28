@@ -17,9 +17,7 @@ export default function TableChart(props) {
   }, [chart_data.pageContent.page_data])
 
   const getData = async () => {
-    // let resp = await Data.getModel(props.modelID);
-    // let query = resp.Data.query;
-    // let respData = await Data.postExecute({query: query , collection_id: chart_data.pageContent.collection_id}, col.Data.connector.gateway_host);
+    document.getElementById('loadingScreenTable').checked = true;
     
     let col = await WorkspaceAll.getCollections(chart_data.pageContent.collection_id); //! Get Gateway host
     
@@ -85,38 +83,54 @@ export default function TableChart(props) {
     }
     setYDatas(data);
     setYAxis(yAxisTemp)
+    
+    document.getElementById('loadingScreenTable').checked = false;
   }
+
   function currencyFormat(num) {
       return num.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
       .replaceAll('.', '|').replaceAll(',', '.').replaceAll('|', ',')
   }
+
   return (
-    <div className="relative shadow-md">
-      <table className="w-full text-sm text-left text-grayXgray">
-        <thead className="text-xs text-cultured uppercase bg-darkest_jet border-b border-onyx">
-          <tr>
-            {yAxis.map((col, index) => {
+    <>
+      {/* <div className="relative shadow-md"> */}
+        <table className="w-full text-sm text-left text-grayXgray relative top-[54px] left-[1px]">
+          <thead className="text-xs text-cultured uppercase bg-darkest_jet border-b border-onyx">
+            <tr>
+              {yAxis.map((col, index) => {
+                return(
+                  <th key={index} scope="col" className="px-2 py-3">{col}</th>
+                )
+              })}
+            </tr>
+          </thead>
+          <tbody>
+            {yDatas.map((row, index) => {
               return(
-                <th key={index} scope="col" className="px-2 py-3">{col}</th>
+                <tr key={index} className="bg-jet border-b border-onyx transition duration-200 hover:bg-onyx hover:text-platinium">
+                  {row.map((rowInside, index) => {
+                    return(
+                      <th key={index} className="px-2 py-1 font-normal truncate">{(typeof(rowInside) === 'number') ? currencyFormat(rowInside) : rowInside}</th>
+                    )
+                  })}
+                </tr>
               )
             })}
-          </tr>
-        </thead>
-        <tbody>
-          {yDatas.map((row, index) => {
-            return(
-              <tr key={index} className="bg-jet border-b border-onyx transition duration-200 hover:bg-onyx hover:text-platinium">
-                {row.map((rowInside, index) => {
-                  return(
-                    <th key={index} className="px-2 py-1 font-normal truncate">{(typeof(rowInside) === 'number') ? currencyFormat(rowInside) : rowInside}</th>
-                  )
-                })}
-              </tr>
-            )
-          })}
-        </tbody>
-      </table>
-    </div>
+          </tbody>
+        </table>
+      {/* </div> */}
+
+      <input type="checkbox" id="loadingScreenTable" className="modal-toggle" />
+      <div className="modal bg-modal_back">
+        <div className="text-center">
+          <div className="lds-ring"><div></div><div></div><div></div><div></div></div>
+          <div className="modal-action justify-center">
+            <label htmlFor="loadingScreenTable" className="gray-btn hidden">Kapat!</label>
+          </div>
+        </div>
+      </div>
+    </>
   )
 }
 

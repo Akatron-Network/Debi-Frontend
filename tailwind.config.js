@@ -14,7 +14,7 @@ module.exports = {
           green_pantone: "#14B85B",
           sea_green: "#20834B",
           cadmium_green: "#1A6C3D",
-          shadow_green: "#1A6C3D66",
+          shadow_green: "#183C28",
 
         //* DARK COLORS
           modal_back: "#0C0C0CBF",

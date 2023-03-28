@@ -10,7 +10,6 @@ export default function ChartLayout() {
   const { setFilePath, setCheckInPage } = useContext(MainContext);
 
 	const { fileID } = useParams();
-  const [title, setTitle] = useState("");
 
   useEffect(() => {
     // document.getElementById('file_path_top').style.display = "none";

@@ -6,7 +6,6 @@ import {ChartContext} from '../components/context';
 
 const Page = (props) => {
   const chart_data = useContext(ChartContext);
-  console.log(props);
 
   const [options, setOptions] = useState({});
   var xAxisData = [];
@@ -17,11 +16,8 @@ const Page = (props) => {
   }, [chart_data.pageContent.page_data])
 
   const getData = async () => {
-    //* Eski yöntem
-    // let resp = await Data.getModel(props.modelID);
-    // let query = resp.Data.query;
-    // let respData = await Data.postExecute({query: query , collection_id: chart_data.pageContent.collection_id}, col.Data.connector.gateway_host);
-    
+    document.getElementById('loadingScreenAxisAlign').checked = true;
+
     let col = await WorkspaceAll.getCollections(chart_data.pageContent.collection_id); //! Get Gateway host
 
     let where_plain = []
@@ -63,8 +59,6 @@ const Page = (props) => {
     else {
       var respData = await Data.postExecute({model_id: props.modelID , collection_id: chart_data.pageContent.collection_id, where_plain: where_plain, order: order, columns: props.select}, col.Data.connector.gateway_host);
     }
-
-    console.log(respData);
 
     let xAxis = {};
     let yAxis = {};
@@ -172,6 +166,9 @@ const Page = (props) => {
         }]
 
     });
+
+    document.getElementById('loadingScreenAxisAlign').checked = false;
+  
   }
   
   // setOptions({
@@ -357,7 +354,21 @@ const Page = (props) => {
 
   // };
 
-  return <ReactECharts className='!h-full pb-2 pt-12' option={options} />;
+  return (
+    <>
+      <ReactECharts className='!h-full pb-2 pt-12' option={options} />
+
+      <input type="checkbox" id="loadingScreenAxisAlign" className="modal-toggle" />
+      <div className="modal bg-modal_back">
+        <div className="text-center">
+          <div className="lds-ring"><div></div><div></div><div></div><div></div></div>
+          <div className="modal-action justify-center">
+            <label htmlFor="loadingScreenAxisAlign" className="gray-btn hidden">Kapat!</label>
+          </div>
+        </div>
+      </div>
+    </>
+  );
 };
 
 export default Page;

@@ -4,7 +4,7 @@ import { MainContext , ChartContext } from './context'
 
 export default function Filepath() {
   const data = useContext(MainContext);
-  const { savePage } = useContext(ChartContext);
+  const { savePage, pageContent, setPageContent, refreshPage } = useContext(ChartContext);
   console.log(data);
 
   const [link, setLink] = useState("");
@@ -24,13 +24,19 @@ export default function Filepath() {
       setLink(
         <ul className='overflow-auto max-w-[1243px] whitespace-nowrap'>
           <li key="-1" className="file-path-top-text">
-            <Link to={"/"}>Anasayfa</Link>
+            <Link to={"/"}>
+              <i className="fa-solid fa-house-chimney mr-1"></i>
+              Anasayfa
+            </Link>
           </li>
-          {data.filepath.map((path) => (
+          {data.filepath.map((path) => {
+            console.log(path);
+
+            return (
             <li key={path.id} className="file-path-top-text">
               <Link to={path.url}>{path.name}</Link>
             </li>
-          ))}
+          )})}
         </ul>
       )
     }
@@ -42,13 +48,22 @@ export default function Filepath() {
 
   return (
     <>
-      <div id="file_path_top" className="w-[calc(100%_-_70px)] top-11 left-[70px] absolute pl-5 pr-3 py-2 bg-shadow_green shadow-filepath breadcrumbs !flex justify-between items-center overflow-hidden">
+      <div id="file_path_top" className="w-[calc(100%_-_70px)] top-11 left-[70px] fixed z-2 pl-5 pr-3 py-2 bg-shadow_green shadow-filepath breadcrumbs !flex justify-between items-center overflow-hidden">
         {link}
 
         {data.checkInPage ? 
-          <div className='border-l border-l-onyx_middle'>
-            <div className="tooltip tooltip-left ml-3" data-tip="Öğe Oluştur">
+          <div className=''>
+
+            <div className="tooltip tooltip-left pr-3 border-r border-r-onyx_middle" data-tip="Yeni Öğe Oluştur">
               <label id="new_btn" htmlFor="chart_choose" className='green-btn'><i className="fas fa-plus" /></label>
+            </div>
+
+            <div className="tooltip tooltip-left ml-3" data-tip="Panelleri Aç / Kilitle">
+              <label onClick={() => setPageContent({...pageContent, page_data: {...pageContent.page_data, dragresize: !pageContent.page_data.dragresize}})} className='gray-btn'>{pageContent.page_data.dragresize ? <i className="fa-solid fa-lock-open"></i> : <i className="fa-solid fa-lock"></i>}</label>
+            </div>
+
+            <div className="tooltip tooltip-left ml-3" data-tip="Panelleri Yenile">
+              <label onClick={() => refreshPage()} className='gray-btn bg-orange-900 hover:bg-orange-700'><i className="fa-solid fa-rotate"></i></label>
             </div>
 
             <div className="tooltip tooltip-left ml-2" data-tip="Sayfayı Kaydet">

@@ -1,4 +1,4 @@
-import React , { useContext } from "react";
+import React from "react";
 import PieChart from '../charts/PieChart'
 import BasicLineCharts from '../charts/BasicLineCharts'
 import AxisAlignWithTick from '../charts/AxisAlignWithTick'
@@ -11,7 +11,7 @@ import PivotTableChart from '../charts/PivotTableChart'
 import { WidthProvider, Responsive } from "react-grid-layout";
 import 'react-resizable/css/styles.css';
 import 'react-grid-layout/css/styles.css';
-import { ChartContext , ShareContext } from '../components/context';
+import { ChartContext } from '../components/context';
 
 const ResponsiveReactGridLayout = WidthProvider(Responsive);
 const originalLayouts = getFromLS("layouts") || {};
@@ -61,13 +61,14 @@ export default class ResponsiveLocalStorageLayout extends React.PureComponent {
           resizeHandles={[ "se" ]}
           draggableHandle={'.panels-title'}
           autoSize={true}
+          isDraggable={value.pageContent.page_data.dragresize}
+          isResizable={value.pageContent.page_data.dragresize}
           margin={[16, 16]} 
           {...this.props}
           // isBounded={true}
         >
           {value.pageContent.page_data.panels.map((panel) => {
             if (panel.PanelType === "bar") {
-              console.log(panel);
               return (
                 <div className="panels" key={panel.PanelID} data-grid={panel.Coordinates}>
                   <div className="panels-title w-full">
@@ -155,7 +156,7 @@ export default class ResponsiveLocalStorageLayout extends React.PureComponent {
                       </div>
                     : undefined}
                     </div>
-                    <span className="relative top-[54px] left-[1px]"><TableChart modelID={panel.ModelID} unionID={panel.UnionID} panelID={panel.PanelID} wherePlain={panel.WherePlain} order={panel.Order} select={panel.GroupSelect} /></span>
+                    <TableChart modelID={panel.ModelID} unionID={panel.UnionID} panelID={panel.PanelID} wherePlain={panel.WherePlain} order={panel.Order} select={panel.GroupSelect} />
                   </div>
                 </div>
               )

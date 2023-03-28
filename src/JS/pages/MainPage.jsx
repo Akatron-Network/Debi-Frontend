@@ -276,8 +276,9 @@ export default function MainPage() {
   const [conditions, setConditions] = useState([]);
   const [panelSort, setPanelSort] = useState([]);
   const [panel, setPanel] = useState("");
-  const [pageContent, setPageContent] = useState({page_data : {panels: []}});
+  const [pageContent, setPageContent] = useState({page_data : {panels: [], dragresize: null}});
   const [panelEdit, setPanelEdit] = useState(false);
+  const [allPanelsDragResize, setAllPanelsDragResize] = useState(false);
   const [error, setError] = useState("Hata")
 
   var ch_cards = ["bar", "treemap", "line", "mark", "gauge", "pie", "table", "pivot"];
@@ -681,6 +682,18 @@ export default function MainPage() {
     return cols.sort((a,b) => {
       if (a.column < b.column) return -1
     })
+  }
+
+  const refreshPage = async () => {
+    let resp = await WorkspaceAll.getFiles(filepath[filepath.length - 1].id);
+    console.log(resp);
+    if(resp.Data.page_data === null) {
+      resp.Data.page_data = { panels: [] }
+    }
+    
+    // setFilePath(resp.Data.path);
+    // setCheckInPage(true);
+    setPageContent(resp.Data);
   }
 
   //* Edit Panel-----------------------------------------------------------------------------------------------------------------
@@ -1113,7 +1126,7 @@ export default function MainPage() {
         panels: [
           ...pageContent.page_data.panels.filter(item => item.PanelID !== lastPanelID), //Son düzenleneni içerisinden çıkardık
           last_dt,
-        ]
+        ],
       }
     })
 
@@ -1123,7 +1136,7 @@ export default function MainPage() {
         panels: [
           ...pageContent.page_data.panels.filter(item => item.PanelID !== lastPanelID), //Son düzenleneni içerisinden çıkardık
           last_dt,
-        ]
+        ],
       }
     });
 
@@ -1199,13 +1212,14 @@ export default function MainPage() {
               }
             }
   
-            await WorkspaceAll.putFiles(pageContent.page_id, {page_data: {panels: panels}})
+            await WorkspaceAll.putFiles(pageContent.page_id, {page_data: {panels: panels, dragresize: pageContent.page_data.dragresize}})
   
             setPageContent({
               ...pageContent,
               page_data: {
                 ...pageContent.page_data,
-                panels: panels
+                panels: panels,
+                dragresize: pageContent.page_data.dragresize
               }
             })
           }
@@ -1507,6 +1521,7 @@ export default function MainPage() {
 
   const chart_data = {
     allAxis,
+    allPanelsDragResize,
     chartForms,
     colList,
     conditions,
@@ -1544,10 +1559,12 @@ export default function MainPage() {
     editPanel,
     getColList,
     modelNameSelect,
+    refreshPage,
     savePage,
     savePanel,
     setPageContent,
     setAllAxis,
+    setAllPanelsDragResize,
     setTitleAxis,
     setValueAxis,
   }

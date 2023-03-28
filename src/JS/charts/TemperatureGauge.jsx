@@ -128,7 +128,21 @@ const Page = () => {
     ]
   };
 
-  return <ReactECharts className='!h-full pb-2 pt-12' option={options} />;
+  return (
+    <>
+      <ReactECharts className='!h-full pb-2 pt-12' option={options} />
+
+      <input type="checkbox" id="loadingScreenBasicLine" className="modal-toggle" />
+      <div className="modal bg-modal_back">
+        <div className="text-center">
+          <div className="lds-ring"><div></div><div></div><div></div><div></div></div>
+          <div className="modal-action justify-center">
+            <label htmlFor="loadingScreenBasicLine" className="gray-btn hidden">Kapat!</label>
+          </div>
+        </div>
+      </div>
+    </>
+  );
 };
 
 export default Page;
