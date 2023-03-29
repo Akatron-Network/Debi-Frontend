@@ -1086,7 +1086,6 @@ export default function MainPage() {
         wherePlain.push("AND")
       }
     }
-
     // Order' ı çekmek için burada gerekli şeyleri belirledik ve order objesini oluşturduk
     for (let o of panelSort) {
       let col = sortColumnSelect.current[o].value //.split("/")[2]
