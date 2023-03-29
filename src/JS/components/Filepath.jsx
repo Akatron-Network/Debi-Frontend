@@ -4,7 +4,7 @@ import { MainContext , ChartContext } from './context'
 
 export default function Filepath() {
   const data = useContext(MainContext);
-  const { savePage, pageContent, setPageContent, refreshPage } = useContext(ChartContext);
+  const { savePage, setAllPanelsDragResize, allPanelsDragResize, refreshPage } = useContext(ChartContext);
   console.log(data);
 
   const [link, setLink] = useState("");
@@ -14,7 +14,10 @@ export default function Filepath() {
       setLink(
         <ul className='overflow-auto max-w-[1243px] whitespace-nowrap'>
           <li className="file-path-top-text">
-            <Link to={"/"}>Anasayfa</Link>
+            <Link to={"/"}>
+              <i className="fa-solid fa-house-chimney mr-1"></i>
+              Anasayfa
+            </Link>
           </li>
         </ul>
       )
@@ -30,8 +33,6 @@ export default function Filepath() {
             </Link>
           </li>
           {data.filepath.map((path) => {
-            console.log(path);
-
             return (
             <li key={path.id} className="file-path-top-text">
               <Link to={path.url}>{path.name}</Link>
@@ -59,7 +60,7 @@ export default function Filepath() {
             </div>
 
             <div className="tooltip tooltip-left ml-3" data-tip="Panelleri Aç / Kilitle">
-              <label onClick={() => setPageContent({...pageContent, page_data: {...pageContent.page_data, dragresize: !pageContent.page_data.dragresize}})} className='gray-btn'>{pageContent.page_data.dragresize ? <i className="fa-solid fa-lock-open"></i> : <i className="fa-solid fa-lock"></i>}</label>
+              <label onClick={() => setAllPanelsDragResize(!allPanelsDragResize)} className='gray-btn'>{allPanelsDragResize ? <i className="fa-solid fa-lock-open"></i> : <i className="fa-solid fa-lock"></i>}</label>
             </div>
 
             <div className="tooltip tooltip-left ml-3" data-tip="Panelleri Yenile">

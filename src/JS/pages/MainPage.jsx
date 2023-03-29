@@ -276,10 +276,14 @@ export default function MainPage() {
   const [conditions, setConditions] = useState([]);
   const [panelSort, setPanelSort] = useState([]);
   const [panel, setPanel] = useState("");
-  const [pageContent, setPageContent] = useState({page_data : {panels: [], dragresize: null}});
+  const [pageContent, setPageContent] = useState({page_data : {panels: [], dragresize: false}});
   const [panelEdit, setPanelEdit] = useState(false);
   const [allPanelsDragResize, setAllPanelsDragResize] = useState(false);
   const [error, setError] = useState("Hata")
+
+  useEffect(() => {
+    setAllPanelsDragResize(pageContent.page_data.dragresize)
+  }, [pageContent])
 
   var ch_cards = ["bar", "treemap", "line", "mark", "gauge", "pie", "table", "pivot"];
   const chooseChart = (type) => {
@@ -1127,6 +1131,7 @@ export default function MainPage() {
           ...pageContent.page_data.panels.filter(item => item.PanelID !== lastPanelID), //Son düzenleneni içerisinden çıkardık
           last_dt,
         ],
+        dragresize: allPanelsDragResize,
       }
     })
 
@@ -1137,6 +1142,7 @@ export default function MainPage() {
           ...pageContent.page_data.panels.filter(item => item.PanelID !== lastPanelID), //Son düzenleneni içerisinden çıkardık
           last_dt,
         ],
+        dragresize: allPanelsDragResize,
       }
     });
 
@@ -1212,14 +1218,14 @@ export default function MainPage() {
               }
             }
   
-            await WorkspaceAll.putFiles(pageContent.page_id, {page_data: {panels: panels, dragresize: pageContent.page_data.dragresize}})
+            await WorkspaceAll.putFiles(pageContent.page_id, {page_data: {panels: panels, dragresize: allPanelsDragResize}})
   
             setPageContent({
               ...pageContent,
               page_data: {
                 ...pageContent.page_data,
                 panels: panels,
-                dragresize: pageContent.page_data.dragresize
+                dragresize: allPanelsDragResize
               }
             })
           }

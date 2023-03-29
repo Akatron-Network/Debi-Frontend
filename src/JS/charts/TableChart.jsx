@@ -94,32 +94,30 @@ export default function TableChart(props) {
 
   return (
     <>
-      {/* <div className="relative shadow-md"> */}
-        <table className="w-full text-sm text-left text-grayXgray relative top-[54px] left-[1px]">
-          <thead className="text-xs text-cultured uppercase bg-darkest_jet border-b border-onyx">
-            <tr>
-              {yAxis.map((col, index) => {
-                return(
-                  <th key={index} scope="col" className="px-2 py-3">{col}</th>
-                )
-              })}
-            </tr>
-          </thead>
-          <tbody>
-            {yDatas.map((row, index) => {
+      <table className="w-full text-sm text-left text-grayXgray relative top-[54px] left-[1px] border-spacing-[inherit] border-separate">
+        <thead className="text-xs text-cultured uppercase ">
+          <tr>
+            {yAxis.map((col, index) => {
               return(
-                <tr key={index} className="bg-jet border-b border-onyx transition duration-200 hover:bg-onyx hover:text-platinium">
-                  {row.map((rowInside, index) => {
-                    return(
-                      <th key={index} className="px-2 py-1 font-normal truncate">{(typeof(rowInside) === 'number') ? currencyFormat(rowInside) : rowInside}</th>
-                    )
-                  })}
-                </tr>
+                <th key={index} scope="col" className="px-2 py-3 top-[54px] sticky bg-darkest_jet border-b border-b-graysix border-t border-t-jet_mid">{col}</th>
               )
             })}
-          </tbody>
-        </table>
-      {/* </div> */}
+          </tr>
+        </thead>
+        <tbody>
+          {yDatas.map((row, index) => {
+            return(
+              <tr key={index} className="bg-jet transition duration-200 hover:bg-onyx hover:text-platinium">
+                {row.map((rowInside, index) => {
+                  return(
+                    <th key={index} className="px-2 py-1 font-normal border-b border-onyx truncate">{(typeof(rowInside) === 'number') ? currencyFormat(rowInside) : rowInside}</th>
+                  )
+                })}
+              </tr>
+            )
+          })}
+        </tbody>
+      </table>
 
       <input type="checkbox" id="loadingScreenTable" className="modal-toggle" />
       <div className="modal bg-modal_back">

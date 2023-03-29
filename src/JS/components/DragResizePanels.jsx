@@ -61,8 +61,8 @@ export default class ResponsiveLocalStorageLayout extends React.PureComponent {
           resizeHandles={[ "se" ]}
           draggableHandle={'.panels-title'}
           autoSize={true}
-          isDraggable={value.pageContent.page_data.dragresize}
-          isResizable={value.pageContent.page_data.dragresize}
+          isDraggable={value.allPanelsDragResize}
+          isResizable={value.allPanelsDragResize}
           margin={[16, 16]} 
           {...this.props}
           // isBounded={true}

@@ -484,6 +484,7 @@
       rounded
       bg-middle_black
       shadow-md
+      hover:rounded
   }
 
   .panels-title {
@@ -499,7 +500,7 @@
       text-cultured
       justify-between
       hover:bg-side_black
-      rounded
+      hover:rounded
       z-10
       !transition !duration-300
   }
