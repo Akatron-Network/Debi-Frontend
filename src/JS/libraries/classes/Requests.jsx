@@ -2,7 +2,7 @@ import axios from 'axios';
 
 class Requests {
 
-    constructor(category , func_name, host = "93.180.133.185:8000") {
+    constructor(category , func_name, host = "93.180.132.227:8000") {
         this.host = host;
         this.category = category;
         this.func_name = func_name;

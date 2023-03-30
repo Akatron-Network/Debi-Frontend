@@ -11,6 +11,7 @@ export default function TableChart(props) {
   console.log(props)
   const [yAxis, setYAxis] = useState([]);
   const [yDatas, setYDatas] = useState([]);
+  const [sum, setSum] = useState(0);
 
   useEffect(() => {
     getData();
@@ -73,7 +74,7 @@ export default function TableChart(props) {
         }
       }
     }
-
+    
     for(let d of respData.Data) {
       let el = []
       for(let y of panelcolumns) {
@@ -81,6 +82,31 @@ export default function TableChart(props) {
       }
       data.push(el);
     }
+
+    //. Sayı olan kolonları ayırdım sıralarına göre yani 2.kolondakilerin toplamı 12312, 1.kolondakilerin toplamı 12312 gibi {2: 12312, 1: 12312}
+    let last_sum = {};
+    for (let n of data) {
+      for (let num in n) {
+        if ((typeof(n[num]) === 'number')) {
+          console.log(last_sum);
+          if (Object.keys(last_sum).length !== 0) {
+            last_sum = {
+              ...last_sum,
+              [num]: last_sum[num] + n[num]
+            }
+          }
+          else {
+            last_sum = {
+              ...last_sum,
+              [num]: n[num]
+            }
+          }
+          setSum(last_sum)
+        }
+      }
+    }
+    console.log(last_sum);
+
     setYDatas(data);
     setYAxis(yAxisTemp)
     
@@ -99,7 +125,7 @@ export default function TableChart(props) {
           <tr>
             {yAxis.map((col, index) => {
               return(
-                <th key={index} scope="col" className="px-2 py-3 top-[54px] sticky bg-darkest_jet border-b border-b-graysix border-t border-t-jet_mid">{col}</th>
+                <th key={index} scope="col" className="px-2 py-3 top-[54px] sticky bg-darkest_jet border-b border-b-onyx_middle border-t border-t-jet_mid">{col}</th>
               )
             })}
           </tr>
@@ -110,12 +136,29 @@ export default function TableChart(props) {
               <tr key={index} className="bg-jet transition duration-200 hover:bg-onyx hover:text-platinium">
                 {row.map((rowInside, index) => {
                   return(
-                    <th key={index} className="px-2 py-1 font-normal border-b border-onyx truncate">{(typeof(rowInside) === 'number') ? currencyFormat(rowInside) : rowInside}</th>
+                    <th key={index} className={(typeof(rowInside) === 'number') ? "px-2 py-1 font-normal border-b border-onyx truncate text-right" : "px-2 py-1 font-normal border-b border-onyx truncate"}>
+                      {(typeof(rowInside) === 'number') ? currencyFormat(rowInside) : rowInside}
+                    </th>
                   )
                 })}
               </tr>
             )
           })}
+
+          <tr>
+            {yAxis.map((col, index) => {
+              if(typeof(sum[index]) === 'number') {
+                return(
+                  <th key={index} className='px-2 py-3 bottom-0 sticky bg-darkest_jet font-light text-center text-platinium'><span className='float-right text-sea_green'>{currencyFormat(sum[index])}</span></th>
+                )
+              }
+              else {
+                return(
+                  <th key={index} className='px-2 py-3 bottom-0 sticky bg-darkest_jet'></th>
+                )
+              }
+            })}
+          </tr>
         </tbody>
       </table>
 
