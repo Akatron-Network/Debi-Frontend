@@ -150,12 +150,12 @@ export default function TableChart(props) {
             {yAxis.map((col, index) => {
               if(typeof(sum[index]) === 'number') {
                 return(
-                  <th key={index} className='px-2 py-3 bottom-0 sticky bg-darkest_jet font-light text-center text-platinium'><span className='float-right text-sea_green'>{currencyFormat(sum[index])}</span></th>
+                  <th key={index} className='px-2 py-2 bottom-0 sticky bg-darkest_jet font-light text-center text-platinium'><span className='float-right text-sea_green'>{currencyFormat(sum[index])}</span></th>
                 )
               }
               else {
                 return(
-                  <th key={index} className='px-2 py-3 bottom-0 sticky bg-darkest_jet'></th>
+                  <th key={index} className='px-2 py-2 bottom-0 sticky bg-darkest_jet'></th>
                 )
               }
             })}
