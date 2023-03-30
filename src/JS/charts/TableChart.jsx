@@ -89,6 +89,11 @@ export default function TableChart(props) {
       for (let num in n) {
         if ((typeof(n[num]) === 'number')) {
           console.log(last_sum);
+          console.log(num);
+          console.log(last_sum[num]);
+          console.log(n[num]);
+          if (last_sum[num] === undefined) last_sum[num] = 0;
+
           if (Object.keys(last_sum).length !== 0) {
             last_sum = {
               ...last_sum,
