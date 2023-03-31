@@ -18,7 +18,7 @@ const Page = (props) => {
   }, [chart_data.pageContent.page_data])
   
 const getData = async () => {
-  document.getElementById('loadingScreenBarLabel').checked = true;
+  document.getElementById('loadingScreenBarLabel' + props.panelID).checked = true;
 
   let col = await WorkspaceAll.getCollections(chart_data.pageContent.collection_id); //! Get Gateway host
 
@@ -65,7 +65,6 @@ const getData = async () => {
     var respData = await Data.postExecute({model_id: props.modelID , collection_id: chart_data.pageContent.collection_id, where_plain: where_plain, order: order, columns: props.select}, col.Data.connector.gateway_host);
   }
 
-  console.log(respData);
   xAxis = {};
   yAxis = [];
 
@@ -77,9 +76,6 @@ const getData = async () => {
       xAxis = p.SelColumns.xAxis.col;
     }
   }
-
-  console.log(xAxis)
-  console.log(yAxis);
 
   for (let a of respData.Data) {
     xAxisData.push(a[xAxis])
@@ -207,7 +203,7 @@ const getData = async () => {
     series: yAxisData,
   });
 
-  document.getElementById('loadingScreenBarLabel').checked = false;
+  document.getElementById('loadingScreenBarLabel' + props.panelID).checked = false;
 }
 
 
@@ -348,12 +344,12 @@ const getData = async () => {
     <>
       <ReactECharts className='!h-full pb-2 pt-12' option={options} />
 
-      <input type="checkbox" id="loadingScreenBarLabel" className="modal-toggle" />
+      <input type="checkbox" id={"loadingScreenBarLabel" + props.panelID} className="modal-toggle" />
       <div className="modal bg-modal_back">
         <div className="text-center">
           <div className="lds-ring"><div></div><div></div><div></div><div></div></div>
           <div className="modal-action justify-center">
-            <label htmlFor="loadingScreenBarLabel" className="gray-btn hidden">Kapat!</label>
+            <label htmlFor={"loadingScreenBarLabel" + props.panelID} className="gray-btn hidden">Kapat!</label>
           </div>
         </div>
       </div>

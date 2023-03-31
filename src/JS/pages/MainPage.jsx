@@ -261,6 +261,7 @@ export default function MainPage() {
   const xColSelGroupRef = useRef("default");
   const yColSelGroupRef = useRef("default");
   const conditionInput = useRef([]);
+  const conditionInput2 = useRef([]);
   const conditionColumnSelect = useRef([]);
   const conditionTransactionSelect = useRef([]);
   const sortColumnSelect = useRef([]);
@@ -700,6 +701,21 @@ export default function MainPage() {
     setPageContent(resp.Data);
   }
 
+  const changeCondType = (type, cond) => {
+    if (type === "btw" || type === "nbtw") {
+      conditionInput.current[cond].classList.remove("!col-span-4")
+      conditionInput.current[cond].classList.add("!col-span-2")
+      conditionInput2.current[cond].classList.remove("hidden")
+      conditionInput.current[cond].placeholder = "Küçük Değer"
+    }
+    else {
+      conditionInput.current[cond].classList.remove("!col-span-2")
+      conditionInput.current[cond].classList.add("!col-span-4")
+      conditionInput2.current[cond].classList.add("hidden")
+      conditionInput.current[cond].placeholder = "Değer giriniz"
+    }
+  }
+
   //* Edit Panel-----------------------------------------------------------------------------------------------------------------
   let als = [];
   let alX = [];
@@ -957,10 +973,18 @@ export default function MainPage() {
                 if (conditions[cond] !== "AND") {
                   for (let wp in p.WherePlain){
                     if (cond > p.WherePlain.length) return; // Conditions daha fazla elemana sahip olursa diye bir kontrol koyduk. Böylelikle whereplain' in uzunluğu kadar döndürecek döngüyü
-  
+                    
                     conditionColumnSelect.current[conditions[cond]].value = Object.keys(p.WherePlain[cond])[0]; // Kolonları bulduk
                     conditionTransactionSelect.current[conditions[cond]].value = Object.keys(Object.values(p.WherePlain[cond])[0])[0]; // Kolonların işlemlerini bulduk
-                    conditionInput.current[conditions[cond]].value = Object.values(Object.values(p.WherePlain[cond])[0])[0]; // Kolonların işlem değerlerini bulduk
+
+                    if ((Object.values(Object.values(p.WherePlain[cond])[0])[0]).includes("' AND '")) { // Eğer btw ya da nbtw ise düzenlerken ona göre değişecek
+                      changeCondType(Object.keys(Object.values(p.WherePlain[cond])[0])[0], conditions[cond])
+                      conditionInput.current[conditions[cond]].value = (Object.values(Object.values(p.WherePlain[cond])[0])[0]).split("' AND '")[0]; // Kolonların işlem değerlerini bulduk
+                      conditionInput2.current[conditions[cond]].value = (Object.values(Object.values(p.WherePlain[cond])[0])[0]).split("' AND '")[1]; // Kolonların işlem değerlerini bulduk
+                    }
+                    else {
+                      conditionInput.current[conditions[cond]].value = Object.values(Object.values(p.WherePlain[cond])[0])[0]; // Kolonların işlem değerlerini bulduk
+                    }
                   }
                 }
               }
@@ -1079,10 +1103,18 @@ export default function MainPage() {
         let sel = conditionColumnSelect.current[c].value //.split("/")[2]
         let tr = conditionTransactionSelect.current[c].value
         let inp = conditionInput.current[c].value
-  
-        let wp = {[sel] : {[tr] : inp}}; // Örn: where_plain: [{"BORC_SUM": {"bte": 2000}}]
+
+        if (!conditionInput2.current[c].classList.contains("hidden")) {
+          let inp2 = conditionInput2.current[c].value
+          var wp = {[sel] : {[tr] : inp + "' AND '" + inp2}}; // Örn: where_plain: [{"BORC_SUM": {"bte": 2000}}]
+        }
+        else {
+          var wp = {[sel] : {[tr] : inp}}; // Örn: where_plain: [{"BORC_SUM": {"bte": 2000}}]
+        }
+        console.log(wp);
         wherePlain.push(wp);
-      } else {
+      } 
+      else {
         wherePlain.push("AND")
       }
     }
@@ -1539,6 +1571,7 @@ export default function MainPage() {
 
     conditionColumnSelect,
     conditionInput,
+    conditionInput2,
     conditionTransactionSelect,
     dataColumnRef,
     xColSelRef,
@@ -1554,6 +1587,7 @@ export default function MainPage() {
     addCondition,
     addSort,
     axisSel,
+    changeCondType,
     chooseChart,
     clearPanelInputs,
     dataColumnSelect,

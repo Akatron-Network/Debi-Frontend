@@ -1,4 +1,4 @@
-import React , {useContext} from 'react'
+import React , {useContext, useState} from 'react'
 import { ChartContext } from '../context';
 
 export default function ConditionsAndSort() {
@@ -52,7 +52,7 @@ export default function ConditionsAndSort() {
                   })}
                 </select>
   
-                <select defaultValue='equals' className="condition_select xl:col-span-2" ref={(el) => {chart_data.conditionTransactionSelect.current[cond] = el}}>
+                <select defaultValue='equals' onChange={(e) => chart_data.changeCondType(e.target.value, cond)} className="condition_select xl:col-span-2" ref={(el) => {chart_data.conditionTransactionSelect.current[cond] = el}}>
                   <option value="equals">{'='}</option>
                   <option value="not">{'!='}</option>
                   <option value="bt">{'>'}</option>
@@ -60,10 +60,17 @@ export default function ConditionsAndSort() {
                   <option value="bte">{'>='}</option>
                   <option value="lte">{'<='}</option>
                   <option value="like">{'içerir'}</option>
+                  <option value="btw">{'arasında'}</option>
+                  <option value="nbtw">{'arasında değil'}</option>
                 </select>
-  
-                <input placeholder="Değer giriniz" className="condition_input !col-span-4" ref={(el) => {chart_data.conditionInput.current[cond] = el}}/>
-  
+
+                <input placeholder="Değer giriniz" 
+                  className="condition_input !col-span-4" ref={(el) => {chart_data.conditionInput.current[cond] = el}} 
+                />
+                <input placeholder="Büyük Değer" 
+                  className="condition_input !col-span-2 hidden" ref={(el) => {chart_data.conditionInput2.current[cond] = el}} 
+                />
+                
                 <button className="danger-btn col-span-1 w-full" onClick={() => chart_data.deleteCondition(cond)}><i className="fa-solid fa-xmark"></i></button>
               </div>
             )

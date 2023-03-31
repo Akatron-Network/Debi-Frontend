@@ -27,7 +27,7 @@ export default function PivotTableCharts(props) {
   }, [chart_data.pageContent.page_data])
 
   const getData = async () => {
-    document.getElementById('loadingScreenPivot').checked = true;
+    document.getElementById('loadingScreenPivot' + props.panelID).checked = true;
     
     let col = await WorkspaceAll.getCollections(chart_data.pageContent.collection_id); //! Get Gateway host
     
@@ -116,7 +116,7 @@ export default function PivotTableCharts(props) {
       store: respData.Data,
     }))
     
-    document.getElementById('loadingScreenPivot').checked = false;
+    document.getElementById('loadingScreenPivot' + props.panelID).checked = false;
   }
 
   //* Data Example
@@ -171,12 +171,12 @@ export default function PivotTableCharts(props) {
         </React.Fragment>
       </div>
 
-      <input type="checkbox" id="loadingScreenPivot" className="modal-toggle" />
+      <input type="checkbox" id={"loadingScreenPivot" + props.panelID} className="modal-toggle" />
       <div className="modal bg-modal_back">
         <div className="text-center">
           <div className="lds-ring"><div></div><div></div><div></div><div></div></div>
           <div className="modal-action justify-center">
-            <label htmlFor="loadingScreenPivot" className="gray-btn hidden">Kapat!</label>
+            <label htmlFor={"loadingScreenPivot" + props.panelID} className="gray-btn hidden">Kapat!</label>
           </div>
         </div>
       </div>

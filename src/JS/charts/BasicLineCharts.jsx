@@ -20,7 +20,7 @@ const Page = (props) => {
     // let resp = await Data.getModel(props.modelID);
     // let query = resp.Data.query;
     // let respData = await Data.postExecute({query: query , collection_id: chart_data.pageContent.collection_id}, col.Data.connector.gateway_host);
-    document.getElementById('loadingScreenBasicLine').checked = true;
+    document.getElementById('loadingScreenBasicLine' + props.panelID).checked = true;
 
     let col = await WorkspaceAll.getCollections(chart_data.pageContent.collection_id); //! Get Gateway host
     
@@ -178,7 +178,7 @@ const Page = (props) => {
   
     });
 
-    document.getElementById('loadingScreenBasicLine').checked = false;
+    document.getElementById('loadingScreenBasicLine' + props.panelID).checked = false;
   }
 
   // const options = {
@@ -281,12 +281,12 @@ const Page = (props) => {
     <>
       <ReactECharts className='!h-full pb-2 pt-12' option={options} />
 
-      <input type="checkbox" id="loadingScreenBasicLine" className="modal-toggle" />
+      <input type="checkbox" id={"loadingScreenBasicLine" + props.panelID} className="modal-toggle" />
       <div className="modal bg-modal_back">
         <div className="text-center">
           <div className="lds-ring"><div></div><div></div><div></div><div></div></div>
           <div className="modal-action justify-center">
-            <label htmlFor="loadingScreenBasicLine" className="gray-btn hidden">Kapat!</label>
+            <label htmlFor={"loadingScreenBasicLine" + props.panelID} className="gray-btn hidden">Kapat!</label>
           </div>
         </div>
       </div>

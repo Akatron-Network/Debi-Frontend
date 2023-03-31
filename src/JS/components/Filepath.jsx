@@ -15,7 +15,7 @@ export default function Filepath() {
         <ul className='overflow-auto max-w-[1243px] whitespace-nowrap'>
           <li className="file-path-top-text">
             <Link to={"/"}>
-              <i className="fa-solid fa-house-chimney mr-1"></i>
+              <i className="fa-solid fa-house-chimney mr-[6px]"></i>
               Anasayfa
             </Link>
           </li>
@@ -28,7 +28,7 @@ export default function Filepath() {
         <ul className='overflow-auto max-w-[1243px] whitespace-nowrap'>
           <li key="-1" className="file-path-top-text">
             <Link to={"/"}>
-              <i className="fa-solid fa-house-chimney mr-1"></i>
+              <i className="fa-solid fa-house-chimney mr-[6px]"></i>
               Anasayfa
             </Link>
           </li>

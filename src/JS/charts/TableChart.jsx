@@ -7,8 +7,6 @@ import "gridjs/dist/theme/mermaid.min.css";
 
 export default function TableChart(props) {
   const chart_data = useContext(ChartContext);
-  console.log(chart_data);
-  console.log(props)
   const [yAxis, setYAxis] = useState([]);
   const [yDatas, setYDatas] = useState([]);
   const [sum, setSum] = useState(0);
@@ -18,7 +16,7 @@ export default function TableChart(props) {
   }, [chart_data.pageContent.page_data])
 
   const getData = async () => {
-    document.getElementById('loadingScreenTable').checked = true;
+    document.getElementById('loadingScreenTable' + props.panelID).checked = true;
     
     let col = await WorkspaceAll.getCollections(chart_data.pageContent.collection_id); //! Get Gateway host
     
@@ -106,12 +104,11 @@ export default function TableChart(props) {
         }
       }
     }
-    console.log(last_sum);
 
     setYDatas(data);
     setYAxis(yAxisTemp)
     
-    document.getElementById('loadingScreenTable').checked = false;
+    document.getElementById('loadingScreenTable' + props.panelID).checked = false;
   }
 
   function currencyFormat(num) {
@@ -162,13 +159,13 @@ export default function TableChart(props) {
           </tr>
         </tbody>
       </table>
-
-      <input type="checkbox" id="loadingScreenTable" className="modal-toggle" />
+      
+      <input type="checkbox" id={"loadingScreenTable" + props.panelID} className="modal-toggle" />
       <div className="modal bg-modal_back">
         <div className="text-center">
           <div className="lds-ring"><div></div><div></div><div></div><div></div></div>
           <div className="modal-action justify-center">
-            <label htmlFor="loadingScreenTable" className="gray-btn hidden">Kapat!</label>
+            <label htmlFor={"loadingScreenTable" + props.panelID} className="gray-btn hidden">Kapat!</label>
           </div>
         </div>
       </div>

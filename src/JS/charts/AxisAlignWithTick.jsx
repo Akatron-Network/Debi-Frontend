@@ -16,7 +16,7 @@ const Page = (props) => {
   }, [chart_data.pageContent.page_data])
 
   const getData = async () => {
-    document.getElementById('loadingScreenAxisAlign').checked = true;
+    document.getElementById('loadingScreenAxisAlign' + props.panelID).checked = true;
 
     let col = await WorkspaceAll.getCollections(chart_data.pageContent.collection_id); //! Get Gateway host
 
@@ -167,7 +167,7 @@ const Page = (props) => {
 
     });
 
-    document.getElementById('loadingScreenAxisAlign').checked = false;
+    document.getElementById('loadingScreenAxisAlign' + props.panelID).checked = false;
   
   }
   
@@ -358,12 +358,12 @@ const Page = (props) => {
     <>
       <ReactECharts className='!h-full pb-2 pt-12' option={options} />
 
-      <input type="checkbox" id="loadingScreenAxisAlign" className="modal-toggle" />
+      <input type="checkbox" id={"loadingScreenAxisAlign" + props.panelID} className="modal-toggle" />
       <div className="modal bg-modal_back">
         <div className="text-center">
           <div className="lds-ring"><div></div><div></div><div></div><div></div></div>
           <div className="modal-action justify-center">
-            <label htmlFor="loadingScreenAxisAlign" className="gray-btn hidden">Kapat!</label>
+            <label htmlFor={"loadingScreenAxisAlign" + props.panelID} className="gray-btn hidden">Kapat!</label>
           </div>
         </div>
       </div>

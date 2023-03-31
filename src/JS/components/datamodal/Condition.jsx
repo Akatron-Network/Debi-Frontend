@@ -84,7 +84,7 @@ export default function Condition(props) {
       setTypeLength("");
     }
   };
-
+  console.log(data.dataJSON);
   return (
     <div id={"condition_" + props.alias + "_" + props.value} className="condition_row_cards">
       <button className={'bounder ' + (bounderBtn ? null : "hidden")} id={"bounder_" + props.alias + "_" + props.value} onClick={() => changeOperator(props.alias , props.value , selColRef.current.value , selEqRef.current.value , inputValueRef.current.value)}>{operator}</button>
