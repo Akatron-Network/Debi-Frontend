@@ -1,12 +1,13 @@
 import React , { useContext , useEffect } from 'react'
-import { ModalContext } from '../context'
+import { MainContext, ModalContext } from '../context'
 
 export default function DataModalList() {
   const modal_data = useContext(ModalContext);
+  const { funcLoadForSpesific } = useContext(MainContext);
 
   useEffect(() => {
-    modal_data.getList();
-    modal_data.getUnions();
+    funcLoadForSpesific("loadingScreenSidebar", "errorScreenSidebar", modal_data.getList);
+    funcLoadForSpesific("loadingScreenSidebar", "errorScreenSidebar", modal_data.getUnions);
   }, [])
 
   const openModal = (modal_type, type) => { //!Önizleme için gerekiyor
@@ -80,7 +81,8 @@ export default function DataModalList() {
   return (
     <>
       <div className='hrLine'>
-        <div id="workspace-title" className="workspace-title mt">
+        <div id="workspace-title" className="workspace-title items-center">
+          <i className="fa-solid fa-chart-simple mr-2"></i>
           <span className="workspace-text">Veri Modelleri</span>
         </div>
       </div>
@@ -96,7 +98,7 @@ export default function DataModalList() {
           <div className='mb-1' key={index}>
             <div className='tree-elm pl-3'>
               <label htmlFor="datamodal" className="w-[200px] cursor-pointer truncate flex items-center" onClick={() => openModal(list, "basic")}><i className="fa-solid fa-chart-line mr-2 p-[5px]"></i>{list.model_name}</label>
-              <i className="fa-solid fa-xmark tree-cursor absolute right-3 mr-0 hover:text-red-600" onClick={() => modal_data.deleteModel(list.model_id)}></i>
+              <i className="fa-solid fa-xmark tree-cursor absolute right-3 mr-0 hover:text-red-600" onClick={() => funcLoadForSpesific("loadingScreenSidebar", "errorScreenSidebar", modal_data.deleteModel, list.model_id)}></i>
             </div>
           </div>
         ))}
@@ -111,7 +113,7 @@ export default function DataModalList() {
           <div className='mb-1' key={index}>
             <div className='tree-elm pl-3'>
               <label htmlFor="unionmodal" className="w-[200px] cursor-pointer truncate flex items-center" onClick={() => openUnionModal(list)}><i className="fa-solid fa-diagram-project mr-2 p-[5px]"></i>{list.union_name}</label>
-              <i className="fa-solid fa-xmark tree-cursor absolute right-3 mr-0 hover:text-red-600" onClick={() => modal_data.deleteUnion(list.union_id)}></i>
+              <i className="fa-solid fa-xmark tree-cursor absolute right-3 mr-0 hover:text-red-600" onClick={() => funcLoadForSpesific("loadingScreenSidebar", "errorScreenSidebar", modal_data.deleteUnion, list.union_id)}></i>
             </div>
           </div>
         ))}

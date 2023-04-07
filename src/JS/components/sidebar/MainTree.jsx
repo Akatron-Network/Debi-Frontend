@@ -20,7 +20,8 @@ export default function MainTree(props) {
   return (
 		<SidebarContext.Provider value={treeData}>
 			<div className='hrLine'>
-				<div id="workspace-title" className="workspace-title">
+				<div id="workspace-title" className="workspace-title items-center">
+					<i className="fas fa-sitemap mr-2"></i>
 					<span className="workspace-text">Çalışma Alanı</span>
 				</div>
 			</div>

@@ -4,6 +4,8 @@ import WorkspaceAll from '../libraries/categories/Workspace';
 import {ChartContext} from '../components/context';
 import { Grid } from 'gridjs-react';
 import "gridjs/dist/theme/mermaid.min.css";
+import LoadingForCharts from './modals/LoadingForCharts';
+import ErrorForCharts from './modals/ErrorForCharts';
 
 export default function TableChart(props) {
   const chart_data = useContext(ChartContext);
@@ -12,12 +14,12 @@ export default function TableChart(props) {
   const [sum, setSum] = useState(0);
 
   useEffect(() => {
-    getData();
+    let loading_type = 'loadingScreenTable' + props.panelID
+    let error_type = 'errorScreenTable' + props.panelID
+    chart_data.funcLoadForSpesific(loading_type, error_type, getData);
   }, [chart_data.pageContent.page_data])
 
   const getData = async () => {
-    document.getElementById('loadingScreenTable' + props.panelID).checked = true;
-    
     let col = await WorkspaceAll.getCollections(chart_data.pageContent.collection_id); //! Get Gateway host
     
     let where_plain = []
@@ -107,8 +109,6 @@ export default function TableChart(props) {
 
     setYDatas(data);
     setYAxis(yAxisTemp)
-    
-    document.getElementById('loadingScreenTable' + props.panelID).checked = false;
   }
 
   function currencyFormat(num) {
@@ -160,15 +160,8 @@ export default function TableChart(props) {
         </tbody>
       </table>
       
-      <input type="checkbox" id={"loadingScreenTable" + props.panelID} className="modal-toggle" />
-      <div className="modal bg-modal_back">
-        <div className="text-center">
-          <div className="lds-ring"><div></div><div></div><div></div><div></div></div>
-          <div className="modal-action justify-center">
-            <label htmlFor={"loadingScreenTable" + props.panelID} className="gray-btn hidden">Kapat!</label>
-          </div>
-        </div>
-      </div>
+      <LoadingForCharts id={"loadingScreenTable" + props.panelID} />
+      <ErrorForCharts id={"errorScreenTable" + props.panelID} error={chart_data.errorText} />
     </>
   )
 }

@@ -1,8 +1,9 @@
 import React, { useContext } from "react";
-import { DataModalContext } from "../context";
+import { DataModalContext, MainContext } from "../context";
 
 export default function ColSelect() {
   const data = useContext(DataModalContext);
+  const { funcLoad } = useContext(MainContext);
 
   return (
     <div className="form-control mb-2">
@@ -15,7 +16,7 @@ export default function ColSelect() {
           className="condition_select max-w-[65%] !rounded-l-none"
           ref={data.dataColSelectRef}
           // onClick={data.getColSelect}
-          onChange={() => data.colNameSelect(data.dataColSelectRef.current.value)}
+          onChange={() => funcLoad(data.colNameSelect, data.dataColSelectRef.current.value)}
         >
           <option disabled value="default">
             Bir koleksiyon seçin...

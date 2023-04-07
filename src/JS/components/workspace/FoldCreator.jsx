@@ -24,10 +24,10 @@ export default function FoldFileCreator() {
       
       
       if (data.filepath.length > 1) {
-        data.getFileWorks(data.filepath[data.filepath.length -1].id);
+        data.funcLoad(data.getFileWorks, data.filepath[data.filepath.length -1].id);
       }
       else {
-        data.getFolderWorks(data.filepath[0].id);
+        data.funcLoad(data.getFolderWorks, data.filepath[0].id);
       }
 
       data.getTreeCollections();
@@ -48,7 +48,7 @@ export default function FoldFileCreator() {
           <h3 className="text-lg">Lütfen bir <span className='font-bold text-sea_green'>klasör</span> adı girin.</h3>
             <input className='input placeholder:opacity-50 w-full' type="text" placeholder="Buraya girin..." ref={data.foldNameRef} />
             <span id='foldWarn' className='text-sm text-red-600 hidden'>Lütfen gerekli bilgileri doldurun!</span>
-            <button onClick={() => addWorksApply()} className='green-btn float-right mt-3'>Kaydet</button>
+            <button onClick={() => data.funcLoad(addWorksApply)} className='green-btn float-right mt-3'>Kaydet</button>
         </label>
       </label>
     </div>

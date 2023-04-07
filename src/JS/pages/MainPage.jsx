@@ -2,8 +2,7 @@ import React , { useState , useRef , useEffect } from 'react'
 import { MainContext, ModalContext, ChartContext, ShareContext } from '../components/context'
 import WorkspaceAll from '../libraries/categories/Workspace';
 import Data from '../libraries/categories/Data';
-import { Outlet } from 'react-router-dom';
-
+import { Outlet, useNavigate } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import Sidebar from '../components/Sidebar';
 import Filepath from '../components/Filepath';
@@ -17,13 +16,81 @@ import Mark from '../components/panels/forms/Mark';
 import Pie from '../components/panels/forms/Pie';
 import Table from '../components/panels/forms/Table';
 import Pivot from '../components/panels/forms/Pivot';
-import Error from '../components/Error'
 import Loading from '../components/Loading'
+import Error from '../components/Error'
 import ShareModal from '../components/share/ShareModal';
+import Service from '../libraries/categories/Service';
 
 
 export default function MainPage() {
+  //! LOGIN CHECK ----------------------------------
+  var navigate = useNavigate();
 
+  const loginControl = async () => {
+    try {
+      let tkn = await Service.getProfile()
+    } catch (error) {
+      console.log(error);
+      navigate("/giris")
+    }
+  }
+
+  useEffect(() => {
+    if (localStorage.Token !== undefined) { loginControl() }
+    else { navigate("/giris") }
+  }, [])
+  //! --------------------------------------------
+
+  //! FUNCLOAD -----------------------------------
+  
+  const [errorText, setErrorText] = useState({code: "", message: "", response: ""});
+
+  const funcLoad = async (func, ...arg) => {
+    try {
+      document.getElementById('loadingScreen').checked = true;
+
+      let rt = await func(...arg)
+
+      document.getElementById('loadingScreen').checked = false;
+
+      return rt;
+      
+    } catch (error) {
+      document.getElementById('loadingScreen').checked = false;
+      document.getElementById('errorScreen').checked = true;
+      console.log(error);
+
+      let response = undefined;
+      if(error.response !== undefined && error.response !== null) response = error.response.data.Data
+      setErrorText({code: error.code, message: error.message, response: response})
+    }
+  }
+
+  const funcLoadForSpesific = async (loading_id, error_id, func, ...arg) => {
+    try {
+      document.getElementById(loading_id).checked = true;
+
+      let rt = await func(...arg)
+
+      document.getElementById(loading_id).checked = false;
+
+      return rt;
+      
+    } catch (error) {
+      console.log(loading_id);
+      console.log(error_id);
+      document.getElementById(loading_id).checked = false;
+      document.getElementById(error_id).checked = true;
+      console.log(error);
+
+      let response = undefined;
+      if(error.response !== undefined && error.response !== null) response = error.response.data.Data
+      setErrorText({code: error.code, message: error.message, response: response})
+    }
+  }
+
+  //! --------------------------------------------
+  
   const [collections, setCollections] = useState([]);
   const [folders, setFolders] = useState({directories: []});
   const [filesChildDirs, setFilesChildDirs] = useState({child_dirs: []});
@@ -36,6 +103,7 @@ export default function MainPage() {
   const [unionEditChecked, setUnionEditChecked] = useState(false);
   const [modalType, setModalType] = useState({});
   const [unionInformations, setUnionInformations] = useState({});
+  const [allFavorites, setAllFavorites] = useState([]);
 
   const [editCollectionDetails, setEditCollectionDetails] = useState({});
   const [editFolderDetails, setEditFolderDetails] = useState({});
@@ -52,33 +120,21 @@ export default function MainPage() {
   }
 
   const getColWorks = async (col_id = undefined) => {
-    document.getElementById('loadingScreen').checked = true;
-
     let resp = await WorkspaceAll.getCollections(col_id);
     setCollections(resp.Data.owned_collections);
-    
-    document.getElementById('loadingScreen').checked = false;
   }
   
   const getFolderWorks = async (col_id = undefined) => {
-    document.getElementById('loadingScreen').checked = true;
-
     let resp = await WorkspaceAll.getCollections(col_id);
     setFolders(resp.Data);
     setFilePath([{id: col_id, name: resp.Data.collection_name, url: "/" + col_id}]);
-
-    document.getElementById('loadingScreen').checked = false;
   }
 
 	const getFileWorks = async (fold_id = undefined) => {
-    document.getElementById('loadingScreen').checked = true;
-
     let resp = await WorkspaceAll.getFolders(fold_id);
 		setFilesChildDirs(resp.Data)
 		setFiles(resp.Data)
 		setFilePath(resp.Data.path)
-    
-    document.getElementById('loadingScreen').checked = false;
   }
 
   const deleteItems = async (del_type , id) => {
@@ -90,15 +146,15 @@ export default function MainPage() {
       let resp = await WorkspaceAll.deleteFolders(id);
 
       if(resp.Data.parent_directory === null) {
-        getFolderWorks(resp.Data.collection_id);
+        funcLoad(getFolderWorks, resp.Data.collection_id);
       }
       else {
-        getFileWorks(resp.Data.parent_directory);
+        funcLoad(getFileWorks, resp.Data.parent_directory);
       }
     }
     else if(del_type === 'file') {
       let resp = await WorkspaceAll.deleteFiles(id);
-      getFileWorks(resp.Data.directory_id);
+      funcLoad(getFileWorks, resp.Data.directory_id);
     }
     setTimeout(() => {
       getTreeCollections();
@@ -143,6 +199,47 @@ export default function MainPage() {
     setEditFileDetails(dt);
     fileNameRef.current.value = dt.page_name		
 	}
+
+  const getFavorites = async () => {
+    let favs = await WorkspaceAll.getFavorites();
+    console.log(favs);
+
+    if (favs !== undefined) {
+      for (let f of favs.Data) {
+        for (let c of Object.keys(favoriteRef.current)) {
+          if (f.page_id === parseInt(c) && (favoriteRef.current[f.page_id] !== null)) { //. Check null of ref currents
+            favoriteRef.current[f.page_id].classList.add("text-yellow-500")          
+          }
+        }
+      }
+
+      setAllFavorites(favs.Data);
+    }
+  }
+
+  const favoriteFile = async (id, type = undefined) => {
+
+    //f Check type. If delete from sidebar type = delete. If fav/delete from page btn we'll check again
+    if (type === "delete") {
+      let del = await WorkspaceAll.deleteFavorites(id);
+      if (favoriteRef.current[id] !== null && favoriteRef.current[id] !== undefined) {
+        favoriteRef.current[id].classList.remove("text-yellow-500")
+        console.log("a");
+      }
+    }
+    else {
+      if (favoriteRef.current[id].classList.contains("text-yellow-500")) {
+        let del = await WorkspaceAll.deleteFavorites(id);
+        favoriteRef.current[id].classList.remove("text-yellow-500")
+      }
+      else {
+        let fav = await WorkspaceAll.postFavorites(id);
+        favoriteRef.current[id].classList.add("text-yellow-500")
+      }
+    }
+    await getFavorites();
+
+  }
     
   const colWorksNameRef = useRef({value : ""});
   const colWorksNickRef = useRef({value : ""});
@@ -218,7 +315,7 @@ export default function MainPage() {
 
   const deleteModel = async (id) => {
     let resp = await Data.dltModel(id);
-    getList();
+    await getList();
   }
 
   const [unionList, setUnionList] = useState([]);
@@ -230,7 +327,7 @@ export default function MainPage() {
 
   const deleteUnion = async (id) => {
     let resp = await Data.dltUnion(id);
-    getUnions();
+    await getUnions();
   }
 
   const [viewList, setViewList] = useState([]);
@@ -267,6 +364,7 @@ export default function MainPage() {
   const sortColumnSelect = useRef([]);
   const sortColumnTypeSelect = useRef([]);
   const dataColumnRef = useRef([]);
+  const favoriteRef = useRef([]);
 
   const [colList, setColList] = useState([]);
   const [panelType, setPanelType] = useState("");
@@ -724,8 +822,6 @@ export default function MainPage() {
   const editPanel = (panelID) => {
     for(let p of pageContent.page_data.panels) {
       if(p.PanelID === panelID) {
-        document.getElementById('loadingScreen').checked = true;
-        
         setPanelEdit(true); // For using useState
 
         // Chart choose
@@ -1016,7 +1112,6 @@ export default function MainPage() {
 
     setTimeout(() => { //+ When we set panelEdit false, useEffect run again.
       setPanelEdit(false);
-      document.getElementById('loadingScreen').checked = false;
     }, 500);
 
   }, [panelEdit]) // Eğer allAxis , titleAxis , valueAxis , conditions , panelSort koyarsan bir şey silindiğinde çöküyor
@@ -1057,8 +1152,6 @@ export default function MainPage() {
   }
 
   const savePanel = () => {
-    document.getElementById('loadingScreen').checked = true;
-
     // GroupSelect' i çekmek için
     let selGroup = axisGroupSel(panelType)
 
@@ -1179,8 +1272,6 @@ export default function MainPage() {
 
     document.getElementById('chart_choose').checked = false;
     clearPanelInputs();
-  
-    document.getElementById('loadingScreen').checked = false;
   }
 
   const clearPanelInputs = () => {
@@ -1336,9 +1427,7 @@ export default function MainPage() {
   }
 
   const postShare = async () => {
-    if (shareUsernameRef.current.value !== "") {  //. Checked Username Input 
-      document.getElementById('loadingScreen').checked = true;
-
+    if (shareUsernameRef.current.value !== "") {  //. Checked Username Input
       let resp = await WorkspaceAll.postShare(shareItemInfo.shared_item_type , shareItemInfo.shared_item_id , shareUsernameRef.current.value , shareAuthRef.current.checked)
       console.log(resp);
 
@@ -1349,8 +1438,6 @@ export default function MainPage() {
   }
 
   const deleteShare = async (type, id) => {
-    document.getElementById('loadingScreen').checked = true;
-
     let resp = await WorkspaceAll.deleteShare(type, id);
     console.log(resp)
 
@@ -1371,7 +1458,7 @@ export default function MainPage() {
               <th className="px-2 py-1 truncate">{col.shared_to}</th>
               <th className="px-2 py-1 truncate text-right">
                 {/* <button onClick={() => editShare("collection", col.collection_share_id)} className='hover:text-sea_green transition duration-300 px-1 mr-1'><i className="fa-solid fa-pen-to-square"></i></button> */}
-                <button onClick={() => deleteShare("collection", col.collection_share_id)} className='hover:text-red-600 transition duration-300 px-1'><i className="fa-solid fa-xmark"></i></button>
+                <button onClick={() => funcLoad(deleteShare, "collection", col.collection_share_id)} className='hover:text-red-600 transition duration-300 px-1'><i className="fa-solid fa-xmark"></i></button>
               </th>
             </tr>
           )
@@ -1390,7 +1477,7 @@ export default function MainPage() {
               <th className="px-2 py-1 truncate">{dir.shared_to}</th>
               <th className="px-2 py-1 truncate text-right">
                 {/* <button onClick={() => editShare("directory", dir.directory_share_id)} className='hover:text-sea_green transition duration-300 px-1 mr-1'><i className="fa-solid fa-pen-to-square"></i></button> */}
-                <button onClick={() => deleteShare("directory", dir.directory_share_id)} className='hover:text-red-600 transition duration-300 px-1'><i className="fa-solid fa-xmark"></i></button>
+                <button onClick={() => funcLoad(deleteShare, "directory", dir.directory_share_id)} className='hover:text-red-600 transition duration-300 px-1'><i className="fa-solid fa-xmark"></i></button>
               </th>
             </tr>
           )
@@ -1409,7 +1496,7 @@ export default function MainPage() {
               <th className="px-2 py-1 truncate">{page.shared_to}</th>
               <th className="px-2 py-1 truncate text-right">
                 {/* <button onClick={() => editShare("page", page.page_share_id)} className='hover:text-sea_green transition duration-300 px-1 mr-1'><i className="fa-solid fa-pen-to-square"></i></button> */}
-                <button onClick={() => deleteShare("page", page.page_share_id)} className='hover:text-red-600 transition duration-300 px-1'><i className="fa-solid fa-xmark"></i></button>
+                <button onClick={() => funcLoad(deleteShare, "page", page.page_share_id)} className='hover:text-red-600 transition duration-300 px-1'><i className="fa-solid fa-xmark"></i></button>
               </th>
             </tr>
           )
@@ -1420,7 +1507,6 @@ export default function MainPage() {
     }
 
     setTable(resp);
-    document.getElementById('loadingScreen').checked = false;
   }
 
   const getIShare = async () => {
@@ -1441,8 +1527,6 @@ export default function MainPage() {
   }, [iShareItems])
   
   const openShareModal = (type, id, name) => {
-    document.getElementById('loadingScreen').checked = true;
-
     if (type === "COLLECTION") {
       shareItemRef.current.innerHTML = " (" + name + " - Koleksiyon)"
     }
@@ -1508,6 +1592,12 @@ export default function MainPage() {
     editFileDetails,
     shareItemInfo,
     checkInPage,
+    favoriteRef,
+    allFavorites,
+    errorText,
+    setAllFavorites,
+    getFavorites,
+    favoriteFile,
     setCheckInPage,
     clearRefs,
     deleteItems,
@@ -1530,6 +1620,9 @@ export default function MainPage() {
     treeCollections,
     getTreeCollections,
     setTreeCollections,
+
+    funcLoad,
+    funcLoadForSpesific,
   }
 
   const modal_data = {
@@ -1568,6 +1661,7 @@ export default function MainPage() {
     valueAxis,
     panel,
     btnShowHide,
+    errorText,
 
     conditionColumnSelect,
     conditionInput,
@@ -1596,6 +1690,8 @@ export default function MainPage() {
     dltAxis,
     dltPanel,
     editPanel,
+    funcLoad,
+    funcLoadForSpesific,
     getColList,
     modelNameSelect,
     refreshPage,
@@ -1650,7 +1746,7 @@ export default function MainPage() {
             <UnionDataModal />
             <ShareModal />
             <Loading />
-            {/* <Error err={error} /> */}
+            <Error />
           </ShareContext.Provider>
         </ChartContext.Provider>
       </ModalContext.Provider>

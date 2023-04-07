@@ -10,7 +10,7 @@ export default function Folders() {
 	const { colID } = useParams();
 
 	useEffect(() => {		//. First check sharedCollections. Then if it equals to 0 run getShare func. Then run check func and show-hide check.
-		data.getFolderWorks(parseInt(colID));
+		data.funcLoad(data.getFolderWorks, parseInt(colID));
 
 		if (share_data.sharedCollections.length === 0) {
 			share_data.getShare();
@@ -48,7 +48,7 @@ export default function Folders() {
   return (
 		<>
 			<h2 className="workspace-titles">Klasörler</h2>
-			<div className="grid xl:grid-cols-10 sm:grid-cols-4 grid-cols-2 grid-flow-row auto-rows-max gap-4 pl-[10px]">
+			<div className="grid 2xl:grid-cols-9 xl:grid-cols-7 sm:grid-cols-4 grid-cols-2 grid-flow-row auto-rows-max gap-4 pl-[10px]">
 
 				{data.folders.directories.map((folder) => (
 					
@@ -58,13 +58,13 @@ export default function Folders() {
 
 								{share_data.btnShowHide === true ?
 									<div className='flex z-2 justify-end'>
-										<label htmlFor="sharemodal" className="dlt-btn cursor-pointer w-7 h-7 flex justify-center items-center" onClick={() => data.openShareModal("DIRECTORY" , folder.directory_id, folder.directory_name)}>
+										<label htmlFor="sharemodal" className="dlt-btn cursor-pointer ml-[6px] h-7 flex justify-center items-center" onClick={() => data.funcLoad(data.openShareModal, "DIRECTORY" , folder.directory_id, folder.directory_name)}>
 											<i className="fa-solid fa-share-nodes"></i>
 										</label>
-										<label htmlFor="addWorksFold" className="dlt-btn cursor-pointer w-7 h-7 flex justify-center items-center" onClick={() => data.getFolderDetails(folder)} >
+										<label htmlFor="addWorksFold" className="dlt-btn cursor-pointer ml-[6px] h-7 flex justify-center items-center" onClick={() => data.funcLoad(data.getFolderDetails, folder)} >
 											<i className="fa-solid fa-pen-to-square"></i>
 										</label>
-										<label htmlFor="dltWorks" className="dlt-btn cursor-pointer w-7 h-7 flex justify-center items-center" onClick={() => {data.setDeleteItemRef(folder) ; data.setDeleteItemType("klasör")}}>
+										<label htmlFor="dltWorks" className="dlt-btn cursor-pointer mx-[6px] h-7 flex justify-center items-center" onClick={() => {data.setDeleteItemRef(folder) ; data.setDeleteItemType("klasör")}}>
 											<i className="fa-solid fa-xmark"></i>
 										</label>
 									</div>

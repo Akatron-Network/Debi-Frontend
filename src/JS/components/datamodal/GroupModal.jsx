@@ -90,7 +90,7 @@ export default function GroupModal() {
           <div className="form-control my-2">
             <div className="input-group shadow-md">
               <span className='bg-black_light text-grayXgray px-2 py-[7px] !rounded-l border border-jet_mid justify-center min-w-[35%] xl:truncate'>İşlem</span>
-              <input type="text" placeholder="İşlem girin. Örn: (A + B) * C" className="input my-0 input-bordered !rounded-r w-full h-auto" ref={data.calcRef} />
+              <input type="text" placeholder="İşlem girin. Örn: (A + B) * C" className="input my-0 input-bordered !rounded-l-none w-full h-auto" ref={data.calcRef} />
             </div>
           </div>
 

@@ -10,8 +10,7 @@ import Data from '../../libraries/categories/Data';
 
 export default function UnionDataModal() {
   const modal_data = useContext(ModalContext);
-  const maincontext_data = useContext(MainContext);
-  console.log(maincontext_data);
+  const { funcLoad } = useContext(MainContext);
 
   const [collections, setCollections] = useState([]);
   const [sourceColumns, setSourceColumns] = useState({});
@@ -66,7 +65,6 @@ export default function UnionDataModal() {
   //? Choose Collections, Name, Explanation -------------------------------
   const getCollections = async () => {
     let resp = await WorkspaceAll.getCollections();
-    console.log(resp)
     setCollections(resp.Data.owned_collections);
   }
 
@@ -219,9 +217,7 @@ export default function UnionDataModal() {
     new_sources.splice(index, 1)
 
     //Bunun amacı kaynak sildiğimizde kendisinden sonra gelen bir kaynak varsa onun bilgilerini aktarmak.
-    console.log(new_sources);
     for (let i in new_sources) {
-      console.log(new_sources[i])
       unionSourceModelSelectRef.current[i].value = new_sources[i].child_id;
       unionSourceNameRef.current[i].value = new_sources[i].child_name;
       unionSourceTitleNameRef.current[i].innerHTML = " (" + new_sources[i].child_name + ")";
@@ -293,7 +289,6 @@ export default function UnionDataModal() {
 
   const renderSourceColumnsOptions = (modelID, index, extraColOpts = {}) => {
 
-    console.log(modelID);
     let columns = [];
     let columns_option = {...sourceColumns, ...extraColOpts};
     let i = 0;
@@ -336,7 +331,6 @@ export default function UnionDataModal() {
             columns = columns.concat(arrAlias)
           }
         }
-        console.log(columns)
       }
     }
 
@@ -348,7 +342,6 @@ export default function UnionDataModal() {
       columns_option[index].push(<option key={i} value={c}>{c}</option>) // İleride eğer O/TBLCAHAR/CARI_KOD gibi bir value gelirse ayırmak için {c.split("/")[1]} - {c.split("/")[2]} kullanılabilir
       i++;
     }
-    console.log(columns_option);
 
     setSourceColumns(columns_option);
 
@@ -359,8 +352,6 @@ export default function UnionDataModal() {
 
   //? Others -------------------------------------------
   const refreshUnionTable = async () => {
-    document.getElementById('loadingScreen').checked = true;
-
     let columns = [...unionJSON.columns];
     let last_columns = {};
     let last_JSON = {
@@ -379,9 +370,8 @@ export default function UnionDataModal() {
     for (let c of collections) {
       if (c.collection_id === parseInt(unionCollectionNameRef.current.value)) gateway = c.connector.gateway_host
     }
-    console.log(last_JSON);
+
     let resp = await Data.postExecute(last_JSON, gateway);
-    console.log(resp)
 
     if (resp.Data.length > 0) {
       setExecuteUnionCols(Object.keys(resp.Data[0]).map((cols) => { // Kolon gözükürken Category diye gözükmesin istedik
@@ -394,13 +384,9 @@ export default function UnionDataModal() {
       }))
       setExecuteUnionRows(resp.Data.map((rows) => (Object.values(rows))))
     }
-    
-    document.getElementById('loadingScreen').checked = false;
   }
 
   const saveUnion = async () => {
-    document.getElementById('loadingScreen').checked = true;
-
     let columns = [...unionJSON.columns];
     let last_columns = {};
     let last_JSON = {...unionJSON};
@@ -413,9 +399,7 @@ export default function UnionDataModal() {
 
     let resp = {};
     if (!modal_data.unionEditChecked) {  // Şu an düzenlemede mi yoksa değil mi diye kontrol ediyoruz
-      console.log(last_JSON);
       resp = await Data.postUnion(last_JSON);
-      console.log(resp)
 
     } else {
       let union_id = unionJSON.union_id;  // Union_ID yi çektik
@@ -425,10 +409,8 @@ export default function UnionDataModal() {
         delete js.union_child_id
         delete js.union_id
       }
-      console.log(last_JSON);
 
       resp = await Data.putUnion(union_id, last_JSON);
-      console.log(resp)
 
     }
 
@@ -437,8 +419,6 @@ export default function UnionDataModal() {
       modal_data.getUnions();
       clearUnionInputs();
     }
-    
-    document.getElementById('loadingScreen').checked = false;
   }
 
   const clearUnionInputs = () => {
@@ -471,12 +451,10 @@ export default function UnionDataModal() {
   //? Edit Model ---------------------------------------
   useEffect(() => {
     //Edit check kontrolü yapılıyor burada. Edit mi yoksa yeni bir tane mi açıldı diye
-    if (modal_data.unionEditChecked) { editUnionModel(); }
+    if (modal_data.unionEditChecked) { funcLoad(editUnionModel); }
   }, [modal_data.unionEditChecked])
 
   const editUnionModel = () => {
-    document.getElementById('loadingScreen').checked = true;
-
     let js = {};
 
     for (let u of modal_data.unionList) {
@@ -484,7 +462,7 @@ export default function UnionDataModal() {
         js = {...u};
       }
     }
-    console.log(js);
+
     // js.columns = Object.keys(js.columns);
     setUnionJSON(js);
   }
@@ -500,7 +478,6 @@ export default function UnionDataModal() {
       unionExplanationRef.current.value = unionJSON.union_expl
 
       for (let c in unionJSON.columns) {
-        console.log(unionJSON.columns)
         unionColumnsNameRef.current[c].value = unionJSON.columns[c]
       }
 
@@ -534,8 +511,6 @@ export default function UnionDataModal() {
         unionJSON.childs[child].columns.splice(arr[0], (unionJSON.childs[child].columns.length - parseInt(arr[0])))
       }
     }
-    
-    document.getElementById('loadingScreen').checked = false;
   }, [sourceColumns])
   
   //? --------------------------------------------------
@@ -584,13 +559,13 @@ export default function UnionDataModal() {
             <div className="form-control mb-2">
               <div className="input-group shadow-md">
                 <span className='bg-black_light text-grayXgray px-2 py-[7px] !rounded-l border border-jet_mid justify-center min-w-[35%] xl:truncate'>B. Model Adı</span>
-                <input type="text" placeholder="B. Model Adı girin" className="input my-0 input-bordered !rounded-r w-full h-auto" ref={unionNameRef} onBlur={() => nameExplanationSave("name")} />
+                <input type="text" placeholder="B. Model Adı girin" className="input my-0 input-bordered !rounded-l-none w-full h-auto" ref={unionNameRef} onBlur={() => nameExplanationSave("name")} />
               </div>
             </div>
             <div className="form-control mb-2">
               <div className="input-group shadow-md">
                 <span className='bg-black_light text-grayXgray px-2 py-[7px] !rounded-l border border-jet_mid justify-center min-w-[35%] xl:truncate'>B. Model Açıklaması</span>
-                <input type="text" placeholder="B. Model Açıklaması girin" className="input my-0 input-bordered !rounded-r w-full h-auto" ref={unionExplanationRef} onBlur={() => nameExplanationSave("exp")} />
+                <input type="text" placeholder="B. Model Açıklaması girin" className="input my-0 input-bordered !rounded-l-none w-full h-auto" ref={unionExplanationRef} onBlur={() => nameExplanationSave("exp")} />
               </div>
             </div>
 
@@ -628,7 +603,7 @@ export default function UnionDataModal() {
             <h1 className="text-xl text-platinium mb-2 drop-shadow-lg pl-2 inline-flex">
               Ön İzleme
             </h1>
-            <button className="green-btn float-right" onClick={refreshUnionTable}>
+            <button className="green-btn float-right" onClick={() => funcLoad(refreshUnionTable)}>
               <i className="fa-solid fa-rotate"></i>
             </button>
             <div id="unionReview" className="w-full bg-darker_jet rounded shadow-md border border-jet_mid p-2">
@@ -641,7 +616,7 @@ export default function UnionDataModal() {
               <label htmlFor="unionmodal" onClick={clearUnionInputs} className="gray-btn mr-2">
                 Kapat
               </label>
-              <button onClick={saveUnion} className="green-btn">Kaydet</button>
+              <button onClick={() => funcLoad(saveUnion)} className="green-btn">Kaydet</button>
             </div>
           </div>
         </div>

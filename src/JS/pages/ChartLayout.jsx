@@ -1,23 +1,37 @@
 import React , {useContext , useEffect , useState} from 'react'
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import DragResizePanels from '../components/DragResizePanels';
 import WorkspaceAll from '../libraries/categories/Workspace'
 import {ChartContext , MainContext, ShareContext} from '../components/context'
+import Service from '../libraries/categories/Service';
 
 export default function ChartLayout() {
   const chart_data = useContext(ChartContext);
   const share_data = useContext(ShareContext);
-  const { setFilePath, setCheckInPage } = useContext(MainContext);
+  const { setFilePath, setCheckInPage, funcLoad } = useContext(MainContext);
 
 	const { fileID } = useParams();
 
-  useEffect(() => {
-    // document.getElementById('file_path_top').style.display = "none";
-    // document.getElementById('page-btn').style.display = "flex";
-    // document.getElementById('new_btn').style.display = "flex";
-    // document.getElementById('save-page-btn').style.display = "flex";
+  //! LOGIN CHECK ----------------------------------
+  var navigate = useNavigate();
 
-    getFiles(fileID);
+  const loginControl = async () => {
+    try {
+      let tkn = await Service.getProfile()
+    } catch (error) {
+      console.log(error);
+      navigate("/giris")
+    }
+  }
+
+  useEffect(() => {
+    if (localStorage.Token !== undefined) { loginControl() }
+    else { navigate("/giris") }
+  }, [])
+  //! --------------------------------------------
+
+  useEffect(() => {
+    funcLoad(getFiles, fileID);
     
 		if (share_data.sharedCollections.length === 0) {
 			share_data.getShare();
@@ -27,9 +41,6 @@ export default function ChartLayout() {
     return () => {      
       if (document.getElementById('file_path_top') !== null) { // Panel ekranında çıkış yaparken hata verebiliyor. O yüzden koydum
         document.getElementById('file_path_top').style.display = "block";
-        // document.getElementById('new_btn').style.display = "none";
-        // document.getElementById('page-btn').style.display = "none";
-        // document.getElementById('save-page-btn').style.display = "none";
         setCheckInPage(false);
       }
     }
@@ -39,12 +50,19 @@ export default function ChartLayout() {
 		check();
 	}, [chart_data.pageContent])
 
+  //f For Coordinates Error
+  useEffect(() => {
+    return () => {
+      chart_data.setPageContent({page_data : {panels: [], dragresize: false}});
+    }
+  }, [])
+  
 	const check = () => {
 
 		for (let col of share_data.sharedCollections) { 
 
       if (col.collection_id === chart_data.pageContent.collection_id) { //. Check collectionID
-        if (col.editable === false) {	//. Check editable
+        if (col.editable === false) {	                                  //. Check editable
           share_data.setBtnShowHide(false);
           return;
         }
@@ -77,7 +95,6 @@ export default function ChartLayout() {
     setFilePath(resp.Data.path);
     chart_data.setPageContent(resp.Data);
     setCheckInPage(true);
-    // setTitle(resp.Data.page_name);
   }
   
   return (

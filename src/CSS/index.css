@@ -169,6 +169,7 @@
       justify-start
       px-3
       pl-0
+      pr-9
       w-full
       h-8
       min-h-8
@@ -271,7 +272,7 @@
       mx-0
       border-[1px]
       border-transparent
-      rounded
+      !rounded
       focus:bg-onyx
       focus:text-platinium
       focus:border-onyx_light

@@ -11,7 +11,7 @@ export default function Files() {
 	const { foldID } = useParams();
 
 	useEffect(() => {		//. First check sharedCollections. Then if it equals to 0 run getShare func. Then run check func and show-hide check.
-	  data.getFileWorks(parseInt(foldID));
+	  data.funcLoad(data.getFileWorks, parseInt(foldID));
 
 		if (share_data.sharedDirectories.length === 0) {
 			share_data.getShare();
@@ -23,6 +23,15 @@ export default function Files() {
 	useEffect(() => {
 		check();
 	}, [share_data.sharedDirectories])
+
+	useEffect(() => {
+		data.getFavorites()
+
+		return () => {
+			data.setAllFavorites([]);
+		}
+	}, [])
+	
 
 	const check = () => {	//. If sharedCol have directory show - hide return to false;
 
@@ -56,7 +65,7 @@ export default function Files() {
   return (
 		<>
 			<h2 className="workspace-titles">Klasörler</h2>
-			<div className="grid xl:grid-cols-10 sm:grid-cols-4 grid-cols-2 grid-flow-row auto-rows-max gap-4 pl-[10px]">
+			<div className="grid 2xl:grid-cols-9 xl:grid-cols-7 sm:grid-cols-4 grid-cols-2 grid-flow-row auto-rows-max gap-4 pl-[10px]">
 
 				{data.filesChildDirs.child_dirs.map((folder) => (
 
@@ -65,13 +74,13 @@ export default function Files() {
 
 							{share_data.btnShowHide === true ?
 								<div className='flex z-2 justify-end'>
-									<label htmlFor="sharemodal" className="dlt-btn cursor-pointer w-7 h-7 flex justify-center items-center" onClick={() => data.openShareModal("DIRECTORY" , folder.directory_id, folder.directory_name)}>
+									<label htmlFor="sharemodal" className="dlt-btn cursor-pointer ml-[6px] h-7 flex justify-center items-center" onClick={() => data.funcLoad(data.openShareModal, "DIRECTORY" , folder.directory_id, folder.directory_name)}>
 										<i className="fa-solid fa-share-nodes"></i>
 									</label>
-									<label htmlFor="addWorksFold" className="dlt-btn cursor-pointer w-7 h-7 flex justify-center items-center" onClick={() => data.getFolderDetails(folder)} >
+									<label htmlFor="addWorksFold" className="dlt-btn cursor-pointer ml-[6px] h-7 flex justify-center items-center" onClick={() => data.funcLoad(data.getFolderDetails, folder)} >
 										<i className="fa-solid fa-pen-to-square"></i>
 									</label>
-									<label htmlFor="dltWorks" className="dlt-btn cursor-pointer w-7 h-7 flex justify-center items-center" onClick={() => {data.setDeleteItemRef(folder) ; data.setDeleteItemType("klasör")}}>
+									<label htmlFor="dltWorks" className="dlt-btn cursor-pointer mx-1 h-7 flex justify-center items-center" onClick={() => {data.setDeleteItemRef(folder) ; data.setDeleteItemType("klasör")}}>
 										<i className="fa-solid fa-xmark"></i>
 									</label>
 								</div>
@@ -102,35 +111,38 @@ export default function Files() {
 			<hr className="hrCols"></hr>
 
 			<h2 className="workspace-titles">Sayfalar</h2>
-			<div className="grid xl:grid-cols-10 sm:grid-cols-4 grid-cols-2 grid-flow-row auto-rows-max gap-4 pl-[10px]">
-				{data.files.pages.map((file) => (
+			<div className="grid 2xl:grid-cols-9 xl:grid-cols-7 sm:grid-cols-4 grid-cols-2 grid-flow-row auto-rows-max gap-4 pl-[10px]">
+				{data.files.pages.map((file) => {				
+					return (
+						<div key={file.page_id} className="fold-card  col-span-1">
+							<div className="card">
 
-					<div key={file.page_id} className="fold-card  col-span-1">
-						<div className="card">
-
-							{share_data.btnShowHide === true ?
-								<div className='flex z-2 justify-end'>
-									<label htmlFor="sharemodal" className="dlt-btn cursor-pointer w-7 h-7 flex justify-center items-center" onClick={() => data.openShareModal("PAGE" , file.page_id, file.page_name)}>
-										<i className="fa-solid fa-share-nodes"></i>
-									</label>
-									<label htmlFor="addWorksFile" className="dlt-btn cursor-pointer w-7 h-7 flex justify-center items-center" onClick={() => data.getFileDetails(file)} >
-										<i className="fa-solid fa-pen-to-square"></i>
-									</label>
-									<label htmlFor="dltWorks" className="dlt-btn cursor-pointer w-7 h-7 flex justify-center items-center" onClick={() => {data.setDeleteItemRef(file) ; data.setDeleteItemType("sayfa")}}>
-										<i className="fa-solid fa-xmark"></i>
-									</label>
-								</div>
-							: undefined}
-							
-							<div className="card-bg file-bg"></div>
-							<Link className='link-title' to={file.page_id.toString()}>
-								<div className="col-content fold-content">
-									<h5>{file.page_name}</h5>
-								</div>
-							</Link>
+								{share_data.btnShowHide === true ?
+									<div className='flex z-2 justify-end'>
+										<label className="dlt-btn cursor-pointer ml-[6px] h-7 flex justify-center items-center"  ref={(el) => {data.favoriteRef.current[file.page_id] = el}} onClick={() => data.favoriteFile(file.page_id)}>
+											<i className="fas fa-star"></i>
+										</label>
+										<label htmlFor="sharemodal" className="dlt-btn cursor-pointer ml-[6px] h-7 flex justify-center items-center" onClick={() => data.funcLoad(data.openShareModal, "PAGE" , file.page_id, file.page_name)}>
+											<i className="fa-solid fa-share-nodes"></i>
+										</label>
+										<label htmlFor="addWorksFile" className="dlt-btn cursor-pointer ml-[6px] h-7 flex justify-center items-center" onClick={() => data.funcLoad(data.getFileDetails, file)} >
+											<i className="fa-solid fa-pen-to-square"></i>
+										</label>
+										<label htmlFor="dltWorks" className="dlt-btn cursor-pointer mx-[6px] h-7 flex justify-center items-center" onClick={() => {data.setDeleteItemRef(file) ; data.setDeleteItemType("sayfa")}}>
+											<i className="fa-solid fa-xmark"></i>
+										</label>
+									</div>
+								: undefined}
+								
+								<div className="card-bg file-bg"></div>
+								<Link className='link-title' to={file.page_id.toString()}>
+									<div className="col-content fold-content">
+										<h5>{file.page_name}</h5>
+									</div>
+								</Link>
+							</div>
 						</div>
-					</div>
-				))}
+				)})}
 
 				{share_data.btnShowHide === true ?
 					<label htmlFor="addWorksFile" className="fold-card add col-span-1"  onClick={() => data.clearRefs("sayfa")}>

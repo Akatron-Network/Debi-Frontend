@@ -1,8 +1,9 @@
 import React , { useContext } from 'react'
-import { DataModalContext } from '../context'
+import { DataModalContext, MainContext } from '../context'
 
 export default function SaveAsNameModal() {
   const data = useContext(DataModalContext);
+  const { funcLoad } = useContext(MainContext);
 
   return (
     <>
@@ -13,7 +14,7 @@ export default function SaveAsNameModal() {
         <h3 className="text-base">Lütfen <span className='font-bold text-sea_green'>yeni model</span> adı girin.</h3>
           <input className='input placeholder:opacity-50 w-full' type="text" placeholder="Buraya girin..." ref={data.saveAsNameRef} />
           <span id='saveAsWarn' className='text-sm text-red-600 hidden'>Lütfen farklı bir model adı girin!</span>
-          <button onClick={() => data.saveAsDataJSON()} className='green-btn float-right mt-3'>Kaydet</button>
+          <button onClick={() => funcLoad(data.saveAsDataJSON)} className='green-btn float-right mt-3'>Kaydet</button>
       </label>
     </label>
     </>

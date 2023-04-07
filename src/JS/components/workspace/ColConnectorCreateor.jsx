@@ -53,43 +53,29 @@ export default function ColConnectorCreateor() {
   }
 
   const testConnection = async () => {
-    document.getElementById('loadingScreen').checked = true;
-
     if(data.colWorksSelectRef.current.value !== "default" && data.colWorksNickRef.current.value !== "" && data.colWorksPassRef.current.value !== "" && data.colWorksDBRef.current.value !== "" && data.colServerRef.current.value !== "" && data.colPortRef.current.value !== "") {
       
       var connectionContent = createContent();
 
-      try {
-        if(data.checkedConnector !== true) {
-          var connectResp = await Data.putConnector(data.colWorksSelectRef.current.value , connectionContent);
-        }
-        else {
-          var connectResp = await Data.putConnector(data.colWorksSelectRef.current.value , connectionContent , data.colConnectorServerRef.current.value);
-        }
-        
-        checkWarn(3);
-        data.setDbSchemas(Object.keys(connectResp.Data.scheme_similarity))
-        data.setCheckedConnection(true);
-        document.getElementById('loadingScreen').checked = false;
-        return connectResp;
-
-      } catch (error) {
-        document.getElementById('loadingScreen').checked = false;
-        console.log(error);
-        checkWarn(2)
+      if(data.checkedConnector !== true) {
+        var connectResp = await Data.putConnector(data.colWorksSelectRef.current.value , connectionContent);
       }
-
+      else {
+        var connectResp = await Data.putConnector(data.colWorksSelectRef.current.value , connectionContent , data.colConnectorServerRef.current.value);
+      }
+      
+      checkWarn(3);
+      data.setDbSchemas(Object.keys(connectResp.Data.scheme_similarity))
+      data.setCheckedConnection(true);
+      return connectResp;
+      // checkWarn(2)
 
     } else {checkWarn(1)}
-
-    document.getElementById('loadingScreen').checked = false;
   }
  
   const addWorksApply = async () => {
-    document.getElementById('loadingScreen').checked = true;
-
     if(data.colWorksSelectRef.current.value !== "default" && data.colNameRef.current.value !== "" && data.colWorksNickRef.current.value !== "" && data.colWorksPassRef.current.value !== "" && data.colWorksDBRef.current.value !== "" && data.colServerRef.current.value !== "" && data.colPortRef.current.value !== "") {
-      var connectResp = await testConnection();
+      var connectResp = await funcLoad(testConnection);
       var connectionContent = createContent();
 
       if(connectResp.Success === true) {
@@ -120,8 +106,6 @@ export default function ColConnectorCreateor() {
       }
 
     } else {checkWarn(1)}
-
-    document.getElementById('loadingScreen').checked = false;
   }
 
   // const checkConnector = () => {
@@ -172,7 +156,7 @@ export default function ColConnectorCreateor() {
             <div className="form-control mb-2">
               <div className="input-group shadow-md">
                 <span className='bg-black_light text-grayXgray px-2 py-[7px] !rounded-l border border-jet_mid justify-center min-w-[35%] xl:truncate'>Geçit Adresi</span>
-                <input type="text" placeholder="Geçit Adresi girin" className="input my-0 input-bordered !rounded-r w-full h-auto" ref={data.colConnectorServerRef} value="127.0.0.1" onChange={() => {}} />
+                <input type="text" placeholder="Geçit Adresi girin" className="input my-0 input-bordered !rounded-l-none w-full h-auto" ref={data.colConnectorServerRef} value="127.0.0.1" onChange={() => {}} />
               </div>
             </div>
           </div>
@@ -193,10 +177,11 @@ export default function ColConnectorCreateor() {
           })}
 
           {data.checkedConnection === true ?
-            <button onClick={() => addWorksApply()} className='green-btn float-right mt-1'>Kaydet</button> :
-            <button onClick={() => addWorksApply()} disabled className='green-btn float-right mt-1'>Kaydet</button>
+            <button onClick={() => data.funcLoad(addWorksApply)} className='green-btn float-right mt-1'>Kaydet</button> 
+            :
+            <button onClick={() => data.funcLoad(addWorksApply)} disabled className='green-btn float-right mt-1'>Kaydet</button>
           }
-          <button onClick={() => testConnection()} className='gray-btn float-right mr-1 mt-1'>Bağlantı Kontrol</button>
+          <button onClick={() => data.funcLoad(testConnection)} className='gray-btn float-right mr-1 mt-1'>Bağlantı Kontrol</button>
         </label>
       </label>
     </div>

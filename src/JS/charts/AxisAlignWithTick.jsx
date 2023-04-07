@@ -3,6 +3,8 @@ import ReactECharts from 'echarts-for-react';
 import Data from '../libraries/categories/Data';
 import WorkspaceAll from '../libraries/categories/Workspace';
 import {ChartContext} from '../components/context';
+import LoadingForCharts from './modals/LoadingForCharts';
+import ErrorForCharts from './modals/ErrorForCharts';
 
 const Page = (props) => {
   const chart_data = useContext(ChartContext);
@@ -12,11 +14,13 @@ const Page = (props) => {
   var yAxisData = [];
 
   useEffect(() => {
-    getData();
+    let loading_type = 'loadingScreenAxisAlign' + props.panelID
+    let error_type = 'errorScreenAxisAlign' + props.panelID
+    chart_data.funcLoadForSpesific(loading_type, error_type, getData);
   }, [chart_data.pageContent.page_data])
 
   const getData = async () => {
-    document.getElementById('loadingScreenAxisAlign' + props.panelID).checked = true;
+    // document.getElementById('loadingScreenAxisAlign' + props.panelID).checked = true;
 
     let col = await WorkspaceAll.getCollections(chart_data.pageContent.collection_id); //! Get Gateway host
 
@@ -167,7 +171,7 @@ const Page = (props) => {
 
     });
 
-    document.getElementById('loadingScreenAxisAlign' + props.panelID).checked = false;
+    // document.getElementById('loadingScreenAxisAlign' + props.panelID).checked = false;
   
   }
   
@@ -357,16 +361,9 @@ const Page = (props) => {
   return (
     <>
       <ReactECharts className='!h-full pb-2 pt-12' option={options} />
-
-      <input type="checkbox" id={"loadingScreenAxisAlign" + props.panelID} className="modal-toggle" />
-      <div className="modal bg-modal_back">
-        <div className="text-center">
-          <div className="lds-ring"><div></div><div></div><div></div><div></div></div>
-          <div className="modal-action justify-center">
-            <label htmlFor={"loadingScreenAxisAlign" + props.panelID} className="gray-btn hidden">Kapat!</label>
-          </div>
-        </div>
-      </div>
+      
+      <LoadingForCharts id={"loadingScreenAxisAlign" + props.panelID} />
+      <ErrorForCharts id={"errorScreenAxisAlign" + props.panelID} error={chart_data.errorText} />
     </>
   );
 };

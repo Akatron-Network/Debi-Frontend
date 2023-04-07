@@ -4,7 +4,6 @@ import ModalSourceTable from './ModalSourceTable';
 
 export default function ManuelRelatedTable() {
   const data = useContext(DataModalContext);
-  console.log(data);
 
   const [srcRel, setSrcRel] = useState([]);
   const [rfrRel, setRfrRel] = useState([]);

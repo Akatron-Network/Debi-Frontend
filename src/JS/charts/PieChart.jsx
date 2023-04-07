@@ -3,6 +3,8 @@ import ReactECharts from 'echarts-for-react';
 import Data from '../libraries/categories/Data';
 import WorkspaceAll from '../libraries/categories/Workspace';
 import {ChartContext} from '../components/context';
+import ErrorForCharts from './modals/ErrorForCharts';
+import LoadingForCharts from './modals/LoadingForCharts';
 
 const Page = (props) => {
   const chart_data = useContext(ChartContext);
@@ -12,12 +14,12 @@ const Page = (props) => {
   var yAxisData = [];
 
   useEffect(() => {
-    getData();
+    let loading_type = 'loadingScreenPie' + props.panelID
+    let error_type = 'errorScreenPie' + props.panelID
+    chart_data.funcLoadForSpesific(loading_type, error_type, getData);
   }, [chart_data.pageContent.page_data])
 
   const getData = async () => {
-    document.getElementById('loadingScreenPie' + props.panelID).checked = true;
-    
     let col = await WorkspaceAll.getCollections(chart_data.pageContent.collection_id); //! Get Gateway host
     
     let where_plain = []
@@ -148,8 +150,6 @@ const Page = (props) => {
       }],
   
     });
-
-    document.getElementById('loadingScreenPie' + props.panelID).checked = false;
   }
   
   // setOptions({
@@ -249,16 +249,9 @@ const Page = (props) => {
   return (
     <>
       <ReactECharts className='!h-full pb-2 pt-12' option={options} />
-
-      <input type="checkbox" id={"loadingScreenPie" + props.panelID} className="modal-toggle" />
-      <div className="modal bg-modal_back">
-        <div className="text-center">
-          <div className="lds-ring"><div></div><div></div><div></div><div></div></div>
-          <div className="modal-action justify-center">
-            <label htmlFor={"loadingScreenPie" + props.panelID} className="gray-btn hidden">Kapat!</label>
-          </div>
-        </div>
-      </div>
+      
+      <LoadingForCharts id={"loadingScreenPie" + props.panelID} />
+      <ErrorForCharts id={"errorScreenPie" + props.panelID} error={chart_data.errorText} />
     </>
   );
 };

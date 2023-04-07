@@ -1,4 +1,4 @@
-import React , { useRef } from 'react'
+import React , { useRef, useEffect } from 'react'
 import { useNavigate } from "react-router-dom";
 import ParticlesComponent from '../components/ParticlesComponent'
 import debi_logo from '../../img/ico.png';
@@ -67,7 +67,6 @@ export default function LoginPage() {
 
   const login_nicknameRef = useRef(null);
   const login_passRef = useRef(null);
-  var navigate = useNavigate();
 
   const login = async (e) => {
 
@@ -80,6 +79,7 @@ export default function LoginPage() {
     else {
 
       let loginans = await Service.login(login_nicknameRef.current.value , login_passRef.current.value)
+      console.log(loginans);
 
       if (loginans === false) {
         document.getElementById('warn_2').classList.add('hidden');
@@ -94,6 +94,17 @@ export default function LoginPage() {
     }
 
   }
+
+  const a = async () => {
+    let a = await Service.getProfile()
+    console.log(a);
+    console.log(a.Success);
+  }
+
+  useEffect(() => {
+    a();
+  }, [])
+  
 
   return (
     <>

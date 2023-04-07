@@ -2,7 +2,7 @@ import React , { useContext , useState , useEffect , useRef } from 'react'
 import Table from './Table';
 import WorkspaceAll from '../../libraries/categories/Workspace';
 import Data from '../../libraries/categories/Data';
-import { DataModalContext , ModalContext } from '../context'
+import { DataModalContext , MainContext, ModalContext } from '../context'
 import SourceTable from './SourceTable';
 import Relations from './Relations';
 import RelationsAbsolute from './RelationsAbsolute';
@@ -14,10 +14,9 @@ import ManuelRelatedTable from './ManuelRelatedTable';
 import RenameColumns from './RenameColumns';
 import SaveAsNameModal from './SaveAsNameModal';
             
-
 export default function DataModal() {
   const modal_data = useContext(ModalContext);
-  console.log(modal_data)
+  const { funcLoad } = useContext(MainContext);
 
   const dataColSelectRef = useRef({ value: "default" });
   const dataModalName = useRef("");
@@ -107,30 +106,27 @@ export default function DataModal() {
 
     }
 
-    console.log(modalJSON)
-
-
     if (collections[0].db_scheme_id === modalJSON.db_scheme_id) {
       dataColSelectRef.current.value = collections[0].collection_id; //* Koleksiyon adı
     }
     dataModalName.current.value = modalJSON.model_name; //* Model adı
 
-    let rt = await colNameSelect(dataColSelectRef.current.value); //* Kaynak tablo getir
+    let rt = await funcLoad(colNameSelect, dataColSelectRef.current.value); //* Kaynak tablo getir
     var dt = rt[1].filter((data) => (data.table === modalJSON.query.table)); //*Kaynak tablolardan bizimki ile aynı olanı seçtik
-    let chsTbls = [(await chooseSource(modalJSON.query.table, dt[0].category, dt[0].name, rt[0], undefined ,true))[0]]; //* Kaynak tablo seçimi
+    let chsTbls = [(await funcLoad(chooseSource,modalJSON.query.table, dt[0].category, dt[0].name, rt[0], undefined ,true))[0]]; //* Kaynak tablo seçimi
 
-    let tblsTemp = {"O" : (await chooseSource(modalJSON.query.table, dt[0].category, dt[0].name, rt[0], undefined ,true))[1].Data}
+    let tblsTemp = {"O" : (await funcLoad(chooseSource, modalJSON.query.table, dt[0].category, dt[0].name, rt[0], undefined ,true))[1].Data}
 
     let chsColsTemp = {};
-    chsColsTemp["O"] = (await chooseSource(modalJSON.query.table, dt[0].category, dt[0].name, rt[0], undefined ,true))[1].Data.source_table.columns; //* Tüm kolonları çektik aliaslarına öre sonrasında seçilileri yeşile boyayacağız
+    chsColsTemp["O"] = (await funcLoad(chooseSource, modalJSON.query.table, dt[0].category, dt[0].name, rt[0], undefined ,true))[1].Data.source_table.columns; //* Tüm kolonları çektik aliaslarına öre sonrasında seçilileri yeşile boyayacağız
 
     let aliaslist = ["O"]
     for (let r in modalJSON.query.includes) { //* İlişkili tablo ekleme
       let a = getAlias(aliaslist)
       aliaslist.push(a)
-      chsTbls.push((await addRelatedTable(modalJSON.query.includes[r].table, "" , rt[0], true, a ))[0])
-      chsColsTemp[r] = ((await addRelatedTable(modalJSON.query.includes[r].table, "" , rt[0], true, a ))[1].Data.source_table.columns)
-      tblsTemp[r] = (await addRelatedTable(modalJSON.query.includes[r].table, "" , rt[0], true, a ))[1].Data;
+      chsTbls.push((await funcLoad(addRelatedTable, modalJSON.query.includes[r].table, "" , rt[0], true, a ))[0])
+      chsColsTemp[r] = ((await funcLoad(addRelatedTable, modalJSON.query.includes[r].table, "" , rt[0], true, a ))[1].Data.source_table.columns)
+      tblsTemp[r] = (await funcLoad(addRelatedTable, modalJSON.query.includes[r].table, "" , rt[0], true, a ))[1].Data;
     }
     setChsCols(chsColsTemp);
     setChosenTables(chsTbls);
@@ -205,8 +201,6 @@ export default function DataModal() {
     setAllTransCols(transColTemp);
 
     // document.getElementById('elm_main_0').classList.add("hidden");
-
-    console.log(dataJSON)
     //* Yeniden adlandırılmış bir kolon varsa yanına yazdırmak için
     let alias = "";
     // renamedTitleRef.current[props.main + "-" + col.name]
@@ -234,10 +228,7 @@ export default function DataModal() {
           }
         }
       }
-    }
-    
-    document.getElementById('loadingScreen').checked = false;
-  
+    }  
   }, [chsCols])
 
   const resize = (id) => {
@@ -450,12 +441,8 @@ export default function DataModal() {
   };
 
   const colNameSelect = async (id) => {
-    document.getElementById('loadingScreen').checked = true;
-
     let col = await WorkspaceAll.getCollections(id); //! Get Gateway host
-    console.log(col)
     let resp = await Data.getExplorer(id, col.Data.connector.gateway_host);
-    console.log(resp)
 
     source_table();
 
@@ -464,7 +451,6 @@ export default function DataModal() {
     setFilteredData(resp.Data); //!We create filteredData for filtered datas, because we don't want change sourcetable
     setDataJSON({...dataJSON, collection_id: id})
 
-    document.getElementById('loadingScreen').checked = false;
     return [col.Data.connector.gateway_host , resp.Data];
   };
 
@@ -487,8 +473,6 @@ export default function DataModal() {
   };
 
   const chooseSource = async (table, category = "", nameTable = "" , gatewayHost , type , edit = false) => {
-    document.getElementById('loadingScreen').checked = true;
-
     //! Get table relations
     var resp = await Data.getExplorer(
       dataColSelectRef.current.value,
@@ -496,7 +480,6 @@ export default function DataModal() {
       table,
       true
     );
-    console.log(resp);
 
     if (type === "modal") { //Fazladan ilişkili tablo eklemek istediğimizde bunu uygulayacak.
 
@@ -543,13 +526,9 @@ export default function DataModal() {
   
     close_s_tbl(type);
     setFilteredData(sourceTable); // soruceTablesJSON(yani kaynak tabloları arattığımız yer) sıfırlamak için yapıyoruz
-    
-    document.getElementById('loadingScreen').checked = false;
   };
 
   const addRelatedTable = async (table , rel_definition = "" , gatewayHost , edit = false, sAlias) => {
-    document.getElementById('loadingScreen').checked = true;
-
     let resp = await Data.getExplorer(
       dataColSelectRef.current.value,
       gatewayHost,
@@ -596,8 +575,6 @@ export default function DataModal() {
         includes: {...dataJSON.query.includes , [alias]: includesJSON},
       },
     });
-    
-    document.getElementById('loadingScreen').checked = false;
   };
 
   const dltRelatedTable = async (alias , keyID) => {
@@ -622,7 +599,7 @@ export default function DataModal() {
         if(main === "main") {
           if (renamedTitleRef.current[main + "-" + col_name].innerHTML !== "") { // Eğer yeniden adlandırıldıysa yeniden adlandırılanı silecek
             let title = col_name + "|"  + renamedTitleRef.current[main + "-" + col_name].innerHTML.replace("(" , "").replace(")" , "")
-            console.log(title)
+            
             delete dataJSON.query.select[title];
           } else {
             delete dataJSON.query.select[col_name];
@@ -631,7 +608,7 @@ export default function DataModal() {
         else {
           if (renamedTitleRef.current[main + "-" + col_name].innerHTML !== "") { // Eğer yeniden adlandırıldıysa yeniden adlandırılanı silecek
             let title = col_name + "|"  + renamedTitleRef.current[main + "-" + col_name].innerHTML.replace("(" , "").replace(")" , "")
-            console.log(title)
+            
             delete dataJSON.query.includes[main].select[title];
           } else {
             delete dataJSON.query.includes[main].select[col_name];
@@ -693,12 +670,11 @@ export default function DataModal() {
     let name = "";
     if (renamedTitleRef.current[main + "-" + col_name].innerHTML !== "") {
       let title = renamedTitleRef.current[main + "-" + col_name].innerHTML.replace("(" , "").replace(")" , "")
-      console.log(title)
+      
       name = col_name + "|" + title
     } else {
       name = col_name;
     }
-    console.log(name);
 
     let selID = document.getElementById("sel_" + main + "_" + index);
     let group = selID.value;
@@ -740,34 +716,25 @@ export default function DataModal() {
   }
 
   const refreshTable = async () => {
-    document.getElementById('loadingScreen').checked = true;
-
     let dt = {...dataJSON};
     dt.query['includes'] = Object.values(dt.query['includes']);
-    console.log(dt);
     
     let incold = {}
     for (let tb of dataJSON.query.includes) {
       incold[tb.alias] = tb
     }
-    console.log(incold)
     dataJSON.query.includes = incold
     
     dt.query["limit"] = 1000;
-    console.log(dt)
     let resp = await Data.postExecute(dt, gatewayHost);
-    console.log(resp)
 
     setExecuteResp(resp.Data);
     if (resp.Data.length > 0) setExecuteCols(Object.keys(resp.Data[0]).map((cols) => ({name: cols})))
     //* boş veri döndü hatası döndür
     setExecuteRows(resp.Data.map((rows) => (Object.values(rows))))
-    
-    document.getElementById('loadingScreen').checked = false;
   }
 
   const addCondition = (main) => {
-    console.log(main)
     if (main === "main") {
       if (dataJSON.query.where_plain.length === 0) {
         setDataJSON({
@@ -823,8 +790,6 @@ export default function DataModal() {
   };
 
   const removeCondition = (alias , value) => {
-    console.log(alias);
-    console.log(value);
     if (alias === 'O') {
 
       let newconds = []
@@ -913,13 +878,9 @@ export default function DataModal() {
   };
 
   const saveDataJSON = async () => {
-    document.getElementById('loadingScreen').checked = true;
-
-    console.log(inEdit)
     let dt = {...dataJSON};
     dt.query['includes'] = Object.values(dt.query['includes']);
     delete dt.query.limit
-    console.log(dt)
 
     var sch_id = "";
     for (let id of collections) {
@@ -928,10 +889,8 @@ export default function DataModal() {
 
     if (!inEdit) { //* Yeni oluşturuluyorsa
       var resp = await Data.postModel(dataModalName.current.value ,dataJSON.query.table , sch_id , dt.query);
-      console.log(resp)
     } else { //* Edit halindeyse
       var resp = await Data.putModel(modal_data.modalType.model_id, dataModalName.current.value, dataJSON.query.table , sch_id , dt.query);
-      console.log(resp)
     }
 
     if(resp.Success === true) {
@@ -941,13 +900,9 @@ export default function DataModal() {
       modal_data.getList();
       clearModelInputs();
     }
-
-    document.getElementById('loadingScreen').checked = false;
   }
 
   const saveAsDataJSON = async () => {
-    document.getElementById('loadingScreen').checked = true;
-
     for (let mn of modal_data.modalList) {
 
       if (saveAsNameRef.current.value === mn.model_name) {
@@ -965,7 +920,6 @@ export default function DataModal() {
         }
     
         var resp = await Data.postModel(saveAsNameRef.current.value ,dataJSON.query.table , sch_id , dt.query);
-        console.log(resp)
     
         if(resp.Success === true) {
           //Modal oluşturma ekranını kapat, modal listesini yenile
@@ -978,8 +932,6 @@ export default function DataModal() {
         break;
       }
     }
-
-    document.getElementById('loadingScreen').checked = false;
   }
 
   const clearModelInputs = () => {
@@ -1096,8 +1048,6 @@ export default function DataModal() {
     //Aynı ada sahip kolon olmaması için
     if(allTransCols.length > 0) {
       for(let n of allTransCols) {
-        console.log(Object.keys(n)[0])
-        console.log(Object.keys(n)[0].replaceAll(/[{}]/g , ""))
 
         if(Object.keys(n)[0].replaceAll(/[{}]/g , "") === calcColNameRef.current.value) {
           document.getElementById('group_modal_warn_1').classList.remove('hidden');
@@ -1200,7 +1150,6 @@ export default function DataModal() {
 
   const openRenameModal = (main, col_name) => {
     renamedInputRef.current.value = renamedTitleRef.current[main + "-" + col_name].innerHTML.replace("(" , "").replace(")" , "")
-    console.log(renamedInputRef.current.value);
     setRenameState(main + "-" + col_name);
     setRenameInputState(renamedInputRef.current.value);
   }
@@ -1215,7 +1164,6 @@ export default function DataModal() {
     } else {
       var path = dt.query.includes[alias].select
     }
-    console.log(renamedInputRef)
     if (renamedInputRef.current.value === "") { //* Input eğer boş gönderiliyorsa
 
       renamedTitleRef.current[renameState].innerHTML = "";
@@ -1324,8 +1272,8 @@ export default function DataModal() {
             <div className="form-control mb-2">
               <div className="input-group shadow-md">
                 <span className='bg-black_light text-grayXgray px-2 py-[7px] !rounded-l border border-jet_mid justify-center min-w-[35%] xl:truncate'>Model Adı</span>
-                {modal_data.publicCheck ? <input disabled type="text" placeholder="Model Adı girin" className="input my-0 input-bordered !rounded-r w-full h-auto" ref={dataModalName} /> 
-                : <input type="text" placeholder="Model Adı girin" className="input my-0 input-bordered !rounded-r w-full h-auto" ref={dataModalName} />}
+                {modal_data.publicCheck ? <input disabled type="text" placeholder="Model Adı girin" className="input my-0 input-bordered !rounded-l-none w-full h-auto" ref={dataModalName} /> 
+                : <input type="text" placeholder="Model Adı girin" className="input my-0 input-bordered !rounded-l-none w-full h-auto" ref={dataModalName} />}
               </div>
             </div>
 
@@ -1388,7 +1336,7 @@ export default function DataModal() {
             </h1>
             <button
               className="green-btn float-right"
-              onClick={() => refreshTable()}
+              onClick={() => funcLoad(refreshTable)}
             >
               <i className="fa-solid fa-rotate"></i>
             </button>
@@ -1412,8 +1360,8 @@ export default function DataModal() {
                 Farklı Kaydet
               </label>
               {/* <button onClick={() => saveAsDataJSON()}></button> */}
-              {modal_data.publicCheck ? <button onClick={() => saveDataJSON()} className="green-btn" disabled>Kaydet</button>
-              : <button onClick={() => saveDataJSON()} className="green-btn">Kaydet</button>}              
+              {modal_data.publicCheck ? <button onClick={() => funcLoad(saveDataJSON)} className="green-btn" disabled>Kaydet</button>
+              : <button onClick={() => funcLoad(saveDataJSON)} className="green-btn">Kaydet</button>}              
             </div>
           </div>
 

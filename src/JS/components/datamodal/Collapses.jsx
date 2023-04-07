@@ -3,7 +3,6 @@ import { DataModalContext } from '../context'
 import Condition from './Condition';
 
 export default function Collapses(props) {
-  console.log(props)
   var data = useContext(DataModalContext);
 
   const [mainDlt, setMainDlt] = useState(false);

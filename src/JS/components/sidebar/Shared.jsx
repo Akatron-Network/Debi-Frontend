@@ -1,20 +1,21 @@
 import React , { useContext, useEffect } from 'react'
-import { ShareContext } from '../context'
+import { MainContext, ShareContext } from '../context'
 import { Link } from 'react-router-dom';
 
 export default function Shared() {
   const share_data = useContext(ShareContext);
-	console.log(share_data)
+  const { funcLoadForSpesific } = useContext(MainContext);
 
 	useEffect(() => {
-		share_data.getShare();	
+		funcLoadForSpesific("loadingScreenSidebar", "errorScreenSidebar", share_data.getShare);	
 	}, [])
 	
 
   return (
 		<>
 			<div className='hrLine'>
-				<div id="workspace-title" className="workspace-title h">
+				<div id="workspace-title" className="workspace-title items-center">
+					<i className="fas fa-people-arrows mr-2"></i>
 					<span className="workspace-text">Benimle Paylaşılanlar</span>
 				</div>
 			</div>

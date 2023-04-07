@@ -275,6 +275,49 @@ class WorkspaceAll {
         }
     }
 
+    static async getFavorites() {
+        let getFavorites_req = new Requests("workspace" , "favs");
+
+        try {
+            let resp = await getFavorites_req.get();
+            
+            return resp;
+        } catch (err) {
+            console.log(err);
+            
+        }
+    }
+
+    static async postFavorites(id) {
+        let postFavorites_req = new Requests("workspace" , "favs");
+
+        try {
+            let resp = await postFavorites_req.post({
+                page_id: id
+            });
+            
+            return resp;
+        } catch (err) {
+            console.log(err);
+            
+        }
+    }
+
+    static async deleteFavorites(id) {
+        let deleteFavorites_req = new Requests("workspace" , "favs");
+
+        try {
+            let resp = await deleteFavorites_req.delete({
+                page_id: id
+            });
+            
+            return resp;
+        } catch (err) {
+            console.log(err);
+            
+        }
+    }
+
 }
 
 export default WorkspaceAll;

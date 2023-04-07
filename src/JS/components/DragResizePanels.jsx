@@ -68,6 +68,7 @@ export default class ResponsiveLocalStorageLayout extends React.PureComponent {
           // isBounded={true}
         >
           {value.pageContent.page_data.panels.map((panel) => {
+            console.log(panel);
             if (panel.PanelType === "bar") {
               return (
                 <div className="panels" key={panel.PanelID} data-grid={panel.Coordinates}>
@@ -75,8 +76,8 @@ export default class ResponsiveLocalStorageLayout extends React.PureComponent {
                     <h1>{panel.PanelName}</h1>
                     {value.btnShowHide === true ?
                       <div>
-                        <button className="danger-btn float-right w-6 ml-[2px] bg-transparent shadow-none border-none hover:bg-middle_black text-[17px]" onClick={() => value.dltPanel(panel.PanelID)}><i className="fa-solid fa-xmark"></i></button>
-                        <label htmlFor="chart_choose" className="danger-btn float-right w-6 bg-transparent shadow-none border-none hover:bg-middle_black text-base" onClick={() => value.editPanel(panel.PanelID)}><i className="fa-solid fa-pen-to-square"></i></label>
+                        <button className="danger-btn float-right w-6 ml-[2px] bg-transparent shadow-none border-none hover:bg-middle_black text-[17px]" onClick={() => value.funcLoad(value.dltPanel, panel.PanelID)}><i className="fa-solid fa-xmark"></i></button>
+                        <label htmlFor="chart_choose" className="danger-btn float-right w-6 bg-transparent shadow-none border-none hover:bg-middle_black text-base" onClick={() => value.funcLoad(value.editPanel, panel.PanelID)}><i className="fa-solid fa-pen-to-square"></i></label>
                       </div>
                     : undefined}
                   </div>
@@ -90,8 +91,8 @@ export default class ResponsiveLocalStorageLayout extends React.PureComponent {
                     <h1>{panel.PanelName}</h1>
                     {value.btnShowHide === true ?
                       <div>
-                        <button className="danger-btn float-right w-6 ml-[2px] bg-transparent shadow-none border-none hover:bg-middle_black text-[17px]" onClick={() => value.dltPanel(panel.PanelID)}><i className="fa-solid fa-xmark"></i></button>
-                        <label htmlFor="chart_choose" className="danger-btn float-right w-6 bg-transparent shadow-none border-none hover:bg-middle_black text-base" onClick={() => value.editPanel(panel.PanelID)}><i className="fa-solid fa-pen-to-square"></i></label>
+                        <button className="danger-btn float-right w-6 ml-[2px] bg-transparent shadow-none border-none hover:bg-middle_black text-[17px]" onClick={() => value.funcLoad(value.dltPanel, panel.PanelID)}><i className="fa-solid fa-xmark"></i></button>
+                        <label htmlFor="chart_choose" className="danger-btn float-right w-6 bg-transparent shadow-none border-none hover:bg-middle_black text-base" onClick={() => value.funcLoad(value.editPanel, panel.PanelID)}><i className="fa-solid fa-pen-to-square"></i></label>
                       </div>
                     : undefined}
                   </div>
@@ -105,8 +106,8 @@ export default class ResponsiveLocalStorageLayout extends React.PureComponent {
                     <h1>{panel.PanelName}</h1>
                     {value.btnShowHide === true ?
                       <div>
-                        <button className="danger-btn float-right w-6 ml-[2px] bg-transparent shadow-none border-none hover:bg-middle_black text-[17px]" onClick={() => value.dltPanel(panel.PanelID)}><i className="fa-solid fa-xmark"></i></button>
-                        <label htmlFor="chart_choose" className="danger-btn float-right w-6 bg-transparent shadow-none border-none hover:bg-middle_black text-base" onClick={() => value.editPanel(panel.PanelID)}><i className="fa-solid fa-pen-to-square"></i></label>
+                        <button className="danger-btn float-right w-6 ml-[2px] bg-transparent shadow-none border-none hover:bg-middle_black text-[17px]" onClick={() => value.funcLoad(value.dltPanel, panel.PanelID)}><i className="fa-solid fa-xmark"></i></button>
+                        <label htmlFor="chart_choose" className="danger-btn float-right w-6 bg-transparent shadow-none border-none hover:bg-middle_black text-base" onClick={() => value.funcLoad(value.editPanel, panel.PanelID)}><i className="fa-solid fa-pen-to-square"></i></label>
                       </div>
                     : undefined}
                   </div>
@@ -120,8 +121,8 @@ export default class ResponsiveLocalStorageLayout extends React.PureComponent {
                     <h1>{panel.PanelName}</h1>
                     {value.btnShowHide === true ?
                       <div>
-                        <button className="danger-btn float-right w-6 ml-[2px] bg-transparent shadow-none border-none hover:bg-middle_black text-[17px]" onClick={() => value.dltPanel(panel.PanelID)}><i className="fa-solid fa-xmark"></i></button>
-                        <label htmlFor="chart_choose" className="danger-btn float-right w-6 bg-transparent shadow-none border-none hover:bg-middle_black text-base" onClick={() => value.editPanel(panel.PanelID)}><i className="fa-solid fa-pen-to-square"></i></label>
+                        <button className="danger-btn float-right w-6 ml-[2px] bg-transparent shadow-none border-none hover:bg-middle_black text-[17px]" onClick={() => value.funcLoad(value.dltPanel, panel.PanelID)}><i className="fa-solid fa-xmark"></i></button>
+                        <label htmlFor="chart_choose" className="danger-btn float-right w-6 bg-transparent shadow-none border-none hover:bg-middle_black text-base" onClick={() => value.funcLoad(value.editPanel, panel.PanelID)}><i className="fa-solid fa-pen-to-square"></i></label>
                       </div>
                     : undefined}
                   </div>
@@ -135,8 +136,8 @@ export default class ResponsiveLocalStorageLayout extends React.PureComponent {
                     <h1>{panel.PanelName}</h1>
                     {value.btnShowHide === true ?
                       <div>
-                        <button className="danger-btn float-right w-6 ml-[2px] bg-transparent shadow-none border-none hover:bg-middle_black text-[17px]" onClick={() => value.dltPanel(panel.PanelID)}><i className="fa-solid fa-xmark"></i></button>
-                        <label htmlFor="chart_choose" className="danger-btn float-right w-6 bg-transparent shadow-none border-none hover:bg-middle_black text-base" onClick={() => value.editPanel(panel.PanelID)}><i className="fa-solid fa-pen-to-square"></i></label>
+                        <button className="danger-btn float-right w-6 ml-[2px] bg-transparent shadow-none border-none hover:bg-middle_black text-[17px]" onClick={() => value.funcLoad(value.dltPanel, panel.PanelID)}><i className="fa-solid fa-xmark"></i></button>
+                        <label htmlFor="chart_choose" className="danger-btn float-right w-6 bg-transparent shadow-none border-none hover:bg-middle_black text-base" onClick={() => value.funcLoad(value.editPanel, panel.PanelID)}><i className="fa-solid fa-pen-to-square"></i></label>
                       </div>
                     : undefined}
                   </div>
@@ -151,8 +152,8 @@ export default class ResponsiveLocalStorageLayout extends React.PureComponent {
                       <h1>{panel.PanelName}</h1>
                     {value.btnShowHide === true ?
                       <div>
-                        <button className="danger-btn float-right w-6 ml-[2px] bg-transparent shadow-none border-none hover:bg-middle_black text-[17px]" onClick={() => value.dltPanel(panel.PanelID)}><i className="fa-solid fa-xmark"></i></button>
-                        <label htmlFor="chart_choose" className="danger-btn float-right w-6 bg-transparent shadow-none border-none hover:bg-middle_black text-base" onClick={() => value.editPanel(panel.PanelID)}><i className="fa-solid fa-pen-to-square"></i></label>
+                        <button className="danger-btn float-right w-6 ml-[2px] bg-transparent shadow-none border-none hover:bg-middle_black text-[17px]" onClick={() => value.funcLoad(value.dltPanel, panel.PanelID)}><i className="fa-solid fa-xmark"></i></button>
+                        <label htmlFor="chart_choose" className="danger-btn float-right w-6 bg-transparent shadow-none border-none hover:bg-middle_black text-base" onClick={() => value.funcLoad(value.editPanel, panel.PanelID)}><i className="fa-solid fa-pen-to-square"></i></label>
                       </div>
                     : undefined}
                     </div>
@@ -168,8 +169,8 @@ export default class ResponsiveLocalStorageLayout extends React.PureComponent {
                       <h1>{panel.PanelName}</h1>
                     {value.btnShowHide === true ?
                       <div>
-                        <button className="danger-btn float-right w-6 ml-[2px] bg-transparent shadow-none border-none hover:bg-middle_black text-[17px]" onClick={() => value.dltPanel(panel.PanelID)}><i className="fa-solid fa-xmark"></i></button>
-                        <label htmlFor="chart_choose" className="danger-btn float-right w-6 bg-transparent shadow-none border-none hover:bg-middle_black text-base" onClick={() => value.editPanel(panel.PanelID)}><i className="fa-solid fa-pen-to-square"></i></label>
+                        <button className="danger-btn float-right w-6 ml-[2px] bg-transparent shadow-none border-none hover:bg-middle_black text-[17px]" onClick={() => value.funcLoad(value.dltPanel, panel.PanelID)}><i className="fa-solid fa-xmark"></i></button>
+                        <label htmlFor="chart_choose" className="danger-btn float-right w-6 bg-transparent shadow-none border-none hover:bg-middle_black text-base" onClick={() => value.funcLoad(value.editPanel, panel.PanelID)}><i className="fa-solid fa-pen-to-square"></i></label>
                       </div>
                     : undefined}
                     </div>

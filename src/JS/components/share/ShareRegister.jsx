@@ -1,9 +1,10 @@
 import React , { useContext } from 'react'
-import { ShareContext } from '../context'
+import { MainContext, ShareContext } from '../context'
 import Input from '../Input'
 
 export default function ShareRegister() {
   const share_data = useContext(ShareContext);
+  const { funcLoad } = useContext(MainContext);
   return (
     <>
       <Input value={"Kullanıcı Adı"} refName={share_data.shareUsernameRef} />
@@ -13,7 +14,7 @@ export default function ShareRegister() {
         <span className='text-[14px] text-grayXgray'>Düzenleme <span className='text-xs text-onyx_light'>(Bu şık işaretlenmezse sadece <span className='text-graysix font-bold'>görüntüleme</span> yetkisine sahip olacaktır.)</span></span>
       </div>
 
-      <div className='text-right w-full'><button className="green-btn" onClick={() => share_data.postShare()}>Paylaş</button></div>
+      <div className='text-right w-full'><button className="green-btn" onClick={() => funcLoad(share_data.postShare)}>Paylaş</button></div>
     </>
   )
 }

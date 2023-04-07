@@ -1,9 +1,10 @@
 import React , { useContext } from 'react'
-import { DataModalContext } from '../context'
+import { DataModalContext, MainContext } from '../context'
 
 export default function SourceTable() {
   
   const data = useContext(DataModalContext);
+  const { funcLoad } = useContext(MainContext);
   return (
   <>
     <div className="form-control">
@@ -39,7 +40,7 @@ export default function SourceTable() {
               else {nameTable = source.name + " (" + source.table + ")"}
 
               return (
-                <tr key={index} onClick={() => data.chooseSource(source.table , category , nameTable , data.gatewayHost)}>
+                <tr key={index} onClick={() => funcLoad(data.chooseSource, source.table , category , nameTable , data.gatewayHost)}>
                   <td>{type}</td>
                   <td>{category}</td>
                   <td>{nameTable}</td>

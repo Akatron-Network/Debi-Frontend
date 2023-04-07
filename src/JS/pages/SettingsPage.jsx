@@ -3,6 +3,7 @@ import SettingsNavbar from '../components/SettingsNavbar'
 import Pricing from '../components/Pricing'
 import avatar from '../../img/ico.png'
 import Service from '../libraries/categories/Service'
+import { useNavigate } from 'react-router-dom'
 
 export default function SettingPage() {
 
@@ -38,6 +39,24 @@ export default function SettingPage() {
       }
     }
   )
+  
+  //! LOGIN CHECK ----------------------------------
+  var navigate = useNavigate();
+
+  const loginControl = async () => {
+    try {
+      let tkn = await Service.getProfile()
+    } catch (error) {
+      console.log(error);
+      navigate("/giris")
+    }
+  }
+
+  useEffect(() => {
+    if (localStorage.Token !== undefined) { loginControl() }
+    else { navigate("/giris") }
+  }, [])
+  //! --------------------------------------------
 
   useEffect(() => {
     getUserInformations();
@@ -122,7 +141,6 @@ export default function SettingPage() {
       document.getElementById('userWarn_' + id).classList.add('hidden');
     }, 10000);
   }
-  console.log(userInfJSON);
 
   return (
     <>
@@ -155,7 +173,7 @@ export default function SettingPage() {
                 <div className="input-group shadow-md">
                   {key === false ?
                     <>
-                    <input type="password" placeholder="********" className="input input-bordered w-full opacity-30 pointer-events-none" ref={userPasswordRef} />
+                    <input type="password" placeholder="********" className="input input-bordered w-full opacity-30 pointer-events-none !rounded-r-none" ref={userPasswordRef} />
                     <button onClick={(e) => userKeyOpenClose(e)} className='bg-black_light text-grayXgray my-2 hover:text-platinium hover:bg-middle_black transition duration-300 !rounded-l-none border border-jet_mid justify-center w-[13%] xl:truncate'>
                       <i className="fa-solid fa-lock"></i>
                     </button>

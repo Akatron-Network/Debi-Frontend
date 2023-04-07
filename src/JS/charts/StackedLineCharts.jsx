@@ -15,12 +15,12 @@ const Page = (props) => {
   var yAxis = [];
 
   useEffect(() => {
-    getData();
+    let loading_type = 'loadingScreenStackedLine' + props.panelID
+    let error_type = 'errorScreenStackedLine' + props.panelID
+    chart_data.funcLoadForSpesific(loading_type, error_type, getData);
   }, [chart_data.pageContent.page_data])
 
   const getData = async () => {
-    document.getElementById('loadingScreenStackedLine' + props.panelID).checked = true;
-    
     let col = await WorkspaceAll.getCollections(chart_data.pageContent.collection_id); //! Get Gateway host
     
     let where_plain = []
@@ -202,7 +202,6 @@ const Page = (props) => {
       series: yAxisData,
   
     });
-    document.getElementById('loadingScreenStackedLine' + props.panelID).checked = false;
   }
 
 
@@ -377,16 +376,9 @@ const Page = (props) => {
   return (
     <>
       <ReactECharts className='!h-full pb-2 pt-12' option={options} />
-
-      <input type="checkbox" id={"loadingScreenStackedLine" + props.panelID} className="modal-toggle" />
-      <div className="modal bg-modal_back">
-        <div className="text-center">
-          <div className="lds-ring"><div></div><div></div><div></div><div></div></div>
-          <div className="modal-action justify-center">
-            <label htmlFor={"loadingScreenStackedLine" + props.panelID} className="gray-btn hidden">Kapat!</label>
-          </div>
-        </div>
-      </div>
+      
+      <LoadingForCharts id={"loadingScreenStackedLine" + props.panelID} />
+      <ErrorForCharts id={"errorScreenStackedLine" + props.panelID} error={chart_data.errorText} />
     </>
   );
 };

@@ -8,26 +8,26 @@ export default function Collections() {
   const data = useContext(MainContext);
 
   useEffect(() => {
-    data.getColWorks();
-		data.setFilePath([]);
+    data.funcLoad(data.getColWorks);
+		data.funcLoad(data.setFilePath, []);
   }, [])
 
   return (
 	<>
 		<h2 className="workspace-titles">Koleksiyonlar</h2>
-		<div className="grid xl:grid-cols-10 sm:grid-cols-4 grid-cols-2 grid-flow-row auto-rows-max gap-4 pl-[10px]">
+		<div className="grid 2xl:grid-cols-9 xl:grid-cols-7 sm:grid-cols-4 grid-cols-2 grid-flow-row auto-rows-max gap-4 pl-[10px]">
 
 			{data.collections.map((collection) => (
 					<div key={collection.collection_id} className={collection.connector.gateway_host === null ? "col-card col-span-1" : "col-card col-span-1 opacity-50 pointer-events-none"}>
 						<div className="card">
 							<div className='flex z-2 justify-end'>
-								<label htmlFor="sharemodal" className="dlt-btn cursor-pointer w-7 h-7 flex justify-center items-center" onClick={() => data.openShareModal("COLLECTION", collection.collection_id, collection.collection_name)}>
+								<label htmlFor="sharemodal" className="dlt-btn cursor-pointer ml-[6px] h-7 flex justify-center items-center" onClick={() => data.funcLoad(data.openShareModal, "COLLECTION", collection.collection_id, collection.collection_name)}>
 									<i className="fa-solid fa-share-nodes"></i>
 								</label>
-								<label htmlFor="addWorksCol" className="dlt-btn cursor-pointer w-7 h-7 flex justify-center items-center" onClick={() => data.getCollectionDetails(collection)} >
+								<label htmlFor="addWorksCol" className="dlt-btn cursor-pointer ml-[6px] h-7 flex justify-center items-center" onClick={() => data.funcLoad(data.getCollectionDetails, collection)} >
 									<i className="fa-solid fa-pen-to-square"></i>
 								</label>
-								<label htmlFor="dltWorks" className="dlt-btn cursor-pointer w-7 h-7 flex justify-center items-center" onClick={() => {data.setDeleteItemRef(collection) ; data.setDeleteItemType("koleksiyon")}} >
+								<label htmlFor="dltWorks" className="dlt-btn cursor-pointer mx-[6px] h-7 flex justify-center items-center" onClick={() => {data.setDeleteItemRef(collection) ; data.setDeleteItemType("koleksiyon")}} >
 									<i className="fa-solid fa-xmark"></i>
 								</label>
 							</div>
@@ -37,7 +37,7 @@ export default function Collections() {
 							  </div>
               </Link>
 							{collection.connector.gateway_host !== null ? 
-								<span className='text-sm truncate bg-danger_light text-white z-2 absolute bottom-0 w-full text-center font-bold'>Gateway Gerektirir<br /></span> 
+								<span className='text-sm truncate bg-danger_light text-white z-2 absolute bottom-0 w-full text-center font-bold'>İstemci Gerektirir<br /></span> 
 								: undefined
 							}
 							<div className="card-bg" />

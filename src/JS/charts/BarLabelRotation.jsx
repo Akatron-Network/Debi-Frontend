@@ -3,6 +3,8 @@ import ReactECharts from 'echarts-for-react';
 import Data from '../libraries/categories/Data';
 import WorkspaceAll from '../libraries/categories/Workspace';
 import {ChartContext} from '../components/context';
+import LoadingForCharts from './modals/LoadingForCharts';
+import ErrorForCharts from './modals/ErrorForCharts';
 
 const Page = (props) => {
   const chart_data = useContext(ChartContext);
@@ -14,12 +16,12 @@ const Page = (props) => {
   var yAxis = [];
 
   useEffect(() => {
-    getData();
+    let loading_type = 'loadingScreenBarLabel' + props.panelID
+    let error_type = 'errorScreenBarLabel' + props.panelID
+    chart_data.funcLoadForSpesific(loading_type, error_type, getData);
   }, [chart_data.pageContent.page_data])
   
 const getData = async () => {
-  document.getElementById('loadingScreenBarLabel' + props.panelID).checked = true;
-
   let col = await WorkspaceAll.getCollections(chart_data.pageContent.collection_id); //! Get Gateway host
 
   let where_plain = []
@@ -202,8 +204,6 @@ const getData = async () => {
 
     series: yAxisData,
   });
-
-  document.getElementById('loadingScreenBarLabel' + props.panelID).checked = false;
 }
 
 
@@ -343,16 +343,9 @@ const getData = async () => {
   return (
     <>
       <ReactECharts className='!h-full pb-2 pt-12' option={options} />
-
-      <input type="checkbox" id={"loadingScreenBarLabel" + props.panelID} className="modal-toggle" />
-      <div className="modal bg-modal_back">
-        <div className="text-center">
-          <div className="lds-ring"><div></div><div></div><div></div><div></div></div>
-          <div className="modal-action justify-center">
-            <label htmlFor={"loadingScreenBarLabel" + props.panelID} className="gray-btn hidden">Kapat!</label>
-          </div>
-        </div>
-      </div>
+      
+      <LoadingForCharts id={"loadingScreenBarLabel" + props.panelID} />
+      <ErrorForCharts id={"errorScreenBarLabel" + props.panelID} error={chart_data.errorText} />
     </>
   );
   

@@ -40,7 +40,7 @@ export default function UnionCollapse(props) {
         <div className="form-control mb-2">
           <div className="input-group shadow-md">
             <span className='bg-black_light text-grayXgray px-2 py-[7px] !rounded-l border border-jet_mid justify-center min-w-[35%] xl:truncate'>Kaynak Adı</span>
-            <input type="text" placeholder="Kaynak Adı girin" className="input my-0 input-bordered !rounded-r w-full h-auto" onBlur={ () => { union_data.sourceName(props.index) }} ref={(el) => {union_data.unionSourceNameRef.current[props.index] = el}} />
+            <input type="text" placeholder="Kaynak Adı girin" className="input my-0 input-bordered !rounded-l-none w-full h-auto" onBlur={ () => { union_data.sourceName(props.index) }} ref={(el) => {union_data.unionSourceNameRef.current[props.index] = el}} />
           </div>
         </div>
 

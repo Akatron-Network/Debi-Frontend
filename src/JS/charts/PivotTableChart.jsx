@@ -9,6 +9,8 @@ import PivotGrid, {
   FieldChooser,
 } from 'devextreme-react/pivot-grid';
 import PivotGridDataSource from 'devextreme/ui/pivot_grid/data_source';
+import LoadingForCharts from './modals/LoadingForCharts';
+import ErrorForCharts from './modals/ErrorForCharts';
 // import { BarGaugeTitleSubtitle } from 'devextreme-react/bar-gauge';
 
 export default function PivotTableCharts(props) {
@@ -23,12 +25,12 @@ export default function PivotTableCharts(props) {
   const chart_data = useContext(ChartContext);
   
   useEffect(() => {
-    getData();
+    let loading_type = 'loadingScreenPivot' + props.panelID
+    let error_type = 'errorScreenPivot' + props.panelID
+    chart_data.funcLoadForSpesific(loading_type, error_type, getData);
   }, [chart_data.pageContent.page_data])
 
   const getData = async () => {
-    document.getElementById('loadingScreenPivot' + props.panelID).checked = true;
-    
     let col = await WorkspaceAll.getCollections(chart_data.pageContent.collection_id); //! Get Gateway host
     
     let where_plain = []
@@ -115,8 +117,6 @@ export default function PivotTableCharts(props) {
       fields: fields,
       store: respData.Data,
     }))
-    
-    document.getElementById('loadingScreenPivot' + props.panelID).checked = false;
   }
 
   //* Data Example
@@ -170,16 +170,9 @@ export default function PivotTableCharts(props) {
           </PivotGrid>
         </React.Fragment>
       </div>
-
-      <input type="checkbox" id={"loadingScreenPivot" + props.panelID} className="modal-toggle" />
-      <div className="modal bg-modal_back">
-        <div className="text-center">
-          <div className="lds-ring"><div></div><div></div><div></div><div></div></div>
-          <div className="modal-action justify-center">
-            <label htmlFor={"loadingScreenPivot" + props.panelID} className="gray-btn hidden">Kapat!</label>
-          </div>
-        </div>
-      </div>
+      
+      <LoadingForCharts id={"loadingScreenPivot" + props.panelID} />
+      <ErrorForCharts id={"errorScreenPivot" + props.panelID} error={chart_data.errorText} />
     </>
   )
 }

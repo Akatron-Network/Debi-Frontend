@@ -7,7 +7,7 @@ export default function UnionTable(props) {
   
   return (
     
-    <div className="relative overflow-x-auto shadow-md">
+    <div className="relative shadow-md">
       <table className="w-full text-sm text-left text-grayXgray">
         <thead className="text-xs text-cultured uppercase bg-earie_black border-b border-onyx">
           <tr>
