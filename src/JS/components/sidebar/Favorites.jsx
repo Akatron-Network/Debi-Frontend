@@ -8,9 +8,9 @@ export default function Favorites(props) {
 
   const fn = props.fn; //? Dosya ağacındaki herhangi bir şeye tıklandığında sidebar kapanması için
 
-	useEffect(() => {
-		funcLoadForSpesific("loadingScreenSidebar", "errorScreenSidebar", getFavorites)
-	}, [])
+	// useEffect(() => {
+	// 	funcLoadForSpesific("loadingScreenSidebar", "errorScreenSidebar", getFavorites)
+	// }, [])
 
   return (
 		<>

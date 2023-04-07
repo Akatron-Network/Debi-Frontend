@@ -1,24 +1,177 @@
 import React , { useContext , useEffect } from 'react'
 import { Link } from "react-router-dom";
 import DeleteApply from './DeleteApply';
-import { MainContext } from '../context'
+import { ChartContext, MainContext, ShareContext } from '../context'
 import ColConnectorCreateor from './ColConnectorCreateor';
 
 export default function Collections() {
   const data = useContext(MainContext);
+  const { setPageContent } = useContext(ChartContext);
+  const { getShare, sharedCollections, sharedDirectories, sharedPages } = useContext(ShareContext);
 
   useEffect(() => {
     data.funcLoad(data.getColWorks);
+    data.funcLoad(data.getFavorites);
+    data.funcLoad(getShare);
 		data.funcLoad(data.setFilePath, []);
   }, [])
 
   return (
-	<>
+	<div className='pr-3'>
+		<div className="grid grid-cols-1 md:grid-cols-2 gap-4 ml-2">
+
+			<div className="dashboard-card">
+				<h2 className="workspace-titles dashboard-card-title hrLine">
+					<i className="fas fa-star mr-2"></i>
+					Favoriler
+				</h2>
+				<div className='grid grid-cols-1 lg:grid-cols-2 2xl:grid-cols-3 gap-2'>
+					{data.allFavorites.map((f, i) => {
+						let col_name = "";
+
+						for (let c of data.collections) {
+							if (f.page.collection_id === c.collection_id) {
+								col_name = c.collection_name
+							}
+
+						}
+
+						return (
+							<div key={i} className='relative col-span-1' onClick={() => {setPageContent({page_data : {panels: [], dragresize: false}});}}>
+								<Link to={f.url} className='mb-1'>
+									<div className='tree-elm dashboard-card-elm'>
+										<label className="cursor-pointer truncate flex items-center">
+											<i className="fa-solid fa-file mr-[6px] p-[5px] pl-[6px]"></i>
+											{f.page.page_name}
+											<span className='text-onyx_middle text-[13px]'>
+												&nbsp; 
+												(Koleksiyon: <span className='text-onyx_light'>{col_name}</span>)
+											</span>
+										</label>
+									</div>
+								</Link>
+							</div>
+						)
+					})}
+				</div>
+			</div>
+
+			<div className="dashboard-card">
+				<h2 className="workspace-titles dashboard-card-title hrLine">
+					<i className="fas fa-people-arrows mr-2"></i>
+					Benimle Paylaşılanlar
+				</h2>
+
+				{sharedCollections.length > 0 ?
+					<>
+						<div className='w-full text-platinium flex items-center'>
+							<h1>Koleksiyonlar</h1>
+						</div>
+					
+						<div className='w-full grid grid-cols-1 lg:grid-cols-2 2xl:grid-cols-3 gap-2 mt-1'>
+							{sharedCollections.map((col, i) => {
+								let url = "/" + col.collection.collection_id.toString();		//. Get URL
+
+								return(
+									<div key={i} className='relative col-span-1'>
+										<Link to={url} className='mb-1'>
+											<div className='tree-elm dashboard-card-elm'>
+												<label className="cursor-pointer truncate flex items-center">
+													<i className="fa-solid fa-folder-tree mr-[6px] p-[5px] pl-[6px]"></i>
+													{col.collection.collection_name}
+													<span className='text-onyx_middle text-[13px]'>
+														&nbsp; 
+														(Paylaşan: <span className='text-onyx_light'>{col.shared_from}</span>)
+													</span>
+												</label>
+											</div>
+										</Link>
+									</div>
+								)
+							})}
+						</div>
+					</>
+					: undefined
+				}
+
+				{sharedDirectories.length > 0 ?
+					<>
+						<div className='w-full text-platinium flex items-center mt-3'>
+							<h1>Dosyalar</h1>
+						</div>
+					
+						<div className='w-full grid grid-cols-1 lg:grid-cols-2 2xl:grid-cols-3 gap-2 mt-1'>
+							{sharedDirectories.map((dir, i) => {
+								let c_url = dir.directory.collection_id.toString();
+								let d_url = dir.directory.directory_id.toString();
+								let url = "/" + c_url + "/" + d_url													//. Get URL
+
+								return(
+									<div key={i} className='relative col-span-1'>
+										<Link to={url} className='mb-1'>
+											<div className='tree-elm dashboard-card-elm'>
+												<label className="cursor-pointer truncate flex items-center">
+													<i className="fa-solid fa-folder mr-[6px] p-[5px] pl-[6px]"></i>
+													{dir.directory.directory_name}
+													<span className='text-onyx_middle text-[13px]'>
+														&nbsp; 
+														(Paylaşan: <span className='text-onyx_light'>{dir.shared_from}</span>)
+													</span>
+												</label>
+											</div>
+										</Link>
+									</div>
+								)
+							})}
+						</div>
+					</>
+					: undefined
+				}
+
+				{sharedPages.length > 0 ?
+					<>
+						<div className='w-full text-platinium flex items-center mt-3'>
+							<h1>Sayfalar</h1>
+						</div>
+					
+						<div className='w-full grid grid-cols-1 lg:grid-cols-2 2xl:grid-cols-3 gap-2 mt-1'>
+							{sharedPages.map((page, i) => {
+								let c_url = page.page.collection_id.toString();
+								let d_url = page.page.directory_id.toString();
+								let p_url = page.page.page_id.toString();
+								let url = "/" + c_url + "/" + d_url + "/" + p_url 					//. Get URL 
+
+								return(
+									<div key={i} className='relative col-span-1'>
+										<Link to={url} className='mb-1'>
+											<div className='tree-elm dashboard-card-elm'>
+												<label className="cursor-pointer truncate flex items-center">
+													<i className="fa-solid fa-file mr-[6px] p-[5px] pl-[6px]"></i>
+													{page.page.page_name}
+													<span className='text-onyx_middle text-[13px]'>
+														&nbsp; 
+														(Paylaşan: <span className='text-onyx_light'>{page.shared_from}</span>)
+													</span>
+												</label>
+											</div>
+										</Link>
+									</div>
+								)
+							})}
+						</div>
+					</>
+					: undefined
+				}
+
+			</div>
+		</div>
+	
+		<hr className="hrCols mt-6"></hr>
 		<h2 className="workspace-titles">Koleksiyonlar</h2>
 		<div className="grid 2xl:grid-cols-9 xl:grid-cols-7 sm:grid-cols-4 grid-cols-2 grid-flow-row auto-rows-max gap-4 pl-[10px]">
 
 			{data.collections.map((collection) => (
-					<div key={collection.collection_id} className={collection.connector.gateway_host === null ? "col-card col-span-1" : "col-card col-span-1 opacity-50 pointer-events-none"}>
+					<div key={collection.collection_id} className={collection.connector.gateway_host === null ? "col-span-1" : "col-span-1 opacity-40 pointer-events-none"}>
 						<div className="card">
 							<div className='flex z-2 justify-end'>
 								<label htmlFor="sharemodal" className="dlt-btn cursor-pointer ml-[6px] h-7 flex justify-center items-center" onClick={() => data.funcLoad(data.openShareModal, "COLLECTION", collection.collection_id, collection.collection_name)}>
@@ -27,7 +180,7 @@ export default function Collections() {
 								<label htmlFor="addWorksCol" className="dlt-btn cursor-pointer ml-[6px] h-7 flex justify-center items-center" onClick={() => data.funcLoad(data.getCollectionDetails, collection)} >
 									<i className="fa-solid fa-pen-to-square"></i>
 								</label>
-								<label htmlFor="dltWorks" className="dlt-btn cursor-pointer mx-[6px] h-7 flex justify-center items-center" onClick={() => {data.setDeleteItemRef(collection) ; data.setDeleteItemType("koleksiyon")}} >
+								<label htmlFor="dltWorks" className="dlt-btn cursor-pointer mx-[6px] h-7 flex justify-center items-center" onClick={() => {data.setDeleteItemRef(collection); data.setDeleteItemType("koleksiyon")}} >
 									<i className="fa-solid fa-xmark"></i>
 								</label>
 							</div>
@@ -47,7 +200,7 @@ export default function Collections() {
 			{/* EDİTE BASINCA EDİT MODU AÇILSIN VE KOLEKSİYON OLUŞTURMA DOLDURULSUN - EKSTRA SENKRONİZASYON DA DURUMUNU GÖSTER VE BUTONU KOY*/}
 
 			<label htmlFor="addWorksCol" onClick={() => data.clearRefs("koleksiyon")}>
-				<div className="col-card add col-span-1">
+				<div className="add col-span-1">
 					<div className="card">
 						<div className="col-content">
 							<i className="fas fa-plus" style={{fontSize: '60px', color: 'var(--platinium)'}} />
@@ -57,11 +210,9 @@ export default function Collections() {
 			</label>
 			
 		</div>
-	
-		<hr className="hrCols"></hr>
 
 		<ColConnectorCreateor />
 		<DeleteApply />
-	</>
+	</div>
   )
 }

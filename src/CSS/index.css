@@ -353,22 +353,54 @@
 
   /*!------------------------------------------------------------------- */
 
+  .dashboard-card {
+    @apply
+      col-span-1
+      bg-middle_black
+      mt-6
+      pt-[10px]
+      pb-3
+      px-3
+      rounded
+      shadow-md
+      h-fit
+      max-h-[370px]
+  }
+
+  .dashboard-card-title {
+    @apply
+      !mb-[10px]
+      !mt-0
+      !pl-0
+      !text-sea_green
+  }
+
+  .dashboard-card-elm {
+    @apply
+      !bg-darkest_jet
+      hover:!bg-jet
+      !pl-0
+      !rounded
+      !pr-[6px]
+  }
+
   /*!Collections-------------------------------------------------------- */
   .workspace-titles {
     @apply
-      mb-5
+      mb-[10px]
       mt-4
       text-grayXgray
-      text-[2rem]
+      text-[21px]
       font-righteous
       pl-[10px]
-
+      w-full
+      pb-1
   }
 
   .card {
     @apply
       relative
-      h-60
+      h-40
       rounded
       transition duration-500
       bg-black_light
@@ -387,9 +419,7 @@
       absolute
       bg-[url('/src/img/card-wp6.png')]
       bg-cover
-      opacity-80
-      hover:scale-125
-      
+      opacity-60  
   }
 
   .fold-bg {
@@ -402,25 +432,9 @@
       !bg-[url('/src/img/file-wp1.png')]
   }
 
-  /* .col-card {
-    @apply
-      max-w-[200px]
-      min-w-[150px]
-      mt-[25px]
-      px-3
-  }
-
-  .fold-card {
-    @apply
-      max-w-[200px]
-      min-w-[150px]
-      mt-[25px]
-      px-3
-  } */
-
   .fold-card .card {
     @apply
-      h-[100px]
+      h-[90px]
   }
 
   .col-content {
@@ -431,7 +445,7 @@
       py-[5px]
       -translate-y-1/2
       relative
-      text-[23px]
+      text-[20px]
       text-platinium
       z-1
       transition duration-500
@@ -442,7 +456,7 @@
     @apply
       text-right
       py-[5px]
-      text-xl
+      text-[20px]
       break-normal
   }
 
@@ -457,7 +471,7 @@
 
   .hrCols {
     @apply
-      mt-[50px]
+      mt-[25px]
       ml-2
       border-hr_gray
   }

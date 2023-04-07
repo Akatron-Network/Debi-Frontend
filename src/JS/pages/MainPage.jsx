@@ -58,7 +58,6 @@ export default function MainPage() {
     } catch (error) {
       document.getElementById('loadingScreen').checked = false;
       document.getElementById('errorScreen').checked = true;
-      console.log(error);
 
       let response = undefined;
       if(error.response !== undefined && error.response !== null) response = error.response.data.Data
@@ -77,11 +76,8 @@ export default function MainPage() {
       return rt;
       
     } catch (error) {
-      console.log(loading_id);
-      console.log(error_id);
       document.getElementById(loading_id).checked = false;
       document.getElementById(error_id).checked = true;
-      console.log(error);
 
       let response = undefined;
       if(error.response !== undefined && error.response !== null) response = error.response.data.Data
@@ -140,26 +136,26 @@ export default function MainPage() {
   const deleteItems = async (del_type , id) => {
     if(del_type === 'collection') {
       let resp = await WorkspaceAll.deleteCollections(id);
-      getColWorks();
+      await funcLoad(getColWorks);
     }
     else if(del_type === 'folder') {
       let resp = await WorkspaceAll.deleteFolders(id);
 
       if(resp.Data.parent_directory === null) {
-        funcLoad(getFolderWorks, resp.Data.collection_id);
+        await funcLoad(getFolderWorks, resp.Data.collection_id);
       }
       else {
-        funcLoad(getFileWorks, resp.Data.parent_directory);
+        await funcLoad(getFileWorks, resp.Data.parent_directory);
       }
     }
     else if(del_type === 'file') {
       let resp = await WorkspaceAll.deleteFiles(id);
-      funcLoad(getFileWorks, resp.Data.directory_id);
+      await funcLoad(getFileWorks, resp.Data.directory_id);
     }
     setTimeout(() => {
       getTreeCollections();
     }, 750);
-    
+    funcLoad(getFavorites);    
   }
 
   const getCollectionDetails = (dt) => {
@@ -257,6 +253,7 @@ export default function MainPage() {
   const [dbSchemas, setDbSchemas] = useState([])
   const [choosenSchema, setChoosenSchema] = useState("");
   const [checkedConnector , setCheckedConnector] = useState(false);
+  const [checkedTrialPack , setCheckedTrialPack] = useState(false);
   const [checkedExpress , setCheckedExpress] = useState(false);
   const [checkedConnection, setCheckedConnection] = useState(false)
   const [publicCheck, setPublicCheck] = useState(false);
@@ -276,9 +273,9 @@ export default function MainPage() {
       setChoosenSchema("");
       setCheckedConnector(false);
       setCheckedConnection(false);
+      setCheckedTrialPack(false);
       setCheckedExpress(false);
       setEditCollectionDetails({})
-
       
       let warns = ["1" , "2" , "3"]
 
@@ -1574,6 +1571,7 @@ export default function MainPage() {
     foldNameRef,
     fileNameRef,
     checkedConnector,
+    checkedTrialPack,
     checkedConnection,
     checkedExpress,
     colConnectorServerRef,
@@ -1608,6 +1606,7 @@ export default function MainPage() {
     getFileWorks,
     getFolderWorks,
     setCheckedConnector,
+    setCheckedTrialPack,
     setCheckedConnection,
     setCheckedExpress,
     setDeleteItemRef,

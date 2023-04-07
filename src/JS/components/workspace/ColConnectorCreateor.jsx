@@ -75,7 +75,7 @@ export default function ColConnectorCreateor() {
  
   const addWorksApply = async () => {
     if(data.colWorksSelectRef.current.value !== "default" && data.colNameRef.current.value !== "" && data.colWorksNickRef.current.value !== "" && data.colWorksPassRef.current.value !== "" && data.colWorksDBRef.current.value !== "" && data.colServerRef.current.value !== "" && data.colPortRef.current.value !== "") {
-      var connectResp = await funcLoad(testConnection);
+      var connectResp = await data.funcLoad(testConnection);
       var connectionContent = createContent();
 
       if(connectResp.Success === true) {
@@ -87,10 +87,6 @@ export default function ColConnectorCreateor() {
           var forColID = await WorkspaceAll.postCollections(data.colNameRef.current.value, data.choosenSchema);
         }
 
-        setTimeout(() => {
-          data.getColWorks();
-        }, 500);
-
         if (data.checkedConnector === false) {
           const a = await Data.postConnector(forColID.Data.collection_id, data.colWorksSelectRef.current.value, false, undefined,  connectionContent);
           console.log(a)
@@ -101,8 +97,17 @@ export default function ColConnectorCreateor() {
           const sync = WorkspaceAll.postExplorerSync(forColID.Data.collection_id)
         }
 
-        document.getElementById('addWorksCol').checked = false;
+        if(data.checkedTrialPack) {
+          const add = await WorkspaceAll.addTrialPack(forColID.Data.collection_id);
+          console.log(add);
+
+          data.funcLoad(data.getFavorites);
+        }
+
         data.getTreeCollections();
+
+        await data.getColWorks();
+        document.getElementById('addWorksCol').checked = false;
       }
 
     } else {checkWarn(1)}
@@ -159,6 +164,11 @@ export default function ColConnectorCreateor() {
                 <input type="text" placeholder="Geçit Adresi girin" className="input my-0 input-bordered !rounded-l-none w-full h-auto" ref={data.colConnectorServerRef} value="127.0.0.1" onChange={() => {}} />
               </div>
             </div>
+          </div>
+
+          <div className='inline-flex w-full items-center p-1'>
+            <input type="checkbox" id='checkedTrialPack' className="checkbox mr-2 transition duration-300 hover:border-onyx_middle h-4 w-4" checked={data.checkedTrialPack} onChange={() => data.setCheckedTrialPack(!data.checkedTrialPack)} />
+            <span className='text-[14px] text-grayXgray'><i className="fa-solid fa-box-open mr-2"></i>Hazır koleksiyon paketi istiyorum.</span>
           </div>
 
           <span id='colWarn1' className='text-sm p-1 text-red-600 hidden'>Lütfen gerekli bilgileri doldurun!</span>

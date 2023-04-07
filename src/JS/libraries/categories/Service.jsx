@@ -64,7 +64,6 @@ class Service {
         } catch (err) {
             
             console.log(err.response.data)
-
             return false;
         }
 

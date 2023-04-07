@@ -63,7 +63,7 @@ export default function Files() {
   // }
 
   return (
-		<>
+		<div className='pr-3'>
 			<h2 className="workspace-titles">Klasörler</h2>
 			<div className="grid 2xl:grid-cols-9 xl:grid-cols-7 sm:grid-cols-4 grid-cols-2 grid-flow-row auto-rows-max gap-4 pl-[10px]">
 
@@ -160,6 +160,6 @@ export default function Files() {
 			<FoldCreator />
 			<FileCreator />
 			<DeleteApply />
-		</>
+		</div>
   )
 }
