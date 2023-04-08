@@ -33,9 +33,11 @@ export default function ChartLayout() {
     funcLoad(getFiles, fileID);
     
 		if (share_data.sharedCollections.length === 0) {
-			share_data.getShare();
+			funcLoad(share_data.getShare);
 		}
-		else { check() }
+		else {
+      check()
+    }
   
     return () => {      
       if (document.getElementById('file_path_top') !== null) { // Panel ekranında çıkış yaparken hata verebiliyor. O yüzden koydum
@@ -57,9 +59,7 @@ export default function ChartLayout() {
   }, [])
   
 	const check = () => {
-
-		for (let col of share_data.sharedCollections) { 
-
+		for (let col of share_data.sharedCollections) {
       if (col.collection_id === chart_data.pageContent.collection_id) { //. Check collectionID
         if (col.editable === false) {	                                  //. Check editable
           share_data.setBtnShowHide(false);
@@ -87,6 +87,7 @@ export default function ChartLayout() {
   //* Hangi sayfada olduğumuz görmek için başlık olarak bunu çektik ve buraya yazacağız
   const getFiles = async (id) => {
     let resp = await WorkspaceAll.getFiles(id);
+    
     if(resp.Data.page_data === null) {
       resp.Data.page_data = { panels: [] }
     }

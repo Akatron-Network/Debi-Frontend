@@ -20,7 +20,7 @@ export default function ChartChoose() {
   }, [])
 
   useEffect(() => {
-    modal_data.getViews(chart_data.pageContent.collection_id);
+    modal_data.getViews(chart_data.pageContent);
   }, [chart_data.pageContent.collection_id])
   
 

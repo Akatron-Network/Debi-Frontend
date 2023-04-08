@@ -45,7 +45,6 @@ export default class ResponsiveLocalStorageLayout extends React.PureComponent {
   }
 
   render() {
-    
     let value = this.context;
 
     return (

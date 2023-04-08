@@ -325,13 +325,16 @@ export default function MainPage() {
 
   const [viewList, setViewList] = useState([]);
 
-  const getViews = async (col_id) => {    
-    let resp = await WorkspaceAll.getCollections(col_id);
+  //! Paylaşımda gözükmüyor
+  const getViews = async (content = {}) => {
+    if(!Object.keys(content).includes("collection")) return;
 
-    if (resp.Data.owned_collections) return;
-    let gateway = resp.Data.connector.gateway_host;
+    // let resp = await WorkspaceAll.getCollections(col_id); //Normalde content yerine col_id göndeeriyorduk
 
-    let view_resp = await Data.getExplorer(col_id, gateway, undefined, false, true, true);
+    // if (resp.Data.owned_collections) return;
+    let gateway = content.collection.connector.gateway_host;
+
+    let view_resp = await Data.getExplorer(content.collection_id, gateway, undefined, false, true, true);
 
     let tempViews = []
 

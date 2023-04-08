@@ -14,7 +14,7 @@ export default function Files() {
 	  data.funcLoad(data.getFileWorks, parseInt(foldID));
 
 		if (share_data.sharedDirectories.length === 0) {
-			share_data.getShare();
+			data.funcLoad(share_data.getShare);
 		}
 		else { check() }
 
