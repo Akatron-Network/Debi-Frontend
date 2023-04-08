@@ -122,8 +122,26 @@ export default function TableChart(props) {
         <thead className="text-xs text-cultured uppercase ">
           <tr>
             {yAxis.map((col, index) => {
+              let type = "";
+              if (col.includes("_SUM")) {
+                col = col.split("_SUM")[0]
+                type = " (Toplam)"
+              }
+              else if (col.includes("_AVG")) {
+                col = col.split("_AVG")[0]
+                type = " (Ortalama)"
+              }
+              else if (col.includes("_MIN")) {
+                col = col.split("_MIN")[0]
+                type = " (Minimum)"
+              }
+              else if (col.includes("_MAX")) {
+                col = col.split("_MAX")[0]
+                type = " (Maksimum)"
+              }
+
               return(
-                <th key={index} scope="col" className="px-2 py-3 top-[54px] sticky bg-darkest_jet border-b border-b-onyx_middle border-t border-t-jet_mid">{col}</th>
+                <th key={index} scope="col" className="px-2 py-3 top-[54px] sticky bg-darkest_jet border-b border-b-onyx_middle border-t border-t-jet_mid">{col}<span className='text-onyx_middle text-xs normal-case'>{type}</span></th>
               )
             })}
           </tr>
@@ -145,7 +163,7 @@ export default function TableChart(props) {
 
           <tr>
             {yAxis.map((col, index) => {
-              if(typeof(sum[index]) === 'number') {
+              if(typeof(sum[index]) === 'number' && !col.includes("TARIH_")) {
                 return(
                   <th key={index} className='px-2 py-2 bottom-0 sticky bg-darkest_jet font-light text-center text-platinium border-t border-onyx_middle'><span className='float-right text-sea_green'>{currencyFormat(sum[index])}</span></th>
                 )

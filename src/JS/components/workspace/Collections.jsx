@@ -25,7 +25,7 @@ export default function Collections() {
 					<i className="fas fa-star mr-2"></i>
 					Favoriler
 				</h2>
-				<div className='grid grid-cols-1 lg:grid-cols-2 2xl:grid-cols-3 gap-2'>
+				<div className='grid grid-cols-1 lg:grid-cols-2 2xl:grid-cols-3 gap-2 !max-h-[230px] overflow-auto'>
 					{data.allFavorites.map((f, i) => {
 						let col_name = "";
 
@@ -62,108 +62,113 @@ export default function Collections() {
 					Benimle Paylaşılanlar
 				</h2>
 
-				{sharedCollections.length > 0 ?
-					<>
-						<div className='w-full text-platinium flex items-center'>
-							<h1>Koleksiyonlar</h1>
-						</div>
-					
-						<div className='w-full grid grid-cols-1 lg:grid-cols-2 2xl:grid-cols-3 gap-2 mt-1'>
-							{sharedCollections.map((col, i) => {
-								let url = "/" + col.collection.collection_id.toString();		//. Get URL
+				<div className="grid grid-cols-1 md:grid-cols-3 gap-3">
 
-								return(
-									<div key={i} className='relative col-span-1'>
-										<Link to={url} className='mb-1'>
-											<div className='tree-elm dashboard-card-elm'>
-												<label className="cursor-pointer truncate flex items-center">
-													<i className="fa-solid fa-folder-tree mr-[6px] p-[5px] pl-[6px]"></i>
-													{col.collection.collection_name}
-													<span className='text-onyx_middle text-[13px]'>
-														&nbsp; 
-														(Paylaşan: <span className='text-onyx_light'>{col.shared_from}</span>)
-													</span>
-												</label>
-											</div>
-										</Link>
-									</div>
-								)
-							})}
-						</div>
-					</>
-					: undefined
-				}
+					{sharedCollections.length > 0 ?
+						<div className='dashboard-sub-card'>
+							<div className='dashboard-card-sub-title'>
+								<h1>Koleksiyonlar</h1>
+							</div>
+						
+							<div className='w-full grid grid-cols-1 gap-2 mt-1'>
+								{sharedCollections.map((col, i) => {
+									let url = "/" + col.collection.collection_id.toString();		//. Get URL
 
-				{sharedDirectories.length > 0 ?
-					<>
-						<div className='w-full text-platinium flex items-center mt-3'>
-							<h1>Dosyalar</h1>
+									return(
+										<div key={i} className='relative col-span-1'>
+											<Link to={url} className='mb-1'>
+												<div className='tree-elm dashboard-card-elm'>
+													<label className="cursor-pointer truncate flex items-center">
+														<i className="fa-solid fa-folder-tree mr-[6px] p-[5px] pl-[6px]"></i>
+														{col.collection.collection_name}
+														<span className='text-onyx_middle text-[13px]'>
+															&nbsp; 
+															(Paylaşan: <span className='text-onyx_light'>{col.shared_from}</span>)
+														</span>
+													</label>
+												</div>
+											</Link>
+										</div>
+									)
+								})}
+							</div>
 						</div>
-					
-						<div className='w-full grid grid-cols-1 lg:grid-cols-2 2xl:grid-cols-3 gap-2 mt-1'>
-							{sharedDirectories.map((dir, i) => {
-								let c_url = dir.directory.collection_id.toString();
-								let d_url = dir.directory.directory_id.toString();
-								let url = "/" + c_url + "/" + d_url													//. Get URL
+						: undefined
+					}
 
-								return(
-									<div key={i} className='relative col-span-1'>
-										<Link to={url} className='mb-1'>
-											<div className='tree-elm dashboard-card-elm'>
-												<label className="cursor-pointer truncate flex items-center">
-													<i className="fa-solid fa-folder mr-[6px] p-[5px] pl-[6px]"></i>
-													{dir.directory.directory_name}
-													<span className='text-onyx_middle text-[13px]'>
-														&nbsp; 
-														(Paylaşan: <span className='text-onyx_light'>{dir.shared_from}</span>)
-													</span>
-												</label>
-											</div>
-										</Link>
-									</div>
-								)
-							})}
+					{sharedDirectories.length > 0 ?
+						<div className='dashboard-sub-card'>
+							<div className='dashboard-card-sub-title'>
+								<h1>Dosyalar</h1>
+							</div>
+						
+							<div className='w-full grid grid-cols-1 gap-2 mt-1'>
+								{sharedDirectories.map((dir, i) => {
+									let c_url = dir.directory.collection_id.toString();
+									let d_url = dir.directory.directory_id.toString();
+									let url = "/" + c_url + "/" + d_url													//. Get URL
+	
+									return(
+										<div key={i} className='relative col-span-1'>
+											<Link to={url} className='mb-1'>
+												<div className='tree-elm dashboard-card-elm'>
+													<label className="cursor-pointer truncate flex items-center">
+														<i className="fa-solid fa-folder mr-[6px] p-[5px] pl-[6px]"></i>
+														{dir.directory.directory_name}
+														<span className='text-onyx_middle text-[13px]'>
+															&nbsp; 
+															(Paylaşan: <span className='text-onyx_light'>{dir.shared_from}</span>)
+														</span>
+													</label>
+												</div>
+											</Link>
+										</div>
+									)
+								})}
+							</div>
 						</div>
-					</>
-					: undefined
-				}
+						: undefined
+					}
+	
+					{sharedPages.length > 0 ?
+						<div className='dashboard-sub-card'>
+							<div className='dashboard-card-sub-title'>
+								<h1>Sayfalar</h1>
+							</div>
+						
+							<div className='w-full grid grid-cols-1 gap-2 mt-1'>
+								{sharedPages.map((page, i) => {
+									let c_url = page.page.collection_id.toString();
+									let d_url = page.page.directory_id.toString();
+									let p_url = page.page.page_id.toString();
+									let url = "/" + c_url + "/" + d_url + "/" + p_url 					//. Get URL 
+	
+									return(
+										<div key={i} className='relative col-span-1'>
+											<Link to={url} className='mb-1'>
+												<div className='tree-elm dashboard-card-elm'>
+													<label className="cursor-pointer truncate flex items-center">
+														<i className="fa-solid fa-file mr-[6px] p-[5px] pl-[6px]"></i>
+														{page.page.page_name}
+														<span className='text-onyx_middle text-[13px]'>
+															&nbsp; 
+															(Paylaşan: <span className='text-onyx_light'>{page.shared_from}</span>)
+														</span>
+													</label>
+												</div>
+											</Link>
+										</div>
+									)
+								})}
+							</div>
+						</div>
+						: undefined
+					}
 
-				{sharedPages.length > 0 ?
-					<>
-						<div className='w-full text-platinium flex items-center mt-3'>
-							<h1>Sayfalar</h1>
-						</div>
-					
-						<div className='w-full grid grid-cols-1 lg:grid-cols-2 2xl:grid-cols-3 gap-2 mt-1'>
-							{sharedPages.map((page, i) => {
-								let c_url = page.page.collection_id.toString();
-								let d_url = page.page.directory_id.toString();
-								let p_url = page.page.page_id.toString();
-								let url = "/" + c_url + "/" + d_url + "/" + p_url 					//. Get URL 
-
-								return(
-									<div key={i} className='relative col-span-1'>
-										<Link to={url} className='mb-1'>
-											<div className='tree-elm dashboard-card-elm'>
-												<label className="cursor-pointer truncate flex items-center">
-													<i className="fa-solid fa-file mr-[6px] p-[5px] pl-[6px]"></i>
-													{page.page.page_name}
-													<span className='text-onyx_middle text-[13px]'>
-														&nbsp; 
-														(Paylaşan: <span className='text-onyx_light'>{page.shared_from}</span>)
-													</span>
-												</label>
-											</div>
-										</Link>
-									</div>
-								)
-							})}
-						</div>
-					</>
-					: undefined
-				}
+				</div>
 
 			</div>
+
 		</div>
 	
 		<hr className="hrCols mt-6"></hr>

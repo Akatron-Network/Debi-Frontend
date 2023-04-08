@@ -363,8 +363,6 @@
       px-3
       rounded
       shadow-md
-      h-fit
-      max-h-[370px]
   }
 
   .dashboard-card-title {
@@ -375,6 +373,18 @@
       !text-sea_green
   }
 
+  .dashboard-card-sub-title {
+    @apply
+      !w-full
+      !text-platinium
+      !flex
+      !items-center
+      !sticky
+      !top-0
+      !bg-middle_black
+      !z-10
+  }
+
   .dashboard-card-elm {
     @apply
       !bg-darkest_jet
@@ -382,6 +392,13 @@
       !pl-0
       !rounded
       !pr-[6px]
+  }
+
+  .dashboard-sub-card {
+    @apply
+    !col-span-1
+    !overflow-auto
+    !max-h-[230px]
   }
 
   /*!Collections-------------------------------------------------------- */

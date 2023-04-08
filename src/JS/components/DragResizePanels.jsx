@@ -47,7 +47,7 @@ export default class ResponsiveLocalStorageLayout extends React.PureComponent {
   render() {
     
     let value = this.context;
-    console.log(value);
+
     return (
       <div className="overflow-hidden">
         {/* <button className="btn ml-[10px]" onClick={() => this.resetLayout()}>Reset Layout</button> */}
@@ -68,7 +68,6 @@ export default class ResponsiveLocalStorageLayout extends React.PureComponent {
           // isBounded={true}
         >
           {value.pageContent.page_data.panels.map((panel) => {
-            console.log(panel);
             if (panel.PanelType === "bar") {
               return (
                 <div className="panels" key={panel.PanelID} data-grid={panel.Coordinates}>

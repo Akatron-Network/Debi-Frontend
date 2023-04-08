@@ -3,8 +3,6 @@ import { useNavigate } from "react-router-dom";
 import ParticlesComponent from '../components/ParticlesComponent'
 import debi_logo from '../../img/ico.png';
 
-import Service from '../libraries/categories/Service';
-
 export default function LoginPage() {
   var navigate = useNavigate();
 
@@ -93,18 +91,7 @@ export default function LoginPage() {
 
     }
 
-  }
-
-  const a = async () => {
-    let a = await Service.getProfile()
-    console.log(a);
-    console.log(a.Success);
-  }
-
-  useEffect(() => {
-    a();
-  }, [])
-  
+  }  
 
   return (
     <>

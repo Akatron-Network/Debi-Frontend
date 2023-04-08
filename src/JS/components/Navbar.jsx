@@ -30,7 +30,6 @@ export default function Navbar(props) {
   
   const logout = async () => {
     let resp = await Service.logout();
-    console.log(resp);
 
     navigate("/giris");
   }
