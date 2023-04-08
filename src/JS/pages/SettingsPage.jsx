@@ -47,7 +47,6 @@ export default function SettingPage() {
     try {
       let tkn = await Service.getProfile()
     } catch (error) {
-      console.log(error);
       navigate("/giris")
     }
   }
@@ -116,9 +115,7 @@ export default function SettingPage() {
       setUserInfJSON(last_info)
     }
 
-    console.log(last_info)
     let resp = await Service.postProfile(last_info);
-    console.log(resp);
     
     checkWarn(1)
   }

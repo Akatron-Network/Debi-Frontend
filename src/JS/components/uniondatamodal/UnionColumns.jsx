@@ -3,7 +3,6 @@ import { UnionDataModalContext } from '../context'
 
 export default function UnionColumns() {
   var union_data = useContext(UnionDataModalContext);
-  console.log(union_data);
   
   return (
     <div className="w-full h-44 bg-darker_jet rounded shadow-md relative grid grid-cols-2 grid-flow-row auto-rows-max gap-2 p-2 overflow-auto border border-jet_mid border-r-0">

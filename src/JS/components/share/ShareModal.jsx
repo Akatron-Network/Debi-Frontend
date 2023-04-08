@@ -5,8 +5,7 @@ import ShareTable from './ShareTable';
 
 export default function ShareModal() {
   const share_data = useContext(ShareContext);
-	console.log(share_data)  
-
+  
   return (
     <>
       <input type="checkbox" id="sharemodal"  className="modal-toggle" />

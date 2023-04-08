@@ -4,7 +4,6 @@ import { DataModalContext } from '../context'
 export default function Condition(props) {
   
   const data = useContext(DataModalContext);
-  console.log(data)
   var [bounderBtn, setBounderBtn] = useState(false);
   const [cols, setCols] = useState([]);
 
@@ -18,7 +17,6 @@ export default function Condition(props) {
   const [typeLength, setTypeLength] = useState("");
 
   useEffect(() => {
-    console.log(props.alias)
     setBounderBtn(props.value > 0);
     setCols(data.tables[props.alias].source_table.columns)
   }, [])
@@ -58,7 +56,6 @@ export default function Condition(props) {
       setOperator("VEYA");
       setOperatorR("OR");
       opr = "OR";
-      console.log(opr)
     }
     data.compile(alias, (value - 1), colRef, eqRef, valueRef, opr); //+ Valueyi -1 yollamamızın nedeni dataJSON içerisinde kaçıncı eleman olduğunu göstermek için.
   }
@@ -84,7 +81,7 @@ export default function Condition(props) {
       setTypeLength("");
     }
   };
-  console.log(data.dataJSON);
+  
   return (
     <div id={"condition_" + props.alias + "_" + props.value} className="condition_row_cards">
       <button className={'bounder ' + (bounderBtn ? null : "hidden")} id={"bounder_" + props.alias + "_" + props.value} onClick={() => changeOperator(props.alias , props.value , selColRef.current.value , selEqRef.current.value , inputValueRef.current.value)}>{operator}</button>

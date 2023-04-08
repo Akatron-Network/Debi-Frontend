@@ -4,7 +4,6 @@ import ConditionsAndSort from '../ConditionsAndSort';
 
 export default function Bar() {
   const chart_data = useContext(ChartContext);
-  console.log(chart_data)
 
   return (
     <>

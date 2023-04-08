@@ -110,7 +110,6 @@ export default function TreeMap() {
       </div>
 
       {chart_data.allAxis.map((alias) => {
-        // console.log(chart_data.xColSelRef.current["A"].value);
 
         return (
           <div key={alias} className='w-full'>

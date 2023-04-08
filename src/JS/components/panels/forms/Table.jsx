@@ -4,7 +4,6 @@ import ConditionsAndSort from '../ConditionsAndSort';
 
 export default function TreeMap() {
   const chart_data = useContext(ChartContext);
-  console.log(chart_data)
 
   useEffect(() => {
     return () => {
@@ -92,9 +91,7 @@ export default function TreeMap() {
         </div> */}
 
       {chart_data.allAxis.map((alias) => {
-        // console.log(chart_data.xColSelRef.current["A"].value);
-
-        console.log(chart_data.allAxis.indexOf(alias))
+        
         let padding = "";
         if(chart_data.allAxis.indexOf(alias) % 2 !== 0) {
           padding = "pr-[6px]"

@@ -18,9 +18,6 @@ class Service {
             localStorage.setItem('Username' , username)
             
         } catch (err) {
-            
-            console.log(err.response.data)
-
             return false;
         }
 
@@ -43,7 +40,6 @@ class Service {
             
         }
         catch (err) {
-            console.log(err.response.data)
             return false;
         }
 
@@ -62,8 +58,6 @@ class Service {
             localStorage.clear();
             
         } catch (err) {
-            
-            console.log(err.response.data)
             return false;
         }
 

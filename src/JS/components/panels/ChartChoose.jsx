@@ -13,7 +13,6 @@ import Input from '../Input'
 export default function ChartChoose() {
   const chart_data = useContext(ChartContext);
   const modal_data = useContext(ModalContext);
-  console.log(chart_data);
 
   useEffect(() => {
     modal_data.getList();

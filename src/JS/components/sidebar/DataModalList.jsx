@@ -74,8 +74,6 @@ export default function DataModalList() {
         modal_data.setUnionInformations(union_type);
       }
     }
-
-    console.log(union_type)
   }
 
   return (

@@ -5,7 +5,6 @@ import { MainContext , ChartContext } from './context'
 export default function Filepath() {
   const data = useContext(MainContext);
   const { savePage, setAllPanelsDragResize, allPanelsDragResize, refreshPage } = useContext(ChartContext);
-  console.log(data);
 
   const [link, setLink] = useState("");
 

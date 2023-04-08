@@ -30,7 +30,6 @@ export default function MainPage() {
     try {
       let tkn = await Service.getProfile()
     } catch (error) {
-      console.log(error);
       navigate("/giris")
     }
   }
@@ -191,14 +190,12 @@ export default function MainPage() {
 	}
   
 	const getFileDetails = (dt) => {
-		console.log(dt);
     setEditFileDetails(dt);
     fileNameRef.current.value = dt.page_name		
 	}
 
   const getFavorites = async () => {
     let favs = await WorkspaceAll.getFavorites();
-    console.log(favs);
 
     if (favs !== undefined) {
       for (let f of favs.Data) {
@@ -220,7 +217,6 @@ export default function MainPage() {
       let del = await WorkspaceAll.deleteFavorites(id);
       if (favoriteRef.current[id] !== null && favoriteRef.current[id] !== undefined) {
         favoriteRef.current[id].classList.remove("text-yellow-500")
-        console.log("a");
       }
     }
     else {
@@ -305,7 +301,7 @@ export default function MainPage() {
 
   const getList = async () => {
     let resp = await Data.getModalList();
-    console.log(resp)
+    
     setModalList(resp.Data.owned_models);
     setPublicModalList(resp.Data.public_models);
   }
@@ -413,7 +409,6 @@ export default function MainPage() {
   }
 
   const modelNameSelect = (id) => {
-    console.log(id);
     let first_id = id;
     let query = {};
     let colList_temp = [];
@@ -640,8 +635,6 @@ export default function MainPage() {
       }
     }
 
-    console.log(selColumns);
-
     return selColumns;
   }
 
@@ -708,8 +701,6 @@ export default function MainPage() {
         }
       }
     }
-
-    console.log(selGroups);
 
     return selGroups;
   }
@@ -786,7 +777,7 @@ export default function MainPage() {
 
   const refreshPage = async () => {
     let resp = await WorkspaceAll.getFiles(filepath[filepath.length - 1].id);
-    console.log(resp);
+    
     if(resp.Data.page_data === null) {
       resp.Data.page_data = { panels: [] }
     }
@@ -851,7 +842,7 @@ export default function MainPage() {
             for (let g of group) {
               if(p.SelColumns.yAxis.col.includes("_" + g)) {
                 let newCol = p.SelColumns.yAxis.col.replace(("_" + g) , "")
-                console.log(newCol)
+                
                 yColSelRef.current.value = p.SelColumns.yAxis.alias + "/" + p.SelColumns.yAxis.table + "/" + newCol
                 yColSelGroupRef.current.value = g
                 break;
@@ -967,7 +958,6 @@ export default function MainPage() {
           }
 
         }
-        console.log(plainAlias)
         setConditions(plainAlias);
 
         // Sıralama
@@ -976,7 +966,7 @@ export default function MainPage() {
           let al = getAlias(sortAlias);
           sortAlias.push(al)
         }
-        console.log(sortAlias)
+        
         setPanelSort(sortAlias);
       }
     }
@@ -1031,7 +1021,6 @@ export default function MainPage() {
               }
               
               if (p.SelColumns.xAxis[parseInt(x)].dataColumn === true) {
-                console.log(p.SelColumns.xAxis[parseInt(x)])
                 dataColumnRef.current[titleAxis[parseInt(x) - 1]].classList.remove('!border-jet_mid')
                 dataColumnRef.current[titleAxis[parseInt(x) - 1]].classList.add('!border-sea_green')
               }
@@ -1083,7 +1072,6 @@ export default function MainPage() {
               }
     
               for (let sort in panelSort) {
-                console.log(sort)
                 sortColumnSelect.current[panelSort[sort]].value = Object.keys(p.Order)[sort]        //Kolon adını bulduk
                 sortColumnTypeSelect.current[panelSort[sort]].value = Object.values(p.Order)[sort]  // Kolonların sıralamalarını bulduk
               }
@@ -1201,7 +1189,6 @@ export default function MainPage() {
         else {
           var wp = {[sel] : {[tr] : inp}}; // Örn: where_plain: [{"BORC_SUM": {"bte": 2000}}]
         }
-        console.log(wp);
         wherePlain.push(wp);
       } 
       else {
@@ -1426,7 +1413,6 @@ export default function MainPage() {
   const postShare = async () => {
     if (shareUsernameRef.current.value !== "") {  //. Checked Username Input
       let resp = await WorkspaceAll.postShare(shareItemInfo.shared_item_type , shareItemInfo.shared_item_id , shareUsernameRef.current.value , shareAuthRef.current.checked)
-      console.log(resp);
 
       await getIShare();
 
@@ -1436,7 +1422,6 @@ export default function MainPage() {
 
   const deleteShare = async (type, id) => {
     let resp = await WorkspaceAll.deleteShare(type, id);
-    console.log(resp)
 
     await getIShare();
   }
@@ -1508,7 +1493,6 @@ export default function MainPage() {
 
   const getIShare = async () => {
     let resp = await WorkspaceAll.getShare();
-    console.log(resp.Data);
 
     setIShareItems(
       {

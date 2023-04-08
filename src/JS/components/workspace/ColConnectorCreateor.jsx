@@ -6,7 +6,6 @@ import Input from '../Input'
 
 export default function ColConnectorCreateor() {
 	const data = useContext(MainContext);
-  console.log(data);
 
   const checkWarn = (block) => {
     let warns = ["1" , "2" , "3"]
@@ -42,14 +41,11 @@ export default function ColConnectorCreateor() {
   
 
   const checkDBSchema = (index) =>{
-    console.log(index)
-    console.log(data.dbSchemas)
     for(let db in data.dbSchemas) {
       data.checkDBSchemaRef.current[db].checked = false;
     }
     data.checkDBSchemaRef.current[index].checked = true;
     data.setChoosenSchema(data.dbSchemas[index])
-    console.log(data.dbSchemas[index]);
   }
 
   const testConnection = async () => {
@@ -81,7 +77,6 @@ export default function ColConnectorCreateor() {
       if(connectResp.Success === true) {
         if (Object.keys(data.editCollectionDetails).length > 0) {
           var forColID = await WorkspaceAll.putCollections(data.editCollectionDetails.collection_id, {collection_name: data.colNameRef.current.value, db_scheme_id: data.choosenSchema});
-          console.log(forColID);
         }
         else {
           var forColID = await WorkspaceAll.postCollections(data.colNameRef.current.value, data.choosenSchema);
@@ -89,17 +84,14 @@ export default function ColConnectorCreateor() {
 
         if (data.checkedConnector === false) {
           const a = await Data.postConnector(forColID.Data.collection_id, data.colWorksSelectRef.current.value, false, undefined,  connectionContent);
-          console.log(a)
         } 
         else {
           const a = await Data.postConnector(forColID.Data.collection_id, data.colWorksSelectRef.current.value, true, data.colConnectorServerRef.current.value,  connectionContent);
-          console.log(a)
           const sync = WorkspaceAll.postExplorerSync(forColID.Data.collection_id)
         }
 
         if(data.checkedTrialPack) {
           const add = await WorkspaceAll.addTrialPack(forColID.Data.collection_id);
-          console.log(add);
 
           data.funcLoad(data.getFavorites);
         }

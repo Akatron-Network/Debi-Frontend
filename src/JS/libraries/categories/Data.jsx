@@ -15,7 +15,6 @@ class Data {
 
       return resp;
     } catch (err) {
-      console.log(err);
       return err;
     }
   }

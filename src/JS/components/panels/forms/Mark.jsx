@@ -4,7 +4,6 @@ import ConditionsAndSort from '../ConditionsAndSort';
 
 export default function TreeMap() {
   const chart_data = useContext(ChartContext);
-  console.log(chart_data)
 
   useEffect(() => {
     return () => {
@@ -111,8 +110,7 @@ export default function TreeMap() {
       </div>
 
       {chart_data.allAxis.map((alias) => {
-        // console.log(chart_data.xColSelRef.current["A"].value);
-
+        
         return (
           <div key={alias} className='w-full'>
             <div className="form-control mb-2 w-1/2 pr-[6px]">

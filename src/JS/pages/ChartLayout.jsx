@@ -19,7 +19,6 @@ export default function ChartLayout() {
     try {
       let tkn = await Service.getProfile()
     } catch (error) {
-      console.log(error);
       navigate("/giris")
     }
   }

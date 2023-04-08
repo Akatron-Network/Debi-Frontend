@@ -53,7 +53,7 @@ export default function LoginPage() {
     }
     else {
       let resp = await Service.register(register_nicknameRef.current.value, register_passRef.current.value, register_emailRef.current.value , register_keygenRef.current.value)
-      console.log(resp);
+      
       if (resp) {
         navigate("/");
       } else {
@@ -78,7 +78,6 @@ export default function LoginPage() {
     else {
 
       let loginans = await Service.login(login_nicknameRef.current.value , login_passRef.current.value)
-      console.log(loginans);
 
       if (loginans === false) {
         document.getElementById('warn_2').classList.add('hidden');

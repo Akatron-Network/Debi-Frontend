@@ -11,7 +11,7 @@ export default function PanelsPage() {
     try {
       let tkn = await Service.getProfile()
     } catch (error) {
-      console.log(error);
+      
       navigate("/giris")
     }
   }
