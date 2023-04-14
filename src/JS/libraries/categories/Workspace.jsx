@@ -55,11 +55,13 @@ class WorkspaceAll {
         return resp;
     }
 
-    static async postExplorerSync(id) {
-        let postExplorerSync_req = new Requests("data" , "explorer_sync");
+    static async postExplorerSync(id, host) {
+        let postExplorerSync_req = new Requests("data" , "explorer_sync", (host) ? host + ":8001" : undefined);
         let resp = await postExplorerSync_req.post({
             collection_id: id,
-        });
+        }, 
+        (host !== undefined && host !== null)
+        );
         
         return resp;
     }

@@ -87,7 +87,7 @@ export default function ColConnectorCreateor() {
         } 
         else {
           const a = await Data.postConnector(forColID.Data.collection_id, data.colWorksSelectRef.current.value, true, data.colConnectorServerRef.current.value,  connectionContent);
-          const sync = WorkspaceAll.postExplorerSync(forColID.Data.collection_id)
+          const sync = WorkspaceAll.postExplorerSync(forColID.Data.collection_id, data.colConnectorServerRef.current.value)
         }
 
         if(data.checkedTrialPack) {
@@ -146,10 +146,10 @@ export default function ColConnectorCreateor() {
 
           <div className='inline-flex w-full items-center p-1'>
             <input type="checkbox" id='checkedConnector' className="checkbox mr-2 transition duration-300 hover:border-onyx_middle h-4 w-4" checked={data.checkedConnector} onChange={() => data.setCheckedConnector(!data.checkedConnector)} />
-            <span className='text-[14px] text-grayXgray'>Ağ geçidi kullanmak istiyorum.</span>
+            <span className='text-[14px] text-grayXgray'>Yerel sunucu kullanmak istiyorum.</span>
           </div>
 
-          <div className={data.checkedConnector ? "block mt-2" : "hidden" }>            
+          <div className={data.checkedConnector ? "hidden" : "hidden" }>            
             <div className="form-control mb-2">
               <div className="input-group shadow-md">
                 <span className='bg-black_light text-grayXgray px-2 py-[7px] !rounded-l border border-jet_mid justify-center min-w-[35%] xl:truncate'>Geçit Adresi</span>

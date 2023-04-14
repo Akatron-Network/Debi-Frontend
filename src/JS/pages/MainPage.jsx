@@ -249,7 +249,7 @@ export default function MainPage() {
   const [dbSchemas, setDbSchemas] = useState([])
   const [choosenSchema, setChoosenSchema] = useState("");
   const [checkedConnector , setCheckedConnector] = useState(false);
-  const [checkedTrialPack , setCheckedTrialPack] = useState(false);
+  const [checkedTrialPack , setCheckedTrialPack] = useState(true);
   const [checkedExpress , setCheckedExpress] = useState(false);
   const [checkedConnection, setCheckedConnection] = useState(false)
   const [publicCheck, setPublicCheck] = useState(false);
@@ -269,7 +269,7 @@ export default function MainPage() {
       setChoosenSchema("");
       setCheckedConnector(false);
       setCheckedConnection(false);
-      setCheckedTrialPack(false);
+      setCheckedTrialPack(true);
       setCheckedExpress(false);
       setEditCollectionDetails({})
       

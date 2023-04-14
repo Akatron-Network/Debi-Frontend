@@ -31,13 +31,16 @@ export default function ChartLayout() {
 
   useEffect(() => {
     funcLoad(getFiles, fileID);
-    
+
 		if (share_data.sharedCollections.length === 0) {
-			funcLoad(share_data.getShare);
+			if (share_data.sharedDirectories.length === 0) {
+        if (share_data.sharedPages.length === 0) {
+          funcLoad(share_data.getShare);
+        }
+			}
 		}
-		else {
-      check()
-    }
+
+    check();
   
     return () => {      
       if (document.getElementById('file_path_top') !== null) { // Panel ekranında çıkış yaparken hata verebiliyor. O yüzden koydum
@@ -46,10 +49,10 @@ export default function ChartLayout() {
       }
     }
   }, [fileID])
-
+0
 	useEffect(() => {
 		check();
-	}, [chart_data.pageContent])
+	}, [share_data.sharedCollections, share_data.sharedDirectories, share_data.sharedPages])
 
   //f For Coordinates Error
   useEffect(() => {
@@ -59,28 +62,58 @@ export default function ChartLayout() {
   }, [])
   
 	const check = () => {
-		for (let col of share_data.sharedCollections) {
-      if (col.collection_id === chart_data.pageContent.collection_id) { //. Check collectionID
-        if (col.editable === false) {	                                  //. Check editable
-          share_data.setBtnShowHide(false);
-          return;
-        }
-      }
-      else {                                                            //. If not equal check directoryID
+    
+		if (share_data.sharedCollections.length !== 0) {
 
-        for (let dir of col.collection.directories) {
-          if(dir.directory_id === chart_data.pageContent.directory_id) {
-            if (col.editable === false) {	//. Check editable
-              share_data.setBtnShowHide(false);
-              return;
-            }
-          }
-          else {
-            share_data.setBtnShowHide(true);
-          }
-        }
+			for (let col of share_data.sharedCollections) {
+				for (let dir of col.collection.directories) {
+	
+					if (dir.directory_id === parseInt(foldID)) {
+						if (col.editable === false) {
+							share_data.setBtnShowHide(false);
+							return;
+						}
+						else {
+							share_data.setBtnShowHide(true);
+						}
+					}
+	
+				}
+			}
+		}
 
-      }
+		if (share_data.sharedDirectories.length !== 0) {
+
+			for (let dir of share_data.sharedDirectories) {
+
+				if (dir.directory_id === parseInt(foldID)) {
+					if (dir.editable === false) {
+						share_data.setBtnShowHide(false);
+						return;
+					}
+					else {
+						share_data.setBtnShowHide(true);
+					}
+				}
+
+			}
+		}
+
+		if (share_data.sharedPages.length !== 0) {
+
+			for (let page of share_data.sharedPages) {
+
+				if (page.page_id === parseInt(fileID)) {
+					if (page.editable === false) {
+						share_data.setBtnShowHide(false);
+						return;
+					}
+					else {
+						share_data.setBtnShowHide(true);
+					}
+				}
+
+			}
 		}
 	}
 
