@@ -69,7 +69,8 @@ class WorkspaceAll {
     static async getRefresh(host) {
         let getRefresh_req = new Requests("service" , "refresh", (host) ? host + ":8001" : undefined);
         let resp = await getRefresh_req.get(
-        (host !== undefined && host !== null)
+            undefined,
+            (host !== undefined && host !== null)
         );
         
         return resp;
