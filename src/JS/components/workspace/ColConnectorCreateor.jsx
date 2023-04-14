@@ -87,7 +87,7 @@ export default function ColConnectorCreateor() {
         } 
         else {
           const a = await Data.postConnector(forColID.Data.collection_id, data.colWorksSelectRef.current.value, true, data.colConnectorServerRef.current.value,  connectionContent);
-          const sync = WorkspaceAll.postExplorerSync(forColID.Data.collection_id, data.colConnectorServerRef.current.value)
+          const sync = WorkspaceAll.getRefresh(data.colConnectorServerRef.current.value)
         }
 
         if(data.checkedTrialPack) {

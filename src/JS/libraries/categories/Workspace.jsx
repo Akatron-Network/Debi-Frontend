@@ -66,6 +66,15 @@ class WorkspaceAll {
         return resp;
     }
 
+    static async getRefresh(host) {
+        let getRefresh_req = new Requests("service" , "refresh", (host) ? host + ":8001" : undefined);
+        let resp = await getRefresh_req.get(
+        (host !== undefined && host !== null)
+        );
+        
+        return resp;
+    }
+
     static async postFolders(colID , name , parent_dir) {
         let postFolders_req = new Requests("workspace" , "directories");
         let resp = await postFolders_req.post({
