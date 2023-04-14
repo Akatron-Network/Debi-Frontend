@@ -8,6 +8,7 @@ import Service from '../libraries/categories/Service';
 export default function ChartLayout() {
   const chart_data = useContext(ChartContext);
   const share_data = useContext(ShareContext);
+  console.log(share_data);
   const { setFilePath, setCheckInPage, funcLoad } = useContext(MainContext);
 
 	const { fileID } = useParams();
@@ -49,7 +50,7 @@ export default function ChartLayout() {
       }
     }
   }, [fileID])
-0
+
 	useEffect(() => {
 		check();
 	}, [share_data.sharedCollections, share_data.sharedDirectories, share_data.sharedPages])
@@ -62,13 +63,13 @@ export default function ChartLayout() {
   }, [])
   
 	const check = () => {
-    
+
 		if (share_data.sharedCollections.length !== 0) {
 
 			for (let col of share_data.sharedCollections) {
 				for (let dir of col.collection.directories) {
 	
-					if (dir.directory_id === parseInt(foldID)) {
+					if (dir.directory_id === parseInt(fileID)) {
 						if (col.editable === false) {
 							share_data.setBtnShowHide(false);
 							return;
@@ -86,7 +87,7 @@ export default function ChartLayout() {
 
 			for (let dir of share_data.sharedDirectories) {
 
-				if (dir.directory_id === parseInt(foldID)) {
+				if (dir.directory_id === parseInt(fileID)) {
 					if (dir.editable === false) {
 						share_data.setBtnShowHide(false);
 						return;

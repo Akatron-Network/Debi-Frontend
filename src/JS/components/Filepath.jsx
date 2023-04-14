@@ -4,7 +4,7 @@ import { MainContext , ChartContext } from './context'
 
 export default function Filepath() {
   const data = useContext(MainContext);
-  const { savePage, setAllPanelsDragResize, allPanelsDragResize, refreshPage } = useContext(ChartContext);
+  const { savePage, setAllPanelsDragResize, allPanelsDragResize, refreshPage, btnShowHide } = useContext(ChartContext);
 
   const [link, setLink] = useState("");
 
@@ -51,9 +51,8 @@ export default function Filepath() {
       <div id="file_path_top" className="w-[calc(100%_-_70px)] top-11 left-[70px] fixed z-2 pl-5 pr-3 py-2 bg-shadow_green shadow-filepath breadcrumbs !flex justify-between items-center overflow-hidden">
         {link}
 
-        {data.checkInPage ? 
-          <div className=''>
-
+        {data.checkInPage && btnShowHide ? 
+          <div>
             <div className="tooltip tooltip-left pr-3 border-r border-r-onyx_middle" data-tip="Yeni Öğe Oluştur">
               <label id="new_btn" htmlFor="chart_choose" className='green-btn'><i className="fas fa-plus" /></label>
             </div>

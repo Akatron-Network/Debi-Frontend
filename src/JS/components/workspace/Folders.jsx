@@ -12,11 +12,12 @@ export default function Folders() {
 
 	useEffect(() => {		//. First check sharedCollections. Then if it equals to 0 run getShare func. Then run check func and show-hide check.
 		data.funcLoad(data.getFolderWorks, parseInt(colID));
-
+		
 		if (share_data.sharedCollections.length === 0) {
-			share_data.getShare();
+			data.funcLoad(share_data.getShare);
 		}
-		else { check() }
+		
+		check();
 	}, [colID])
 
 	useEffect(() => {
@@ -25,13 +26,12 @@ export default function Folders() {
 
 	const check = () => {
 
-
 		if (share_data.sharedCollections.length !== 0) {
 
 			for (let col of share_data.sharedCollections) {
 				for (let dir of col.collection.directories) {
 	
-					if (dir.directory_id === parseInt(foldID)) {
+					if (dir.collection_id === parseInt(colID)) {
 						if (col.editable === false) {
 							share_data.setBtnShowHide(false);
 							return;
@@ -45,17 +45,6 @@ export default function Folders() {
 			}
 		}
 
-		for (let col of share_data.sharedCollections) {
-			if (col.collection_id === parseInt(colID)) {
-				if (col.editable === false) {	//. Check editable
-					share_data.setBtnShowHide(false);
-					return;
-				}
-			}
-			else {
-				share_data.setBtnShowHide(true);
-			}
-		}
 	}
 	
 	// const [ownColData, setownColData] = useState({directories: []}) //* ColID 'ye sahip olan koleksiyonun içerisindeki dosyaları çekmek için bunu oluşturduk
@@ -68,52 +57,57 @@ export default function Folders() {
 
   return (
 		<div className='pr-3'>
-			<h2 className="workspace-titles">Klasörler</h2>
-			<div className="grid 2xl:grid-cols-9 xl:grid-cols-7 sm:grid-cols-4 grid-cols-2 grid-flow-row auto-rows-max gap-4 pl-[10px]">
+			{!share_data.btnShowHide && data.folders.directories.length === 0 ?
+				undefined
+				:
+				<>
+					<h2 className="workspace-titles">Klasörler</h2>
+					<div className="grid 2xl:grid-cols-9 xl:grid-cols-7 sm:grid-cols-4 grid-cols-2 grid-flow-row auto-rows-max gap-4 pl-[10px]">
 
-				{data.folders.directories.map((folder) => (
-					
-					
-						<div key={folder.directory_id} className="fold-card col-span-1">
-							<div className="card">
+						{data.folders.directories.map((folder) => (
+							
+								<div key={folder.directory_id} className="fold-card col-span-1">
+									<div className="card">
 
-								{share_data.btnShowHide === true ?
-									<div className='flex z-2 justify-end'>
-										<label htmlFor="sharemodal" className="dlt-btn cursor-pointer ml-[6px] h-7 flex justify-center items-center" onClick={() => data.funcLoad(data.openShareModal, "DIRECTORY" , folder.directory_id, folder.directory_name)}>
-											<i className="fa-solid fa-share-nodes"></i>
-										</label>
-										<label htmlFor="addWorksFold" className="dlt-btn cursor-pointer ml-[6px] h-7 flex justify-center items-center" onClick={() => data.funcLoad(data.getFolderDetails, folder)} >
-											<i className="fa-solid fa-pen-to-square"></i>
-										</label>
-										<label htmlFor="dltWorks" className="dlt-btn cursor-pointer mx-[6px] h-7 flex justify-center items-center" onClick={() => {data.setDeleteItemRef(folder) ; data.setDeleteItemType("klasör")}}>
-											<i className="fa-solid fa-xmark"></i>
-										</label>
+										{share_data.btnShowHide === true ?
+											<div className='flex z-2 justify-end'>
+												<label htmlFor="sharemodal" className="dlt-btn cursor-pointer ml-[6px] h-7 flex justify-center items-center" onClick={() => data.funcLoad(data.openShareModal, "DIRECTORY" , folder.directory_id, folder.directory_name)}>
+													<i className="fa-solid fa-share-nodes"></i>
+												</label>
+												<label htmlFor="addWorksFold" className="dlt-btn cursor-pointer ml-[6px] h-7 flex justify-center items-center" onClick={() => data.funcLoad(data.getFolderDetails, folder)} >
+													<i className="fa-solid fa-pen-to-square"></i>
+												</label>
+												<label htmlFor="dltWorks" className="dlt-btn cursor-pointer mx-[6px] h-7 flex justify-center items-center" onClick={() => {data.setDeleteItemRef(folder) ; data.setDeleteItemType("klasör")}}>
+													<i className="fa-solid fa-xmark"></i>
+												</label>
+											</div>
+										: undefined}
+
+										<Link className='link-title' to={folder.directory_id.toString()}>
+											<div className="col-content fold-content">
+												<h5>{folder.directory_name}</h5>
+											</div>
+										</Link>
+										<div className="card-bg fold-bg"></div>
 									</div>
-								: undefined}
+								</div>
+						))}
 
-								<Link className='link-title' to={folder.directory_id.toString()}>
-									<div className="col-content fold-content">
-										<h5>{folder.directory_name}</h5>
+						{share_data.btnShowHide === true ?
+							<label htmlFor="addWorksFold" className="fold-card add col-span-1" onClick={() => data.clearRefs("klasör")}>
+								<div className="card">
+									<div className="col-content">
+										<i className="fas fa-plus" style={{fontSize: '60px', color: 'var(--platinium)'}} />
 									</div>
-								</Link>
-								<div className="card-bg fold-bg"></div>
-							</div>
-						</div>
-				))}
+								</div>
+							</label>
+						: undefined}
 
-				{share_data.btnShowHide === true ?
-					<label htmlFor="addWorksFold" className="fold-card add col-span-1" onClick={() => data.clearRefs("klasör")}>
-						<div className="card">
-							<div className="col-content">
-								<i className="fas fa-plus" style={{fontSize: '60px', color: 'var(--platinium)'}} />
-							</div>
-						</div>
-					</label>
-				: undefined}
+					</div>
 
-			</div>
-
-			<hr className="hrCols"></hr>
+					<hr className="hrCols"></hr>
+				</>
+			}
 
 			<FoldCreator />
 			<DeleteApply />

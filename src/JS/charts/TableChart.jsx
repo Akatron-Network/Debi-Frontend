@@ -153,6 +153,7 @@ export default function TableChart(props) {
             return(
               <tr key={index} className="bg-jet transition duration-200 hover:bg-onyx hover:text-platinium">
                 {row.map((rowInside, index) => {
+                  // console.log(rowInside);
                   return(
                     <th key={index} className={(typeof(rowInside) === 'number') ? "px-2 py-1 font-normal border-b border-onyx truncate text-right" : "px-2 py-1 font-normal border-b border-onyx truncate"}>
                       {(typeof(rowInside) === 'number') ? currencyFormat(rowInside) : rowInside}
@@ -165,7 +166,7 @@ export default function TableChart(props) {
 
           <tr>
             {yAxis.map((col, index) => {
-              if(typeof(sum[index]) === 'number' && !col.includes("TARIH_")) {
+              if(typeof(sum[index]) === 'number' && !col.includes("TARIH_") && !col.includes("KOD")) {
                 return(
                   <th key={index} className='px-2 py-2 bottom-0 sticky bg-darkest_jet font-light text-center text-platinium border-t border-onyx_middle'><span className='float-right text-sea_green'>{currencyFormat(sum[index])}</span></th>
                 )
