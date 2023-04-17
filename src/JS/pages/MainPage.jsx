@@ -543,6 +543,7 @@ export default function MainPage() {
 
     //. Sayı olan kolonları ayırdım sıralarına göre yani 2.kolondakilerin toplamı 12312, 1.kolondakilerin toplamı 12312 gibi {2: 12312, 1: 12312}
     let last_sum = {};
+    
     for (let n of data) {
       for (let num in n) {
         if ((typeof(n[num]) === 'number')) {

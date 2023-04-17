@@ -18,6 +18,10 @@ export default function ChartReview() {
           <tr>
             {yAxisReview.map((col, index) => {
               let type = "";
+              let cls = "px-2 py-3 top-0 sticky bg-darkest_jet border-b border-b-onyx_middle border-t border-t-jet_mid"
+              
+              if (typeof(yDatasReview[0][index]) === 'number' && (!col.includes('_KOD') && !col.includes('TARIH_'))) cls = "px-2 py-3 top-0 sticky bg-darkest_jet border-b border-b-onyx_middle border-t border-t-jet_mid text-right"
+
               if (col.includes("_SUM")) {
                 col = col.split("_SUM")[0]
                 type = " (Toplam)"
@@ -33,10 +37,11 @@ export default function ChartReview() {
               else if (col.includes("_MAX")) {
                 col = col.split("_MAX")[0]
                 type = " (Maksimum)"
+                
               }
 
               return(
-                <th key={index} scope="col" className="px-2 py-3 top-0 sticky bg-darkest_jet border-b border-b-onyx_middle border-t border-t-jet_mid">{col}<span className='text-onyx_middle text-xs normal-case'>{type}</span></th>
+                <th key={index} scope="col" className={cls}>{col}<span className='text-onyx_middle text-xs normal-case'>{type}</span></th>
               )
             })}
           </tr>

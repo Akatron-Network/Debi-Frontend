@@ -125,6 +125,10 @@ export default function TableChart(props) {
           <tr>
             {yAxis.map((col, index) => {
               let type = "";
+              let cls = "px-2 py-3 top-[54px] sticky bg-darkest_jet border-b border-b-onyx_middle border-t border-t-jet_mid"
+
+              if (typeof(yDatas[0][index]) === 'number' && (!col.includes('_KOD') && !col.includes('TARIH_'))) cls = "px-2 py-3 top-[54px] sticky bg-darkest_jet border-b border-b-onyx_middle border-t border-t-jet_mid text-right"
+
               if (col.includes("_SUM")) {
                 col = col.split("_SUM")[0]
                 type = " (Toplam)"
@@ -143,7 +147,7 @@ export default function TableChart(props) {
               }
 
               return(
-                <th key={index} scope="col" className="px-2 py-3 top-[54px] sticky bg-darkest_jet border-b border-b-onyx_middle border-t border-t-jet_mid">{col}<span className='text-onyx_middle text-xs normal-case'>{type}</span></th>
+                <th key={index} scope="col" className={cls}>{col}<span className='text-onyx_middle text-xs normal-case'>{type}</span></th>
               )
             })}
           </tr>
