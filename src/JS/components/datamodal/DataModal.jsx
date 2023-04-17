@@ -1334,12 +1334,14 @@ export default function DataModal() {
             <h1 className="text-xl text-platinium mb-2 drop-shadow-lg pl-2 inline-flex">
               Ön İzleme
             </h1>
-            <button
-              className="green-btn float-right"
-              onClick={() => funcLoad(refreshTable)}
-            >
+            <div className="tooltip tooltip-left absolute right-3" data-tip="Ön İzle">
+              <button
+                className="green-btn float-right"
+                onClick={() => funcLoad(refreshTable)}
+              >
               <i className="fa-solid fa-rotate"></i>
             </button>
+            </div>
             <div
               id="review"
               className="w-full bg-darker_jet rounded shadow-md border border-jet_mid p-2"

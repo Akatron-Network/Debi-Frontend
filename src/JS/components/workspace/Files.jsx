@@ -7,7 +7,6 @@ import FileCreator from './FileCreator';
 
 export default function Files() {
   const share_data = useContext(ShareContext);
-	console.log(share_data);
 	const data = useContext(MainContext);
 	const { foldID } = useParams();
 

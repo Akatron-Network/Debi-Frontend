@@ -8,7 +8,6 @@ import Service from '../libraries/categories/Service';
 export default function ChartLayout() {
   const chart_data = useContext(ChartContext);
   const share_data = useContext(ShareContext);
-  console.log(share_data);
   const { setFilePath, setCheckInPage, funcLoad } = useContext(MainContext);
 
 	const { fileID } = useParams();

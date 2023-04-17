@@ -7,7 +7,6 @@ import FoldCreator from './FoldCreator';
 export default function Folders() {
 	const data = useContext(MainContext);
   const share_data = useContext(ShareContext);
-	console.log(share_data);
 	const { colID } = useParams();
 
 	useEffect(() => {		//. First check sharedCollections. Then if it equals to 0 run getShare func. Then run check func and show-hide check.

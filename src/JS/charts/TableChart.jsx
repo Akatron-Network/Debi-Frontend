@@ -25,8 +25,8 @@ export default function TableChart(props) {
     let col = chart_data.pageContent.collection.connector.gateway_host
     
     let where_plain = []
-    for (let wp of props.wherePlain) {              // İlk başta propstan wherePlain ham halini aldık yani O/TBLCAHAR/BORC gibi halini.
-      if (wp !== "AND") {                              // Sonrasında sadece BORC kısmını ayırıp where_plain içerisine yolladık
+    for (let wp of props.wherePlain) {                  // İlk başta propstan wherePlain ham halini aldık yani O/TBLCAHAR/BORC gibi halini.
+      if (wp !== "AND") {                               // Sonrasında sadece BORC kısmını ayırıp where_plain içerisine yolladık
         let split = Object.keys(wp)[0].split("/")[2];
         let js = {[split] : Object.values(wp)[0]}
         where_plain.push(js)
@@ -153,12 +153,20 @@ export default function TableChart(props) {
             return(
               <tr key={index} className="bg-jet transition duration-200 hover:bg-onyx hover:text-platinium">
                 {row.map((rowInside, index) => {
-                  // console.log(rowInside);
-                  return(
-                    <th key={index} className={(typeof(rowInside) === 'number') ? "px-2 py-1 font-normal border-b border-onyx truncate text-right" : "px-2 py-1 font-normal border-b border-onyx truncate"}>
-                      {(typeof(rowInside) === 'number') ? currencyFormat(rowInside) : rowInside}
-                    </th>
-                  )
+                  if (yAxis[index].includes("TARIH") || typeof(rowInside) !== 'number') {
+                    return(
+                      <th key={index} className="px-2 py-1 font-normal border-b border-onyx truncate">
+                        {rowInside}
+                      </th>
+                    )
+                  }
+                  else {
+                    return(
+                      <th key={index} className="px-2 py-1 font-normal border-b border-onyx truncate text-right">
+                        {typeof(rowInside) === 'number' ? currencyFormat(rowInside) : rowInside}
+                      </th>
+                    )
+                  }
                 })}
               </tr>
             )

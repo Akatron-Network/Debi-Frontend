@@ -361,10 +361,16 @@ export default function MainPage() {
   const sortColumnTypeSelect = useRef([]);
   const dataColumnRef = useRef([]);
   const favoriteRef = useRef([]);
+  const panelFeaturesRef = useRef();
+  const panelPreviewRef = useRef();
+  const panelFeaturesButtonRef = useRef();
+  const panelPreviewButtonRef = useRef();
+  const previewButtonRef = useRef();
 
   const [colList, setColList] = useState([]);
   const [panelType, setPanelType] = useState("");
   const [chartForms, setChartForms] = useState();
+  const [chartTypesForReview, setChartTypesForReview] = useState();
   const [allAxis, setAllAxis] = useState([]);
   const [titleAxis, setTitleAxis] = useState([]);
   const [valueAxis, setValueAxis] = useState([]);
@@ -375,6 +381,9 @@ export default function MainPage() {
   const [panelEdit, setPanelEdit] = useState(false);
   const [allPanelsDragResize, setAllPanelsDragResize] = useState(false);
   const [error, setError] = useState("Hata")
+  const [yAxisReview, setYAxisReview] = useState([]);
+  const [yDatasReview, setYDatasReview] = useState([]);
+  const [sumReview, setSumReview] = useState(0);
 
   useEffect(() => {
     setAllPanelsDragResize(pageContent.page_data.dragresize)
@@ -400,15 +409,165 @@ export default function MainPage() {
     card.classList.remove("border-transparent");
     card.classList.add("border-green_pantone");
 
-    if (type === "bar") {setChartForms(<Bar />)}
-    else if (type === "treemap") {setChartForms(<TreeMap />)}
-    else if (type === "line") {setChartForms(<Line />)}
-    else if (type === "mark") {setChartForms(<Mark />)}
-    else if (type === "pie") {setChartForms(<Pie />)}
-    else if (type === "table") {setChartForms(<Table />)}
-    else if (type === "pivot") {setChartForms(<Pivot />)}
+    if (type === "bar") {setChartForms(<Bar />); setChartTypesForReview("bar")}
+    else if (type === "treemap") {setChartForms(<TreeMap />); setChartTypesForReview("treemap")}
+    else if (type === "line") {setChartForms(<Line />); setChartTypesForReview("line")}
+    else if (type === "mark") {setChartForms(<Mark />); setChartTypesForReview("mark")}
+    else if (type === "pie") {setChartForms(<Pie />); setChartTypesForReview("pie")}
+    else if (type === "table") {setChartForms(<Table />); setChartTypesForReview("table")}
+    else if (type === "pivot") {setChartForms(<Pivot />); setChartTypesForReview("pivot")}
+
+    if (panelFeaturesRef.current.classList.contains('hidden')) { panelFeaturesRef.current.classList.remove('hidden') }
+    if (!panelPreviewRef.current.classList.contains('hidden')) { panelPreviewRef.current.classList.add('hidden') }
+    if (!previewButtonRef.current.classList.contains('hidden')) { previewButtonRef.current.classList.add('hidden') }
+
+    if (!panelFeaturesButtonRef.current.classList.contains('bg-jet_mid')) {
+      panelFeaturesButtonRef.current.classList.remove('bg-earie_black')
+      panelFeaturesButtonRef.current.classList.remove('hover:bg-darker_jet')
+      panelFeaturesButtonRef.current.classList.add('bg-jet_mid')
+    }
+
+    if (panelPreviewButtonRef.current.classList.contains('bg-jet_mid')) {
+      panelPreviewButtonRef.current.classList.remove('bg-jet_mid')
+      panelPreviewButtonRef.current.classList.add('bg-earie_black')
+      panelPreviewButtonRef.current.classList.add('hover:bg-darker_jet')
+    }
+    
+    setYAxisReview([]);
+    setYDatasReview([]);
+    setSumReview(0)
 
     setPanelType(type);
+  }
+
+  const changePanelTab = (btnRef, tabRef) => {
+    let btns = [panelFeaturesButtonRef, panelPreviewButtonRef] //. Buttons
+    let tabs = [panelFeaturesRef, panelPreviewRef] //. Tabs
+
+    for (let a of btns) {                                      //. Change buttons css to default
+      if (a.current.classList.contains('bg-jet_mid')) {
+        a.current.classList.remove('bg-jet_mid')
+        a.current.classList.add('bg-earie_black')
+        a.current.classList.add('hover:bg-darker_jet')
+      }
+    }
+
+    btnRef.current.classList.remove('bg-earie_black')
+    btnRef.current.classList.remove('hover:bg-darker_jet')
+    btnRef.current.classList.add('bg-jet_mid')
+
+    for (let t of tabs) {                                      //. Change buttons css to default
+      if (!t.current.classList.contains('hidden')) {
+        t.current.classList.add('hidden')
+      }
+    }
+
+    tabRef.current.classList.remove('hidden')
+
+    if (tabRef === panelPreviewRef) {
+      previewButtonRef.current.classList.remove('hidden')
+    }
+    else if (tabRef !== panelPreviewRef && !previewButtonRef.current.classList.contains('hidden')) {
+      previewButtonRef.current.classList.add('hidden')
+    }
+  }
+
+  const reviewChartTable = async () => {
+    //! SAVE PANEL KISMINDAN YAPACAKSIN ORADAN YOLA ÇIK!!!!!!!
+    let col = pageContent.collection.connector.gateway_host
+    let selGroup = axisGroupSel(panelType)
+    let selColumns = axisSel(panelType);
+
+    if (modelNameRef.current.value === "default") return
+
+    // WherePlain i çekmek için burada gerekli şeyleri belirledik ve listeye dahil ettik
+    let where_plain = []
+    for (let c of conditions) {
+      if (c !== "AND") { // "" yani AND olanlar için kontrol
+        let sel = conditionColumnSelect.current[c].value.split("/")[2]
+        let tr = conditionTransactionSelect.current[c].value
+        let inp = conditionInput.current[c].value
+
+        if (!conditionInput2.current[c].classList.contains("hidden")) {
+          let inp2 = conditionInput2.current[c].value
+          var wp = {[sel] : {[tr] : inp + "' AND '" + inp2}}; // Örn: where_plain: [{"BORC_SUM": {"bte": 2000}}]
+        }
+        else {
+          var wp = {[sel] : {[tr] : inp}}; // Örn: where_plain: [{"BORC_SUM": {"bte": 2000}}]
+        }
+        where_plain.push(wp);
+      } 
+      else {
+        where_plain.push("AND")
+      }
+    }
+    if (where_plain.length === 0) where_plain = undefined;
+
+    let order = {}
+    for (let o of panelSort) {
+      let col = sortColumnSelect.current[o].value.split("/")[2]
+      let type = sortColumnTypeSelect.current[o].value
+      order = {
+        ...order,
+        [col] : type
+      }
+    }
+    if (Object.keys(order).length === 0) order = undefined;
+
+    if (modelNameRef.current.value.includes("_Union")) {
+      var respData = await Data.postExecute({union_id: modelNameRef.current.value.replace("_Union" , "") , collection_id: pageContent.collection_id, where_plain: where_plain, order: order}, col);
+    } 
+    else if (modelNameRef.current.value.includes("_View")) {
+
+      let view_id = modelNameRef.current.value.replace("_View" , "")
+      let query = {table: view_id , where_plain: where_plain, order: order, select: selGroup}
+      var respData = await Data.postExecute({collection_id: pageContent.collection_id, query}, col);
+  
+    } 
+    else {
+      var respData = await Data.postExecute({model_id: modelNameRef.current.value , collection_id: pageContent.collection_id, where_plain: where_plain, order: order, columns: selGroup}, col);
+    }
+
+    let yAxisTemp = [];
+    var data = [];
+
+    yAxisTemp = Object.keys(respData.Data[0])
+  
+    for(let d of respData.Data) {
+      let el = []
+      for(let y of yAxisTemp) {
+        el.push(d[y]);
+      }
+      data.push(el);
+    }
+
+    //. Sayı olan kolonları ayırdım sıralarına göre yani 2.kolondakilerin toplamı 12312, 1.kolondakilerin toplamı 12312 gibi {2: 12312, 1: 12312}
+    let last_sum = {};
+    for (let n of data) {
+      for (let num in n) {
+        if ((typeof(n[num]) === 'number')) {
+          if (last_sum[num] === undefined) last_sum[num] = 0;
+
+          if (Object.keys(last_sum).length !== 0) {
+            last_sum = {
+              ...last_sum,
+              [num]: last_sum[num] + n[num]
+            }
+          }
+          else {
+            last_sum = {
+              ...last_sum,
+              [num]: n[num]
+            }
+          }
+          setSumReview(last_sum)
+        }
+      }
+    }
+
+    setYDatasReview(data);
+    setYAxisReview(yAxisTemp)
+
   }
 
   const modelNameSelect = (id) => {
@@ -1198,6 +1357,7 @@ export default function MainPage() {
         wherePlain.push("AND")
       }
     }
+    
     // Order' ı çekmek için burada gerekli şeyleri belirledik ve order objesini oluşturduk
     for (let o of panelSort) {
       let col = sortColumnSelect.current[o].value //.split("/")[2]
@@ -1639,6 +1799,7 @@ export default function MainPage() {
     allAxis,
     allPanelsDragResize,
     chartForms,
+    chartTypesForReview,
     colList,
     conditions,
     pageContent,
@@ -1648,6 +1809,9 @@ export default function MainPage() {
     panel,
     btnShowHide,
     errorText,
+    yAxisReview,
+    yDatasReview,
+    sumReview,
 
     conditionColumnSelect,
     conditionInput,
@@ -1659,7 +1823,12 @@ export default function MainPage() {
     xColSelGroupRef,
     yColSelGroupRef,
     modelNameRef,
+    panelFeaturesButtonRef,
+    panelFeaturesRef,
     panelNameRef,
+    panelPreviewButtonRef,
+    panelPreviewRef,
+    previewButtonRef,
     sortColumnSelect,
     sortColumnTypeSelect,
 
@@ -1668,6 +1837,7 @@ export default function MainPage() {
     addSort,
     axisSel,
     changeCondType,
+    changePanelTab,
     chooseChart,
     clearPanelInputs,
     dataColumnSelect,
@@ -1681,6 +1851,7 @@ export default function MainPage() {
     getColList,
     modelNameSelect,
     refreshPage,
+    reviewChartTable,
     savePage,
     savePanel,
     setPageContent,
