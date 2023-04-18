@@ -1,4 +1,4 @@
-import React , { useRef, useEffect } from 'react'
+import React , { useRef } from 'react'
 import { useNavigate } from "react-router-dom";
 import ParticlesComponent from '../components/ParticlesComponent'
 import debi_logo from '../../img/ico.png';
@@ -84,9 +84,7 @@ export default function LoginPage() {
         document.getElementById('warn_3').classList.remove('hidden');
       }
       else {
-        
         navigate("/");
-
       }
 
     }
@@ -117,7 +115,7 @@ export default function LoginPage() {
             </form>
           </div>
           <div className="form-container left-0 w-1/2 z-2" id='sign-in-container'>
-            <form className='form' action="#">
+            <form className='form pb-[50px] relative' action="#">
               <h1 className='font-bold m-0 text-[2.5rem]'>Giriş Yap</h1>
               {/* <a href="#" className="social giris-a"><i className="fab fa-google-plus-g" /></a> */}
               {/* <span className='text-xs'>ya da hesabını kullanabilirsin</span> */}
@@ -129,6 +127,11 @@ export default function LoginPage() {
               </div>
               {/* <a className='giris-a hover:text-sea_green' href="#">Şifreni mi unuttun?</a> */}
               <button className='button mt-2' onClick={login}>GİRİŞ YAP</button>
+              <button 
+                className='green-btn bg-transparent border-cadmium_green hover:bg-cadmium_green mt-5 flex p-[10px] flex-col absolute bottom-8' 
+                onClick={() => navigate("/demo")}>
+                <i className="fa-solid fa-desktop mb-1 text-xl"></i>Deneme Sürümü
+              </button>
             </form>
           </div>
           <div className="absolute top-0 w-1/2 left-1/2 h-full overflow-hidden transition-transform ease-in-out duration-700 z-[100]" id='overlay-container'>

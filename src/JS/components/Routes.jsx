@@ -11,6 +11,7 @@ import Collections from "./workspace/Collections";
 import Folders from "./workspace/Folders";
 import Files from "./workspace/Files";
 import Deneme from "../pages/Deneme";
+import DemoPage from "../pages/DemoPage";
 
 export default function AllRoutes() {
   return (
@@ -25,6 +26,7 @@ export default function AllRoutes() {
         </Route>
         <Route path="/ayarlar" element={<SettingsPage />} />
         <Route path="/grafik-tablo" element={<PanelsPage />} />
+        <Route path="/demo" element={<DemoPage />} />
         <Route path="/deneme" element={<Deneme />} />
       </Routes>
     </BrowserRouter>
