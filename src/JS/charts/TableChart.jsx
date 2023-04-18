@@ -124,10 +124,13 @@ export default function TableChart(props) {
         <thead className="text-xs text-cultured uppercase ">
           <tr>
             {yAxis.map((col, index) => {
+              
               let type = "";
               let cls = "px-2 py-3 top-[54px] sticky bg-darkest_jet border-b border-b-onyx_middle border-t border-t-jet_mid"
 
-              if (typeof(yDatas[0][index]) === 'number' && (!col.includes('_KOD') && !col.includes('TARIH_'))) cls = "px-2 py-3 top-[54px] sticky bg-darkest_jet border-b border-b-onyx_middle border-t border-t-jet_mid text-right"
+              if (yDatas.length > 0) {
+                if (typeof(yDatas[0][index]) === 'number' && (!col.includes('_KOD') && !col.includes('TARIH_'))) cls = "px-2 py-3 top-[54px] sticky bg-darkest_jet border-b border-b-onyx_middle border-t border-t-jet_mid text-right"
+              }
 
               if (col.includes("_SUM")) {
                 col = col.split("_SUM")[0]
@@ -157,7 +160,7 @@ export default function TableChart(props) {
             return(
               <tr key={index} className="bg-jet transition duration-200 hover:bg-onyx hover:text-platinium">
                 {row.map((rowInside, index) => {
-                  if (yAxis[index].includes("TARIH") || typeof(rowInside) !== 'number') {
+                  if (yAxis[index].includes("KOD") || yAxis[index].includes("TARIH") || typeof(rowInside) !== 'number') {
                     return(
                       <th key={index} className="px-2 py-1 font-normal border-b border-onyx truncate">
                         {rowInside}
