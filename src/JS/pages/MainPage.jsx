@@ -32,6 +32,15 @@ export default function MainPage() {
     } catch (error) {
       navigate("/giris")
     }
+
+    await gatewayCheck();
+  }
+
+  const gatewayCheck = async () => {
+    let gw_control = await Service.getPing();
+
+    if (gw_control.Success) { setGatewayClientCheck(true) }
+    else { setGatewayClientCheck(false) }
   }
 
   useEffect(() => {
@@ -96,6 +105,7 @@ export default function MainPage() {
   const [deleteItemType, setDeleteItemType] = useState('');
   const [modalChecked, setModalChecked] = useState(false);
   const [unionEditChecked, setUnionEditChecked] = useState(false);
+  const [gatewayClientCheck, setGatewayClientCheck] = useState(false);
   const [modalType, setModalType] = useState({});
   const [unionInformations, setUnionInformations] = useState({});
   const [allFavorites, setAllFavorites] = useState([]);
@@ -1741,12 +1751,14 @@ export default function MainPage() {
     favoriteRef,
     allFavorites,
     errorText,
+    gatewayClientCheck,
     setAllFavorites,
     getFavorites,
     favoriteFile,
     setCheckInPage,
     clearRefs,
     deleteItems,
+    gatewayCheck,
     getCollectionDetails,
     getFolderDetails,
     getFileDetails,

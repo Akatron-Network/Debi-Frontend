@@ -79,6 +79,18 @@ class Service {
 
       return resp
     }
+
+    static async getPing() {
+      let getPing_req = new Requests("service" , "ping",  "127.0.0.1:8001");
+
+      let resp = await getPing_req.get(
+        {}, 
+        true
+			)
+
+      return resp
+    }
+
 }
 
 export default Service;

@@ -13,7 +13,6 @@ class Requests {
     }
 
     async get(data, gateReq = false) {
-
         let resp = await axios({
             method: 'get',
             url: (gateReq) ? this.gateURL : this.url,

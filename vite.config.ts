@@ -10,6 +10,8 @@ export default defineConfig({
   //   port: 80,
   //   host: '93.180.133.185',
   // },
+
+  //! Akatron Server
   // server: {
   //   port: 80,
   //   host: '93.180.132.227',

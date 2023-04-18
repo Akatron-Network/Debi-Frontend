@@ -175,8 +175,9 @@ export default function Collections() {
 		<h2 className="workspace-titles">Koleksiyonlar</h2>
 		<div className="grid 2xl:grid-cols-9 xl:grid-cols-7 sm:grid-cols-4 grid-cols-2 grid-flow-row auto-rows-max gap-4 pl-[10px]">
 
-			{data.collections.map((collection) => (
-					<div key={collection.collection_id} className={collection.connector.gateway_host === null ? "col-span-1" : "col-span-1"}> {/* opacity-40 pointer-events-none */}
+			{data.collections.map((collection) => {
+				return (
+					<div key={collection.collection_id} className={collection.connector.gateway_host !== null && !data.gatewayClientCheck ? "col-span-1 opacity-40 pointer-events-none" : "col-span-1"}>
 						<div className="card">
 							<div className='flex z-2 justify-end'>
 								<label htmlFor="sharemodal" className="dlt-btn cursor-pointer ml-[6px] h-7 flex justify-center items-center" onClick={() => data.funcLoad(data.openShareModal, "COLLECTION", collection.collection_id, collection.collection_name)}>
@@ -194,14 +195,14 @@ export default function Collections() {
 								  <h4>{collection.collection_name}</h4>
 							  </div>
               </Link>
-							{/* {collection.connector.gateway_host !== null ? 
+							{collection.connector.gateway_host !== null && !data.gatewayClientCheck ? 
 								<span className='text-sm truncate bg-danger_light text-white z-2 absolute bottom-0 w-full text-center font-bold'>İstemci Gerektirir<br /></span> 
 								: undefined
-							} */}
+							}
 							<div className="card-bg" />
 						</div>
 					</div>
-			))}
+			)})}
 			{/* EDİTE BASINCA EDİT MODU AÇILSIN VE KOLEKSİYON OLUŞTURMA DOLDURULSUN - EKSTRA SENKRONİZASYON DA DURUMUNU GÖSTER VE BUTONU KOY*/}
 
 			<label htmlFor="addWorksCol" onClick={() => data.clearRefs("koleksiyon")}>
