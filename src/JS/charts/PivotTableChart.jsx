@@ -6,7 +6,7 @@ import 'devextreme/dist/css/dx.generic.attempt_1.css';
 import trMessages from "devextreme/localization/messages/tr.json";
 import { locale, loadMessages } from "devextreme/localization";
 import PivotGrid, {
-  FieldChooser,
+  FieldChooser, Scrolling,
 } from 'devextreme-react/pivot-grid';
 import PivotGridDataSource from 'devextreme/ui/pivot_grid/data_source';
 import LoadingForCharts from './modals/LoadingForCharts';
@@ -78,7 +78,11 @@ export default function PivotTableCharts(props) {
 
     for(let p of chart_data.pageContent.page_data.panels) {
       if (props.panelID === p.PanelID) {
+        let summaryType = undefined
+        let dataType = undefined
+
         for (let x of p.SelColumns.xAxis) {
+
           if (x.dataColumn === true) { //, Eğer dataColumn true ise veri kolonları kısmına atacağız bu bilgileri
             fields.push({
               area: 'data',
@@ -90,23 +94,32 @@ export default function PivotTableCharts(props) {
             })
           }
           else {
+            if (proData !== undefined ) {
+              dataType = (typeof(proData[x.col]) === 'number') ? 'number' : undefined
+            }
+
             fields.push({
               area: 'column',
               dataField: x.col,
               caption: x.col,
-              dataType: (typeof(proData[x.col]) === 'number') ? 'number' : undefined,
+              dataType: dataType,
               //, summaryType: (typeof(proData[x.col]) === 'number') ? 'sum' : undefined,
               //, format: (typeof(proData[x.col]) === 'number') ? { type: 'fixedPoint', precision: 2 } : undefined, // Format Tipleri --> https://js.devexpress.com/Documentation/22_1/ApiReference/Common/Object_Structures/Format/#formatter
             })
           }
         }
         for (let y of p.SelColumns.yAxis) {
+          if (proData !== undefined && proData !== null) {
+            dataType = (typeof(proData[y.col]) === 'number') ? 'number' : undefined
+            summaryType = (typeof(proData[y.col]) === 'number') ? 'sum' : undefined
+          }
+
           fields.push({
             area: 'row',
             dataField: y.col,
             caption: y.col,
-            dataType: (typeof(proData[y.col]) === 'number') ? 'number' : undefined,
-            summaryType: (typeof(proData[y.col]) === 'number') ? 'sum' : undefined,
+            dataType: dataType,
+            summaryType: summaryType,
             //, format: (typeof(proData[y.col]) === 'number') ? 'currency' : undefined, //+ format={{ currency: 'EUR', maximumFractionDigits: 2 }}
             //, format: (typeof(proData[y.col]) === 'number') ? { type: 'fixedPoint', precision: 2 } : undefined, // Format Tipleri --> https://js.devexpress.com/Documentation/22_1/ApiReference/Common/Object_Structures/Format/#formatter
           })
@@ -163,11 +176,14 @@ export default function PivotTableCharts(props) {
             allowFiltering={true}
             allowExpandAll={true}
             showBorders={true}
+            wordWrapEnabled={true}
           >
             <FieldChooser
               enabled={false}
               allowSearch={true}
             />
+            
+          <Scrolling mode="virtual" />
           </PivotGrid>
         </React.Fragment>
       </div>

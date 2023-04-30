@@ -390,7 +390,6 @@ export default function MainPage() {
   const [pageContent, setPageContent] = useState({page_data : {panels: [], dragresize: false}});
   const [panelEdit, setPanelEdit] = useState(false);
   const [allPanelsDragResize, setAllPanelsDragResize] = useState(false);
-  const [error, setError] = useState("Hata")
   const [yAxisReview, setYAxisReview] = useState([]);
   const [yDatasReview, setYDatasReview] = useState([]);
   const [sumReview, setSumReview] = useState(0);
@@ -587,7 +586,6 @@ export default function MainPage() {
     let colList_temp = [];
 
     if (first_id.includes("Union")) { // Union mu yoksa düz model mi diye kontrol ediyoruz
-
       id = parseInt(id);
       for(let a of unionList) { if (a.union_id === id) { query = a } }
       var keyMain = Object.keys(query.columns)
@@ -992,8 +990,10 @@ export default function MainPage() {
         panelNameRef.current.value = p.PanelName;
 
         // ModelName
-        modelNameRef.current.value = p.ModelID
-        modelNameSelect(p.ModelID);
+        let id = p.ModelID
+        if (Object.keys(p).includes("UnionID")) id = p.UnionID + "_Union"
+        modelNameRef.current.value = id
+        modelNameSelect(id);
 
         setPanel(panelID);
         // X-Y Axis (We use setTimeout because chooseChart sometimes came with delay)
@@ -1298,14 +1298,31 @@ export default function MainPage() {
   }
 
   const getCoordinates = () => {
+    
+    let parse = JSON.parse(localStorage["rgl-8"])
+
+    //f Yeni oluşturulan panelin en alta gelmesi için
+    let x = 0;
+    let y = 0;
+
+    for (let p of parse.layouts.lg) {
+      if (p.y >= y) {
+        y = p.y;
+
+        if (p.w + p.x < 9) {
+          x = p.x + p.w
+        }
+      }
+    }
+
     let crd = {};
-    if(panelType === "bar") {crd = { w: 4, h: 10, x: 0, y: 0, minW: 2, minH: 5}}
-    else if(panelType === "treemap") {crd = { w: 4, h: 10, x: 0, y: 0, minW: 2, minH: 7}}
-    else if(panelType === "line") {crd = { w: 4, h: 10, x: 4, y: 0, minW: 2, minH: 5}}
-    else if(panelType === "mark") {crd = { w: 4, h: 10, x: 8, y: 0, minW: 2, minH: 7}}
-    else if(panelType === "pie") {crd = { w: 4, h: 10, x: 0, y: 0, minW: 3, minH: 7}}
-    else if(panelType === "table") {crd = { w: 4, h: 10, x: 0, y: 0, minW: 3, minH: 7}}
-    else if(panelType === "pivot") {crd = { w: 4, h: 10, x: 0, y: 0, minW: 3, minH: 7}}
+    if(panelType === "bar") {crd = { w: 4, h: 10, x: x, y: y, minW: 2, minH: 5}}
+    else if(panelType === "treemap") {crd = { w: 4, h: 10, x: x, y: y, minW: 2, minH: 7}}
+    else if(panelType === "line") {crd = { w: 4, h: 10, x: x, y: y, minW: 2, minH: 5}}
+    else if(panelType === "mark") {crd = { w: 4, h: 10, x: x, y: y, minW: 2, minH: 7}}
+    else if(panelType === "pie") {crd = { w: 4, h: 10, x: x, y: y, minW: 3, minH: 7}}
+    else if(panelType === "table") {crd = { w: 4, h: 10, x: x, y: y, minW: 3, minH: 7}}
+    else if(panelType === "pivot") {crd = { w: 4, h: 10, x: x, y: y, minW: 3, minH: 7}}
     return crd;
   }
 
@@ -1324,7 +1341,7 @@ export default function MainPage() {
     }
 
     // Düzenleme yapılınca ve tekrar kaydedilince koordinatların son yerlerini de kaydediyoruz
-    if (panel !== "") {
+    if (panel !== "") { //. Edit
       let parse = JSON.parse(localStorage["rgl-8"])
 
       for (let b of parse.layouts.lg) {
@@ -1343,7 +1360,7 @@ export default function MainPage() {
         }
       }
     }
-    else {
+    else {            //. New
       var coordinates = getCoordinates();
       lastPanelID = getAlias(panelIDs);
     }
@@ -1499,18 +1516,17 @@ export default function MainPage() {
             }
   
             await WorkspaceAll.putFiles(pageContent.page_id, {page_data: {panels: panels, dragresize: allPanelsDragResize}})
-  
-            setPageContent({
-              ...pageContent,
-              page_data: {
-                ...pageContent.page_data,
-                panels: panels,
-                dragresize: allPanelsDragResize
-              }
-            })
           }
         }
       }
+      setPageContent({
+        ...pageContent,
+        page_data: {
+          ...pageContent.page_data,
+          panels: panels,
+          dragresize: allPanelsDragResize
+        }
+      })
     }
 
     document.getElementById('save-page-btn').innerHTML = '<i class="fa-solid fa-check text-green_pantone"></i>';
@@ -1519,10 +1535,6 @@ export default function MainPage() {
       document.getElementById('save-page-btn').innerHTML = '<i class="fa-solid fa-floppy-disk"></i>';
       document.getElementById('save-page-btn').disabled = false;
     }, 5000);
-  }
-
-  const errorHandler = (err) => {
-    setError(err)
   }
 
   //* ----------------------------------------------------------/

@@ -43,6 +43,9 @@ export default class ResponsiveLocalStorageLayout extends React.PureComponent {
     saveToLS("layouts", layouts);
     // this.setState({ layouts });
   }
+  
+  deneme2 (layout, oldItem, newItem, placeholder, e, element) {
+  }
 
   render() {
     let value = this.context;
@@ -62,9 +65,9 @@ export default class ResponsiveLocalStorageLayout extends React.PureComponent {
           autoSize={true}
           isDraggable={value.allPanelsDragResize}
           isResizable={value.allPanelsDragResize}
-          margin={[16, 16]} 
+          onResize={(layout, oldItem, newItem, placeholder, e, element) => this.deneme2(layout, oldItem, newItem, placeholder, e, element)}
+          margin={[16, 16]}
           {...this.props}
-          // isBounded={true}
         >
           {value.pageContent.page_data.panels.map((panel) => {
             if (panel.PanelType === "bar") {
@@ -172,7 +175,7 @@ export default class ResponsiveLocalStorageLayout extends React.PureComponent {
                       </div>
                     : undefined}
                     </div>
-                    <span className="relative top-[54px] left-[1px]"><PivotTableChart modelID={panel.ModelID} unionID={panel.UnionID} panelID={panel.PanelID} wherePlain={panel.WherePlain} order={panel.Order} select={panel.GroupSelect} /></span>
+                    <span className="relative top-[54px] left-[1px] w-full grid"><PivotTableChart modelID={panel.ModelID} unionID={panel.UnionID} panelID={panel.PanelID} wherePlain={panel.WherePlain} order={panel.Order} select={panel.GroupSelect} /></span>
                   </div>
                 </div>
               )

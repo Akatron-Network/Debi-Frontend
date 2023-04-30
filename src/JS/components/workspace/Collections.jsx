@@ -32,26 +32,50 @@ export default function Collections() {
 						for (let c of data.collections) {
 							if (f.page.collection_id === c.collection_id) {
 								col_name = c.collection_name
+
+								if (c.connector.gateway_host !== null && !data.gatewayClientCheck) {
+	
+									return (
+										<div key={i} className={i < 3 ? "tooltip tooltip-bottom" : "tooltip tooltip-top"} data-tip="İstemci Gerektirir">
+											<div className='relative col-span-1 opacity-30 pointer-events-none border border-danger_light rounded' onClick={() => {setPageContent({page_data : {panels: [], dragresize: false}});}}>
+												<Link to={f.url} className='mb-1'>
+													<div className='tree-elm dashboard-card-elm'>
+														<label className="cursor-pointer truncate flex items-center">
+															<i className="fa-solid fa-file mr-[6px] p-[5px] pl-[6px]"></i>
+															{f.page.page_name}
+															<span className='text-onyx_middle text-[13px]'>
+																&nbsp; 
+																(Koleksiyon: <span className='text-onyx_light'>{col_name}</span>)
+															</span>
+														</label>
+													</div>
+												</Link>
+											</div>
+										</div>
+									)
+								}
+								else {
+	
+									return (
+										<div key={i} className='relative col-span-1' onClick={() => {setPageContent({page_data : {panels: [], dragresize: false}});}}>
+											<Link to={f.url} className='mb-1'>
+												<div className='tree-elm dashboard-card-elm'>
+													<label className="cursor-pointer truncate flex items-center">
+														<i className="fa-solid fa-file mr-[6px] p-[5px] pl-[6px]"></i>
+														{f.page.page_name}
+														<span className='text-onyx_middle text-[13px]'>
+															&nbsp; 
+															(Koleksiyon: <span className='text-onyx_light'>{col_name}</span>)
+														</span>
+													</label>
+												</div>
+											</Link>
+										</div>
+									)
+	
+								}
 							}
-
 						}
-
-						return (
-							<div key={i} className='relative col-span-1' onClick={() => {setPageContent({page_data : {panels: [], dragresize: false}});}}>
-								<Link to={f.url} className='mb-1'>
-									<div className='tree-elm dashboard-card-elm'>
-										<label className="cursor-pointer truncate flex items-center">
-											<i className="fa-solid fa-file mr-[6px] p-[5px] pl-[6px]"></i>
-											{f.page.page_name}
-											<span className='text-onyx_middle text-[13px]'>
-												&nbsp; 
-												(Koleksiyon: <span className='text-onyx_light'>{col_name}</span>)
-											</span>
-										</label>
-									</div>
-								</Link>
-							</div>
-						)
 					})}
 				</div>
 			</div>
@@ -197,7 +221,8 @@ export default function Collections() {
               </Link>
 							{collection.connector.gateway_host !== null && !data.gatewayClientCheck ? 
 								<span className='text-sm truncate bg-danger_light text-white z-2 absolute bottom-0 w-full text-center font-bold'>İstemci Gerektirir<br /></span> 
-								: undefined
+								: 
+								undefined
 							}
 							<div className="card-bg" />
 						</div>

@@ -59,6 +59,7 @@ export default function ConditionsAndSort() {
                   <option value="bte">{'>='}</option>
                   <option value="lte">{'<='}</option>
                   <option value="like">{'içerir'}</option>
+                  <option value="nlike">{'içermez'}</option>
                   <option value="btw">{'arasında'}</option>
                   <option value="nbtw">{'arasında değil'}</option>
                 </select>
