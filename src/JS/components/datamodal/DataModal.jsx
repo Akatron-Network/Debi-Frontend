@@ -1264,73 +1264,79 @@ export default function DataModal() {
       <input type="checkbox" id="datamodal"  className="modal-toggle" />
       <div className="modal bg-modal_back">
         <div className="modal-box max-w-full h-screen p-4 grid grid-cols-5 gap-5 bg-darkest_jet rounded">
-          <div className="md:col-span-2 col-span-5 bg-middle_black p-3 rounded shadow-md overflow-auto relative min-h-[570px] h-full">
-            <h1 className="text-lg text-platinium mb-2 drop-shadow">
-              Model Oluştur
-            </h1>
-
-            <div className="form-control mb-2">
-              <div className="input-group shadow-md">
-                <span className='bg-black_light text-grayXgray px-2 py-[7px] !rounded-l border border-jet_mid justify-center min-w-[35%] xl:truncate'>Model Adı</span>
-                {modal_data.publicCheck ? <input disabled type="text" placeholder="Model Adı girin" className="input my-0 input-bordered !rounded-l-none w-full h-auto" ref={dataModalName} /> 
-                : <input type="text" placeholder="Model Adı girin" className="input my-0 input-bordered !rounded-l-none w-full h-auto" ref={dataModalName} />}
-              </div>
-            </div>
-
-            <hr className="my-3 border-1 w-4/5 relative left-1/2 -translate-x-1/2 border-hr_gray" />
-
-            <ColSelect />
-
-            <SourceTable />
-            
-            <div className='inline-flex items-center w-full justify-between'>
-              <h1 className="text-lg text-platinium mt-3 mb-2 drop-shadow">
-                İlişkili Tablolar
+          <div className="md:col-span-2 col-span-5 bg-middle_black p-3 rounded shadow-md !overflow-auto relative min-h-[570px] h-full">
+            <div id='modelInfos'>
+              <h1 className="text-lg text-platinium mb-2 drop-shadow">
+                Model Oluştur
               </h1>
-              <div className="tooltip tooltip-left" data-tip="Yeni İlişkili Tablo Ekle">
-                <label htmlFor="manuelrelatedmodal" className="green-btn">
-                  <i className="fa-solid fa-plus"></i>
-                </label>
-              </div>
-            </div>
 
-            <Relations />
+              <div className="form-control mb-2">
+                <div className="input-group shadow-md">
+                  <span className='bg-black_light text-grayXgray px-2 py-[7px] !rounded-l border border-jet_mid justify-center min-w-[35%] xl:truncate'>Model Adı</span>
+                  {modal_data.publicCheck ? <input disabled type="text" placeholder="Model Adı girin" className="input my-0 input-bordered !rounded-l-none w-full h-auto" ref={dataModalName} /> 
+                  : <input type="text" placeholder="Model Adı girin" className="input my-0 input-bordered !rounded-l-none w-full h-auto" ref={dataModalName} />}
+                </div>
+              </div>
+
+              <hr className="my-3 border-1 w-4/5 relative left-1/2 -translate-x-1/2 border-hr_gray" />
+
+              <ColSelect />
+
+              <SourceTable />
+            </div>
+            
+            <div id='relations'>
+              <div className='inline-flex items-center w-full justify-between'>
+                <h1 className="text-lg text-platinium mt-3 mb-2 drop-shadow">
+                  İlişkili Tablolar
+                </h1>
+                <div className="tooltip tooltip-left" data-tip="Yeni İlişkili Tablo Ekle">
+                  <label htmlFor="manuelrelatedmodal" className="green-btn">
+                    <i className="fa-solid fa-plus"></i>
+                  </label>
+                </div>
+              </div>
+
+              <Relations />
+            </div>
 
             <hr className="my-3 border-1 w-4/5 relative left-1/2 -translate-x-1/2 border-hr_gray" />
 
-            <h1 className="text-lg text-platinium mb-2 drop-shadow-lg">
-              Seçilen Tablolar
-            </h1>
+            <div id='chosen_tables'>
+              <h1 className="text-lg text-platinium mb-2 drop-shadow-lg">
+                Seçilen Tablolar
+              </h1>
 
-            <div id="collapses">{chosenTables}</div>
+              <div id="collapses">{chosenTables}</div>
 
-            {(chosenTables.length > 0) ? (
-                <div className="table_layout mt-2 p-2 max-h-[465px] border border-jet_mid">
-                  {allTransCols.map((col , index) => {
-                    let name = Object.keys(col);
-                    let name_last = name[0].replaceAll(/[{}]/g , "");
+              {(chosenTables.length > 0) ? (
+                  <div className="table_layout mt-2 p-2 max-h-[465px] border border-jet_mid">
+                    {allTransCols.map((col , index) => {
+                      let name = Object.keys(col);
+                      let name_last = name[0].replaceAll(/[{}]/g , "");
 
-                    return(
-                      <div key={index} className="form-control col-span-12">
-                        <div className="input-group shadow-md">
-                          <span className='bg-black_light text-grayXgray px-2 py-[7px] !rounded-l border border-jet_mid justify-center min-w-[35%] xl:truncate'>{name_last}</span>
-                          <input type="text" className="input my-0 input-bordered !rounded-none w-full h-auto pointer-events-none" ref={transRef} onChange={cV} value={Object.values(col)[0]} />
-                          <button className="danger-btn h-auto w-[7%] !rounded-l-none !rounded-r" onClick={() => dltAllTransCols(name)}><i className="fa-solid fa-xmark"></i></button>
+                      return(
+                        <div key={index} className="form-control col-span-12">
+                          <div className="input-group shadow-md">
+                            <span className='bg-black_light text-grayXgray px-2 py-[7px] !rounded-l border border-jet_mid justify-center min-w-[35%] xl:truncate'>{name_last}</span>
+                            <input type="text" className="input my-0 input-bordered !rounded-none w-full h-auto pointer-events-none" ref={transRef} onChange={cV} value={Object.values(col)[0]} />
+                            <button className="danger-btn h-auto w-[7%] !rounded-l-none !rounded-r" onClick={() => dltAllTransCols(name)}><i className="fa-solid fa-xmark"></i></button>
+                          </div>
                         </div>
+                      )
+                    })}
+                      <div className="col-span-12 text-center">
+                        <label htmlFor="groupmodal" className="green-btn">
+                          <i className="fa-solid fa-plus mr-2"></i>Hesap Kolonu Ekle
+                        </label>
                       </div>
-                    )
-                  })}
-                    <div className="col-span-12 text-center">
-                      <label htmlFor="groupmodal" className="green-btn">
-                        <i className="fa-solid fa-plus mr-2"></i>Hesap Kolonu Ekle
-                      </label>
-                    </div>
-                </div>
-              ) : undefined
-            }
+                  </div>
+                ) : undefined
+              }
+            </div>
           </div>
 
-          <div className="md:col-span-3 col-span-5 bg-middle_black p-3 rounded shadow-md relative min-h-[570px] h-full">
+          <div id='review_for_joyride' className="md:col-span-3 col-span-5 bg-middle_black p-3 rounded shadow-md relative min-h-[570px] h-full">
             <h1 className="text-xl text-platinium mb-2 drop-shadow-lg pl-2 inline-flex">
               Ön İzleme
             </h1>

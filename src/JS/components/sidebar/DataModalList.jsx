@@ -3,7 +3,7 @@ import { MainContext, ModalContext } from '../context'
 
 export default function DataModalList() {
   const modal_data = useContext(ModalContext);
-  const { funcLoadForSpesific } = useContext(MainContext);
+  const { funcLoadForSpesific, toastCreator, modelPageJoyrideClickStart,} = useContext(MainContext);
 
   useEffect(() => {
     funcLoadForSpesific("loadingScreenSidebar", "errorScreenSidebar", modal_data.getList);
@@ -11,6 +11,7 @@ export default function DataModalList() {
   }, [])
 
   const openModal = (modal_type, type) => { //!Önizleme için gerekiyor
+
     setTimeout(() => {
       let review_btn = document.getElementById('closeModalBtn');
       let review = document.getElementById('review');
@@ -31,6 +32,10 @@ export default function DataModalList() {
         tblReview.style.height = (review_crd.height - 16) + 'px';
     
       }, 20);
+
+      setTimeout(() => {
+        toastCreator(modelPageJoyrideClickStart, "Model oluşturma ekranındaki tüm özellikleri keşfetmek için öğreticiyi çalıştırın!")
+      }, 30);
   
     }, 200);
 

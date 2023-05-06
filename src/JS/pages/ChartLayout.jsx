@@ -8,7 +8,7 @@ import Service from '../libraries/categories/Service';
 export default function ChartLayout() {
   const chart_data = useContext(ChartContext);
   const share_data = useContext(ShareContext);
-  const { setFilePath, setCheckInPage, funcLoad } = useContext(MainContext);
+  const { setFilePath, setCheckInPage, funcLoad, toastCreator, toastDelete, reportPageJoyrideClickStart } = useContext(MainContext);
 
 	const { fileID } = useParams();
 
@@ -26,6 +26,7 @@ export default function ChartLayout() {
   useEffect(() => {
     if (localStorage.Token !== undefined) { loginControl() }
     else { navigate("/giris") }
+
   }, [])
   //! --------------------------------------------
 
@@ -41,8 +42,14 @@ export default function ChartLayout() {
 		}
 
     check();
+
+		setTimeout(() => {
+			toastCreator(reportPageJoyrideClickStart, "Rapor ekranındaki tüm özellikleri keşfetmek için öğreticiyi çalıştırın!")
+		}, 300);
   
-    return () => {      
+    return () => {
+			toastDelete();
+
       if (document.getElementById('file_path_top') !== null) { // Panel ekranında çıkış yaparken hata verebiliyor. O yüzden koydum
         document.getElementById('file_path_top').style.display = "block";
         setCheckInPage(false);

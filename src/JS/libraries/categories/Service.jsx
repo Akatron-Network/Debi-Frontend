@@ -11,8 +11,13 @@ class Service {
                     username: username,
                     password: password,
             })
+            
+            localStorage.removeItem("Token")
+            localStorage.removeItem("RefreshToken")
+            localStorage.removeItem("Tree")
+            localStorage.removeItem("TreeTime")
+            localStorage.removeItem("Username")
 
-            localStorage.clear();
             localStorage.setItem('Token' , resp.Token);
             localStorage.setItem('RefreshToken' , resp.Data.refresh_token);
             localStorage.setItem('Username' , username)
@@ -54,8 +59,13 @@ class Service {
             let resp = await logout_req.delete({
                     Token: localStorage.getItem("Token"),
             })
-
-            localStorage.clear();
+            
+            localStorage.removeItem("Token")
+            localStorage.removeItem("RefreshToken")
+            localStorage.removeItem("Tree")
+            localStorage.removeItem("TreeTime")
+            localStorage.removeItem("Username")
+            localStorage.removeItem("rgl-8")
             
         } catch (err) {
             return false;

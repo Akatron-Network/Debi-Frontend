@@ -52,7 +52,7 @@ export default function Filepath() {
         {link}
 
         {data.checkInPage && btnShowHide ? 
-          <div>
+          <div id='report_screen_buttons'>
             <div className="tooltip tooltip-left pr-3 border-r border-r-onyx_middle" data-tip="Yeni Öğe Oluştur">
               <label id="new_btn" htmlFor="chart_choose" className='green-btn'><i className="fas fa-plus" /></label>
             </div>

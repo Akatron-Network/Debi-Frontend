@@ -51,7 +51,7 @@ export default class ResponsiveLocalStorageLayout extends React.PureComponent {
     let value = this.context;
 
     return (
-      <div className="overflow-hidden">
+      <div id="report_screen" className="overflow-hidden">
         {/* <button className="btn ml-[10px]" onClick={() => this.resetLayout()}>Reset Layout</button> */}
 
         <ResponsiveReactGridLayout
@@ -158,7 +158,7 @@ export default class ResponsiveLocalStorageLayout extends React.PureComponent {
                       </div>
                     : undefined}
                     </div>
-                    <TableChart modelID={panel.ModelID} unionID={panel.UnionID} panelID={panel.PanelID} wherePlain={panel.WherePlain} order={panel.Order} select={panel.GroupSelect} />
+                    <span className="relative top-[54px] left-[1px] w-full grid"><TableChart modelID={panel.ModelID} unionID={panel.UnionID} panelID={panel.PanelID} wherePlain={panel.WherePlain} order={panel.Order} select={panel.GroupSelect} /></span>
                   </div>
                 </div>
               )

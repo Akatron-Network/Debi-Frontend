@@ -120,7 +120,7 @@ export default function TableChart(props) {
 
   return (
     <>
-      <table className="w-full text-sm text-left text-grayXgray relative top-[54px] left-[1px] border-spacing-[inherit] border-separate">
+      <table className="text-sm text-left text-grayXgray border-spacing-[inherit] border-separate">
         <thead className="text-xs text-cultured uppercase ">
           <tr>
             {yAxis.map((col, index) => {
@@ -147,6 +147,23 @@ export default function TableChart(props) {
               else if (col.includes("_MAX")) {
                 col = col.split("_MAX")[0]
                 type = " (Maksimum)"
+              }
+
+              else if (col.includes("_AY")) {
+                col = col.split("_AY")[0]
+                type = " (Ay)"
+              }
+              else if (col.includes("_GUN")) {
+                col = col.split("_GUN")[0]
+                type = " (Gün)"
+              }
+              else if (col.includes("_HAFTA")) {
+                col = col.split("_HAFTA")[0]
+                type = " (Hafta)"
+              }
+              else if (col.includes("_YIL")) {
+                col = col.split("_YIL")[0]
+                type = " (Yıl)"
               }
 
               return(

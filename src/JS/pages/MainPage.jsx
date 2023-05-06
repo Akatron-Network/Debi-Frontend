@@ -20,6 +20,12 @@ import Loading from '../components/Loading'
 import Error from '../components/Error'
 import ShareModal from '../components/share/ShareModal';
 import Service from '../libraries/categories/Service';
+import Joyride, { ACTIONS, EVENTS, STATUS } from 'react-joyride';
+import MainTree from '../components/sidebar/MainTree';
+import Shared from '../components/sidebar/Shared';
+import Favorites from '../components/sidebar/Favorites';
+import DataModalList from '../components/sidebar/DataModalList';
+import Toast from '../components/Toast';
 
 
 export default function MainPage() {
@@ -1727,6 +1733,278 @@ export default function MainPage() {
   }
   //* ----------------------------------------------------------/
 
+  //* TAB FUNCS ------------------------------------------------/
+  const [sidebarOpen, setSidebarOpen] = useState(false)
+	const openCloseSideBar = () => {
+	
+		let allsidepanel = document.getElementById('allsidepanel');
+		let open_close_btn = document.getElementById('open_close_btn');
+	
+			if(open_close_btn.style.transform === 'rotateZ(180deg)') {
+				allsidepanel.style.transform = 'translateX(0px)';
+				allsidepanel.classList.remove("w-full" , "!bg-none_opacity");
+				open_close_btn.style.transform = 'rotateZ(0deg)';
+			}
+	
+			else {
+				allsidepanel.style.transform = 'translateX(250px)';
+				allsidepanel.classList.add("w-full" , "!bg-none_opacity");
+				open_close_btn.style.transform = 'rotateZ(180deg)';
+			}
+
+      setSidebarOpen(!sidebarOpen)
+	}
+
+  const tabShown = (id) => { //* Sidepanel'de açık olan tabı gösterir. Açık olan tabın üzeri yeşil olur
+
+		for(var a in tab_id) {
+
+			var open_btn = document.getElementById('open_btn_' + tab_id[a]);
+			
+			open_btn.classList.replace('shadow-openbtn','shadow-defaultbtn');
+			open_btn.classList.replace('text-sea_green','text-grayXgray');
+			open_btn.classList.replace('bg-side_black','bg-black_light');
+
+		}
+
+		open_btn = document.getElementById('open_btn_' + tab_id[id]);
+
+		open_btn.classList.replace('shadow-defaultbtn','shadow-openbtn');
+		open_btn.classList.replace('text-grayXgray','text-sea_green');
+		open_btn.classList.replace('bg-black_light','bg-side_black');
+
+	}
+
+	const [page, setPage] = useState(<MainTree fn={() => openCloseSideBar()} />);
+	const openPage = (id) => {
+		if(id === 0) { setPage(<MainTree fn={() => openCloseSideBar()} />) }
+		else if(id === 1) { setPage(<Shared />) }
+		else if(id === 2) { setPage(<Favorites fn={() => openCloseSideBar()} />) }
+		else if(id === 3) { setPage(<DataModalList />) }
+	}
+
+  var tab_id = [1,2,3,4];
+	const openWithTab = (id) => {
+		var open_btn = document.getElementById('open_btn_' + tab_id[id]);
+		let open_close_btn = document.getElementById('open_close_btn');
+
+		if(open_close_btn.style.transform === 'rotateZ(180deg)') {
+			if(open_btn.classList.contains('bg-side_black')) { openCloseSideBar() } //? Açık tab a tekrar tıklandığında sidebar kapanması için koydum
+			else { tabShown(id); openPage(id)	}
+		}
+		else { openCloseSideBar(); tabShown(id); openPage(id) }
+	}
+
+  //* ----------------------------------------------------------/
+
+  //* JOYRIDE --------------------------------------------------/
+
+  const joyride_locale = {
+    back: 'Geri',
+    close: 'Kapat',
+    last: 'Son',
+    next: 'İleri',
+    open: 'Diyaloğu göster',
+    skip: 'Tanıtımı Geç'
+  }
+  
+  const mainpage_joyride_steps = [
+    {
+      target: "#collections",
+      content: "Burası çalışma alanınız. Koleksiyonların içerisinde dosyalar ve rapor sayfalarınızı bulabilirsiniz.",
+      disableBeacon: true,
+    },
+    {
+      target: "#addCollection",
+      content: "Yeni bir koleksiyon oluşturup veritabanınızı entegre edebilirsiniz.",
+    },
+    {
+      target: '#openclose',
+      content: "Yan panele buradan erişebilirsiniz.",
+      placement: 'right',
+    },
+    {
+      target: '#all_tabs_in_sidepanel',
+      content: "Çalışma alanınızdaki tüm koleksiyon, dosya ve sayfalara, sizinle paylaşılan rapor ekranlarına, favorilerinize ve veri modellerinize buradan ulaşabilirsiniz.",
+      placement: 'right',
+    },
+    {
+      target: "#dashboard",
+      content: "Ayrıca çalışma alanınızdan da direkt favorilerinize ve sizinle paylaşılan rapor ekranlarına ulaşabilirsiniz.",
+    },
+    {
+      target: "#file_path_top",
+      content: "Dosya yolunu buradan takip edebilirsiniz.",
+      styles: {
+        options: {
+          zIndex: 2
+        },
+      }
+    },
+    {
+      target: "#menu-btn",
+      content: "Buradan çıkış yapabilir ve hesap bilgilerinizi güncelleyebilirsiniz."
+    },
+  ]
+
+  const [mainpageJoyride, setMainpageJoyride] = useState({
+    run: false,
+    steps: mainpage_joyride_steps,
+    stepIndex: 0,
+  })
+
+  const mainPageJoyrideClickStart = () => {
+    setMainpageJoyride({...mainpageJoyride, run: true})
+    toastDelete();
+    navigate("/")
+
+    if (sidebarOpen) {
+      openCloseSideBar()
+    }
+  }
+
+  const mainPageJoyrideCallback = data => {
+    const { action, index, status, type } = data;
+
+    if (data.index === mainpageJoyride.stepIndex && (type === EVENTS.STEP_AFTER || type === EVENTS.TARGET_NOT_FOUND)) {
+      setMainpageJoyride({...mainpageJoyride, stepIndex: index + (action === ACTIONS.PREV ? -1 : 1) });
+    }
+    else if ([STATUS.FINISHED, STATUS.SKIPPED].includes(status)) {
+      setMainpageJoyride({...mainpageJoyride, run: false, stepIndex: 0 });
+
+      localStorage.setItem('mainPageJoyridePassed', 'true');
+    }
+  };
+
+  //! ----------------------------------------------
+
+  const modelpage_joyride_steps = [
+    {
+      target: "#modelInfos",
+      content: "Buradan oluşturacağınız modelinizin adını, koleksiyonunuzu ve kaynak tablonuzu belirtebilirsiniz.",
+      placement: 'right',
+      disableBeacon: true
+    },
+    {
+      target: "#relations",
+      content: "Seçtiğiniz kaynak tablonuzla ilişkili olan tabloları buradan seçebilirsiniz. İsterseniz sağ üstteki buton ile yeni ilişkili tablo da ekleyebilirsiniz.",
+      placement: 'right',
+    },
+    {
+      target: '#chosen_tables',
+      content: "Seçtiğiniz ilişkili tablolar da bu bölümde gözükecektir. İçeriklerini burada görüntüleyebilir ve düzenleyebilirsiniz. Hatta koşullarınızı belirtebilir ve hesap kolonu da ekleyebilirsiniz.",
+      placement: 'right',
+    },
+    {
+      target: '#review_for_joyride',
+      content: "Modelinizin ön izlemesini görmek için sağ üstteki butona tıklayarak ön izlemeyi görüntüleyebilirsiniz. Daha sonra alttaki 'Kaydet' butonu ile modelinizi kaydedebilirsiniz",
+      placement: 'left',
+    }
+  ]
+
+  const [modelpageJoyride, setModelpageJoyride] = useState({
+    run: false,
+    steps: modelpage_joyride_steps,
+    stepIndex: 0,
+  })
+
+  const modelPageJoyrideClickStart = () => {
+    setModelpageJoyride({...modelpageJoyride, run: true})
+    toastDelete();
+
+    if (sidebarOpen) {
+      openCloseSideBar()
+    }
+  }
+
+  const modelPageJoyrideCallback = data => {
+    const { action, index, status, type } = data;
+
+    if (data.index === modelpageJoyride.stepIndex && (type === EVENTS.STEP_AFTER || type === EVENTS.TARGET_NOT_FOUND)) {
+      setModelpageJoyride({...modelpageJoyride, stepIndex: index + (action === ACTIONS.PREV ? -1 : 1) });
+    }
+    else if ([STATUS.FINISHED, STATUS.SKIPPED].includes(status)) {
+      setModelpageJoyride({...modelpageJoyride, run: false, stepIndex: 0 });
+
+      localStorage.setItem('modelPageJoyridePassed', 'true');
+    }
+  };
+
+  //! ----------------------------------------------
+
+  const reportpage_joyride_steps = [
+    {
+      target: "#report_screen",
+      content: "Burası rapor sayfanız. Yeni grafikler ve tablolar oluşturabilir, oluşturulmuş tabloları ve grafikleri istediğiniz şekilde düzenleyebilirsiniz.",
+      disableBeacon: true,
+    },
+    {
+      target: "#report_screen_buttons",
+      content: "Buradan yeni panel oluşturabilir, panellerinizi kilitleyebilir, yenileyebilir ve sayfanızı kaydedebilirsiniz.",
+    }
+  ]
+
+  const [reportpageJoyride, setReportpageJoyride] = useState({
+    run: false,
+    steps: reportpage_joyride_steps,
+    stepIndex: 0,
+  })
+
+  const reportPageJoyrideClickStart = () => {
+
+    setReportpageJoyride({...reportpageJoyride, run: true})
+    toastDelete();
+
+    if (sidebarOpen) {
+      openCloseSideBar()
+    }
+  }
+
+  const reportPageJoyrideCallback = data => {
+    const { action, index, status, type } = data;
+
+    if (data.index === reportpageJoyride.stepIndex && (type === EVENTS.STEP_AFTER || type === EVENTS.TARGET_NOT_FOUND)) {
+      setReportpageJoyride({...reportpageJoyride, stepIndex: index + (action === ACTIONS.PREV ? -1 : 1) });
+    }
+    else if ([STATUS.FINISHED, STATUS.SKIPPED].includes(status)) {
+      setReportpageJoyride({...reportpageJoyride, run: false, stepIndex: 0 });
+
+      localStorage.setItem('reportPageJoyridePassed', 'true');
+    }
+  };
+
+  //! ----------------------------------------------
+
+  const [toast, setToast] = useState("")
+  const toastCreator = (fn, tx) => {
+    setToast(<Toast func={fn} dlt={toastDelete} text={tx} />)
+  }
+
+  const toastDelete = () => {
+    if (document.getElementById('toast') !== null && document.getElementById('toast') !== undefined) {
+      document.getElementById('toast').style.transform = "translateX(500px)"
+    
+      setTimeout(() => {
+        setToast("")
+      }, 400);    
+    }
+  }
+
+  useEffect(() => {
+    setTimeout(() => { toastCreator(mainPageJoyrideClickStart, "Anasayfadaki tüm özellikleri keşfetmek için öğreticiyi çalıştırın!") }, 200);
+
+    return () => {
+			toastDelete();
+    }
+  }, [])
+
+  useEffect(() => {
+    if (toast !== "") document.getElementById('toast').style.transform = "translateX(0)"
+  }, [toast])
+  
+  
+  //* -----------------------------------------------------------/
+
   //* CONTEXT DATAS ----------------------------------------------------/ 
 
   const maincontext_data = {
@@ -1764,6 +2042,7 @@ export default function MainPage() {
     allFavorites,
     errorText,
     gatewayClientCheck,
+    page,
     setAllFavorites,
     getFavorites,
     favoriteFile,
@@ -1786,7 +2065,15 @@ export default function MainPage() {
     setDbSchemas,
     setChoosenSchema,
     setFilePath,
+    tabShown,
     openShareModal,
+    openCloseSideBar,
+    openWithTab,
+    
+    toastCreator,
+    toastDelete,
+    modelPageJoyrideClickStart,
+    reportPageJoyrideClickStart,
 
     treeCollections,
     getTreeCollections,
@@ -1929,6 +2216,76 @@ export default function MainPage() {
             <ShareModal />
             <Loading />
             <Error />
+
+            {toast}
+
+            <Joyride
+              continuous
+              locale={joyride_locale}
+              showProgress
+              showSkipButton
+              hideCloseButton
+              disableOverlayClose
+              callback={mainPageJoyrideCallback}
+              stepIndex={mainpageJoyride.stepIndex}
+              steps={mainpageJoyride.steps}
+              run={mainpageJoyride.run}
+              styles={{
+                options: {
+                  arrowColor: '#1A6C3D',
+                  backgroundColor: '#1A6C3D',
+                  primaryColor: '#151515',
+                  textColor: '#EBEBEB',
+                }
+              }}
+
+            />
+
+            <Joyride
+              continuous
+              locale={joyride_locale}
+              showProgress
+              showSkipButton
+              hideCloseButton
+              disableOverlayClose
+              callback={modelPageJoyrideCallback}
+              stepIndex={modelpageJoyride.stepIndex}
+              steps={modelpageJoyride.steps}
+              run={modelpageJoyride.run}
+              styles={{
+                options: {
+                  zIndex: 100011,
+                  arrowColor: '#1A6C3D',
+                  backgroundColor: '#1A6C3D',
+                  primaryColor: '#151515',
+                  textColor: '#EBEBEB',
+                },
+              }}
+
+            />
+
+            <Joyride
+              continuous
+              locale={joyride_locale}
+              showProgress
+              showSkipButton
+              hideCloseButton
+              disableOverlayClose
+              callback={reportPageJoyrideCallback}
+              stepIndex={reportpageJoyride.stepIndex}
+              steps={reportpageJoyride.steps}
+              run={reportpageJoyride.run}
+              styles={{
+                options: {
+                  arrowColor: '#1A6C3D',
+                  backgroundColor: '#1A6C3D',
+                  primaryColor: '#151515',
+                  textColor: '#EBEBEB',
+                }
+              }}
+
+            />
+
           </ShareContext.Provider>
         </ChartContext.Provider>
       </ModalContext.Provider>

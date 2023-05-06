@@ -7,7 +7,7 @@ import chart_treemap from '../../../img/chart-types/Chart Logos/treemap.png';
 import chart_pie from '../../../img/chart-types/Chart Logos/pie.png';
 import chart_table from '../../../img/chart-types/Chart Logos/table.png';
 import pivot_table from '../../../img/chart-types/Chart Logos/pivot-table.png';
-import { ChartContext , ModalContext } from '../context';
+import { ChartContext , MainContext, ModalContext } from '../context';
 import Input from '../Input'
 import ChartReview from './ChartReview';
 
