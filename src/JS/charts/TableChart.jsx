@@ -165,6 +165,10 @@ export default function TableChart(props) {
                 col = col.split("_YIL")[0]
                 type = " (Yıl)"
               }
+              
+              if (col.includes("_")) {
+                col = col.replaceAll("_" , " ")
+              }
 
               return(
                 <th key={index} scope="col" className={cls}>{col}<span className='text-onyx_middle text-xs normal-case'>{type}</span></th>
@@ -199,8 +203,11 @@ export default function TableChart(props) {
           <tr>
             {yAxis.map((col, index) => {
               if(typeof(sum[index]) === 'number' && !col.includes("TARIH_") && !col.includes("KOD")) {
+                let cls = "float-right text-sea_green"
+                if (sum[index] < 0) { cls = "float-right text-red-700" }
+
                 return(
-                  <th key={index} className='px-2 py-2 bottom-0 sticky bg-darkest_jet font-light text-center text-platinium border-t border-onyx_middle'><span className='float-right text-sea_green'>{currencyFormat(sum[index])}</span></th>
+                  <th key={index} className='px-2 py-2 bottom-0 sticky bg-darkest_jet font-light text-center text-platinium border-t border-onyx_middle'><span className={cls}>{currencyFormat(sum[index])}</span></th>
                 )
               }
               else {

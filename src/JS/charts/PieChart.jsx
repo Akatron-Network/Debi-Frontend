@@ -86,6 +86,36 @@ const Page = (props) => {
       })
     }
 
+    if (yAxis.includes("_SUM")) {
+      yAxis = yAxis.split("_SUM")[0] + " (Toplam)"
+    }
+    else if (yAxis.includes("_AVG")) {
+      yAxis = yAxis.split("_AVG")[0] + " (Ortalama)"
+    }
+    else if (yAxis.includes("_MIN")) {
+      yAxis = yAxis.split("_MIN")[0] + " (Minimum)"
+    }
+    else if (yAxis.includes("_MAX")) {
+      yAxis = yAxis.split("_MAX")[0] + " (Maksimum)"
+    }
+
+    else if (yAxis.includes("_AY")) {
+      yAxis = yAxis.split("_AY")[0] + " (Ay)"
+    }
+    else if (yAxis.includes("_GUN")) {
+      yAxis = yAxis.split("_GUN")[0] + " (Gün)"
+    }
+    else if (yAxis.includes("_HAFTA")) {
+      yAxis = yAxis.split("_HAFTA")[0] + " (Hafta)"
+    }
+    else if (yAxis.includes("_YIL")) {
+      yAxis = yAxis.split("_YIL")[0] + " (Yıl)"
+    }
+    
+    if (yAxis.includes("_")) {
+      yAxis = yAxis.replaceAll("_" , " ")
+    }
+
     setOptions({
 
       tooltip: {

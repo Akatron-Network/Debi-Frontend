@@ -10,10 +10,10 @@ export default function Collections() {
   const { getShare, sharedCollections, sharedDirectories, sharedPages } = useContext(ShareContext);
 
   useEffect(() => {
-    data.funcLoad(data.getColWorks);
+    data.getColWorks();
     data.funcLoad(data.getFavorites);
-    data.funcLoad(getShare);
-		data.funcLoad(data.setFilePath, []);
+    getShare();
+		data.setFilePath([]);
   }, [])
 
   return (
