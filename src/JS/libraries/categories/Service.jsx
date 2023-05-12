@@ -65,7 +65,6 @@ class Service {
             localStorage.removeItem("Tree")
             localStorage.removeItem("TreeTime")
             localStorage.removeItem("Username")
-            localStorage.removeItem("rgl-8")
             
         } catch (err) {
             return false;

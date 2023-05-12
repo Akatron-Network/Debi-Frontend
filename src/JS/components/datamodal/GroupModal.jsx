@@ -27,6 +27,7 @@ export default function GroupModal() {
           
           {data.calcCols.map((calc) => {
             var colArr = [];
+            
             for(let arr in data.calcModalCols) {
               colArr = colArr.concat(data.calcModalCols[arr])
             }

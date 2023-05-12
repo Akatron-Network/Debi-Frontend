@@ -22,16 +22,18 @@ export default function Collapses(props) {
     //* Her açılan collapse componentinde ilk başta calcModalCols içerisinde kolonları atıyor
     //* Cols ile gönderdiğimiz data içerisine alias ve name de ekledik
     let cols = [...props.data.source_table.columns]
+    
     for (let i in cols) {
       cols[i]['table_alias'] = props.main;
       cols[i]['table_name'] = props.data.source_table.table;
     }
-    data.setCalcModalCols({
-      ...data.calcModalCols,
-      [props.main]: props.data.source_table.columns
-    })
-  }, [])
 
+    data.setCalcModalCols(calcModalCols => ({
+      ...calcModalCols,
+      [props.main]: props.data.source_table.columns
+    }))
+
+  }, [])
   
   const getconds = () => {
     let ret = []
