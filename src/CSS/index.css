@@ -876,6 +876,21 @@
       mb-2
   }
 
+  .chosen_columns_badges {
+    @apply
+    text-platinium
+    py-1
+    px-2
+    bg-cadmium_green
+    hover:bg-sea_green
+    rounded
+    truncate
+    transition
+    duration-300
+    cursor-default
+    shadow-md
+  }
+
   .condition_row_cards {
     @apply
       relative

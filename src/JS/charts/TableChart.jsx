@@ -200,23 +200,27 @@ export default function TableChart(props) {
             )
           })}
 
-          <tr>
-            {yAxis.map((col, index) => {
-              if(typeof(sum[index]) === 'number' && !col.includes("TARIH_") && !col.includes("KOD")) {
-                let cls = "float-right text-sea_green"
-                if (sum[index] < 0) { cls = "float-right text-red-700" }
+          {yDatas.length > 1 ?
+            <tr>
+              {yAxis.map((col, index) => {
+                if(typeof(sum[index]) === 'number' && !col.includes("TARIH_") && !col.includes("KOD")) {
+                  let cls = "float-right text-sea_green"
+                  if (sum[index] < 0) { cls = "float-right text-red-700" }
 
-                return(
-                  <th key={index} className='px-2 py-2 bottom-0 sticky bg-darkest_jet font-light text-center text-platinium border-t border-onyx_middle'><span className={cls}>{currencyFormat(sum[index])}</span></th>
-                )
-              }
-              else {
-                return(
-                  <th key={index} className='px-2 py-2 bottom-0 sticky bg-darkest_jet border-t border-onyx_middle'></th>
-                )
-              }
-            })}
-          </tr>
+                  return(
+                    <th key={index} className='px-2 py-2 bottom-0 sticky bg-darkest_jet font-light text-center text-platinium border-t border-onyx_middle'><span className={cls}>{currencyFormat(sum[index])}</span></th>
+                  )
+                }
+                else {
+                  return(
+                    <th key={index} className='px-2 py-2 bottom-0 sticky bg-darkest_jet border-t border-onyx_middle'></th>
+                  )
+                }
+              })}
+            </tr>
+            :
+            undefined
+          }
         </tbody>
       </table>
       

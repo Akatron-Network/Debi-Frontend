@@ -1327,8 +1327,8 @@ export default function MainPage() {
     else if(panelType === "line") {crd = { w: 4, h: 10, x: x, y: y, minW: 2, minH: 5}}
     else if(panelType === "mark") {crd = { w: 4, h: 10, x: x, y: y, minW: 2, minH: 7}}
     else if(panelType === "pie") {crd = { w: 4, h: 10, x: x, y: y, minW: 3, minH: 7}}
-    else if(panelType === "table") {crd = { w: 4, h: 10, x: x, y: y, minW: 3, minH: 7}}
-    else if(panelType === "pivot") {crd = { w: 4, h: 10, x: x, y: y, minW: 3, minH: 7}}
+    else if(panelType === "table") {crd = { w: 4, h: 10, x: x, y: y, minW: 3, minH: 3}}
+    else if(panelType === "pivot") {crd = { w: 4, h: 10, x: x, y: y, minW: 3, minH: 3}}
     return crd;
   }
 

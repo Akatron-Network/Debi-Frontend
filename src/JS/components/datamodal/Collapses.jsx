@@ -16,6 +16,8 @@ export default function Collapses(props) {
     }
 
     setConds(getconds())
+
+    data.chosenColumnsPrinter(props.main);
   }, [data.dataJSON]);
 
   useEffect(() => {
@@ -84,6 +86,12 @@ export default function Collapses(props) {
           <h1 className="text-lg text-grayXgray mt-2 drop-shadow">
             Kolonlar
           </h1>
+          <div 
+            className='h-fit text-sm w-full bg-darker_jet mt-3 rounded shadow-md relative p-2 border border-side_black flex flex-row flex-wrap gap-2'
+            ref={(el) => {data.chosenColumnsRef.current[props.main] = el}}
+          >
+            <span className='font-bold bg-transparent py-1 text-grayXgray flex items-center'>Seçili Kolonlar :</span>
+          </div>
           <div className="table_layout max-h-72">
             {props.data.source_table.columns.map((col, index) => {
               return(
@@ -105,7 +113,7 @@ export default function Collapses(props) {
                   <select
                     id={"sel_" + props.main + "_" + index}
                     defaultValue="default"
-                    className="select hidden mt-1 min-h-0 w-fit h-8 max-h-10 !rounded focus:outline-none focus:border-onyx_light focus:bg-onyx bg-jet_mid text-grayXgray hover:text-platinium"
+                    className="select hidden pl-2 mt-1 min-h-0 w-fit h-8 max-h-10 !rounded focus:outline-none focus:border-onyx_light focus:bg-onyx bg-jet_mid text-grayXgray hover:text-platinium"
                     onChange={() => data.selColGroups(props.main, col.name, index)}
                   >
                     <option value="default">

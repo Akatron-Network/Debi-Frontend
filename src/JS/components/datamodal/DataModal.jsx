@@ -33,6 +33,7 @@ export default function DataModal() {
   const renamedTitleRef = useRef([]);
   const renamedInputRef = useRef("");
   const saveAsNameRef = useRef("");
+  const chosenColumnsRef = useRef([]);
 
   const [chosenTables, setChosenTables] = useState([]);
   const [allTransCols, setAllTransCols] = useState([])
@@ -615,6 +616,8 @@ export default function DataModal() {
           }
         }
       }
+      
+      chosenColumnsPrinter(main);
     }
     else { //! SEÇİLİ HALDE DEĞİLSE YANİ YENİ SEÇİLDİYSE
 
@@ -631,7 +634,8 @@ export default function DataModal() {
               },
             }
           });
-        } else {
+        } 
+        else {
           setDataJSON({
             ...dataJSON,
             query: {
@@ -650,7 +654,6 @@ export default function DataModal() {
           })
         }
       }
-
     }
     
     if (elm_main.classList.contains("border-sea_green") && datepart.classList.contains("!bg-onyx_light")) {
@@ -664,6 +667,23 @@ export default function DataModal() {
 
       if (renamedTitleRef.current[main + "-" + col_name].innerHTML !== "") { renamedTitleRef.current[main + "-" + col_name].innerHTML = ""}
     }
+  }
+
+  const chosenColumnsPrinter = (id) => {
+    let cols = [];
+    let ht = "<span class='font-bold bg-transparent py-1 text-grayXgray flex items-center'>Seçili Kolonlar :</span>"
+
+    if (id === "main") {
+      for (let c of Object.keys(dataJSON.query.select)) {
+        if (!c.includes("{")) cols.push(c)
+      }
+    } 
+    else { cols = Object.keys(dataJSON.query.includes[id].select) }
+
+    for (let c of cols) { ht += "<span class='chosen_columns_badges'>" + c + "</span>" }
+
+    if (id === "main") chosenColumnsRef.current["main"].innerHTML = ht;
+    else chosenColumnsRef.current[id].innerHTML = ht;
   }
 
   const selColGroups = (main , col_name , index) => {
@@ -1227,6 +1247,7 @@ export default function DataModal() {
     renamedInputRef,
     renameInputState,
     saveAsNameRef,
+    chosenColumnsRef,    
     addColumns,
     addCondition,
     addRelatedTable,
@@ -1234,6 +1255,7 @@ export default function DataModal() {
     changeCondition,
     chooseColor,
     chooseSource,
+    chosenColumnsPrinter,
     clearCalcColInp,
     clearManRelTblInp,
     clearTime,
