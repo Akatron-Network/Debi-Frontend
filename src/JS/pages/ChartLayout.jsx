@@ -18,6 +18,9 @@ export default function ChartLayout() {
   const loginControl = async () => {
     try {
       let tkn = await Service.getProfile()
+      let tutorial = JSON.stringify(tkn.Data.User.details.tutorial)
+      localStorage.setItem("Tutorial", tutorial)
+
     } catch (error) {
       navigate("/giris")
     }
@@ -43,9 +46,10 @@ export default function ChartLayout() {
 
     check();
 
-		setTimeout(() => {
-			toastCreator(reportPageJoyrideClickStart, "Rapor ekranındaki tüm özellikleri keşfetmek için öğreticiyi çalıştırın!")
-		}, 300);
+		let js = JSON.parse(localStorage.Tutorial)
+		console.log(js);
+		if (js === null || js.report_page === undefined) { setTimeout(() => { toastCreator(reportPageJoyrideClickStart, "Rapor ekranındaki tüm özellikleri keşfetmek için öğreticiyi çalıştırın!") }, 300) }
+		else if (js.report_page !== undefined && !js.report_page) { setTimeout(() => { toastCreator(reportPageJoyrideClickStart, "Rapor ekranındaki tüm özellikleri keşfetmek için öğreticiyi çalıştırın!") }, 300) }
   
     return () => {
 			toastDelete();

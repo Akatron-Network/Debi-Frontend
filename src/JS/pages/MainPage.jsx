@@ -35,6 +35,15 @@ export default function MainPage() {
   const loginControl = async () => {
     try {
       let tkn = await Service.getProfile()
+      console.log(tkn);
+
+      let tutorial = JSON.stringify(tkn.Data.User.details.tutorial)
+      localStorage.setItem("Tutorial", tutorial)
+    
+      let js = tkn.Data.User.details.tutorial
+      if (js === null || js.main_page === undefined) { setTimeout(() => { toastCreator(mainPageJoyrideClickStart, "Anasayfadaki tüm özellikleri keşfetmek için öğreticiyi çalıştırın!") }, 200) }
+      else if (js.main_page !== undefined && !js.main_page) { setTimeout(() => { toastCreator(mainPageJoyrideClickStart, "Anasayfadaki tüm özellikleri keşfetmek için öğreticiyi çalıştırın!") }, 200) }
+      
     } catch (error) {
       navigate("/giris")
     }
@@ -50,9 +59,36 @@ export default function MainPage() {
   }
 
   useEffect(() => {
-    if (localStorage.Token !== undefined) { loginControl() }
+    if (localStorage.Token !== undefined) { 
+      loginControl();
+    }
     else { navigate("/giris") }
+
+    return () => {
+			toastDelete();
+    }
   }, [])
+  
+  const [toast, setToast] = useState("")
+  const toastCreator = (fn, tx) => {
+    setToast(<Toast func={fn} dlt={toastDelete} text={tx} />)
+  }
+
+  const toastDelete = () => {
+    if (document.getElementById('toast') !== null && document.getElementById('toast') !== undefined) {
+      document.getElementById('toast').style.transform = "translateX(500px)"
+    
+      setTimeout(() => {
+        setToast("")
+      }, 400);    
+    }
+  }
+
+  useEffect(() => {
+    if (toast !== "") document.getElementById('toast').style.transform = "translateX(0)"
+  }, [toast])
+  
+  
   //! --------------------------------------------
 
   //! FUNCLOAD -----------------------------------
@@ -1864,7 +1900,7 @@ export default function MainPage() {
     }
   }
 
-  const mainPageJoyrideCallback = data => {
+  const mainPageJoyrideCallback = async (data) => {
     const { action, index, status, type } = data;
 
     if (data.index === mainpageJoyride.stepIndex && (type === EVENTS.STEP_AFTER || type === EVENTS.TARGET_NOT_FOUND)) {
@@ -1873,7 +1909,21 @@ export default function MainPage() {
     else if ([STATUS.FINISHED, STATUS.SKIPPED].includes(status)) {
       setMainpageJoyride({...mainpageJoyride, run: false, stepIndex: 0 });
 
-      localStorage.setItem('mainPageJoyridePassed', 'true');
+      let js = JSON.parse(localStorage.Tutorial)
+      js = {
+        ...js, 
+        main_page : true
+      }
+
+      localStorage.setItem("Tutorial", JSON.stringify(js))
+
+      let last_dt = {
+        details: {
+          tutorial: js
+        }
+      }
+
+      let resp = await Service.postProfile(last_dt);
     }
   };
 
@@ -1918,7 +1968,7 @@ export default function MainPage() {
     }
   }
 
-  const modelPageJoyrideCallback = data => {
+  const modelPageJoyrideCallback = async (data) => {
     const { action, index, status, type } = data;
 
     if (data.index === modelpageJoyride.stepIndex && (type === EVENTS.STEP_AFTER || type === EVENTS.TARGET_NOT_FOUND)) {
@@ -1927,7 +1977,21 @@ export default function MainPage() {
     else if ([STATUS.FINISHED, STATUS.SKIPPED].includes(status)) {
       setModelpageJoyride({...modelpageJoyride, run: false, stepIndex: 0 });
 
-      localStorage.setItem('modelPageJoyridePassed', 'true');
+      let js = JSON.parse(localStorage.Tutorial)
+      js = {
+        ...js, 
+        model_page : true
+      }
+
+      localStorage.setItem("Tutorial", JSON.stringify(js))
+
+      let last_dt = {
+        details: {
+          tutorial: js
+        }
+      }
+
+      let resp = await Service.postProfile(last_dt);
     }
   };
 
@@ -1961,7 +2025,7 @@ export default function MainPage() {
     }
   }
 
-  const reportPageJoyrideCallback = data => {
+  const reportPageJoyrideCallback = async (data) => {
     const { action, index, status, type } = data;
 
     if (data.index === reportpageJoyride.stepIndex && (type === EVENTS.STEP_AFTER || type === EVENTS.TARGET_NOT_FOUND)) {
@@ -1970,40 +2034,26 @@ export default function MainPage() {
     else if ([STATUS.FINISHED, STATUS.SKIPPED].includes(status)) {
       setReportpageJoyride({...reportpageJoyride, run: false, stepIndex: 0 });
 
-      localStorage.setItem('reportPageJoyridePassed', 'true');
+      let js = JSON.parse(localStorage.Tutorial)
+      js = {
+        ...js, 
+        report_page : true
+      }
+
+      localStorage.setItem("Tutorial", JSON.stringify(js))
+
+      let last_dt = {
+        details: {
+          tutorial: js
+        }
+      }
+
+      let resp = await Service.postProfile(last_dt);
     }
   };
 
   //! ----------------------------------------------
 
-  const [toast, setToast] = useState("")
-  const toastCreator = (fn, tx) => {
-    setToast(<Toast func={fn} dlt={toastDelete} text={tx} />)
-  }
-
-  const toastDelete = () => {
-    if (document.getElementById('toast') !== null && document.getElementById('toast') !== undefined) {
-      document.getElementById('toast').style.transform = "translateX(500px)"
-    
-      setTimeout(() => {
-        setToast("")
-      }, 400);    
-    }
-  }
-
-  useEffect(() => {
-    setTimeout(() => { toastCreator(mainPageJoyrideClickStart, "Anasayfadaki tüm özellikleri keşfetmek için öğreticiyi çalıştırın!") }, 200);
-
-    return () => {
-			toastDelete();
-    }
-  }, [])
-
-  useEffect(() => {
-    if (toast !== "") document.getElementById('toast').style.transform = "translateX(0)"
-  }, [toast])
-  
-  
   //* -----------------------------------------------------------/
 
   //* CONTEXT DATAS ----------------------------------------------------/ 

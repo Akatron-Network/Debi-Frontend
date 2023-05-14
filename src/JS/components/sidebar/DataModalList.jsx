@@ -33,9 +33,10 @@ export default function DataModalList() {
     
       }, 20);
 
-      setTimeout(() => {
-        toastCreator(modelPageJoyrideClickStart, "Model oluşturma ekranındaki tüm özellikleri keşfetmek için öğreticiyi çalıştırın!")
-      }, 30);
+      let js = JSON.parse(localStorage.Tutorial)
+      console.log(js);
+      if (js === null || js.model_page === undefined) { setTimeout(() => { toastCreator(modelPageJoyrideClickStart, "Model oluşturma ekranındaki tüm özellikleri keşfetmek için öğreticiyi çalıştırın!") }, 300) }
+      else if (js.model_page !== undefined && !js.model_page) { setTimeout(() => { toastCreator(modelPageJoyrideClickStart, "Model oluşturma ekranındaki tüm özellikleri keşfetmek için öğreticiyi çalıştırın!") }, 300) }
   
     }, 200);
 

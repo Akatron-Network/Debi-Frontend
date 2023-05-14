@@ -46,6 +46,10 @@ export default function SettingPage() {
   const loginControl = async () => {
     try {
       let tkn = await Service.getProfile()
+
+      let tutorial = JSON.stringify(tkn.Data.User.details.tutorial)
+      localStorage.setItem("Tutorial", tutorial)
+
     } catch (error) {
       navigate("/giris")
     }
