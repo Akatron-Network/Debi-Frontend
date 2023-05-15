@@ -1341,7 +1341,9 @@ export default function DataModal() {
                         <div key={index} className="form-control col-span-12">
                           <div className="input-group shadow-md">
                             <span className='bg-black_light text-grayXgray px-2 py-[7px] !rounded-l border border-jet_mid justify-center min-w-[35%] xl:truncate'>{name_last}</span>
-                            <input type="text" className="input my-0 input-bordered !rounded-none w-full h-auto pointer-events-none" ref={transRef} onChange={cV} value={Object.values(col)[0]} />
+                            <span title={Object.values(col)[0]} className='input my-0 input-bordered !rounded-none w-full h-auto'>
+                              <input type="text" className="input my-0 !p-0 input-bordered w-full pointer-events-none" ref={transRef} onChange={cV} value={Object.values(col)[0]} />
+                            </span>
                             <button className="danger-btn h-auto w-[7%] !rounded-l-none !rounded-r" onClick={() => dltAllTransCols(name)}><i className="fa-solid fa-xmark"></i></button>
                           </div>
                         </div>

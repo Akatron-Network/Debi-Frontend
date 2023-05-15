@@ -5,7 +5,7 @@
 @layer base {
   html {
     font-family: 'Cabin', sans-serif;
-    background-color: var(--darkest-jet) !important;
+    background-color: var(--darker-jet) !important;
   }
 }
 
@@ -307,7 +307,6 @@
       tracking-[1px]
       uppercase
       transition duration-300
-
       hover:bg-sea_green
       active:scale-95
   }
@@ -317,12 +316,25 @@
       bg-transparent
       text-jet_mid
       border border-jet_mid
-
       hover:bg-jet_mid
       hover:text-grayXgray
   }
 
-  
+  .bottom-nav-btn {
+    @apply
+    text-xl
+    text-sea_green
+    border-r
+    border-jet_mid
+  }
+
+  .bottom-nav-btn.active {
+    @apply
+    text-platinium
+    bg-jet_mid
+    border-r-0
+    border-platinium
+  }
 
   .form-container {
     @apply
@@ -1130,6 +1142,12 @@
 
 
 @layer utulities {
+
+  #file_path_top ul::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
   ::-webkit-scrollbar {
     width: 12px;
     height: 12px;

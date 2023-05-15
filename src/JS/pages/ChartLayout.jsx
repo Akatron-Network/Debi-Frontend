@@ -47,7 +47,7 @@ export default function ChartLayout() {
     check();
 
 		let js = JSON.parse(localStorage.Tutorial)
-		console.log(js);
+		
 		if (js === null || js.report_page === undefined) { setTimeout(() => { toastCreator(reportPageJoyrideClickStart, "Rapor ekranındaki tüm özellikleri keşfetmek için öğreticiyi çalıştırın!") }, 300) }
 		else if (js.report_page !== undefined && !js.report_page) { setTimeout(() => { toastCreator(reportPageJoyrideClickStart, "Rapor ekranındaki tüm özellikleri keşfetmek için öğreticiyi çalıştırın!") }, 300) }
   

@@ -19,7 +19,7 @@ export default function Collections() {
   return (
 	<div className='pr-3'>
 		<div id='dashboard' className="grid grid-cols-1 md:grid-cols-2 gap-4 ml-2">
-			<div className="dashboard-card">
+			<div className="dashboard-card mt-3 sm:mt-6">
 				<h2 className="workspace-titles dashboard-card-title hrLine">
 					<i className="fas fa-star mr-2"></i>
 					Favoriler
@@ -79,7 +79,7 @@ export default function Collections() {
 				</div>
 			</div>
 
-			<div className="dashboard-card">
+			<div className="dashboard-card mt-0">
 				<h2 className="workspace-titles dashboard-card-title hrLine">
 					<i className="fas fa-people-arrows mr-2"></i>
 					Benimle Paylaşılanlar

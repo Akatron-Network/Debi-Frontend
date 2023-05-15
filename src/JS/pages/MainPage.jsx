@@ -35,7 +35,6 @@ export default function MainPage() {
   const loginControl = async () => {
     try {
       let tkn = await Service.getProfile()
-      console.log(tkn);
 
       let tutorial = JSON.stringify(tkn.Data.User.details.tutorial)
       localStorage.setItem("Tutorial", tutorial)
@@ -1792,23 +1791,39 @@ export default function MainPage() {
       setSidebarOpen(!sidebarOpen)
 	}
 
-  const tabShown = (id) => { //* Sidepanel'de açık olan tabı gösterir. Açık olan tabın üzeri yeşil olur
+  const tabShown = (id, screen = "normal") => { //* Sidepanel'de açık olan tabı gösterir. Açık olan tabın üzeri yeşil olur
+    
+    if (screen === "normal") {
 
-		for(var a in tab_id) {
+      for(var a in tab_id) {
+  
+        var open_btn = document.getElementById('open_btn_' + tab_id[a]);
+        
+        open_btn.classList.replace('shadow-openbtn','shadow-defaultbtn');
+        open_btn.classList.replace('text-sea_green','text-grayXgray');
+        open_btn.classList.replace('bg-side_black','bg-black_light');
+  
+      }
+  
+      open_btn = document.getElementById('open_btn_' + tab_id[id]);
+  
+      open_btn.classList.replace('shadow-defaultbtn','shadow-openbtn');
+      open_btn.classList.replace('text-grayXgray','text-sea_green');
+      open_btn.classList.replace('bg-black_light','bg-side_black');
 
-			var open_btn = document.getElementById('open_btn_' + tab_id[a]);
-			
-			open_btn.classList.replace('shadow-openbtn','shadow-defaultbtn');
-			open_btn.classList.replace('text-sea_green','text-grayXgray');
-			open_btn.classList.replace('bg-side_black','bg-black_light');
+    }
+    else {
 
-		}
+      for(var a in bottom_tab_id) {
 
-		open_btn = document.getElementById('open_btn_' + tab_id[id]);
+        let open_btn = document.getElementById('open_bottom_btn_' + bottom_tab_id[a]);
+        if (open_btn.classList.contains('active')) open_btn.classList.remove('active');
 
-		open_btn.classList.replace('shadow-defaultbtn','shadow-openbtn');
-		open_btn.classList.replace('text-grayXgray','text-sea_green');
-		open_btn.classList.replace('bg-black_light','bg-side_black');
+      }
+
+      open_btn = document.getElementById('open_bottom_btn_' + bottom_tab_id[id]);
+      open_btn.classList.add('active');
+    }
 
 	}
 
@@ -1821,15 +1836,34 @@ export default function MainPage() {
 	}
 
   var tab_id = [1,2,3,4];
-	const openWithTab = (id) => {
-		var open_btn = document.getElementById('open_btn_' + tab_id[id]);
-		let open_close_btn = document.getElementById('open_close_btn');
+  var bottom_tab_id = [1,2,3]
+	const openWithTab = (id, screen = "normal") => {
 
-		if(open_close_btn.style.transform === 'rotateZ(180deg)') {
-			if(open_btn.classList.contains('bg-side_black')) { openCloseSideBar() } //? Açık tab a tekrar tıklandığında sidebar kapanması için koydum
-			else { tabShown(id); openPage(id)	}
-		}
-		else { openCloseSideBar(); tabShown(id); openPage(id) }
+    let open_close_btn = document.getElementById('open_close_btn');
+
+    //. Check screen type (PC, Phone etc.)
+    if (screen === "normal") { 
+      var open_btn = document.getElementById('open_btn_' + tab_id[id]) 
+
+      if(open_close_btn.style.transform === 'rotateZ(180deg)') {
+        if(open_btn.classList.contains('bg-side_black')) { openCloseSideBar() } //? Açık tab a tekrar tıklandığında sidebar kapanması için koydum
+        else { tabShown(id); openPage(id)	}
+      }
+      else { openCloseSideBar(); tabShown(id); openPage(id) }
+
+    }
+    else { 
+      var open_btn = document.getElementById('open_bottom_btn_' + bottom_tab_id[id]) 
+
+      if(open_close_btn.style.transform === 'rotateZ(180deg)') {
+  
+        if(open_btn.classList.contains('active')) { openCloseSideBar() } //? Açık tab a tekrar tıklandığında sidebar kapanması için koydum
+        else { tabShown(id, "phone"); openPage(id)	}
+        
+      }
+      else { openCloseSideBar(); tabShown(id, "phone"); openPage(id) }
+    
+    }
 	}
 
   //* ----------------------------------------------------------/
@@ -2258,7 +2292,7 @@ export default function MainPage() {
             <Sidebar />
             <Filepath/>
 
-            <div className="pt-[92px] pb-10 pl-[100px] pr-[10px]">
+            <div className="pt-[96px] md:pt-[92px] pb-10 pl-[25px] sm:pl-[93px] pr-0 sm:pr-[10px]">
               <Outlet />
             </div>
 

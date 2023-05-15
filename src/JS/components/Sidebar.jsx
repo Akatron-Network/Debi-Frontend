@@ -24,7 +24,7 @@ export default function Sidebar() {
   return (
     <>
         <div id="allsidepanel" className='h-screen translate-x-0 fixed transition duration-500 z-[3]'>
-            <div id="sidepanel" className='w-[250px] -translate-x-[250px] fixed z-2 h-[calc(100vh_-_45px)] overflow-auto top-11 left-0 bg-side_black pt-4'>
+            <div id="sidepanel" className='w-[250px] -translate-x-[250px] fixed z-2 h-[calc(100vh_-_44px)] overflow-auto top-11 left-0 bg-side_black pt-4'>
 							{page}
               
               {/* LOADING SCREEN */}
@@ -57,10 +57,23 @@ export default function Sidebar() {
                   </div>
                 </div>
               </div>
+              
+
+            <div className="btm-nav shadow-bottomNavigation sm:hidden bg-darker_jet">
+              <button id="open_bottom_btn_1" className='bottom-nav-btn active' onClick={() => openWithTab(0, "phone")}>
+                <i className="fas fa-sitemap"></i>
+              </button>
+              <button id="open_bottom_btn_2" className="bottom-nav-btn" onClick={() => openWithTab(1, "phone")}>
+                <i className="fas fa-people-arrows"></i>
+              </button>
+              <button id="open_bottom_btn_3" className='bottom-nav-btn' onClick={() => openWithTab(2, "phone")}>
+                <i className="fas fa-star"></i>
+              </button>
+            </div>
 
             </div>
 
-            <div id="sidelinks" className='w-[70px] fixed z-1 h-screen top-11 left-0 bg-black_light shadow-sidelinks'>
+            <div id="sidelinks" className='w-[70px] fixed hidden sm:block z-1 h-screen top-11 sm:left-0 left-[-70px] bg-black_light shadow-sidelinks'>
               <div id='all_tabs_in_sidepanel' className='h-fit'>
                 <div className="tooltip tooltip-right" data-tip="Çalışma Alanı">
                     <button id="open_btn_1" onClick={() => openWithTab(0)} className='open-tab bg-side_black text-sea_green shadow-openbtn'>
@@ -85,7 +98,7 @@ export default function Sidebar() {
               </div>
             </div>
             
-            <div className="w-[30px] fixed z-1 h-screen left-[70px] overflow-x-hidden shadow-openclose top-11">
+            <div className="w-[30px] fixed z-1 h-screen sm:left-[70px] left-0 overflow-x-hidden shadow-openclose top-11">
                 <button id="openclose" onClick={openCloseSideBar} className="text-xl bg-black_light text-sea_green !w-[30px] h-[70px] border-none transition duration-300 shadow-openclosebtn top-1/2 -translate-y-1/2 fixed rounded-br-lg rounded-tr-lg hover:text-green_pantone hover:bg-side_black">
                     <i id="open_close_btn" className="fas fa-chevron-right" style={{transition: ".5s"}}></i>
                 </button>

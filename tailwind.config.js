@@ -52,6 +52,7 @@ module.exports = {
       boxShadow: {
         'navbar': '0px 0px 10px 2px rgb(0 0 0 / 60%)',
         'filepath': '0px 0px 10px 2px rgb(0 0 0 / 20%)',
+        'bottomNavigation': '0px 13px 13px 8px rgb(0 0 0 / 60%)',
         'dropdown':'0px 5px 10px 2px rgba(0,0,0,0.7)',
         'sidelinks': 'inset 25px 0px 30px -30px #080808',
         'openclose': 'inset 10px 0px 10px -6px rgb(0 0 0 / 35%)',
@@ -84,6 +85,26 @@ module.exports = {
       fontFamily: {
         'righteous': ['Righteous' , 'cursive']
       },
+
+      screens: {
+        'xs': '500px',
+        // => @media (min-width: 500px) { ... }
+
+        'sm': '640px',
+        // => @media (min-width: 640px) { ... }
+  
+        'md': '768px',
+        // => @media (min-width: 768px) { ... }
+  
+        'lg': '1024px',
+        // => @media (min-width: 1024px) { ... }
+  
+        'xl': '1280px',
+        // => @media (min-width: 1280px) { ... }
+  
+        '2xl': '1536px',
+        // => @media (min-width: 1536px) { ... }
+      }
       
     },
   },

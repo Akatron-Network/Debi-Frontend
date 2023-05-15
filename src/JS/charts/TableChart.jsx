@@ -181,6 +181,8 @@ export default function TableChart(props) {
             return(
               <tr key={index} className="bg-jet transition duration-200 hover:bg-onyx hover:text-platinium">
                 {row.map((rowInside, index) => {
+                  if (typeof(rowInside) === 'string') rowInside = rowInside.replaceAll('T00:00:00.000Z', '')
+
                   if (yAxis[index].includes("KOD") || yAxis[index].includes("TARIH") || typeof(rowInside) !== 'number') {
                     return(
                       <th key={index} className="px-2 py-1 font-normal border-b border-onyx truncate">
