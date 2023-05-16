@@ -42,7 +42,6 @@ export default function Navbar(props) {
 
           <nav id='nav-left' className="col-span-2 flex items-center text-base"></nav>
 
-
           <div className="col-span-1 items-center flex justify-center">
             <button>
               <a href="/"><img className='h-11 max-h-11' src={debi_logo} alt='DeBI Logo' /></a>

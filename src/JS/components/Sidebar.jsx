@@ -17,9 +17,7 @@ export default function Sidebar() {
     if (e.target.id === "allsidepanel") {
 					openCloseSideBar();
     }
-
   }
-
 
   return (
     <>
@@ -59,14 +57,14 @@ export default function Sidebar() {
               </div>
               
 
-            <div className="btm-nav shadow-bottomNavigation sm:hidden bg-darker_jet">
+            <div className="btm-nav shadow-bottomNavigation sm:hidden bg-darker_jet h-[70px]">
               <button id="open_bottom_btn_1" className='bottom-nav-btn active' onClick={() => openWithTab(0, "phone")}>
                 <i className="fas fa-sitemap"></i>
               </button>
               <button id="open_bottom_btn_2" className="bottom-nav-btn" onClick={() => openWithTab(1, "phone")}>
                 <i className="fas fa-people-arrows"></i>
               </button>
-              <button id="open_bottom_btn_3" className='bottom-nav-btn' onClick={() => openWithTab(2, "phone")}>
+              <button id="open_bottom_btn_3" className='bottom-nav-btn border-r-0' onClick={() => openWithTab(2, "phone")}>
                 <i className="fas fa-star"></i>
               </button>
             </div>
@@ -98,8 +96,8 @@ export default function Sidebar() {
               </div>
             </div>
             
-            <div className="w-[30px] fixed z-1 h-screen sm:left-[70px] left-0 overflow-x-hidden shadow-openclose top-11">
-                <button id="openclose" onClick={openCloseSideBar} className="text-xl bg-black_light text-sea_green !w-[30px] h-[70px] border-none transition duration-300 shadow-openclosebtn top-1/2 -translate-y-1/2 fixed rounded-br-lg rounded-tr-lg hover:text-green_pantone hover:bg-side_black">
+            <div className="w-[30px] fixed z-1 h-screen sm:left-[70px] left-0 overflow-x-hidden shadow-openclose top-[100px] md:top-[93px]">
+                <button id="openclose" onClick={openCloseSideBar} className="text-xl bg-black_light text-sea_green !w-[30px] h-[70px] border-none transition duration-300 shadow-openclosebtn bottom-0 sm:top-1/2 sm:-translate-y-1/2 opacity-70 hover:opacity-100 fixed rounded-br-lg rounded-tr-lg hover:text-green_pantone">
                     <i id="open_close_btn" className="fas fa-chevron-right" style={{transition: ".5s"}}></i>
                 </button>
             </div>

@@ -10,9 +10,9 @@ export default function ShareModal() {
     <>
       <input type="checkbox" id="sharemodal"  className="modal-toggle" />
       <div className="modal bg-modal_back">
-        <div className="modal-box max-w-[45%] h-fit p-4 grid grid-cols-5 gap-5 bg-darkest_jet rounded">
+        <div className="modal-box w-[95%] lg:max-w-[45%] h-fit p-4 grid grid-cols-5 gap-5 bg-darkest_jet rounded">
           
-          <div className='col-span-3'>
+          <div className='col-span-5 xl:col-span-3'>
             <h1 className="text-lg text-platinium mb-2 drop-shadow">
               Paylaş
               <span ref={share_data.shareItemRef} className='text-base text-graysix'></span>
@@ -22,7 +22,7 @@ export default function ShareModal() {
 
           </div>
 
-          <div className='col-span-2'>
+          <div className='col-span-5 xl:col-span-2'>
             <h1 className="text-lg text-platinium mb-2 drop-shadow">
               Paylaşılan Kullanıcılar
             </h1>

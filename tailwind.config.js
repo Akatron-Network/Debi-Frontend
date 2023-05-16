@@ -15,6 +15,7 @@ module.exports = {
           sea_green: "#20834B",
           cadmium_green: "#1A6C3D",
           shadow_green: "#183C28",
+          shadow_green_dark: "#1B2620",
 
         //* DARK COLORS
           modal_back: "#0C0C0CBF",

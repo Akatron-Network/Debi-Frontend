@@ -326,6 +326,8 @@
     text-sea_green
     border-r
     border-jet_mid
+    transition
+    duration-300
   }
 
   .bottom-nav-btn.active {
@@ -333,7 +335,8 @@
     text-platinium
     bg-jet_mid
     border-r-0
-    border-platinium
+    border-t-platinium
+
   }
 
   .form-container {
@@ -374,7 +377,6 @@
     @apply
       col-span-1
       bg-middle_black
-      mt-6
       pt-[10px]
       pb-3
       px-3
@@ -426,7 +428,6 @@
       text-grayXgray
       text-[21px]
       font-righteous
-      pl-[10px]
       w-full
       pb-1
   }
@@ -506,7 +507,6 @@
   .hrCols {
     @apply
       mt-[25px]
-      ml-2
       border-hr_gray
   }
 
@@ -1146,6 +1146,12 @@
   #file_path_top ul::-webkit-scrollbar {
     width: 8px;
     height: 8px;
+  }
+  #file_path_top ul::-webkit-scrollbar-track {
+    background-color: #1b1b1b4e;
+  }
+  #file_path_top ul::-webkit-scrollbar-thumb {
+    background-color: #1b1b1b8a;
   }
 
   ::-webkit-scrollbar {

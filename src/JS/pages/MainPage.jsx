@@ -436,7 +436,12 @@ export default function MainPage() {
   const [sumReview, setSumReview] = useState(0);
 
   useEffect(() => {
-    setAllPanelsDragResize(pageContent.page_data.dragresize)
+    if (screen.width < 641) {
+      setAllPanelsDragResize(false)
+    }
+    else {
+      setAllPanelsDragResize(pageContent.page_data.dragresize)
+    }
   }, [pageContent])
 
   var ch_cards = ["bar", "treemap", "line", "mark", "gauge", "pie", "table", "pivot"];
@@ -2292,7 +2297,7 @@ export default function MainPage() {
             <Sidebar />
             <Filepath/>
 
-            <div className="pt-[96px] md:pt-[92px] pb-10 pl-[25px] sm:pl-[93px] pr-0 sm:pr-[10px]">
+            <div className="pt-[96px] md:pt-[92px] pb-10 sm:pl-[70px]">
               <Outlet />
             </div>
 

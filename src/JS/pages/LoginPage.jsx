@@ -95,9 +95,9 @@ export default function LoginPage() {
     <>
       <ParticlesComponent />
 
-      <div className='flex flex-col items-center justify-center bg-darkest_jet h-screen overflow-hidden'>
-        <div className="shadow-loginContainer h-[60%] rounded-lg relative overflow-hidden w-[768px] max-w-full min-h-[480px] bg-darker_jet" id="container">
-          <div className="form-container left-0 w-1/2 opacity-0 z-1" id='sign-up-container'>
+      <div className='flex flex-col items-center justify-center bg-darkest_jet h-screen overflow-hidden px-5'>
+        <div className="shadow-loginContainer h-[63%] rounded-lg relative overflow-hidden w-[90%] sm:w-[768px] max-w-full min-h-[480px] bg-darker_jet" id="container">
+          <div className="form-container left-0 w-1/2 opacity-0 z-1 sm:block hidden" id='sign-up-container'>
             <form className='form' action="#">
               <h1 className='font-bold m-0 text-[2.5rem]'>Hesap Oluştur</h1>
               {/* <a href="#" className="social giris-a"><i className="fab fa-google-plus-g" /></a>
@@ -114,13 +114,14 @@ export default function LoginPage() {
               <button className='button mt-2' onClick={register}>Kayıt Ol</button>
             </form>
           </div>
-          <div className="form-container left-0 w-1/2 z-2" id='sign-in-container'>
-            <form className='form pb-[50px] relative' action="#">
+          <div className="sm:form-container sm:left-0 sm:w-1/2 sm:z-2 h-full" id='sign-in-container'>
+            <form className='form py-5 relative' action="#">
+              <a className='block sm:hidden' href='https://debi.akatron.net/'><img src={debi_logo} alt="DeBI" className="logo w-3/4 m-auto" /></a>
               <h1 className='font-bold m-0 text-[2.5rem]'>Giriş Yap</h1>
               {/* <a href="#" className="social giris-a"><i className="fab fa-google-plus-g" /></a> */}
               {/* <span className='text-xs'>ya da hesabını kullanabilirsin</span> */}
-              <input className='input placeholder:opacity-50 w-3/4' autoFocus type="text" placeholder="Kullanıcı Adı" ref={login_nicknameRef} />
-              <input className='input placeholder:opacity-50 w-3/4' type="password" placeholder="Şifre" ref={login_passRef} />
+              <input className='input placeholder:opacity-50 w-full sm:w-3/4' autoFocus type="text" placeholder="Kullanıcı Adı" ref={login_nicknameRef} />
+              <input className='input placeholder:opacity-50 w-full sm:w-3/4' type="password" placeholder="Şifre" ref={login_passRef} />
               <div id='loginWarns'>
                 <span id='warn_2' className='text-sm text-red-600 hidden'>Lütfen tüm gerekli bilgileri doldurun!</span>
                 <span id='warn_3' className='text-sm text-red-600 hidden'>Kullanıcı adı ya da şifre yanlış!</span>
@@ -128,13 +129,13 @@ export default function LoginPage() {
               {/* <a className='giris-a hover:text-sea_green' href="#">Şifreni mi unuttun?</a> */}
               <button className='button mt-2' onClick={login}>GİRİŞ YAP</button>
               <button 
-                className='green-btn bg-transparent border-cadmium_green hover:bg-cadmium_green mt-5 flex p-[10px] flex-col absolute bottom-8' 
+                className='green-btn bg-transparent border-cadmium_green hover:bg-cadmium_green mt-5 flex p-[10px] flex-col bottom-8' 
                 onClick={() => navigate("/demo")}>
                 <i className="fa-solid fa-desktop mb-1 text-xl"></i>Deneme Sürümü
               </button>
             </form>
           </div>
-          <div className="absolute top-0 w-1/2 left-1/2 h-full overflow-hidden transition-transform ease-in-out duration-700 z-[100]" id='overlay-container'>
+          <div className="sm:block hidden absolute top-0 w-1/2 left-1/2 h-full overflow-hidden transition-transform ease-in-out duration-700 z-[100]" id='overlay-container'>
             <div className="bg-gradient-to-r from-green_pantone to-cadmium_green bg-no-repeat bg-cover text-platinium relative -left-full h-full w-[200%] translate-x-0 transition-transform duration-700" id='overlay'>
               <div className="overlay-panel" id='overlay-left'>
                 <a href='https://debi.akatron.net/'><img src={debi_logo} alt="DeBI" className="logo" /></a>

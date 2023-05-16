@@ -7,11 +7,12 @@ export default function Filepath() {
   const { savePage, setAllPanelsDragResize, allPanelsDragResize, refreshPage, btnShowHide } = useContext(ChartContext);
 
   const [link, setLink] = useState("");
+  const [back, setBack] = useState("/");
 
   const getLink = () => {
     if(data.filepath.length === 0) {
       setLink(
-        <ul className='overflow-auto max-w-[1243px] whitespace-nowrap w-[inherit] mr-3'>
+        <ul className='overflow-auto max-w-[1243px] whitespace-nowrap w-[inherit]'>
           <li className="file-path-top-text">
             <Link to={"/"}>
               <i className="fa-solid fa-house-chimney mr-[6px]"></i>
@@ -24,7 +25,7 @@ export default function Filepath() {
 
     else if(data.filepath.length > 0) {
       setLink(
-        <ul className='overflow-auto max-w-[1243px] whitespace-nowrap w-[inherit] mr-3'>
+        <ul className='overflow-auto max-w-[1243px] whitespace-nowrap w-[inherit]'>
           <li key="-1" className="file-path-top-text">
             <Link to={"/"}>
               <i className="fa-solid fa-house-chimney mr-[6px]"></i>
@@ -44,15 +45,23 @@ export default function Filepath() {
 
   useEffect(() => {
     getLink();
+
+    if (data.filepath.length > 0) {
+      if (data.filepath.length > 2) { setBack(data.filepath[data.filepath.length - 2].url) }
+      else { setBack("/") }
+    }
   }, [data.filepath.length])
 
   return (
     <>
-      <div id="file_path_top" className="w-full sm:w-[calc(100%_-_70px)] top-11 sm:left-[70px] gap-2 md:gap-0 fixed z-2 pr-3 pl-[10px] py-2 bg-shadow_green shadow-filepath breadcrumbs !flex flex-row md:flex-row justify-between items-center overflow-hidden">
+      <div id="file_path_top" className="w-full sm:w-[calc(100%_-_70px)] top-11 sm:left-[70px] gap-3 md:gap-0 fixed z-2 px-3 py-2 bg-shadow_green shadow-filepath breadcrumbs !flex flex-row md:flex-row justify-between items-center overflow-hidden">
+        
+        <Link to={back} id="back_btn" className="px-2 text-xl block sm:hidden"><i className="fa-solid fa-chevron-left"></i></Link>
+        
         {link}
 
         {data.checkInPage && btnShowHide ? 
-          <div id='report_screen_buttons' className='sm:min-w-[176px]'>
+          <div id='report_screen_buttons' className='sm:min-w-[180px]'>
             <div className="tooltip tooltip-left pr-3 hidden sm:inline-block border-r border-r-onyx_middle" data-tip="Yeni Öğe Oluştur">
               <label id="new_btn" htmlFor="chart_choose" className='green-btn'><i className="fas fa-plus" /></label>
             </div>

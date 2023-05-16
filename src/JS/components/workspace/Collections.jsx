@@ -14,12 +14,16 @@ export default function Collections() {
     data.funcLoad(data.getFavorites);
     getShare();
 		data.setFilePath([]);
+
+		document.getElementById('back_btn').classList.add('hidden');
+		return () => { document.getElementById('back_btn').classList.remove('hidden') }
+		
   }, [])
 
   return (
-	<div className='pr-3'>
-		<div id='dashboard' className="grid grid-cols-1 md:grid-cols-2 gap-4 ml-2">
-			<div className="dashboard-card mt-3 sm:mt-6">
+	<div className='px-4 sm:px-5'>
+		<div id='dashboard' className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-3 sm:mt-6">
+			<div className="dashboard-card">
 				<h2 className="workspace-titles dashboard-card-title hrLine">
 					<i className="fas fa-star mr-2"></i>
 					Favoriler
@@ -79,7 +83,7 @@ export default function Collections() {
 				</div>
 			</div>
 
-			<div className="dashboard-card mt-0">
+			<div className="dashboard-card">
 				<h2 className="workspace-titles dashboard-card-title hrLine">
 					<i className="fas fa-people-arrows mr-2"></i>
 					Benimle Paylaşılanlar
@@ -198,20 +202,20 @@ export default function Collections() {
 
 		<div id='collections'>
 			<h2 className="workspace-titles">Koleksiyonlar</h2>
-			<div className="grid 2xl:grid-cols-9 xl:grid-cols-7 sm:grid-cols-4 grid-cols-2 grid-flow-row auto-rows-max gap-4 pl-[10px]">
+			<div className="grid 2xl:grid-cols-9 xl:grid-cols-7 sm:grid-cols-4 grid-cols-2 grid-flow-row auto-rows-max gap-4">
 
 				{data.collections.map((collection) => {
 					return (
 						<div key={collection.collection_id} className={collection.connector.gateway_host !== null && !data.gatewayClientCheck ? "col-span-1 opacity-40 pointer-events-none" : "col-span-1"}>
 							<div className="card">
-								<div className='flex z-2 justify-end'>
-									<label htmlFor="sharemodal" className="dlt-btn cursor-pointer ml-[6px] h-7 flex justify-center items-center" onClick={() => data.funcLoad(data.openShareModal, "COLLECTION", collection.collection_id, collection.collection_name)}>
+								<div className='flex z-2 justify-end sm:gap-2 gap-3 z-2 mr-2'>
+									<label htmlFor="sharemodal" className="dlt-btn cursor-pointer h-7 flex justify-center items-center" onClick={() => data.funcLoad(data.openShareModal, "COLLECTION", collection.collection_id, collection.collection_name)}>
 										<i className="fa-solid fa-share-nodes"></i>
 									</label>
-									<label htmlFor="addWorksCol" className="dlt-btn cursor-pointer ml-[6px] h-7 flex justify-center items-center" onClick={() => data.funcLoad(data.getCollectionDetails, collection)} >
+									<label htmlFor="addWorksCol" className="hidden sm:flex dlt-btn cursor-pointer h-7 flex justify-center items-center" onClick={() => data.funcLoad(data.getCollectionDetails, collection)} >
 										<i className="fa-solid fa-pen-to-square"></i>
 									</label>
-									<label htmlFor="dltWorks" className="dlt-btn cursor-pointer mx-[6px] h-7 flex justify-center items-center" onClick={() => {data.setDeleteItemRef(collection); data.setDeleteItemType("koleksiyon")}} >
+									<label htmlFor="dltWorks" className="dlt-btn cursor-pointer h-7 flex justify-center items-center" onClick={() => {data.setDeleteItemRef(collection); data.setDeleteItemType("koleksiyon")}} >
 										<i className="fa-solid fa-xmark"></i>
 									</label>
 								</div>
@@ -231,12 +235,10 @@ export default function Collections() {
 				)})}
 				{/* EDİTE BASINCA EDİT MODU AÇILSIN VE KOLEKSİYON OLUŞTURMA DOLDURULSUN - EKSTRA SENKRONİZASYON DA DURUMUNU GÖSTER VE BUTONU KOY*/}
 
-				<label id='addCollection' htmlFor="addWorksCol" onClick={() => data.clearRefs("koleksiyon")}>
-					<div className="add col-span-1">
-						<div className="card">
-							<div className="col-content">
-								<i className="fas fa-plus" style={{fontSize: '60px', color: 'var(--platinium)'}} />
-							</div>
+				<label id='addCollection' className='hidden sm:block add col-span-1' htmlFor="addWorksCol" onClick={() => data.clearRefs("koleksiyon")}>
+					<div className="card">
+						<div className="col-content">
+							<i className="fas fa-plus" style={{fontSize: '60px', color: 'var(--platinium)'}} />
 						</div>
 					</div>
 				</label>
