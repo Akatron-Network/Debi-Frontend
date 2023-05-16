@@ -76,7 +76,7 @@ export default class ResponsiveLocalStorageLayout extends React.PureComponent {
                   <div className="panels-title w-full">
                     <h1>{panel.PanelName}</h1>
                     {value.btnShowHide === true ?
-                      <div>
+                      <div className='hidden sm:block'>
                         <button className="danger-btn float-right w-6 ml-[2px] bg-transparent shadow-none border-none hover:bg-middle_black text-[17px]" onClick={() => value.funcLoad(value.dltPanel, panel.PanelID)}><i className="fa-solid fa-xmark"></i></button>
                         <label htmlFor="chart_choose" className="danger-btn float-right w-6 bg-transparent shadow-none border-none hover:bg-middle_black text-base" onClick={() => value.funcLoad(value.editPanel, panel.PanelID)}><i className="fa-solid fa-pen-to-square"></i></label>
                       </div>
@@ -91,7 +91,7 @@ export default class ResponsiveLocalStorageLayout extends React.PureComponent {
                   <div className="panels-title w-full">
                     <h1>{panel.PanelName}</h1>
                     {value.btnShowHide === true ?
-                      <div>
+                      <div className="hidden sm:block">
                         <button className="danger-btn float-right w-6 ml-[2px] bg-transparent shadow-none border-none hover:bg-middle_black text-[17px]" onClick={() => value.funcLoad(value.dltPanel, panel.PanelID)}><i className="fa-solid fa-xmark"></i></button>
                         <label htmlFor="chart_choose" className="danger-btn float-right w-6 bg-transparent shadow-none border-none hover:bg-middle_black text-base" onClick={() => value.funcLoad(value.editPanel, panel.PanelID)}><i className="fa-solid fa-pen-to-square"></i></label>
                       </div>
@@ -106,7 +106,7 @@ export default class ResponsiveLocalStorageLayout extends React.PureComponent {
                   <div className="panels-title w-full">
                     <h1>{panel.PanelName}</h1>
                     {value.btnShowHide === true ?
-                      <div>
+                      <div className="hidden sm:block">
                         <button className="danger-btn float-right w-6 ml-[2px] bg-transparent shadow-none border-none hover:bg-middle_black text-[17px]" onClick={() => value.funcLoad(value.dltPanel, panel.PanelID)}><i className="fa-solid fa-xmark"></i></button>
                         <label htmlFor="chart_choose" className="danger-btn float-right w-6 bg-transparent shadow-none border-none hover:bg-middle_black text-base" onClick={() => value.funcLoad(value.editPanel, panel.PanelID)}><i className="fa-solid fa-pen-to-square"></i></label>
                       </div>
@@ -121,7 +121,7 @@ export default class ResponsiveLocalStorageLayout extends React.PureComponent {
                   <div className="panels-title w-full">
                     <h1>{panel.PanelName}</h1>
                     {value.btnShowHide === true ?
-                      <div>
+                      <div className="hidden sm:block">
                         <button className="danger-btn float-right w-6 ml-[2px] bg-transparent shadow-none border-none hover:bg-middle_black text-[17px]" onClick={() => value.funcLoad(value.dltPanel, panel.PanelID)}><i className="fa-solid fa-xmark"></i></button>
                         <label htmlFor="chart_choose" className="danger-btn float-right w-6 bg-transparent shadow-none border-none hover:bg-middle_black text-base" onClick={() => value.funcLoad(value.editPanel, panel.PanelID)}><i className="fa-solid fa-pen-to-square"></i></label>
                       </div>
@@ -136,7 +136,7 @@ export default class ResponsiveLocalStorageLayout extends React.PureComponent {
                   <div className="panels-title w-full">
                     <h1>{panel.PanelName}</h1>
                     {value.btnShowHide === true ?
-                      <div>
+                      <div className="hidden sm:block">
                         <button className="danger-btn float-right w-6 ml-[2px] bg-transparent shadow-none border-none hover:bg-middle_black text-[17px]" onClick={() => value.funcLoad(value.dltPanel, panel.PanelID)}><i className="fa-solid fa-xmark"></i></button>
                         <label htmlFor="chart_choose" className="danger-btn float-right w-6 bg-transparent shadow-none border-none hover:bg-middle_black text-base" onClick={() => value.funcLoad(value.editPanel, panel.PanelID)}><i className="fa-solid fa-pen-to-square"></i></label>
                       </div>
@@ -152,7 +152,7 @@ export default class ResponsiveLocalStorageLayout extends React.PureComponent {
                     <div className="panels-title pb-3 bg-middle_black shadow-md hover:bg-side_black transition duration-300 w-[calc(100%_-_12px)]">
                       <h1>{panel.PanelName}</h1>
                     {value.btnShowHide === true ?
-                      <div>
+                      <div className="hidden sm:block">
                         <button className="danger-btn float-right w-6 ml-[2px] bg-transparent shadow-none border-none hover:bg-middle_black text-[17px]" onClick={() => value.funcLoad(value.dltPanel, panel.PanelID)}><i className="fa-solid fa-xmark"></i></button>
                         <label htmlFor="chart_choose" className="danger-btn float-right w-6 bg-transparent shadow-none border-none hover:bg-middle_black text-base" onClick={() => value.funcLoad(value.editPanel, panel.PanelID)}><i className="fa-solid fa-pen-to-square"></i></label>
                       </div>
@@ -169,7 +169,7 @@ export default class ResponsiveLocalStorageLayout extends React.PureComponent {
                     <div className="panels-title pb-3 bg-middle_black shadow-md hover:bg-side_black transition duration-300 w-[calc(100%_-_12px)]">
                       <h1>{panel.PanelName}</h1>
                     {value.btnShowHide === true ?
-                      <div>
+                      <div className="hidden sm:block">
                         <button className="danger-btn float-right w-6 ml-[2px] bg-transparent shadow-none border-none hover:bg-middle_black text-[17px]" onClick={() => value.funcLoad(value.dltPanel, panel.PanelID)}><i className="fa-solid fa-xmark"></i></button>
                         <label htmlFor="chart_choose" className="danger-btn float-right w-6 bg-transparent shadow-none border-none hover:bg-middle_black text-base" onClick={() => value.funcLoad(value.editPanel, panel.PanelID)}><i className="fa-solid fa-pen-to-square"></i></label>
                       </div>
