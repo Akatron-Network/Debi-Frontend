@@ -8,7 +8,7 @@ export default function Error() {
     <>
       <input type="checkbox" id="errorScreen" className="modal-toggle" />
       <div className="modal bg-modal_back">
-        <div className="modal-box bg-middle_black rounded w-[40%] p-0">
+        <div className="modal-box bg-middle_black rounded w-[90%] sm:w-3/5 md:w-2/5 p-0">
 
           <div className="flex items-start justify-between px-5 pt-3 pb-0 border-b border-jet_shadow rounded-t">
             <div className="flex text-2xl items-center mb-3">

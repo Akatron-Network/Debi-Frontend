@@ -38,7 +38,7 @@ export default function Files() {
 	
 
 	const check = () => {	//. Check sharedCollections and sharedDirectories
-
+		
 		if (share_data.sharedCollections.length !== 0) {
 
 			for (let col of share_data.sharedCollections) {
@@ -91,11 +91,11 @@ export default function Files() {
 								<div className="card">
 		
 									{share_data.btnShowHide === true ?
-										<div className='flex z-2 justify-end sm:gap-2 gap-3 z-2 mr-2'>
+										<div className='flex z-2 justify-end sm:gap-2 gap-3  mr-2'>
 											<label htmlFor="sharemodal" className="dlt-btn cursor-pointer ml-[6px] h-7 flex justify-center items-center" onClick={() => data.funcLoad(data.openShareModal, "DIRECTORY" , folder.directory_id, folder.directory_name)}>
 												<i className="fa-solid fa-share-nodes"></i>
 											</label>
-											<label htmlFor="addWorksFold" className="hidden sm:flex dlt-btn cursor-pointer ml-[6px] h-7 flex justify-center items-center" onClick={() => data.funcLoad(data.getFolderDetails, folder)} >
+											<label htmlFor="addWorksFold" className="hidden sm:flex dlt-btn cursor-pointer ml-[6px] h-7 justify-center items-center" onClick={() => data.funcLoad(data.getFolderDetails, folder)} >
 												<i className="fa-solid fa-pen-to-square"></i>
 											</label>
 											<label htmlFor="dltWorks" className="dlt-btn cursor-pointer mx-1 h-7 flex justify-center items-center ml-3 sm:ml-0" onClick={() => {data.setDeleteItemRef(folder) ; data.setDeleteItemType("klasör")}}>
@@ -149,7 +149,7 @@ export default function Files() {
 												<label htmlFor="sharemodal" className="dlt-btn cursor-pointer h-7 flex justify-center items-center" onClick={() => data.funcLoad(data.openShareModal, "PAGE" , file.page_id, file.page_name)}>
 													<i className="fa-solid fa-share-nodes"></i>
 												</label>
-												<label htmlFor="addWorksFile" className="hidden sm:flex dlt-btn cursor-pointer h-7 flex justify-center items-center" onClick={() => data.funcLoad(data.getFileDetails, file)} >
+												<label htmlFor="addWorksFile" className="hidden sm:flex dlt-btn cursor-pointer h-7 justify-center items-center" onClick={() => data.funcLoad(data.getFileDetails, file)} >
 													<i className="fa-solid fa-pen-to-square"></i>
 												</label>
 												<label htmlFor="dltWorks" className="dlt-btn cursor-pointer h-7 flex justify-center items-center" onClick={() => {data.setDeleteItemRef(file) ; data.setDeleteItemType("sayfa")}}>

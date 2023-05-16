@@ -15,8 +15,14 @@ export default function Collections() {
     getShare();
 		data.setFilePath([]);
 
-		document.getElementById('back_btn').classList.add('hidden');
-		return () => { document.getElementById('back_btn').classList.remove('hidden') }
+		if (screen.width < 641) {
+			document.getElementById('back_btn').classList.add('hidden');
+		}
+		return () => { 
+			if (document.getElementById('back_btn') !== null) {
+				document.getElementById('back_btn').classList.remove('hidden') 
+			}
+		}
 		
   }, [])
 
@@ -208,11 +214,11 @@ export default function Collections() {
 					return (
 						<div key={collection.collection_id} className={collection.connector.gateway_host !== null && !data.gatewayClientCheck ? "col-span-1 opacity-40 pointer-events-none" : "col-span-1"}>
 							<div className="card">
-								<div className='flex z-2 justify-end sm:gap-2 gap-3 z-2 mr-2'>
+								<div className='flex z-2 justify-end sm:gap-2 gap-3 mr-2'>
 									<label htmlFor="sharemodal" className="dlt-btn cursor-pointer h-7 flex justify-center items-center" onClick={() => data.funcLoad(data.openShareModal, "COLLECTION", collection.collection_id, collection.collection_name)}>
 										<i className="fa-solid fa-share-nodes"></i>
 									</label>
-									<label htmlFor="addWorksCol" className="hidden sm:flex dlt-btn cursor-pointer h-7 flex justify-center items-center" onClick={() => data.funcLoad(data.getCollectionDetails, collection)} >
+									<label htmlFor="addWorksCol" className="hidden sm:flex dlt-btn cursor-pointer h-7 justify-center items-center" onClick={() => data.funcLoad(data.getCollectionDetails, collection)} >
 										<i className="fa-solid fa-pen-to-square"></i>
 									</label>
 									<label htmlFor="dltWorks" className="dlt-btn cursor-pointer h-7 flex justify-center items-center" onClick={() => {data.setDeleteItemRef(collection); data.setDeleteItemType("koleksiyon")}} >
