@@ -173,7 +173,10 @@ export default function MainPage() {
   const getFolderWorks = async (col_id = undefined) => {
     let resp = await WorkspaceAll.getCollections(col_id);
     setFolders(resp.Data);
-    setFilePath([{id: col_id, name: resp.Data.collection_name, url: "/" + col_id}]);
+
+    let url = "/" + col_id
+    // if (resp.Data?.desktop_dir_id !== null) url = url + "/" + resp.Data.desktop_dir_id
+    setFilePath([{id: col_id, name: resp.Data.collection_name, url: url}]);
   }
 
 	const getFileWorks = async (fold_id = undefined) => {

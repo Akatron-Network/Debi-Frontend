@@ -73,12 +73,7 @@ export default function ChartLayout() {
   }, [])
   
 	const check = () => {
-		console.log(share_data.sharedCollections);
-		console.log(share_data.sharedDirectories);
-		console.log(share_data.sharedPages);
-
 		if (share_data.sharedCollections.length !== 0) {
-			console.log(fileID);
 			for (let col of share_data.sharedCollections) {
 				for (let dir of col.collection.directories) {
 	

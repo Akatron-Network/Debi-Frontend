@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { MainContext , ChartContext } from './context'
 
 export default function Filepath() {
-  const data = useContext(MainContext);
+  const data = useContext(MainContext)
   const { savePage, setAllPanelsDragResize, allPanelsDragResize, refreshPage, btnShowHide } = useContext(ChartContext);
 
   const [link, setLink] = useState("");
@@ -33,11 +33,30 @@ export default function Filepath() {
             </Link>
           </li>
           {data.filepath.map((path) => {
-            return (
-            <li key={path.id} className="file-path-top-text">
-              <Link to={path.url}>{path.name}</Link>
-            </li>
-          )})}
+            if (path.url.split("/").length - 1 === 1) {
+              return (
+                <li key={path.id} className="file-path-top-text pointer-events-none">
+                  <Link to={path.url}>{path.name}</Link>
+                </li>
+              )
+            }
+            else {
+              return (
+                <li key={path.id} className="file-path-top-text">
+                  <Link to={path.url}>{path.name}</Link>
+                </li>
+              )
+            }
+            // else if (path.url.split("/").length - 1 === 2) {
+            //   if (data.files.parent_directory !== null) {
+            //     return (
+            //       <li key={path.id} className="file-path-top-text">
+            //         <Link to={path.url}>{path.name}</Link>
+            //       </li>
+            //     )
+            //   }              
+            // }
+          })}
         </ul>
       )
     }

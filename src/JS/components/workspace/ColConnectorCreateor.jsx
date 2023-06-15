@@ -135,7 +135,12 @@ export default function ColConnectorCreateor() {
           </div>
 
           <Input value={"Kullanıcı Adı"} refName={data.colWorksNickRef}/>
-          <Input value={"Şifre"} refName={data.colWorksPassRef}/>
+          <div className="form-control mb-2">
+            <div className="input-group shadow-md">
+              <span className='bg-black_light text-grayXgray px-2 py-[7px] !rounded-l border border-jet_mid justify-center min-w-[35%] xl:truncate'>Şifre</span>
+              <input type="password" placeholder={"Şifre girin"} className="input my-0 input-bordered !rounded-l-none w-full h-auto" ref={data.colWorksPassRef} />
+            </div>
+          </div>
           <Input value={"Veritabanı Adı"} refName={data.colWorksDBRef}/>
           <div className='inline-flex w-full items-center p-1 mb-2'>
             <input type="checkbox" id='checkedExpress' className="checkbox mr-2 transition duration-300 hover:border-onyx_middle h-4 w-4" checked={data.checkedExpress} onChange={() => data.setCheckedExpress(!data.checkedExpress)} />

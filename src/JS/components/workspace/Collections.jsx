@@ -211,6 +211,12 @@ export default function Collections() {
 			<div className="grid 2xl:grid-cols-9 xl:grid-cols-7 sm:grid-cols-4 grid-cols-2 grid-flow-row auto-rows-max gap-4">
 
 				{data.collections.map((collection) => {
+					let url = collection.collection_id.toString();
+
+					if (collection?.desktop_dir_id !== null) {
+						url = url + "/" + collection.desktop_dir_id
+					}
+
 					return (
 						<div key={collection.collection_id} className={collection.connector.gateway_host !== null && !data.gatewayClientCheck ? "col-span-1 opacity-40 pointer-events-none" : "col-span-1"}>
 							<div className="card">
@@ -218,14 +224,18 @@ export default function Collections() {
 									<label htmlFor="sharemodal" className="dlt-btn cursor-pointer h-7 flex justify-center items-center" onClick={() => data.funcLoad(data.openShareModal, "COLLECTION", collection.collection_id, collection.collection_name)}>
 										<i className="fa-solid fa-share-nodes"></i>
 									</label>
-									<label htmlFor="addWorksCol" className="hidden sm:flex dlt-btn cursor-pointer h-7 justify-center items-center" onClick={() => data.funcLoad(data.getCollectionDetails, collection)} >
-										<i className="fa-solid fa-pen-to-square"></i>
-									</label>
+									{collection.collection_expl === "Demo" ? 
+										undefined
+										:
+										<label htmlFor="addWorksCol" className="hidden sm:flex dlt-btn cursor-pointer h-7 justify-center items-center" onClick={() => data.funcLoad(data.getCollectionDetails, collection)} >
+											<i className="fa-solid fa-pen-to-square"></i>
+										</label>									
+									}
 									<label htmlFor="dltWorks" className="dlt-btn cursor-pointer h-7 flex justify-center items-center" onClick={() => {data.setDeleteItemRef(collection); data.setDeleteItemType("koleksiyon")}} >
 										<i className="fa-solid fa-xmark"></i>
 									</label>
 								</div>
-								<Link className='link-title' to={collection.collection_id.toString()}>
+								<Link className='link-title' to={url}> {/* For pass directories */}
 									<div className="col-content">
 										<h4>{collection.collection_name}</h4>
 									</div>
