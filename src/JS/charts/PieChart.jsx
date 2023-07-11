@@ -58,8 +58,12 @@ const Page = (props) => {
       let view_id = props.modelID.replace("_View" , "")
       let query = {table: view_id , where_plain: where_plain, order: order, select: props.select}
       var respData = await Data.postExecute({collection_id: chart_data.pageContent.collection_id, query}, col);
-    
-    } else {
+    }
+    else if (props.modelID.includes("Script")) {
+      let script_id = props.modelID.replace("_Script" , "")
+      var respData = await Data.postExecute({script_id: script_id , collection_id: chart_data.pageContent.collection_id, where_plain: where_plain, order: order}, col);
+    } 
+    else {
       var respData = await Data.postExecute({model_id: props.modelID , collection_id: chart_data.pageContent.collection_id, where_plain: where_plain, order: order, columns: props.select}, col);
     }
 
