@@ -149,6 +149,13 @@ class Data {
     return resp;
   }
 
+  static async getScripts() {
+    let getScripts_req = new Requests("data", "scripts");
+
+    var resp = await getScripts_req.get();
+    return resp;
+  }
+
 }
 
 export default Data;

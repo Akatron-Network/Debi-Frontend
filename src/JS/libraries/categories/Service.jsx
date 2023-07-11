@@ -42,7 +42,6 @@ class Service {
                         email: email,
                         }
             })
-            console.log(resp);
 
             localStorage.setItem('Token' , resp.Token);
             localStorage.setItem('RefreshToken' , resp.Data.refresh_token);

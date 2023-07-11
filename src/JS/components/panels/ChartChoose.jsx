@@ -18,6 +18,7 @@ export default function ChartChoose() {
   useEffect(() => {
     modal_data.getList();
     modal_data.getUnions();
+    modal_data.getScripts();
   }, [])
 
   useEffect(() => {
@@ -130,6 +131,13 @@ export default function ChartChoose() {
                       {modal_data.publicModalList.map((pmodal, index) => (
                         <option key={index} value={pmodal.model_id + "_Public"}>
                           {pmodal.model_name + " (Hazır Model)"}
+                        </option>
+                      ))}
+
+                      {modal_data.scriptList.length > 0 ? <option disabled value="hr_2">Scriptler ------------------------------</option> : undefined}
+                      {modal_data.scriptList.map((script, index) => (
+                        <option key={index} value={script.id + "_Script"}>
+                          {script.name + " (Script)"}
                         </option>
                       ))}
 

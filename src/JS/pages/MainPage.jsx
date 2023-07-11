@@ -387,9 +387,7 @@ export default function MainPage() {
 
     // if (resp.Data.owned_collections) return;
     let gateway = content.collection.connector.gateway_host;
-
     let view_resp = await Data.getExplorer(content.collection_id, gateway, undefined, false, true, true);
-
     let tempViews = []
 
     for (let tbl of view_resp.Data) {
@@ -397,6 +395,14 @@ export default function MainPage() {
     }
 
     setViewList(tempViews);
+  }
+
+  const [scriptList, setScriptList] = useState([]);
+
+  const getScripts = async () => {
+    let resp = await Data.getScripts();
+    
+    setScriptList(resp.Data);
   }
 
   //* Panel Data Funcs------------------------------------------/
@@ -637,10 +643,12 @@ export default function MainPage() {
     if (first_id.includes("Union")) { // Union mu yoksa düz model mi diye kontrol ediyoruz
       id = parseInt(id);
       for(let a of unionList) { if (a.union_id === id) { query = a } }
+
       var keyMain = Object.keys(query.columns)
       var valueMain = Object.values(query.columns)
 
-    } else if (first_id.includes("View")) {
+    } 
+    else if (first_id.includes("View")) {
       let arr = [];
 
       id = id.split("_View")[0]
@@ -652,8 +660,20 @@ export default function MainPage() {
       
       var keyMain = Object.keys(arr)
       var valueMain = Object.values(arr)
+    } 
+    else if (first_id.includes("Script")) {
+      let arr = [];
 
-    } else if (first_id.includes("Public")) {
+      id = id.split("_Script")[0]
+
+      for(let a of scriptList) { if (a.id === id) { query = a } }
+      arr = Object.keys(query.columns);
+    
+      var keyMain = Object.keys(arr)
+      var valueMain = Object.values(arr)
+
+    } 
+    else if (first_id.includes("Public")) {
 
       id = parseInt(id);
       for(let a of publicModalList) { if (a.model_id === id) { query = a } }
@@ -683,22 +703,29 @@ export default function MainPage() {
 
     if (first_id.includes("Union")) { // Union mu yoksa düz model mi diye kontrol ediyoruz
       colList_temp = [{[query.union_name] : {columns: [...valueMain, "CATEGORY"] , alias: query.union_id}}];
-    } else if (first_id.includes("View")) {
+    } 
+    else if (first_id.includes("View")) {
       colList_temp = [{[query.table] : {columns: [...valueMain] , alias: query.table}}];
-    } else {
+    } 
+    else if (first_id.includes("Script")) {
+      colList_temp = [{[query.name] : {columns: [...valueMain] , alias: query.id}}];
+    } 
+    else {
       colList_temp = [{[query.query.table] : {columns: arrMain , alias: query.query.alias}}];
 
       for(let b of query.query.includes) {
         let arrAlias = [];
-        let valueAlias =Object.values(b.select);
-        let keyAlias =Object.keys(b.select);
+        let valueAlias = Object.values(b.select);
+        let keyAlias = Object.keys(b.select);
   
         for (let v in valueAlias) {
           if (valueAlias[v] === true) {
             arrAlias.push(keyAlias[v])
-          } else if (keyAlias[v].includes("{")) {
+          }
+          else if (keyAlias[v].includes("{")) {
             arrAlias.push(keyAlias[v].replaceAll("{" , "").replaceAll("}" , ""))
-          } else {
+          }
+          else {
             arrAlias.push(keyAlias[v] + "_" + valueAlias[v])
           }
         }
@@ -2182,6 +2209,7 @@ export default function MainPage() {
     modalList,
     publicModalList,
     modalType,
+    scriptList,
     unionInformations,
     unionList,
     viewList,
@@ -2189,6 +2217,7 @@ export default function MainPage() {
     deleteModel,
     deleteUnion,
     getList,
+    getScripts,
     getUnions,
     getViews,
     setModalChecked,
@@ -2197,7 +2226,6 @@ export default function MainPage() {
     setUnionInformations,
     setModalType,
     setUnionList,
-    setViewList,
   }
 
   const chart_data = {
